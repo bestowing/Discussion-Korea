@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -46,10 +47,64 @@
                     <view key="view" contentMode="scaleToFill" id="dFq-Hd-FGa">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gwJ-3K-SAb">
+                                <rect key="frame" x="0.0" y="88" width="414" height="704"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="knI-pm-yRk">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="FHG-Jb-0C0">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="xxt-3D-cso">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogf-bf-h3n">
+                                <rect key="frame" x="348.5" y="811.5" width="55.5" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="send"/>
+                                <connections>
+                                    <action selector="sendButtonDidTouch:" destination="BWM-qj-BFI" eventType="touchUpInside" id="SRf-Zm-Bmm"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RPh-Dm-86J">
+                                <rect key="frame" x="20" y="802" width="318.5" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="5R4-Tf-ZTV"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="FMP-RC-Zxh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FMP-RC-Zxh" firstAttribute="trailing" secondItem="ogf-bf-h3n" secondAttribute="trailing" constant="10" id="1Ys-Ac-6EJ"/>
+                            <constraint firstItem="gwJ-3K-SAb" firstAttribute="top" secondItem="FMP-RC-Zxh" secondAttribute="top" id="1tj-k0-iUx"/>
+                            <constraint firstItem="gwJ-3K-SAb" firstAttribute="leading" secondItem="FMP-RC-Zxh" secondAttribute="leading" id="FdG-Ry-nlF"/>
+                            <constraint firstItem="ogf-bf-h3n" firstAttribute="leading" secondItem="RPh-Dm-86J" secondAttribute="trailing" constant="10" id="Hh3-58-ySh"/>
+                            <constraint firstItem="ogf-bf-h3n" firstAttribute="centerY" secondItem="RPh-Dm-86J" secondAttribute="centerY" id="OZa-3F-IIV"/>
+                            <constraint firstItem="RPh-Dm-86J" firstAttribute="top" secondItem="gwJ-3K-SAb" secondAttribute="bottom" constant="10" id="cZM-F9-LgM"/>
+                            <constraint firstItem="RPh-Dm-86J" firstAttribute="leading" secondItem="FMP-RC-Zxh" secondAttribute="leading" constant="20" id="m5H-i0-hAp"/>
+                            <constraint firstItem="FMP-RC-Zxh" firstAttribute="bottom" secondItem="RPh-Dm-86J" secondAttribute="bottom" constant="10" id="tca-lZ-C9o"/>
+                            <constraint firstItem="FMP-RC-Zxh" firstAttribute="trailing" secondItem="gwJ-3K-SAb" secondAttribute="trailing" id="uhv-4L-wIs"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9Rw-rI-aSS"/>
+                    <connections>
+                        <outlet property="messageTextView" destination="RPh-Dm-86J" id="ioO-Ke-ZTe"/>
+                        <outlet property="sendButton" destination="ogf-bf-h3n" id="C1o-75-Ixr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tDR-C5-EEk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -75,6 +130,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
