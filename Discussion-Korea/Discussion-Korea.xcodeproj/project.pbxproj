@@ -18,6 +18,7 @@
 		3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBA27E356BF005C71D9 /* FirebaseDatabase */; };
 		3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */; };
 		3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */; };
+		3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		3F4DDCAB27E353B5005C71D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F4DDCAD27E353B5005C71D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				3F4DDCA827E353B5005C71D9 /* Assets.xcassets */,
 				3F4DDCAA27E353B5005C71D9 /* LaunchScreen.storyboard */,
 				3F4DDCAD27E353B5005C71D9 /* Info.plist */,
+				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 			);
 			path = "Discussion-Korea";
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
+				3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
