@@ -15,4 +15,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
     }
 
+    @IBAction func chatRoomButtonDidTouch(_ sender: UIButton) {
+        // TODO: 채팅방 화면 이동 구현
+    }
+
 }
