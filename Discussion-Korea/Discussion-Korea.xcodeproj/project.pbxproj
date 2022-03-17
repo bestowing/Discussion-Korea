@@ -68,14 +68,11 @@
 		3F4DDC9E27E353B4005C71D9 /* Discussion-Korea */ = {
 			isa = PBXGroup;
 			children = (
-				3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */,
 				3F4DDCB327E353CA005C71D9 /* Application */,
-				3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */,
-				3F4DDCA527E353B4005C71D9 /* Main.storyboard */,
-				3F4DDCA827E353B5005C71D9 /* Assets.xcassets */,
-				3F4DDCAA27E353B5005C71D9 /* LaunchScreen.storyboard */,
-				3F4DDCAD27E353B5005C71D9 /* Info.plist */,
-				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
+				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
+				3F4DDCC427E35B02005C71D9 /* HomeScene */,
+				3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */,
+				3F4DDCC227E35ADE005C71D9 /* Resource */,
 			);
 			path = "Discussion-Korea";
 			sourceTree = "<group>";
@@ -87,6 +84,41 @@
 				3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		3F4DDCC227E35ADE005C71D9 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */,
+				3F4DDCAD27E353B5005C71D9 /* Info.plist */,
+				3F4DDCA827E353B5005C71D9 /* Assets.xcassets */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		3F4DDCC327E35AF1005C71D9 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCA527E353B4005C71D9 /* Main.storyboard */,
+				3F4DDCAA27E353B5005C71D9 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		3F4DDCC427E35B02005C71D9 /* HomeScene */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */,
+			);
+			path = HomeScene;
+			sourceTree = "<group>";
+		};
+		3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
+			);
+			path = ChatRoomScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
