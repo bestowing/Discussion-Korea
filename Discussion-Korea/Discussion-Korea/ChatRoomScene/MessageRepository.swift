@@ -12,7 +12,7 @@ import Foundation
 protocol MessageRepository {
 
     func observe() -> AnyPublisher<Message, Never>
-    func send(message: String)
+    func send(number: Int, message: Message)
 
 }
 
@@ -45,8 +45,10 @@ class DefaultMessageRepository: MessageRepository {
         return self.messagePublisher.eraseToAnyPublisher()
     }
 
-    func send(message: String) {
-        // TODO: 구현 필요
+    func send(number: Int, message: Message) {
+        let values: [String: Any] = ["user": message.userID,
+                                     "content": message.content]
+        self.roomReference.child("\(number)").setValue(values)
     }
 
 }

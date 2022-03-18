@@ -23,6 +23,16 @@ class MessageCollectionViewCell: UICollectionViewCell {
     func bind(message: Message) {
         self.nicknameLabel.text = message.userID
         self.contentLabel.text = message.content
+        self.timeLabel.text = "오후 7:33"
+    }
+
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        super.preferredLayoutAttributesFitting(layoutAttributes)
+        self.layoutIfNeeded()
+        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        frame.size.height = ceil(size.height)
+        layoutAttributes.frame = frame
+        return layoutAttributes
     }
 
 }

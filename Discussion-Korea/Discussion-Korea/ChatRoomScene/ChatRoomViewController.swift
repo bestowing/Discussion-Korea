@@ -27,17 +27,25 @@ class ChatRoomViewController: UIViewController {
         self.messageTextView.delegate = self
         self.messageCollectionView.register(UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
                                             forCellWithReuseIdentifier: MessageCollectionViewCell.identifier)
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        messageCollectionView.collectionViewLayout = flowLayout
         self.repository.observe().sink { message in
-            let item = self.messages.count
-            self.messages.append(message)
             DispatchQueue.main.async { [weak self] in
-                self?.messageCollectionView.reloadItems(at: [IndexPath(item: item, section: 0)])
+                guard let item = self?.messages.count
+                else { return }
+                self?.messages.append(message)
+                let indexPath = IndexPath(item: item, section: 0)
+                self?.messageCollectionView.insertItems(at: [indexPath])
+                self?.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }
         }.store(in: &self.cancellables)
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
-        self.repository.send(message: messageTextView.text)
+        let message = Message(userID: "test", content: self.messageTextView.text)
+        self.messageTextView.text = ""
+        self.repository.send(number: self.messages.count + 1, message: message)
     }
 
 }
@@ -49,8 +57,12 @@ extension ChatRoomViewController: UICollectionViewDelegate,
         return self.messages.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MessageCollectionViewCell.identifier, for: indexPath) as? MessageCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MessageCollectionViewCell.identifier,
+            for: indexPath
+        ) as? MessageCollectionViewCell
         else { return MessageCollectionViewCell() }
         let message = self.messages[indexPath.item]
         cell.bind(message: message)

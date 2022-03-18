@@ -17,35 +17,37 @@
                 <rect key="frame" x="0.0" y="0.0" width="335" height="130"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="G9p-E0-Z42">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="G9p-E0-Z42">
                         <rect key="frame" x="10" y="10" width="44" height="44"/>
                         <color key="backgroundColor" red="0.1293050945" green="0.2151959836" blue="0.3921753764" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="44" id="eVb-xm-Q12"/>
-                            <constraint firstAttribute="height" constant="44" id="gmK-nQ-P7n"/>
+                            <constraint firstAttribute="height" constant="47" id="FMJ-kb-8I9"/>
+                            <constraint firstAttribute="width" constant="44" id="NWg-aM-xLe"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="22"/>
+                                <integer key="value" value="7"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNm-RK-ytM">
-                        <rect key="frame" x="64" y="10" width="26.5" height="12"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9n-qh-Rs5">
-                        <rect key="frame" x="64" y="32" width="44" height="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNm-RK-ytM">
+                        <rect key="frame" x="64" y="10" width="31" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nR-Dx-IWU">
-                        <rect key="frame" x="116" y="35" width="27" height="12"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="content" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9n-qh-Rs5">
+                        <rect key="frame" x="64" y="34.5" width="49.5" height="85.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                        <size key="shadowOffset" width="0.0" height="0.0"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nR-Dx-IWU">
+                        <rect key="frame" x="121.5" y="108" width="183.5" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -56,14 +58,13 @@
             <constraints>
                 <constraint firstItem="B9n-qh-Rs5" firstAttribute="leading" secondItem="gNm-RK-ytM" secondAttribute="leading" id="8tY-G4-bzo"/>
                 <constraint firstItem="B9n-qh-Rs5" firstAttribute="top" secondItem="gNm-RK-ytM" secondAttribute="bottom" constant="10" id="HHI-0h-jtj"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0nR-Dx-IWU" secondAttribute="trailing" constant="10" id="LKx-Rz-wJ6"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gNm-RK-ytM" secondAttribute="trailing" constant="10" id="NGG-bS-hjT"/>
+                <constraint firstAttribute="trailing" secondItem="0nR-Dx-IWU" secondAttribute="trailing" constant="30" id="LKx-Rz-wJ6"/>
                 <constraint firstItem="0nR-Dx-IWU" firstAttribute="leading" secondItem="B9n-qh-Rs5" secondAttribute="trailing" constant="8" id="ZFL-Wc-hXJ"/>
-                <constraint firstItem="gNm-RK-ytM" firstAttribute="top" secondItem="G9p-E0-Z42" secondAttribute="top" id="ZGc-cf-XfP"/>
-                <constraint firstItem="G9p-E0-Z42" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="akL-a4-rey"/>
+                <constraint firstItem="gNm-RK-ytM" firstAttribute="top" secondItem="G9p-E0-Z42" secondAttribute="top" constant="1.5" id="ZGc-cf-XfP"/>
+                <constraint firstItem="G9p-E0-Z42" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8.5" id="akL-a4-rey"/>
                 <constraint firstItem="gNm-RK-ytM" firstAttribute="leading" secondItem="G9p-E0-Z42" secondAttribute="trailing" constant="10" id="bgh-hA-v6t"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="G9p-E0-Z42" secondAttribute="bottom" constant="10" id="g7a-cl-aBT"/>
                 <constraint firstItem="0nR-Dx-IWU" firstAttribute="bottom" secondItem="B9n-qh-Rs5" secondAttribute="bottom" id="hDw-85-8dk"/>
+                <constraint firstAttribute="bottom" secondItem="B9n-qh-Rs5" secondAttribute="bottom" constant="10" id="iAr-iH-4nf"/>
                 <constraint firstItem="G9p-E0-Z42" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="yJi-zf-wvt"/>
             </constraints>
             <size key="customSize" width="335" height="130"/>
