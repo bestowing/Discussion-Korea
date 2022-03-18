@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/03/17.
 //
 
+import Combine
 import UIKit
 
 class ChatRoomViewController: UIViewController {
@@ -13,6 +14,8 @@ class ChatRoomViewController: UIViewController {
     @IBOutlet private weak var sendButton: UIButton!
 
     private let repository: MessageRepository = DefaultMessageRepository()
+    private var cancellables = Set<AnyCancellable>()
+    private var messages: [Message] = []
 
     // MARK: methods
 
@@ -22,6 +25,11 @@ class ChatRoomViewController: UIViewController {
         self.messageCollectionView.delegate = self
         self.messageCollectionView.dataSource = self
         self.messageTextView.delegate = self
+        self.repository.observe().sink { message in
+            let item = self.messages.count
+            self.messages.append(message)
+            self.messageCollectionView.reloadItems(at: [IndexPath(item: item, section: 0)])
+        }.store(in: &self.cancellables)
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
