@@ -16,8 +16,11 @@ def get_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', '-s', type=int, default=42,
                         help='Random seed')
-    parser.add_argument('--data-path', '-r', type=str, default="data/",
+    parser.add_argument('--data-path', type=str, default="data/",
                         help='Data path')
+    parser.add_argument('--model-path',type=str, default="klue/roberta-base")
+    parser.add_argument('--learning-rate', type=float, default=1e-5)
+    parser.add_argument('--n-epochs', type=int, default=3)
     return parser
 
 if __name__ == '__main__':
