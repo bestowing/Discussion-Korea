@@ -1,4 +1,3 @@
-
 from multiprocessing import cpu_count
 
 def get_num_workers():
