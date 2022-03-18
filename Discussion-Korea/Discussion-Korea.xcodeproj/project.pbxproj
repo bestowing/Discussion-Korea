@@ -21,6 +21,8 @@
 		3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */; };
 		3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */; };
 		3F4DDCCB27E4B8C4005C71D9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCA27E4B8C4005C71D9 /* Message.swift */; };
+		3F4DDCCF27E4B90A005C71D9 /* MessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */; };
+		3F4DDCD027E4B90A005C71D9 /* MessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRepository.swift; sourceTree = "<group>"; };
 		3F4DDCCA27E4B8C4005C71D9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,11 +124,21 @@
 		3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */ = {
 			isa = PBXGroup;
 			children = (
+				3F4DDCCC27E4B8E9005C71D9 /* View */,
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
 				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
 			);
 			path = ChatRoomScene;
+			sourceTree = "<group>";
+		};
+		3F4DDCCC27E4B8E9005C71D9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */,
+				3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +212,7 @@
 				3F4DDCB527E354BB005C71D9 /* GoogleService-Info.plist in Resources */,
 				3F4DDCA927E353B5005C71D9 /* Assets.xcassets in Resources */,
 				3F4DDCA727E353B4005C71D9 /* Main.storyboard in Resources */,
+				3F4DDCD027E4B90A005C71D9 /* MessageCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F4DDCCF27E4B90A005C71D9 /* MessageCollectionViewCell.swift in Sources */,
 				3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,

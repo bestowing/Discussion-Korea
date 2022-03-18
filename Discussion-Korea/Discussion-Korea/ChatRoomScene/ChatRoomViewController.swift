@@ -25,10 +25,14 @@ class ChatRoomViewController: UIViewController {
         self.messageCollectionView.delegate = self
         self.messageCollectionView.dataSource = self
         self.messageTextView.delegate = self
+        self.messageCollectionView.register(UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
+                                            forCellWithReuseIdentifier: MessageCollectionViewCell.identifier)
         self.repository.observe().sink { message in
             let item = self.messages.count
             self.messages.append(message)
-            self.messageCollectionView.reloadItems(at: [IndexPath(item: item, section: 0)])
+            DispatchQueue.main.async { [weak self] in
+                self?.messageCollectionView.reloadItems(at: [IndexPath(item: item, section: 0)])
+            }
         }.store(in: &self.cancellables)
     }
 
@@ -42,13 +46,15 @@ extension ChatRoomViewController: UICollectionViewDelegate,
                                   UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // TODO: 구현 필요
-        return 0
+        return self.messages.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // TODO: 구현 필요
-        return UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MessageCollectionViewCell.identifier, for: indexPath) as? MessageCollectionViewCell
+        else { return MessageCollectionViewCell() }
+        let message = self.messages[indexPath.item]
+        cell.bind(message: message)
+        return cell
     }
 
 }

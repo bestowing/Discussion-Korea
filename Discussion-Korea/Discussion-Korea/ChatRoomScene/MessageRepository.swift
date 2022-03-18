@@ -24,7 +24,11 @@ class DefaultMessageRepository: MessageRepository {
     private let messagePublisher = PassthroughSubject<Message, Never>()
 
     init() {
-        self.roomReference = Database.database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+        self.roomReference = Database
+            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+            .reference()
+            .child("chatRoom")
+            .child("1")
     }
 
     // MARK: methods
