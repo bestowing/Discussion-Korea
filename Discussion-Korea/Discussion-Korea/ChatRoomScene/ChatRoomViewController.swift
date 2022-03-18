@@ -12,6 +12,8 @@ class ChatRoomViewController: UIViewController {
     @IBOutlet private weak var messageTextView: UITextView!
     @IBOutlet private weak var sendButton: UIButton!
 
+    private let repository: MessageRepository = DefaultMessageRepository()
+
     // MARK: methods
 
     override func viewDidLoad() {
@@ -23,7 +25,7 @@ class ChatRoomViewController: UIViewController {
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
-        // TODO: send 버튼 터치 구현
+        self.repository.send(message: messageTextView.text)
     }
 
 }

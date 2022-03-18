@@ -19,6 +19,7 @@
 		3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */; };
 		3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */; };
 		3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */; };
+		3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		3F4DDCAD27E353B5005C71D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
+		3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
+				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
 			);
 			path = ChatRoomScene;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
