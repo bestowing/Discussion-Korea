@@ -11,5 +11,6 @@ struct Message {
 
     var userID: String
     var content: String
+    var date: Date
 
 }

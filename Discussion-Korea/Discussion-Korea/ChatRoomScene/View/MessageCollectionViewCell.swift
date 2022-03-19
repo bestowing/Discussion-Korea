@@ -23,7 +23,10 @@ class MessageCollectionViewCell: UICollectionViewCell {
     func bind(message: Message) {
         self.nicknameLabel.text = message.userID
         self.contentLabel.text = message.content
-        self.timeLabel.text = "오후 7:33"
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "a h:mm"
+        self.timeLabel.text = dateFormatter.string(from: message.date)
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

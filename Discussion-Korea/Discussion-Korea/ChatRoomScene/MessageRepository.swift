@@ -22,6 +22,7 @@ class DefaultMessageRepository: MessageRepository {
 
     private let roomReference: DatabaseReference
     private let messagePublisher = PassthroughSubject<Message, Never>()
+    private let dateFormatter: DateFormatter
 
     init() {
         self.roomReference = Database
@@ -29,6 +30,8 @@ class DefaultMessageRepository: MessageRepository {
             .reference()
             .child("chatRoom")
             .child("1")
+        self.dateFormatter = DateFormatter()
+        self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
 
     // MARK: methods
@@ -37,9 +40,11 @@ class DefaultMessageRepository: MessageRepository {
         self.roomReference.observe(.childAdded) { [weak self] snapshot in
             guard let dic = snapshot.value as? [String: Any],
                   let userID = dic["user"] as? String,
-                  let content = dic["content"] as? String
+                  let content = dic["content"] as? String,
+                  let dateString = dic["date"] as? String,
+                  let date = self?.dateFormatter.date(from: dateString)
             else { return }
-            let newMessage = Message(userID: userID, content: content)
+            let newMessage = Message(userID: userID, content: content, date: date)
             self?.messagePublisher.send(newMessage)
         }
         return self.messagePublisher.eraseToAnyPublisher()
@@ -47,7 +52,8 @@ class DefaultMessageRepository: MessageRepository {
 
     func send(number: Int, message: Message) {
         let values: [String: Any] = ["user": message.userID,
-                                     "content": message.content]
+                                     "content": message.content,
+                                     "date": self.dateFormatter.string(from: message.date)]
         self.roomReference.child("\(number)").setValue(values)
     }
 
