@@ -78,12 +78,12 @@
 		3F4DDC9E27E353B4005C71D9 /* Discussion-Korea */ = {
 			isa = PBXGroup;
 			children = (
-				3F4DDCD427E51A09005C71D9 /* Common */,
 				3F4DDCB327E353CA005C71D9 /* Application */,
-				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
-				3F4DDCC427E35B02005C71D9 /* HomeScene */,
 				3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */,
+				3F4DDCD427E51A09005C71D9 /* Common */,
+				3F4DDCC427E35B02005C71D9 /* HomeScene */,
 				3F4DDCC227E35ADE005C71D9 /* Resource */,
+				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
 			);
 			path = "Discussion-Korea";
 			sourceTree = "<group>";
