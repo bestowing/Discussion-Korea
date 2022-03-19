@@ -64,18 +64,3 @@ def get_data_loader(dataset, num_workers=4, batch_size=32, shuffle=True):
         sampler=train_sampler,
     )
     return data_loader
-
-
-# import gluonnlp as nlp
-# from kobert.utils import get_tokenizer
-# from kobert.pytorch_kobert import get_pytorch_kobert_model
-
-# bertmodel, vocab = get_pytorch_kobert_model()
-# tokenizer = nlp.data.BERTSPTokenizer(get_tokenizer(), vocab, lower=False)
-
-# filepath = "/home/m2017314029/disscussion_bot/Discussion-Korea/data/processed/test.csv"
-# dataset = MakeDataSet(filepath, tokenizer)
-# data_loader = get_data_loader(filepath, tokenizer, max_length=500)
-# print(len(dataset))
-# print(dataset[120])
-# print(len(data_loader))
