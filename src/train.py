@@ -95,7 +95,7 @@ def train(
         },
     ]
     t_total = len(train_loader) * max_epochs
-    warm_up_ratio = 0.1
+    warm_up_ratio = warm_up_ratio
     warmup_step = int(t_total * warm_up_ratio)
 
     loss_fn = nn.CrossEntropyLoss()
