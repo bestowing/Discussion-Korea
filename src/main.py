@@ -71,7 +71,7 @@ def main():
             test_dataset, batch_size=args.batch_size, shuffle=False
         )
     else:
-        raise ("Not Implemented")
+        raise NotImplementedError("Not Implemented")
 
     print("Train model...\n")
 

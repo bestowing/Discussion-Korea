@@ -71,7 +71,7 @@ def train(
             lm_model=bertmodel, num_classes=num_classes, device=device
         )
     else:
-        raise ("Not Implemented")
+        raise NotImplementedError("Not Implemented model")
 
     os.makedirs(ckpt_path, exist_ok=True)
 
