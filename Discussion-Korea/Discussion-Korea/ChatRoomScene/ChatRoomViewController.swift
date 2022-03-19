@@ -21,6 +21,7 @@ class ChatRoomViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureTapGestureRecognizer()
         self.sendButton.isEnabled = !self.messageTextView.text.isEmpty
         self.messageCollectionView.delegate = self
         self.messageCollectionView.dataSource = self
@@ -40,6 +41,42 @@ class ChatRoomViewController: UIViewController {
                 self?.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }
         }.store(in: &self.cancellables)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    private func configureTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            UIView.animate(withDuration: 1) { [weak self] in
+                self?.view.window?.frame.origin.y = -keyboardHeight
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(_ notification: NSNotification) {
+        self.view.window?.frame.origin.y = 0
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
