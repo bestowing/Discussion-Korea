@@ -61,8 +61,8 @@ def train(
     ckpt_path="model_save",
     num_classes=2,
     lr=1e-5,
-    max_epochs=3,
-    weight_decay=0.3,
+    max_epochs=4,
+    weight_decay=0.01,
     warm_up_ratio=0.1,
     device="cuda",
 ):
@@ -102,7 +102,7 @@ def train(
 
     optimizer = AdamW(optimizer_grouped_parameters, lr=lr)
     scheduler = get_linear_schedule_with_warmup(
-        optimizer, num_warmup_steps=0, num_training_steps=t_total
+        optimizer, num_warmup_steps=warmup_step, num_training_steps=t_total
     )
 
     model = model.to(device)
@@ -152,10 +152,9 @@ def train(
         elapsed_time = (time.time() - t0) / 60
 
         print(
-            f"epoch {epoch} train_loss: {epoch_loss:.4f} train accuracy: {epoch_accuracy:.4f} time: {elapsed_time:.4f} minutes"
+            f"epoch {epoch+1} train_loss: {epoch_loss:.4f} train accuracy: {epoch_accuracy:.4f} time: {elapsed_time:.4f} minutes"
         )
         print(
-            f"epoch {epoch} valid_loss: {valid_loss:.4f} validation_accuracy: {valid_acc:.4f}"
+            f"epoch {epoch+1} valid_loss: {valid_loss:.4f} validation_accuracy: {valid_acc:.4f}"
         )
         print()
-
