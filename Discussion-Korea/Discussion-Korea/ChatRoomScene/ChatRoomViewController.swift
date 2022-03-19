@@ -21,44 +21,11 @@ class ChatRoomViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureViews()
         self.configureTapGestureRecognizer()
-        self.sendButton.isEnabled = !self.messageTextView.text.isEmpty
-        self.messageCollectionView.delegate = self
-        self.messageCollectionView.dataSource = self
-        self.messageTextView.delegate = self
-        self.messageCollectionView.register(UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
-                                            forCellWithReuseIdentifier: MessageCollectionViewCell.identifier)
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
-        messageCollectionView.collectionViewLayout = flowLayout
-        self.repository.observe().sink { message in
-            DispatchQueue.main.async { [weak self] in
-                guard let item = self?.messages.count
-                else { return }
-                self?.messages.append(message)
-                let indexPath = IndexPath(item: item, section: 0)
-                self?.messageCollectionView.insertItems(at: [indexPath])
-                self?.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-            }
-        }.store(in: &self.cancellables)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-
-    private func configureTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        tapGestureRecognizer.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapGestureRecognizer)
+        self.configureMessageCollectionView()
+        self.configureNotifications()
+        self.configureCancellable()
     }
 
     @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
@@ -66,12 +33,9 @@ class ChatRoomViewController: UIViewController {
     }
 
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            UIView.animate(withDuration: 1) { [weak self] in
-                self?.view.window?.frame.origin.y = -keyboardHeight
-            }
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            self.view.window?.frame.origin.y = -keyboardHeight
         }
     }
 
@@ -83,6 +47,57 @@ class ChatRoomViewController: UIViewController {
         let message = Message(userID: "test", content: self.messageTextView.text)
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
+    }
+
+    private func configureViews() {
+        self.sendButton.isEnabled = !self.messageTextView.text.isEmpty
+        self.messageTextView.delegate = self
+    }
+
+    private func configureTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    private func configureMessageCollectionView() {
+        self.messageCollectionView.delegate = self
+        self.messageCollectionView.dataSource = self
+        self.messageCollectionView.register(
+            UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
+            forCellWithReuseIdentifier: MessageCollectionViewCell.identifier
+        )
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 50)
+        self.messageCollectionView.collectionViewLayout = flowLayout
+    }
+
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    private func configureCancellable() {
+        self.repository.observe().sink { message in
+            DispatchQueue.main.async { [weak self] in
+                guard let item = self?.messages.count
+                else { return }
+                self?.messages.append(message)
+                let indexPath = IndexPath(item: item, section: 0)
+                self?.messageCollectionView.insertItems(at: [indexPath])
+                self?.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
+        }.store(in: &self.cancellables)
     }
 
 }
