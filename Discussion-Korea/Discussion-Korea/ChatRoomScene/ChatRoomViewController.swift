@@ -68,7 +68,7 @@ class ChatRoomViewController: UIViewController {
             forCellWithReuseIdentifier: MessageCollectionViewCell.identifier
         )
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 50)
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
         self.messageCollectionView.collectionViewLayout = flowLayout
     }
 
