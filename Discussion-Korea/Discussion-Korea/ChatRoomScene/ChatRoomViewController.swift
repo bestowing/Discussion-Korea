@@ -44,7 +44,9 @@ class ChatRoomViewController: UIViewController {
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
-        let message = Message(userID: "test", content: self.messageTextView.text, date: Date())
+        guard !self.messageTextView.text.isEmpty
+        else { return }
+        let message = Message(userID: IDManager.shared.userID, content: self.messageTextView.text, date: Date())
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
     }
