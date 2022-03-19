@@ -1,0 +1,1 @@
+docker run --rm -it -p 8080:8080 -p 8081:8081 --name mar -v $(pwd)/model-store:/Users/seok/Discussion-Korea/model_store pytorch/torchserve:latest torchserve --start --model-store model-store --models my_tc=BERTSeqClassification.mar --ncs
