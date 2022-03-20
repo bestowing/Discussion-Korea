@@ -28,7 +28,7 @@ class ChatRoomViewController: UIViewController {
         self.configureTapGestureRecognizer()
         self.configureMessageCollectionView()
         self.configureNotifications()
-        self.configureCancellable()
+        self.observeChatMessage()
     }
 
     @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
@@ -130,7 +130,7 @@ class ChatRoomViewController: UIViewController {
         )
     }
 
-    private func configureCancellable() {
+    private func observeChatMessage() {
         self.repository.observeChatMessage().sink { message in
             DispatchQueue.main.async { [weak self] in
                 guard let item = self?.messages.count
