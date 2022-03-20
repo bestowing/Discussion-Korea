@@ -16,11 +16,14 @@ class ChatRoomViewController: UIViewController {
     private let repository: MessageRepository = DefaultMessageRepository()
     private var cancellables = Set<AnyCancellable>()
     private var messages: [Message] = []
+    private var nicknames: [String: String] = [:]
 
     // MARK: methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.checkIfFirstEntering()
+        self.observeUserInfo()
         self.configureViews()
         self.configureTapGestureRecognizer()
         self.configureMessageCollectionView()
@@ -35,12 +38,12 @@ class ChatRoomViewController: UIViewController {
     @objc func keyboardWillShow(_ notification: NSNotification) {
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
-            self.view.window?.frame.origin.y = -keyboardHeight
+            self.view.frame.origin.y = -keyboardHeight
         }
     }
 
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        self.view.window?.frame.origin.y = 0
+        self.view.frame.origin.y = 0
     }
 
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
@@ -49,6 +52,44 @@ class ChatRoomViewController: UIViewController {
         let message = Message(userID: IDManager.shared.userID, content: self.messageTextView.text, date: Date())
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
+    }
+
+    private func checkIfFirstEntering() {
+        self.repository.checkIfFirstEntering().sink { [weak self] isFirstEntering in
+            if isFirstEntering {
+                self?.showAlertForSettingNickname()
+            }
+        }.store(in: &self.cancellables)
+    }
+
+    private func observeUserInfo() {
+        self.repository.observeUserInfo().sink { [weak self] userInfo in
+            self?.nicknames[userInfo.userID] = userInfo.nickname
+        }.store(in: &self.cancellables)
+    }
+
+    private func showAlertForSettingNickname() {
+        let alert = UIAlertController(title: "닉네임 설정",
+                                      message: "채팅방에 처음으로 입장할때 닉네임을 설정해야 합니다.",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let exitAction = UIAlertAction(title: "나가기", style: .cancel) {_ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        let registAction = UIAlertAction(title: "등록", style: .default) {_ in
+            guard let nickname = alert.textFields?.first?.text
+            else { return }
+            self.repository.setNickname(by: nickname)
+        }
+        registAction.isEnabled = false
+        alert.addTextField(configurationHandler: { textField in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"), object: textField, queue: OperationQueue.main, using: { _ in
+                registAction.isEnabled = !(textField.text?.isEmpty ?? true)
+            })
+            textField.placeholder = "닉네임을 입력해주세요"
+        })
+        alert.addAction(exitAction)
+        alert.addAction(registAction)
+        self.present(alert, animated: true)
     }
 
     private func configureViews() {
@@ -121,6 +162,7 @@ extension ChatRoomViewController: UICollectionViewDelegate,
         ) as? MessageCollectionViewCell
         else { return MessageCollectionViewCell() }
         let message = self.messages[indexPath.item]
+        // TODO: 같은 사람이 보낸 메시지는 붙여서 보이도록 Cell 개선하기
         cell.bind(message: message)
         return cell
     }
