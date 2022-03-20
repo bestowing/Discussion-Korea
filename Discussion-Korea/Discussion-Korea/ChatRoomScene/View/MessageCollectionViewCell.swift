@@ -21,7 +21,7 @@ class MessageCollectionViewCell: UICollectionViewCell {
     // MARK: methods
 
     func bind(message: Message) {
-        self.nicknameLabel.text = message.userID
+        self.nicknameLabel.text = message.nickName ?? message.userID
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
