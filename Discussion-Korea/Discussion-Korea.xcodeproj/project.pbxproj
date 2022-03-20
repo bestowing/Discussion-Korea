@@ -25,6 +25,7 @@
 		3F4DDCD027E4B90A005C71D9 /* MessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */; };
 		3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */; };
 		3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873127E5FF2F00D550D3 /* IDManager.swift */; };
+		3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873327E7912F00D550D3 /* UserInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPaddingLabel.swift; sourceTree = "<group>"; };
 		3F75873127E5FF2F00D550D3 /* IDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDManager.swift; sourceTree = "<group>"; };
+		3F75873327E7912F00D550D3 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
 				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
+				3F75873327E7912F00D550D3 /* UserInfo.swift */,
 			);
 			path = ChatRoomScene;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */,
 				3F4DDCCB27E4B8C4005C71D9 /* Message.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
+				3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */,
 				3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
