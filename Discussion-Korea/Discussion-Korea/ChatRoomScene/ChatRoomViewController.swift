@@ -90,10 +90,12 @@ class ChatRoomViewController: UIViewController {
     }
 
     private func configureCancellable() {
-        self.repository.observe().sink { message in
+        self.repository.observeChatMessage().sink { message in
             DispatchQueue.main.async { [weak self] in
                 guard let item = self?.messages.count
                 else { return }
+                var message = message
+                message.nickName = self?.nicknames[message.userID]
                 self?.messages.append(message)
                 let indexPath = IndexPath(item: item, section: 0)
                 self?.messageCollectionView.insertItems(at: [indexPath])

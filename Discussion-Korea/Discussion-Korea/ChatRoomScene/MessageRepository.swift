@@ -14,7 +14,7 @@ protocol MessageRepository {
     func checkIfFirstEntering() -> AnyPublisher<Bool, Never>
     func setNickname(by name: String)
     func observeUserInfo() -> AnyPublisher<UserInfo, Never>
-    func observe() -> AnyPublisher<Message, Never>
+    func observeChatMessage() -> AnyPublisher<Message, Never>
     func send(number: Int, message: Message)
 
 }
@@ -74,7 +74,7 @@ class DefaultMessageRepository: MessageRepository {
         return self.userInfoPublisher.eraseToAnyPublisher()
     }
 
-    func observe() -> AnyPublisher<Message, Never> {
+    func observeChatMessage() -> AnyPublisher<Message, Never> {
         self.roomReference.observe(.childAdded) { [weak self] snapshot in
             guard let dic = snapshot.value as? [String: Any],
                   let userID = dic["user"] as? String,
