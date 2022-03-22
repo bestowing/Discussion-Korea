@@ -160,11 +160,6 @@ extension ChatRoomViewController: UICollectionViewDelegate,
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(
-//            withReuseIdentifier: MessageCollectionViewCell.identifier,
-//            for: indexPath
-//        ) as? MessageCollectionViewCell
-//        else { return MessageCollectionViewCell() }
         let cell: MessageCell
         let message = self.messages[indexPath.item]
         if message.userID == IDManager.shared.userID {
