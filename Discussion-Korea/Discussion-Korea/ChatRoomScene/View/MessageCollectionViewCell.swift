@@ -20,15 +20,6 @@ class MessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: methods
 
-    func bind(message: Message) {
-        self.nicknameLabel.text = message.nickName ?? message.userID
-        self.contentLabel.text = message.content
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "a h:mm"
-        self.timeLabel.text = dateFormatter.string(from: message.date)
-    }
-
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         super.preferredLayoutAttributesFitting(layoutAttributes)
         self.layoutIfNeeded()
@@ -36,6 +27,23 @@ class MessageCollectionViewCell: UICollectionViewCell {
         frame.size.height = ceil(size.height)
         layoutAttributes.frame = frame
         return layoutAttributes
+    }
+
+}
+
+extension MessageCollectionViewCell: MessageCell {
+
+    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
+    }
+
+    func bind(message: Message) {
+        self.nicknameLabel.text = message.nickName ?? message.userID
+        self.contentLabel.text = message.content
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "a h:mm"
+        self.timeLabel.text = dateFormatter.string(from: message.date)
     }
 
 }

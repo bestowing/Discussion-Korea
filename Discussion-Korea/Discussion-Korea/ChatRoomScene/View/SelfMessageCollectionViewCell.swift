@@ -7,6 +7,13 @@
 
 import UIKit
 
+protocol MessageCell: UICollectionViewCell {
+
+    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell
+    func bind(message: Message)
+
+}
+
 class SelfMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
@@ -18,14 +25,6 @@ class SelfMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: methods
 
-    func bind(message: Message) {
-        self.contentLabel.text = message.content
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "a h:mm"
-        self.timeLabel.text = dateFormatter.string(from: message.date)
-    }
-
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         super.preferredLayoutAttributesFitting(layoutAttributes)
         self.layoutIfNeeded()
@@ -33,6 +32,24 @@ class SelfMessageCollectionViewCell: UICollectionViewCell {
         frame.size.height = ceil(size.height)
         layoutAttributes.frame = frame
         return layoutAttributes
+    }
+
+}
+
+// MARK: MessageCell
+
+extension SelfMessageCollectionViewCell: MessageCell {
+
+    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? SelfMessageCollectionViewCell()
+    }
+
+    func bind(message: Message) {
+        self.contentLabel.text = message.content
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "a h:mm"
+        self.timeLabel.text = dateFormatter.string(from: message.date)
     }
 
 }

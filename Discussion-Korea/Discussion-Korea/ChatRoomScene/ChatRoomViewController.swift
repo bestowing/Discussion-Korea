@@ -110,6 +110,10 @@ class ChatRoomViewController: UIViewController {
             UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
             forCellWithReuseIdentifier: MessageCollectionViewCell.identifier
         )
+        self.messageCollectionView.register(
+            UINib(nibName: SelfMessageCollectionViewCell.identifier, bundle: nil),
+            forCellWithReuseIdentifier: SelfMessageCollectionViewCell.identifier
+        )
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
         self.messageCollectionView.collectionViewLayout = flowLayout
@@ -156,13 +160,18 @@ extension ChatRoomViewController: UICollectionViewDelegate,
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MessageCollectionViewCell.identifier,
-            for: indexPath
-        ) as? MessageCollectionViewCell
-        else { return MessageCollectionViewCell() }
+//        guard let cell = collectionView.dequeueReusableCell(
+//            withReuseIdentifier: MessageCollectionViewCell.identifier,
+//            for: indexPath
+//        ) as? MessageCollectionViewCell
+//        else { return MessageCollectionViewCell() }
+        let cell: MessageCell
         let message = self.messages[indexPath.item]
-        // TODO: 같은 사람이 보낸 메시지는 붙여서 보이도록 Cell 개선하기
+        if message.userID == IDManager.shared.userID {
+            cell = SelfMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
+        } else {
+            cell = MessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
+        }
         cell.bind(message: message)
         return cell
     }
