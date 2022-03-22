@@ -13,8 +13,14 @@ class IDManager {
 
     private init() {}
 
-    var userID: String {
-        return UserDefaults.standard.string(forKey: "userID") ?? UUID().uuidString
+    func userID() -> String {
+        let key = "userID"
+        if let id = UserDefaults.standard.string(forKey: key) {
+            return id
+        }
+        let newID = UUID().uuidString
+        UserDefaults.standard.set(newID, forKey: key)
+        return newID
     }
 
 }

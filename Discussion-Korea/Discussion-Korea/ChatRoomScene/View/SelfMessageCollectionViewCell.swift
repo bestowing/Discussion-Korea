@@ -1,20 +1,25 @@
 //
-//  MessageCollectionViewCell.swift
+//  SelfMessageCollectionViewCell.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/03/18.
+//  Created by 이청수 on 2022/03/22.
 //
 
 import UIKit
 
-class MessageCollectionViewCell: UICollectionViewCell {
+protocol MessageCell: UICollectionViewCell {
+
+    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell
+    func bind(message: Message)
+
+}
+
+class SelfMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
 
-    static let identifier = "MessageCollectionViewCell"
+    static let identifier = "SelfMessageCollectionViewCell"
 
-    @IBOutlet private weak var profileImageView: UIImageView!
-    @IBOutlet private weak var nicknameLabel: UILabel!
     @IBOutlet private weak var contentLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
 
@@ -31,14 +36,15 @@ class MessageCollectionViewCell: UICollectionViewCell {
 
 }
 
-extension MessageCollectionViewCell: MessageCell {
+// MARK: MessageCell
+
+extension SelfMessageCollectionViewCell: MessageCell {
 
     static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
+        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? SelfMessageCollectionViewCell()
     }
 
     func bind(message: Message) {
-        self.nicknameLabel.text = message.nickName ?? message.userID
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")

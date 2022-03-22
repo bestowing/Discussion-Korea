@@ -11,7 +11,10 @@ import Foundation
 
 protocol MessageRepository {
 
-    func observe() -> AnyPublisher<Message, Never>
+    func checkIfFirstEntering() -> AnyPublisher<Bool, Never>
+    func setNickname(by name: String)
+    func observeUserInfo() -> AnyPublisher<UserInfo, Never>
+    func observeChatMessage() -> AnyPublisher<Message, Never>
     func send(number: Int, message: Message)
 
 }
@@ -22,6 +25,7 @@ class DefaultMessageRepository: MessageRepository {
 
     private let roomReference: DatabaseReference
     private let messagePublisher = PassthroughSubject<Message, Never>()
+    private let userInfoPublisher = PassthroughSubject<UserInfo, Never>()
     private let dateFormatter: DateFormatter
 
     init() {
@@ -36,7 +40,41 @@ class DefaultMessageRepository: MessageRepository {
 
     // MARK: methods
 
-    func observe() -> AnyPublisher<Message, Never> {
+    func checkIfFirstEntering() -> AnyPublisher<Bool, Never> {
+        let futurePublisher = Future<Bool, Never>.init { [weak self] promise in
+            // FIXME: 이런 문자열들도 DB에 넣으면 좋을텐데
+            self?.roomReference
+                .child("users")
+                .child(IDManager.shared.userID())
+                .observeSingleEvent(of: .value, with: { snapshot in
+                    let dictionary = snapshot.value as? NSDictionary
+                    let nickname = dictionary?["nickname"] as? String
+                    promise(.success(nickname == nil))
+                })
+        }
+        return futurePublisher.eraseToAnyPublisher()
+    }
+
+    func setNickname(by name: String) {
+        let values: [String: Any] = ["nickname": name]
+        self.roomReference
+            .child("users")
+            .child(IDManager.shared.userID())
+            .setValue(values)
+    }
+
+    func observeUserInfo() -> AnyPublisher<UserInfo, Never> {
+        self.roomReference.child("users").observe(.childAdded) { [weak self] snapshot in
+            guard let dictionary = snapshot.value as? NSDictionary,
+                  let nickname = dictionary["nickname"] as? String
+            else { return }
+            let newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname)
+            self?.userInfoPublisher.send(newUserInfo)
+        }
+        return self.userInfoPublisher.eraseToAnyPublisher()
+    }
+
+    func observeChatMessage() -> AnyPublisher<Message, Never> {
         self.roomReference.observe(.childAdded) { [weak self] snapshot in
             guard let dic = snapshot.value as? [String: Any],
                   let userID = dic["user"] as? String,
@@ -51,9 +89,11 @@ class DefaultMessageRepository: MessageRepository {
     }
 
     func send(number: Int, message: Message) {
+        guard let date = message.date
+        else { return }
         let values: [String: Any] = ["user": message.userID,
                                      "content": message.content,
-                                     "date": self.dateFormatter.string(from: message.date)]
+                                     "date": self.dateFormatter.string(from: date)]
         self.roomReference.child("\(number)").setValue(values)
     }
 

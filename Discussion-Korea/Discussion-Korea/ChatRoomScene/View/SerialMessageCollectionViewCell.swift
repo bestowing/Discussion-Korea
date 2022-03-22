@@ -1,20 +1,18 @@
 //
-//  MessageCollectionViewCell.swift
+//  SerialMessageCollectionViewCell.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/03/18.
+//  Created by 이청수 on 2022/03/23.
 //
 
 import UIKit
 
-class MessageCollectionViewCell: UICollectionViewCell {
+class SerialMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
 
-    static let identifier = "MessageCollectionViewCell"
+    static let identifier = "SerialMessageCollectionViewCell"
 
-    @IBOutlet private weak var profileImageView: UIImageView!
-    @IBOutlet private weak var nicknameLabel: UILabel!
     @IBOutlet private weak var contentLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
 
@@ -31,14 +29,13 @@ class MessageCollectionViewCell: UICollectionViewCell {
 
 }
 
-extension MessageCollectionViewCell: MessageCell {
+extension SerialMessageCollectionViewCell: MessageCell {
 
     static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
         return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
     }
 
     func bind(message: Message) {
-        self.nicknameLabel.text = message.nickName ?? message.userID
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")

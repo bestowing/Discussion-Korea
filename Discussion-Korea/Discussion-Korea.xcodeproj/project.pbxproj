@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9B927EA274C006CDE71 /* SerialMessageCollectionViewCell.swift */; };
+		3F3DF9BC27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F3DF9BA27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib */; };
 		3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */; };
 		3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */; };
 		3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */; };
@@ -25,9 +27,14 @@
 		3F4DDCD027E4B90A005C71D9 /* MessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */; };
 		3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */; };
 		3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873127E5FF2F00D550D3 /* IDManager.swift */; };
+		3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873327E7912F00D550D3 /* UserInfo.swift */; };
+		3F75873727EA144200D550D3 /* SelfMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873527EA144200D550D3 /* SelfMessageCollectionViewCell.swift */; };
+		3F75873827EA144200D550D3 /* SelfMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F75873627EA144200D550D3 /* SelfMessageCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F3DF9B927EA274C006CDE71 /* SerialMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		3F3DF9BA27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SerialMessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,6 +51,9 @@
 		3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPaddingLabel.swift; sourceTree = "<group>"; };
 		3F75873127E5FF2F00D550D3 /* IDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDManager.swift; sourceTree = "<group>"; };
+		3F75873327E7912F00D550D3 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		3F75873527EA144200D550D3 /* SelfMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		3F75873627EA144200D550D3 /* SelfMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelfMessageCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +143,7 @@
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
 				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
+				3F75873327E7912F00D550D3 /* UserInfo.swift */,
 			);
 			path = ChatRoomScene;
 			sourceTree = "<group>";
@@ -142,6 +153,10 @@
 			children = (
 				3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */,
 				3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */,
+				3F75873527EA144200D550D3 /* SelfMessageCollectionViewCell.swift */,
+				3F75873627EA144200D550D3 /* SelfMessageCollectionViewCell.xib */,
+				3F3DF9B927EA274C006CDE71 /* SerialMessageCollectionViewCell.swift */,
+				3F3DF9BA27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -222,7 +237,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F75873827EA144200D550D3 /* SelfMessageCollectionViewCell.xib in Resources */,
 				3F4DDCAC27E353B5005C71D9 /* LaunchScreen.storyboard in Resources */,
+				3F3DF9BC27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib in Resources */,
 				3F4DDCB527E354BB005C71D9 /* GoogleService-Info.plist in Resources */,
 				3F4DDCA927E353B5005C71D9 /* Assets.xcassets in Resources */,
 				3F4DDCA727E353B4005C71D9 /* Main.storyboard in Resources */,
@@ -245,6 +262,9 @@
 				3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */,
 				3F4DDCCB27E4B8C4005C71D9 /* Message.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
+				3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */,
+				3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */,
+				3F75873727EA144200D550D3 /* SelfMessageCollectionViewCell.swift in Sources */,
 				3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
