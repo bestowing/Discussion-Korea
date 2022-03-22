@@ -111,11 +111,18 @@ class ChatRoomViewController: UIViewController {
             forCellWithReuseIdentifier: MessageCollectionViewCell.identifier
         )
         self.messageCollectionView.register(
+            UINib(nibName: SerialMessageCollectionViewCell.identifier, bundle: nil),
+            forCellWithReuseIdentifier: SerialMessageCollectionViewCell.identifier
+        )
+        self.messageCollectionView.register(
             UINib(nibName: SelfMessageCollectionViewCell.identifier, bundle: nil),
             forCellWithReuseIdentifier: SelfMessageCollectionViewCell.identifier
         )
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 7
         self.messageCollectionView.collectionViewLayout = flowLayout
     }
 
@@ -136,15 +143,24 @@ class ChatRoomViewController: UIViewController {
 
     private func observeChatMessage() {
         self.repository.observeChatMessage().sink { message in
-            DispatchQueue.main.async { [weak self] in
-                guard let item = self?.messages.count
-                else { return }
+            DispatchQueue.main.async { [unowned self] in
                 var message = message
-                message.nickName = self?.nicknames[message.userID]
-                self?.messages.append(message)
+                message.nickName = self.nicknames[message.userID]
+                let item = self.messages.count
+
+                if let lastMessage = self.messages.last,
+                   let lastMessageDate = lastMessage.date,
+                   let date = message.date {
+                    let timeInterval = Int(date.timeIntervalSince(lastMessageDate))
+                    if lastMessage.userID == message.userID && timeInterval < 60 {
+                        self.messages[item - 1].date = nil
+                        self.messageCollectionView.reloadItems(at: [IndexPath(item: item - 1, section: 0)])
+                    }
+                }
+                self.messages.append(message)
                 let indexPath = IndexPath(item: item, section: 0)
-                self?.messageCollectionView.insertItems(at: [indexPath])
-                self?.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                self.messageCollectionView.insertItems(at: [indexPath])
+                self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }
         }.store(in: &self.cancellables)
     }
@@ -165,7 +181,11 @@ extension ChatRoomViewController: UICollectionViewDelegate,
         if message.userID == IDManager.shared.userID {
             cell = SelfMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
         } else {
-            cell = MessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
+            if indexPath.item > 0 && self.messages[indexPath.item - 1].userID == message.userID {
+                cell = SerialMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
+            } else {
+                cell = MessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
+            }
         }
         cell.bind(message: message)
         return cell

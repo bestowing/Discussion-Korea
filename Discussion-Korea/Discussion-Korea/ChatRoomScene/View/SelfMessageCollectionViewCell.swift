@@ -49,7 +49,11 @@ extension SelfMessageCollectionViewCell: MessageCell {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "a h:mm"
-        self.timeLabel.text = dateFormatter.string(from: message.date)
+        if let date = message.date {
+            self.timeLabel.text = dateFormatter.string(from: date)
+        } else {
+            self.timeLabel.text = ""
+        }
     }
 
 }

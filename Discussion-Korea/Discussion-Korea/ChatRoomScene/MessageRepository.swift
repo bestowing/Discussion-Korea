@@ -89,9 +89,11 @@ class DefaultMessageRepository: MessageRepository {
     }
 
     func send(number: Int, message: Message) {
+        guard let date = message.date
+        else { return }
         let values: [String: Any] = ["user": message.userID,
                                      "content": message.content,
-                                     "date": self.dateFormatter.string(from: message.date)]
+                                     "date": self.dateFormatter.string(from: date)]
         self.roomReference.child("\(number)").setValue(values)
     }
 
