@@ -45,7 +45,7 @@ class DefaultMessageRepository: MessageRepository {
             // FIXME: 이런 문자열들도 DB에 넣으면 좋을텐데
             self?.roomReference
                 .child("users")
-                .child(IDManager.shared.userID)
+                .child(IDManager.shared.userID())
                 .observeSingleEvent(of: .value, with: { snapshot in
                     let dictionary = snapshot.value as? NSDictionary
                     let nickname = dictionary?["nickname"] as? String
@@ -59,7 +59,7 @@ class DefaultMessageRepository: MessageRepository {
         let values: [String: Any] = ["nickname": name]
         self.roomReference
             .child("users")
-            .child(IDManager.shared.userID)
+            .child(IDManager.shared.userID())
             .setValue(values)
     }
 

@@ -49,7 +49,7 @@ class ChatRoomViewController: UIViewController {
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
         guard !self.messageTextView.text.isEmpty
         else { return }
-        let message = Message(userID: IDManager.shared.userID, content: self.messageTextView.text, date: Date())
+        let message = Message(userID: IDManager.shared.userID(), content: self.messageTextView.text, date: Date())
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
     }
@@ -178,7 +178,7 @@ extension ChatRoomViewController: UICollectionViewDelegate,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: MessageCell
         let message = self.messages[indexPath.item]
-        if message.userID == IDManager.shared.userID {
+        if message.userID == IDManager.shared.userID() {
             cell = SelfMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
         } else {
             if indexPath.item > 0 && self.messages[indexPath.item - 1].userID == message.userID {
