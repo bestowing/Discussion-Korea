@@ -90,7 +90,13 @@
                             <constraint firstItem="FMP-RC-Zxh" firstAttribute="trailing" secondItem="gwJ-3K-SAb" secondAttribute="trailing" id="uhv-4L-wIs"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="9Rw-rI-aSS"/>
+                    <navigationItem key="navigationItem" id="9Rw-rI-aSS">
+                        <barButtonItem key="rightBarButtonItem" image="line.3.horizontal" catalog="system" id="8Nw-gQ-vgw">
+                            <connections>
+                                <action selector="menuButtonDidTouch:" destination="BWM-qj-BFI" id="bsI-DZ-ddB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="messageCollectionView" destination="gwJ-3K-SAb" id="oDE-l2-wat"/>
                         <outlet property="messageTextView" destination="RPh-Dm-86J" id="ioO-Ke-ZTe"/>
@@ -121,6 +127,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="line.3.horizontal" catalog="system" width="128" height="64"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

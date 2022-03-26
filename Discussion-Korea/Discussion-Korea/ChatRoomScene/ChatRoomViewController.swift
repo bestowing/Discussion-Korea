@@ -56,6 +56,10 @@ class ChatRoomViewController: UIViewController {
         self.repository.send(number: self.messages.count + 1, message: message)
     }
 
+    @IBAction func menuButtonDidTouch(_ sender: UIBarButtonItem) {
+        
+    }
+
     private func checkIfFirstEntering() {
         self.repository.checkIfFirstEntering().sink { [weak self] isFirstEntering in
             if isFirstEntering {
