@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -166,6 +167,57 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-DG-jvn">
+                                <rect key="frame" x="15" y="195" width="384" height="627"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserListTableViewCell" rowHeight="44" id="je9-qL-Uz3" customClass="UserListTableViewCell" customModule="Discussion_Korea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="384" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="je9-qL-Uz3" id="3DB-py-j52">
+                                            <rect key="frame" x="0.0" y="0.0" width="384" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="oqy-2P-vUl">
+                                                    <rect key="frame" x="0.0" y="1.5" width="38" height="31"/>
+                                                    <color key="backgroundColor" name="PrimaryColor"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="38" id="8Vp-BZ-GjK"/>
+                                                        <constraint firstAttribute="width" constant="38" id="lY1-Mp-zpc"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="6"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9g-uU-Yxq">
+                                                    <rect key="frame" x="48" y="9" width="316" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="k9g-uU-Yxq" secondAttribute="trailing" id="9lQ-NY-6aQ"/>
+                                                <constraint firstItem="k9g-uU-Yxq" firstAttribute="leading" secondItem="oqy-2P-vUl" secondAttribute="trailing" constant="10" id="VrG-tS-QTh"/>
+                                                <constraint firstItem="oqy-2P-vUl" firstAttribute="top" secondItem="3DB-py-j52" secondAttribute="top" id="Z0q-VF-lgU"/>
+                                                <constraint firstItem="oqy-2P-vUl" firstAttribute="leading" secondItem="3DB-py-j52" secondAttribute="leading" id="k5U-Vz-zyc"/>
+                                                <constraint firstAttribute="bottom" secondItem="oqy-2P-vUl" secondAttribute="bottom" constant="10" id="pPQ-8B-wZr"/>
+                                                <constraint firstItem="k9g-uU-Yxq" firstAttribute="centerY" secondItem="oqy-2P-vUl" secondAttribute="centerY" id="zgh-RE-Bp6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="nicknameLabel" destination="k9g-uU-Yxq" id="of7-zN-tX6"/>
+                                            <outlet property="profileImageView" destination="oqy-2P-vUl" id="pD6-3p-tBa"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ebd-MH-k5I"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -174,13 +226,17 @@
                             <constraint firstItem="ebd-MH-k5I" firstAttribute="trailing" secondItem="HXo-Us-aTc" secondAttribute="trailing" constant="15" id="AWt-eN-opp"/>
                             <constraint firstAttribute="trailing" secondItem="ORl-m1-RRZ" secondAttribute="trailing" constant="15" id="HzG-0H-2Iu"/>
                             <constraint firstItem="YWY-9j-FGl" firstAttribute="leading" secondItem="ebd-MH-k5I" secondAttribute="leading" constant="15" id="LAr-W0-9wr"/>
+                            <constraint firstItem="o3W-DG-jvn" firstAttribute="leading" secondItem="ebd-MH-k5I" secondAttribute="leading" constant="15" id="PmS-LO-HPh"/>
                             <constraint firstItem="HXo-Us-aTc" firstAttribute="leading" secondItem="ebd-MH-k5I" secondAttribute="leading" constant="15" id="QjQ-bF-30Y"/>
+                            <constraint firstItem="ebd-MH-k5I" firstAttribute="bottom" secondItem="o3W-DG-jvn" secondAttribute="bottom" constant="20" id="Suk-M9-0yR"/>
+                            <constraint firstItem="o3W-DG-jvn" firstAttribute="top" secondItem="HXo-Us-aTc" secondAttribute="bottom" constant="10" id="Xvc-6X-X07"/>
                             <constraint firstItem="U5k-kM-SWC" firstAttribute="top" secondItem="wvD-VC-wqk" secondAttribute="bottom" constant="20" id="b5S-W7-qS9"/>
                             <constraint firstItem="ebd-MH-k5I" firstAttribute="trailing" secondItem="YWY-9j-FGl" secondAttribute="trailing" constant="15" id="biH-xk-hIk"/>
                             <constraint firstItem="ORl-m1-RRZ" firstAttribute="top" secondItem="YWY-9j-FGl" secondAttribute="bottom" constant="20" id="gOt-zG-6ga"/>
                             <constraint firstItem="wvD-VC-wqk" firstAttribute="top" secondItem="ORl-m1-RRZ" secondAttribute="bottom" constant="20" id="gSU-oA-QaF"/>
                             <constraint firstItem="wvD-VC-wqk" firstAttribute="leading" secondItem="ebd-MH-k5I" secondAttribute="leading" constant="10" id="iX0-VP-kWU"/>
                             <constraint firstItem="YWY-9j-FGl" firstAttribute="top" secondItem="ebd-MH-k5I" secondAttribute="top" constant="20" id="knr-mr-n0J"/>
+                            <constraint firstItem="ebd-MH-k5I" firstAttribute="trailing" secondItem="o3W-DG-jvn" secondAttribute="trailing" constant="15" id="nyT-bh-7aS"/>
                             <constraint firstItem="ebd-MH-k5I" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wvD-VC-wqk" secondAttribute="trailing" constant="10" id="r0F-rd-gGb"/>
                             <constraint firstItem="ORl-m1-RRZ" firstAttribute="leading" secondItem="P94-jD-2T5" secondAttribute="leading" constant="15" id="rD7-2r-nA9"/>
                             <constraint firstItem="HXo-Us-aTc" firstAttribute="top" secondItem="U5k-kM-SWC" secondAttribute="bottom" constant="20" id="sBN-kg-ocv"/>
@@ -191,6 +247,7 @@
                     <connections>
                         <outlet property="calendarButton" destination="bKJ-B2-Kfo" id="MTc-bc-a4N"/>
                         <outlet property="chatRoomName" destination="YWY-9j-FGl" id="54o-LR-h6r"/>
+                        <outlet property="userListTableView" destination="o3W-DG-jvn" id="cbR-Gv-NwL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nAq-Jj-Wws" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -241,6 +298,10 @@
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
         <image name="line.3.horizontal" catalog="system" width="128" height="64"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
+        <namedColor name="PrimaryColor">
+            <color red="0.12200000137090683" green="0.21899999678134918" blue="0.3880000114440918" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
