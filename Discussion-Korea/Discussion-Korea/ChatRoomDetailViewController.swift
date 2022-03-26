@@ -9,4 +9,11 @@ import UIKit
 
 final class ChatRoomDetailViewController: UIViewController {
 
+    @IBOutlet private weak var chatRoomName: UILabel!
+    @IBOutlet private weak var calendarButton: UIButton!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
 }
