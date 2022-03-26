@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9B927EA274C006CDE71 /* SerialMessageCollectionViewCell.swift */; };
 		3F3DF9BC27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F3DF9BA27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib */; };
+		3F3DF9BF27EF2FF4006CDE71 /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3DF9BE27EF2FF4006CDE71 /* SideMenu */; };
+		3F3DF9C127EF829C006CDE71 /* ChatRoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C027EF829C006CDE71 /* ChatRoomDetailViewController.swift */; };
 		3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */; };
 		3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */; };
 		3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */; };
@@ -35,6 +37,7 @@
 /* Begin PBXFileReference section */
 		3F3DF9B927EA274C006CDE71 /* SerialMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialMessageCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F3DF9BA27EA274C006CDE71 /* SerialMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SerialMessageCollectionViewCell.xib; sourceTree = "<group>"; };
+		3F3DF9C027EF829C006CDE71 /* ChatRoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDetailViewController.swift; sourceTree = "<group>"; };
 		3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 				3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */,
 				3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */,
 				3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */,
+				3F3DF9BF27EF2FF4006CDE71 /* SideMenu in Frameworks */,
 				3F4DDCB927E356BF005C71D9 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +100,7 @@
 				3F4DDCC427E35B02005C71D9 /* HomeScene */,
 				3F4DDCC227E35ADE005C71D9 /* Resource */,
 				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
+				3F3DF9C027EF829C006CDE71 /* ChatRoomDetailViewController.swift */,
 			);
 			path = "Discussion-Korea";
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 				3F4DDCBA27E356BF005C71D9 /* FirebaseDatabase */,
 				3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */,
 				3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */,
+				3F3DF9BE27EF2FF4006CDE71 /* SideMenu */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */;
@@ -222,6 +228,7 @@
 			mainGroup = 3F4DDC9327E353B4005C71D9;
 			packageReferences = (
 				3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3F3DF9BD27EF2FF4006CDE71 /* XCRemoteSwiftPackageReference "SideMenu" */,
 			);
 			productRefGroup = 3F4DDC9D27E353B4005C71D9 /* Products */;
 			projectDirPath = "";
@@ -256,6 +263,7 @@
 			files = (
 				3F4DDCCF27E4B90A005C71D9 /* MessageCollectionViewCell.swift in Sources */,
 				3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */,
+				3F3DF9C127EF829C006CDE71 /* ChatRoomDetailViewController.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
 				3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */,
@@ -489,6 +497,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3F3DF9BD27EF2FF4006CDE71 /* XCRemoteSwiftPackageReference "SideMenu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jonkykong/SideMenu.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -500,6 +516,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3F3DF9BE27EF2FF4006CDE71 /* SideMenu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F3DF9BD27EF2FF4006CDE71 /* XCRemoteSwiftPackageReference "SideMenu" */;
+			productName = SideMenu;
+		};
 		3F4DDCB827E356BF005C71D9 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
