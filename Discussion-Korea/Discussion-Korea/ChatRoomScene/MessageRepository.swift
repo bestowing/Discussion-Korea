@@ -23,17 +23,21 @@ class DefaultMessageRepository: MessageRepository {
 
     // MARK: properties
 
-    private let roomReference: DatabaseReference
+    private let messagesReference: DatabaseReference
+    private let usersReference: DatabaseReference
+
     private let messagePublisher = PassthroughSubject<Message, Never>()
     private let userInfoPublisher = PassthroughSubject<UserInfo, Never>()
     private let dateFormatter: DateFormatter
 
-    init() {
-        self.roomReference = Database
+    init(roomID: String) {
+        let roomReference: DatabaseReference = Database
             .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
             .child("chatRoom")
-            .child("1")
+            .child(roomID)
+        self.messagesReference = roomReference.child("messages")
+        self.usersReference = roomReference.child("users")
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
@@ -43,8 +47,8 @@ class DefaultMessageRepository: MessageRepository {
     func checkIfFirstEntering() -> AnyPublisher<Bool, Never> {
         let futurePublisher = Future<Bool, Never>.init { [weak self] promise in
             // FIXME: 이런 문자열들도 DB에 넣으면 좋을텐데
-            self?.roomReference
-                .child("users")
+            // TODO: 관찰하는걸로 바꾸기
+            self?.usersReference
                 .child(IDManager.shared.userID())
                 .observeSingleEvent(of: .value, with: { snapshot in
                     let dictionary = snapshot.value as? NSDictionary
@@ -56,15 +60,15 @@ class DefaultMessageRepository: MessageRepository {
     }
 
     func setNickname(by name: String) {
+        // TODO: 이것도 중복되면 문제가...
         let values: [String: Any] = ["nickname": name]
-        self.roomReference
-            .child("users")
+        self.usersReference
             .child(IDManager.shared.userID())
             .setValue(values)
     }
 
     func observeUserInfo() -> AnyPublisher<UserInfo, Never> {
-        self.roomReference.child("users").observe(.childAdded) { [weak self] snapshot in
+        self.usersReference.observe(.childAdded) { [weak self] snapshot in
             guard let dictionary = snapshot.value as? NSDictionary,
                   let nickname = dictionary["nickname"] as? String
             else { return }
@@ -75,7 +79,7 @@ class DefaultMessageRepository: MessageRepository {
     }
 
     func observeChatMessage() -> AnyPublisher<Message, Never> {
-        self.roomReference.observe(.childAdded) { [weak self] snapshot in
+        self.messagesReference.observe(.childAdded) { [weak self] snapshot in
             guard let dic = snapshot.value as? [String: Any],
                   let userID = dic["user"] as? String,
                   let content = dic["content"] as? String,
@@ -94,7 +98,12 @@ class DefaultMessageRepository: MessageRepository {
         let values: [String: Any] = ["user": message.userID,
                                      "content": message.content,
                                      "date": self.dateFormatter.string(from: date)]
-        self.roomReference.child("\(number)").setValue(values)
+        self.messagesReference.runTransactionBlock { currentData in
+            var messages = currentData.value as! [AnyObject]
+            messages.append(values as AnyObject)
+            currentData.value = messages
+            return TransactionResult.success(withValue: currentData)
+        }
     }
 
 }

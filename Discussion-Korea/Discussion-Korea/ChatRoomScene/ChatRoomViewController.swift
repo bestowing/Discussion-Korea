@@ -13,7 +13,9 @@ class ChatRoomViewController: UIViewController {
     @IBOutlet private weak var messageTextView: UITextView!
     @IBOutlet private weak var sendButton: UIButton!
 
-    private let repository: MessageRepository = DefaultMessageRepository()
+    private let repository: MessageRepository = DefaultMessageRepository(
+        roomID: "1"
+    )
     private var cancellables = Set<AnyCancellable>()
     private var messages: [Message] = []
     private var nicknames: [String: String] = [:]
@@ -142,12 +144,13 @@ class ChatRoomViewController: UIViewController {
     }
 
     private func observeChatMessage() {
-        self.repository.observeChatMessage().sink { message in
-            DispatchQueue.main.async { [unowned self] in
+        self.repository.observeChatMessage()
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] message in
                 var message = message
                 message.nickName = self.nicknames[message.userID]
                 let item = self.messages.count
-
+                
                 if let lastMessage = self.messages.last,
                    let lastMessageDate = lastMessage.date,
                    let date = message.date {
@@ -161,8 +164,7 @@ class ChatRoomViewController: UIViewController {
                 let indexPath = IndexPath(item: item, section: 0)
                 self.messageCollectionView.insertItems(at: [indexPath])
                 self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-            }
-        }.store(in: &self.cancellables)
+            }.store(in: &self.cancellables)
     }
 
 }
