@@ -1,2 +1,5 @@
-# Discussion-Korea
-공정한 AI 방장봇이 함께하는 건전한 정치 토론의 장, 방구석 대한민국🇰🇷 프로젝트입니다.
+# Discussion-Korea Offensive Comment Classifier
+
+- Raw data for training model stored on `./data/raw`
+- `$ pip install -r requirements.txt`
+- `$ sh train.sh`
