@@ -72,7 +72,12 @@ class DefaultMessageRepository: MessageRepository {
             guard let dictionary = snapshot.value as? NSDictionary,
                   let nickname = dictionary["nickname"] as? String
             else { return }
-            let newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname)
+            var newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname)
+            if let position = dictionary["position"] as? String {
+                newUserInfo.description = position
+            } else if newUserInfo.userID == IDManager.shared.userID() {
+                newUserInfo.description = "나"
+            }
             self?.userInfoPublisher.send(newUserInfo)
         }
         return self.userInfoPublisher.eraseToAnyPublisher()

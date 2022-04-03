@@ -12,8 +12,12 @@ class UserListTableViewCell: UITableViewCell {
     @IBOutlet private weak var profileImageView: UIImageView!
     @IBOutlet private weak var nicknameLabel: UILabel!
 
-    func bind(nickname: String) {
-        self.nicknameLabel.text = nickname
+    func bind(with userInfo: UserInfo) {
+        if let description = userInfo.description {
+            self.nicknameLabel.text = userInfo.nickname + " (\(description))"
+        } else {
+            self.nicknameLabel.text = userInfo.nickname
+        }
     }
 
 }
