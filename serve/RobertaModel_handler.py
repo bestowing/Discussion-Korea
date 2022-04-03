@@ -78,13 +78,13 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
 
         # Read the mapping file, index to object name
         # 1 0 output을 json string으로 변경
-        mapping_file_path = os.path.join(model_dir, "index_to_name.json")
-        if os.path.isfile(mapping_file_path):
-            with open(mapping_file_path) as f:
-                self.mapping = json.load(f)
-        else:
-            logger.warning("Missing the index_to_name.json file.")
-        self.initialized = True
+        # mapping_file_path = os.path.join(model_dir, "index_to_name.json")
+        # if os.path.isfile(mapping_file_path):
+        #     with open(mapping_file_path) as f:
+        #         self.mapping = json.load(f)
+        # else:
+        #     logger.warning("Missing the index_to_name.json file.")
+        # self.initialized = True
 
     def preprocess(self, requests):
         """Basic text preprocessing, based on the user's chocie of application mode.
@@ -121,9 +121,9 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
         prediction = torch.argmax(logits, dim=-1)
 
         if int(prediction[0]) == 0:
-            return [name + "님 " + "말을 이쁘게 하시네요"]
+            return [name + "님 " + "착한말"]
         else:
-            return [name + "님 " + "말을 나쁘게 하시네요"]
+            return [name + "님 " + "못된말"]
 
     def postprocess(self, inference_output):
         """Post Process Function converts the predicted response into Torchserve readable format.
