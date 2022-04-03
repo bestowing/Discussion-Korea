@@ -23,10 +23,16 @@ final class ChatRoomDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userListTableView.dataSource = self
-        self.chatRoomName.text = "대한민국 정치 토론방"
+        self.observeChatRoomDetail()
         self.observeUserInfo()
     }
 
+    private func observeChatRoomDetail() {
+        self.repository.observeDetails().sink { [weak self] detail in
+            self?.chatRoomName.text = detail.title
+        }.store(in: &self.cancellables)
+
+    }
     private func observeUserInfo() {
         self.repository.observeUserInfo().sink { [weak self] userInfo in
             self?.userList.append(userInfo)

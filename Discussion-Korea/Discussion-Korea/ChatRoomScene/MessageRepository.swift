@@ -15,6 +15,7 @@ protocol MessageRepository {
     func setNickname(by name: String)
     func observeUserInfo() -> AnyPublisher<UserInfo, Never>
     func observeChatMessage() -> AnyPublisher<Message, Never>
+    func observeDetails() -> AnyPublisher<ChatRoomDetail, Never>
     func send(number: Int, message: Message)
 
 }
@@ -25,9 +26,11 @@ class DefaultMessageRepository: MessageRepository {
 
     private let messagesReference: DatabaseReference
     private let usersReference: DatabaseReference
+    private let detailsReferece: DatabaseReference
 
     private let messagePublisher = PassthroughSubject<Message, Never>()
     private let userInfoPublisher = PassthroughSubject<UserInfo, Never>()
+    private let detailPublisher = PassthroughSubject<ChatRoomDetail, Never>()
     private let dateFormatter: DateFormatter
 
     init(roomID: String) {
@@ -38,6 +41,7 @@ class DefaultMessageRepository: MessageRepository {
             .child(roomID)
         self.messagesReference = roomReference.child("messages")
         self.usersReference = roomReference.child("users")
+        self.detailsReferece = roomReference.child("details")
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
@@ -67,6 +71,16 @@ class DefaultMessageRepository: MessageRepository {
             .setValue(values)
     }
 
+    func observeDetails() -> AnyPublisher<ChatRoomDetail, Never> {
+        self.detailsReferece.observe(.value) { [weak self] snapshot in
+            guard let dictionary = snapshot.value as? NSDictionary,
+                  let title = dictionary["title"] as? String
+            else { return }
+            self?.detailPublisher.send(ChatRoomDetail(title: title))
+        }
+        return self.detailPublisher.eraseToAnyPublisher()
+    }
+
     func observeUserInfo() -> AnyPublisher<UserInfo, Never> {
         self.usersReference.observe(.childAdded) { [weak self] snapshot in
             guard let dictionary = snapshot.value as? NSDictionary,
@@ -75,8 +89,13 @@ class DefaultMessageRepository: MessageRepository {
             var newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname)
             if let position = dictionary["position"] as? String {
                 newUserInfo.description = position
-            } else if newUserInfo.userID == IDManager.shared.userID() {
-                newUserInfo.description = "나"
+            }
+            if newUserInfo.userID == IDManager.shared.userID() {
+                if let description = newUserInfo.description {
+                    newUserInfo.description = description + ", 나"
+                } else {
+                    newUserInfo.description = "나"
+                }
             }
             self?.userInfoPublisher.send(newUserInfo)
         }
