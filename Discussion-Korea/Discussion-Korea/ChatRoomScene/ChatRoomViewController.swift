@@ -7,11 +7,13 @@
 
 import Combine
 import UIKit
+import SideMenu
 
 class ChatRoomViewController: UIViewController {
     @IBOutlet private weak var messageCollectionView: UICollectionView!
     @IBOutlet private weak var messageTextView: UITextView!
     @IBOutlet private weak var sendButton: UIButton!
+    private var backgroundShadowView: UIView!
 
     private let repository: MessageRepository = DefaultMessageRepository(
         roomID: "1"
@@ -24,6 +26,14 @@ class ChatRoomViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.backgroundShadowView = UIView(frame: self.view.bounds)
+        self.backgroundShadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.backgroundShadowView.backgroundColor = .black
+        self.backgroundShadowView.alpha = 0.0
+        self.backgroundShadowView.isUserInteractionEnabled = false
+        self.navigationController?.view.addSubview(self.backgroundShadowView)
+
         self.checkIfFirstEntering()
         self.observeUserInfo()
         self.configureViews()
@@ -31,6 +41,11 @@ class ChatRoomViewController: UIViewController {
         self.configureMessageCollectionView()
         self.configureNotifications()
         self.observeChatMessage()
+    }
+
+    deinit {
+        self.backgroundShadowView.removeFromSuperview()
+        print(#function, self)
     }
 
     @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
@@ -54,6 +69,10 @@ class ChatRoomViewController: UIViewController {
         let message = Message(userID: IDManager.shared.userID(), content: self.messageTextView.text, date: Date())
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
+    }
+
+    @IBAction func menuButtonDidTouch(_ sender: UIBarButtonItem) {
+        
     }
 
     private func checkIfFirstEntering() {
@@ -199,6 +218,35 @@ extension ChatRoomViewController: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
         self.sendButton.isEnabled = !textView.text.isEmpty
+    }
+
+}
+
+extension ChatRoomViewController: SideMenuNavigationControllerDelegate {
+
+    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.backgroundShadowView.alpha = 0.6
+        })
+    }
+
+    func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.backgroundShadowView.alpha = 0.0
+        })
+    }
+
+}
+
+final class DefaultSideMenuNavigation: SideMenuNavigationController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.sideMenuDelegate = self.presentingViewController as? ChatRoomViewController
+        self.presentDuration = 0.3
+        self.dismissDuration = 0.3
+        self.presentationStyle = .menuSlideIn
+        self.menuWidth = self.view.frame.width * 0.8
     }
 
 }
