@@ -263,8 +263,54 @@
                     <view key="view" contentMode="scaleToFill" id="SPi-i1-x8E">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ho4-gB-UHO">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReservationTableViewCell" id="VJ7-yd-Qfy" customClass="ReservationTableViewCell" customModule="Discussion_Korea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="63.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VJ7-yd-Qfy" id="qoK-6q-X79">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8s-U3-uru">
+                                                    <rect key="frame" x="30" y="21" width="315.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kr0-zB-W5N">
+                                                    <rect key="frame" x="355.5" y="16.5" width="48.5" height="31"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" title="삭제"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="K8s-U3-uru" secondAttribute="bottom" constant="10" id="2Yb-kt-HXz"/>
+                                                <constraint firstAttribute="trailing" secondItem="Kr0-zB-W5N" secondAttribute="trailing" constant="10" id="ALm-4v-1GV"/>
+                                                <constraint firstItem="Kr0-zB-W5N" firstAttribute="leading" secondItem="K8s-U3-uru" secondAttribute="trailing" constant="10" id="BSf-HY-WFt"/>
+                                                <constraint firstItem="K8s-U3-uru" firstAttribute="leading" secondItem="qoK-6q-X79" secondAttribute="leadingMargin" constant="10" id="D7t-DM-qkg"/>
+                                                <constraint firstItem="Kr0-zB-W5N" firstAttribute="centerY" secondItem="K8s-U3-uru" secondAttribute="centerY" id="Lbd-Kg-tKD"/>
+                                                <constraint firstItem="K8s-U3-uru" firstAttribute="top" secondItem="qoK-6q-X79" secondAttribute="topMargin" constant="10" id="VPd-Vm-A51"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="K8s-U3-uru" id="GZb-qm-j5B"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="RUG-4K-7XS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ho4-gB-UHO" firstAttribute="leading" secondItem="RUG-4K-7XS" secondAttribute="leading" id="Lul-Gr-Aei"/>
+                            <constraint firstItem="RUG-4K-7XS" firstAttribute="trailing" secondItem="ho4-gB-UHO" secondAttribute="trailing" id="hBB-t6-JSB"/>
+                            <constraint firstItem="ho4-gB-UHO" firstAttribute="top" secondItem="RUG-4K-7XS" secondAttribute="top" id="q5D-Gl-LGr"/>
+                            <constraint firstItem="RUG-4K-7XS" firstAttribute="bottom" secondItem="ho4-gB-UHO" secondAttribute="bottom" id="r8G-NH-G2X"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="토론 일정" id="Cxr-XR-FMR">
                         <barButtonItem key="leftBarButtonItem" image="xmark" catalog="system" id="Xz1-fW-gJj">
@@ -280,6 +326,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="ho4-gB-UHO" id="tEi-gq-hdd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yx1-w6-0at" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

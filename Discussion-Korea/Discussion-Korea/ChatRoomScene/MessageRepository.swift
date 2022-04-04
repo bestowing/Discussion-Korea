@@ -16,7 +16,9 @@ protocol MessageRepository {
     func observeUserInfo() -> AnyPublisher<UserInfo, Never>
     func observeChatMessage() -> AnyPublisher<Message, Never>
     func observeDetails() -> AnyPublisher<ChatRoomDetail, Never>
+    func observeSchedules() -> AnyPublisher<DisscussionSchedule, Never>
     func send(number: Int, message: Message)
+    func cancleSchedule(by scheduleID: String)
 
 }
 
@@ -27,10 +29,12 @@ class DefaultMessageRepository: MessageRepository {
     private let messagesReference: DatabaseReference
     private let usersReference: DatabaseReference
     private let detailsReferece: DatabaseReference
+    private let schedulesReferece: DatabaseReference
 
     private let messagePublisher = PassthroughSubject<Message, Never>()
     private let userInfoPublisher = PassthroughSubject<UserInfo, Never>()
     private let detailPublisher = PassthroughSubject<ChatRoomDetail, Never>()
+    private let schedulePublisher = PassthroughSubject<DisscussionSchedule, Never>()
     private let dateFormatter: DateFormatter
 
     init(roomID: String) {
@@ -42,6 +46,7 @@ class DefaultMessageRepository: MessageRepository {
         self.messagesReference = roomReference.child("messages")
         self.usersReference = roomReference.child("users")
         self.detailsReferece = roomReference.child("details")
+        self.schedulesReferece = roomReference.child("schedules")
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
@@ -116,6 +121,20 @@ class DefaultMessageRepository: MessageRepository {
         return self.messagePublisher.eraseToAnyPublisher()
     }
 
+    func observeSchedules() -> AnyPublisher<DisscussionSchedule, Never> {
+        self.schedulesReferece.observe(.childAdded) { [weak self] snapshot in
+            guard let dic = snapshot.value as? NSDictionary,
+                  let dateString = dic["date"] as? String,
+                  let date = self?.dateFormatter.date(from: dateString),
+                  let duration = dic["duration"] as? Int,
+                  let topic = dic["topic"] as? String
+            else { return }
+            let scheduleID = snapshot.key
+            self?.schedulePublisher.send(DisscussionSchedule(ID: scheduleID, date: date, duration: duration, topic: topic))
+        }
+        return self.schedulePublisher.eraseToAnyPublisher()
+    }
+
     func send(number: Int, message: Message) {
         guard let date = message.date
         else { return }
@@ -128,6 +147,18 @@ class DefaultMessageRepository: MessageRepository {
             currentData.value = messages
             return TransactionResult.success(withValue: currentData)
         }
+    }
+
+    func addSchedule(_ schedule: DisscussionSchedule) {
+        let value: [String: Any] = ["date": schedule.date,
+                                    "duration": String(schedule.duration),
+                                    "topic": schedule.topic]
+        self.schedulesReferece.childByAutoId().setValue(value)
+    }
+
+    func cancleSchedule(by scheduleID: String) {
+        let value: [String: Any] = [:]
+        self.schedulesReferece.child(scheduleID).setValue(value)
     }
 
 }
