@@ -22,6 +22,17 @@ final class AddReservationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureTapGestureRecognizer()
+    }
+
+    private func configureTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
 
     @IBAction func stepperValueChanged(_ sender: UIStepper) {
@@ -30,7 +41,8 @@ final class AddReservationViewController: UIViewController {
     }
 
     @IBAction func submitButtonTouched(_ sender: UIBarButtonItem) {
-        guard let topic = self.topicTextField.text
+        guard let topic = self.topicTextField.text,
+              !topic.isEmpty
         else { return }
         let date = self.datePicker.date
         let duration = self.duration
