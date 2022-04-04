@@ -18,6 +18,7 @@ protocol MessageRepository {
     func observeDetails() -> AnyPublisher<ChatRoomDetail, Never>
     func observeSchedules() -> AnyPublisher<DisscussionSchedule, Never>
     func send(number: Int, message: Message)
+    func addSchedule(_ schedule: DisscussionSchedule)
     func cancleSchedule(by scheduleID: String)
 
 }
@@ -150,8 +151,8 @@ class DefaultMessageRepository: MessageRepository {
     }
 
     func addSchedule(_ schedule: DisscussionSchedule) {
-        let value: [String: Any] = ["date": schedule.date,
-                                    "duration": String(schedule.duration),
+        let value: [String: Any] = ["date": self.dateFormatter.string(from: schedule.date),
+                                    "duration": schedule.duration,
                                     "topic": schedule.topic]
         self.schedulesReferece.childByAutoId().setValue(value)
     }

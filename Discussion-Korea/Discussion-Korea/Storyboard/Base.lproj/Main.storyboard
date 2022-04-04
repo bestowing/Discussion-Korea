@@ -302,6 +302,9 @@
                                                     <rect key="frame" x="355.5" y="27.5" width="48.5" height="31"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="삭제"/>
+                                                    <connections>
+                                                        <action selector="remove" destination="VJ7-yd-Qfy" eventType="touchUpInside" id="BwX-Ny-c4I"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -356,18 +359,102 @@
         <!--일정 추가-->
         <scene sceneID="JzA-vB-r9t">
             <objects>
-                <viewController id="eMl-LJ-Nph" sceneMemberID="viewController">
+                <viewController id="eMl-LJ-Nph" customClass="AddReservationViewController" customModule="Discussion_Korea" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="npV-l8-qAS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="AiY-tS-rkh">
+                                <rect key="frame" x="20" y="108" width="374" height="734"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="mrp-U7-iuj">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="244.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주제" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdZ-5u-Zvv">
+                                                <rect key="frame" x="0.0" y="112" width="29.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P6C-8E-CMb">
+                                                <rect key="frame" x="79.5" y="105.5" width="294.5" height="34"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fsp-hY-t4d">
+                                        <rect key="frame" x="0.0" y="244.5" width="374" height="245"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="진행 시간" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bv1-qA-wvO">
+                                                <rect key="frame" x="0.0" y="112.5" width="93.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPC-yE-xys">
+                                                <rect key="frame" x="93.5" y="112.5" width="93.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="시간" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYi-sz-JGc">
+                                                <rect key="frame" x="187" y="112.5" width="93.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="Irf-3K-VpP">
+                                                <rect key="frame" x="280.5" y="106.5" width="93.5" height="32"/>
+                                                <connections>
+                                                    <action selector="stepperValueChanged:" destination="eMl-LJ-Nph" eventType="valueChanged" id="wue-ig-MI9"/>
+                                                </connections>
+                                            </stepper>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wz4-iw-CbR">
+                                        <rect key="frame" x="0.0" y="489.5" width="374" height="244.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="시작 날짜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYT-kT-fmy">
+                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="244.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ENf-4t-lQf">
+                                                <rect key="frame" x="63.5" y="0.0" width="310.5" height="244.5"/>
+                                            </datePicker>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="mSK-P2-E4S"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mSK-P2-E4S" firstAttribute="bottom" secondItem="AiY-tS-rkh" secondAttribute="bottom" constant="20" id="5TT-05-RmO"/>
+                            <constraint firstItem="mSK-P2-E4S" firstAttribute="trailing" secondItem="AiY-tS-rkh" secondAttribute="trailing" constant="20" id="5Xn-IZ-bL6"/>
+                            <constraint firstItem="AiY-tS-rkh" firstAttribute="leading" secondItem="mSK-P2-E4S" secondAttribute="leading" constant="20" id="c1c-jr-VxF"/>
+                            <constraint firstItem="AiY-tS-rkh" firstAttribute="top" secondItem="mSK-P2-E4S" secondAttribute="top" constant="20" id="eNZ-MI-wL5"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="일정 추가" id="nj2-8A-0hS"/>
+                    <navigationItem key="navigationItem" title="일정 추가" id="nj2-8A-0hS">
+                        <barButtonItem key="rightBarButtonItem" title="완료" id="2Wa-en-ZrT">
+                            <connections>
+                                <action selector="submitButtonTouched:" destination="eMl-LJ-Nph" id="TXS-hS-W8k"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="datePicker" destination="ENf-4t-lQf" id="UU0-29-1zo"/>
+                        <outlet property="durationLabel" destination="fPC-yE-xys" id="HCL-Sb-Thy"/>
+                        <outlet property="submitButton" destination="2Wa-en-ZrT" id="f49-vz-rZ1"/>
+                        <outlet property="topicTextField" destination="P6C-8E-CMb" id="uQl-Z6-ThC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0BW-Jx-wdm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6674" y="84"/>
+            <point key="canvasLocation" x="6673.913043478261" y="83.705357142857139"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="R14-7l-1Yt">

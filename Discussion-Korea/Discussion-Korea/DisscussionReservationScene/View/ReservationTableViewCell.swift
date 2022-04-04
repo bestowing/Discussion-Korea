@@ -25,4 +25,8 @@ final class ReservationTableViewCell: UITableViewCell {
         self.event = event
     }
 
+    @IBAction private func remove() {
+        self.event?()
+    }
+
 }
