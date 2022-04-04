@@ -92,7 +92,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9Rw-rI-aSS">
-                        <barButtonItem key="rightBarButtonItem" image="line.3.horizontal" catalog="system" id="8Nw-gQ-vgw">
+                        <barButtonItem key="rightBarButtonItem" image="square.grid.2x2" catalog="system" id="8Nw-gQ-vgw">
                             <connections>
                                 <segue destination="siq-za-0Xr" kind="presentation" id="5pA-vn-L4P"/>
                             </connections>
@@ -145,6 +145,9 @@
                                         <state key="normal" image="calendar" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="25"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="8pL-ol-CGQ" kind="presentation" id="lus-W0-D7f"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -245,7 +248,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="ZWs-SE-Mqb"/>
                     <connections>
-                        <outlet property="calendarButton" destination="bKJ-B2-Kfo" id="MTc-bc-a4N"/>
                         <outlet property="chatRoomName" destination="YWY-9j-FGl" id="54o-LR-h6r"/>
                         <outlet property="userListTableView" destination="o3W-DG-jvn" id="cbR-Gv-NwL"/>
                     </connections>
@@ -253,6 +255,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nAq-Jj-Wws" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3868" y="84"/>
+        </scene>
+        <!--토론 일정-->
+        <scene sceneID="Ee5-XC-b5C">
+            <objects>
+                <viewController modalPresentationStyle="fullScreen" id="WmG-fd-Rqx" customClass="DisscussionReservationViewController" customModule="Discussion_Korea" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SPi-i1-x8E">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RUG-4K-7XS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="토론 일정" id="Cxr-XR-FMR">
+                        <barButtonItem key="leftBarButtonItem" image="xmark" catalog="system" id="Xz1-fW-gJj">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="exitButton:" destination="WmG-fd-Rqx" id="oj3-GJ-07d"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="calendar.badge.plus" catalog="system" id="aIn-eK-o03">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <segue destination="eMl-LJ-Nph" kind="show" id="gVu-3a-1pU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yx1-w6-0at" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5686" y="84"/>
+        </scene>
+        <!--일정 추가-->
+        <scene sceneID="JzA-vB-r9t">
+            <objects>
+                <viewController id="eMl-LJ-Nph" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="npV-l8-qAS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="mSK-P2-E4S"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="일정 추가" id="nj2-8A-0hS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0BW-Jx-wdm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6674" y="84"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="R14-7l-1Yt">
@@ -294,11 +341,31 @@
             </objects>
             <point key="canvasLocation" x="2930" y="84"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="foN-YU-CNT">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="8pL-ol-CGQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1Cu-BV-Tfz">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="WmG-fd-Rqx" kind="relationship" relationship="rootViewController" id="Mau-43-xC0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KQ3-dp-uDh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4759" y="84"/>
+        </scene>
     </scenes>
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
-        <image name="line.3.horizontal" catalog="system" width="128" height="64"/>
+        <image name="calendar.badge.plus" catalog="system" width="128" height="108"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="square.grid.2x2" catalog="system" width="128" height="114"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="PrimaryColor">
             <color red="0.12200000137090683" green="0.21899999678134918" blue="0.3880000114440918" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

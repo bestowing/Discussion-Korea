@@ -11,7 +11,6 @@ import UIKit
 final class ChatRoomDetailViewController: UIViewController {
 
     @IBOutlet private weak var chatRoomName: UILabel!
-    @IBOutlet private weak var calendarButton: UIButton!
     @IBOutlet private weak var userListTableView: UITableView!
 
     private var cancellables = Set<AnyCancellable>()

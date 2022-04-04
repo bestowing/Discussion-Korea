@@ -13,6 +13,7 @@
 		3F3DF9C127EF829C006CDE71 /* ChatRoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C027EF829C006CDE71 /* ChatRoomDetailViewController.swift */; };
 		3F3DF9C427EF8E6A006CDE71 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C327EF8E6A006CDE71 /* UserListTableViewCell.swift */; };
 		3F3DF9C627FA0FC1006CDE71 /* ChatRoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C527FA0FC1006CDE71 /* ChatRoomDetail.swift */; };
+		3F3DF9C927FA15C7006CDE71 /* DisscussionReservationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */; };
 		3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */; };
 		3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */; };
 		3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */; };
@@ -42,6 +43,7 @@
 		3F3DF9C027EF829C006CDE71 /* ChatRoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDetailViewController.swift; sourceTree = "<group>"; };
 		3F3DF9C327EF8E6A006CDE71 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListTableViewCell.swift; sourceTree = "<group>"; };
 		3F3DF9C527FA0FC1006CDE71 /* ChatRoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDetail.swift; sourceTree = "<group>"; };
+		3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisscussionReservationViewController.swift; sourceTree = "<group>"; };
 		3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 			path = ChatRoomDetailScene;
 			sourceTree = "<group>";
 		};
+		3F3DF9C727FA158F006CDE71 /* DisscussionReservationScene */ = {
+			isa = PBXGroup;
+			children = (
+				3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */,
+			);
+			path = DisscussionReservationScene;
+			sourceTree = "<group>";
+		};
 		3F4DDC9327E353B4005C71D9 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +122,7 @@
 				3F3DF9C227EF8E44006CDE71 /* ChatRoomDetailScene */,
 				3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */,
 				3F4DDCD427E51A09005C71D9 /* Common */,
+				3F3DF9C727FA158F006CDE71 /* DisscussionReservationScene */,
 				3F4DDCC427E35B02005C71D9 /* HomeScene */,
 				3F4DDCC227E35ADE005C71D9 /* Resource */,
 				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
@@ -288,6 +299,7 @@
 				3F3DF9C627FA0FC1006CDE71 /* ChatRoomDetail.swift in Sources */,
 				3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */,
 				3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */,
+				3F3DF9C927FA15C7006CDE71 /* DisscussionReservationViewController.swift in Sources */,
 				3F75873727EA144200D550D3 /* SelfMessageCollectionViewCell.swift in Sources */,
 				3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */,
 			);
