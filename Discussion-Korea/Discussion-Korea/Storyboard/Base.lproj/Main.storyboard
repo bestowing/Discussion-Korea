@@ -146,7 +146,7 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="25"/>
                                         </state>
                                         <connections>
-                                            <segue destination="8pL-ol-CGQ" kind="presentation" id="lus-W0-D7f"/>
+                                            <action selector="calendarButtonTouched:" destination="YXM-iV-lcR" eventType="touchUpInside" id="ZMx-Rt-r9L"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -250,6 +250,7 @@
                     <connections>
                         <outlet property="chatRoomName" destination="YWY-9j-FGl" id="54o-LR-h6r"/>
                         <outlet property="userListTableView" destination="o3W-DG-jvn" id="cbR-Gv-NwL"/>
+                        <segue destination="8pL-ol-CGQ" kind="show" identifier="toDisscussionReservationViewController" id="hw9-k3-o9k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nAq-Jj-Wws" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -261,11 +262,11 @@
             <objects>
                 <viewController modalPresentationStyle="fullScreen" id="WmG-fd-Rqx" customClass="DisscussionReservationViewController" customModule="Discussion_Korea" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SPi-i1-x8E">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ho4-gB-UHO">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="786"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReservationTableViewCell" id="VJ7-yd-Qfy" customClass="ReservationTableViewCell" customModule="Discussion_Korea" customModuleProvider="target">
@@ -344,12 +345,13 @@
                         <barButtonItem key="rightBarButtonItem" title="Item" image="calendar.badge.plus" catalog="system" id="aIn-eK-o03">
                             <color key="tintColor" systemColor="labelColor"/>
                             <connections>
-                                <segue destination="eMl-LJ-Nph" kind="show" id="gVu-3a-1pU"/>
+                                <action selector="addButton:" destination="WmG-fd-Rqx" id="WpW-db-T1x"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="ho4-gB-UHO" id="tEi-gq-hdd"/>
+                        <segue destination="eMl-LJ-Nph" kind="show" identifier="AddDisscussionSchedule" id="7pB-Bb-N7t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yx1-w6-0at" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -361,51 +363,51 @@
             <objects>
                 <viewController id="eMl-LJ-Nph" customClass="AddReservationViewController" customModule="Discussion_Korea" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="npV-l8-qAS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="AiY-tS-rkh">
-                                <rect key="frame" x="20" y="108" width="374" height="734"/>
+                                <rect key="frame" x="20" y="76" width="374" height="746"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="mrp-U7-iuj">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="244.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="248.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="주제" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdZ-5u-Zvv">
-                                                <rect key="frame" x="0.0" y="112" width="29.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="114" width="29.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P6C-8E-CMb">
-                                                <rect key="frame" x="79.5" y="105.5" width="294.5" height="34"/>
+                                                <rect key="frame" x="79.5" y="107.5" width="294.5" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fsp-hY-t4d">
-                                        <rect key="frame" x="0.0" y="244.5" width="374" height="245"/>
+                                        <rect key="frame" x="0.0" y="248.5" width="374" height="249"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="진행 시간" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bv1-qA-wvO">
-                                                <rect key="frame" x="0.0" y="112.5" width="93.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="114.5" width="93.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPC-yE-xys">
-                                                <rect key="frame" x="93.5" y="112.5" width="93.5" height="20.5"/>
+                                                <rect key="frame" x="93.5" y="114.5" width="93.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="시간" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYi-sz-JGc">
-                                                <rect key="frame" x="187" y="112.5" width="93.5" height="20.5"/>
+                                                <rect key="frame" x="187" y="114.5" width="93.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="Irf-3K-VpP">
-                                                <rect key="frame" x="280.5" y="106.5" width="93.5" height="32"/>
+                                                <rect key="frame" x="280.5" y="108.5" width="93.5" height="32"/>
                                                 <connections>
                                                     <action selector="stepperValueChanged:" destination="eMl-LJ-Nph" eventType="valueChanged" id="wue-ig-MI9"/>
                                                 </connections>
@@ -413,16 +415,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wz4-iw-CbR">
-                                        <rect key="frame" x="0.0" y="489.5" width="374" height="244.5"/>
+                                        <rect key="frame" x="0.0" y="497.5" width="374" height="248.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="시작 날짜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYT-kT-fmy">
-                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="244.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="248.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ENf-4t-lQf">
-                                                <rect key="frame" x="63.5" y="0.0" width="310.5" height="244.5"/>
+                                                <rect key="frame" x="64" y="0.0" width="310" height="249"/>
                                             </datePicker>
                                         </subviews>
                                     </stackView>
@@ -501,8 +503,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="8pL-ol-CGQ" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="HE0-QX-09c"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1Cu-BV-Tfz">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

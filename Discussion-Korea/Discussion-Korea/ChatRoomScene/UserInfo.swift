@@ -12,6 +12,7 @@ struct UserInfo {
     var userID: String
     var nickname: String
     var profileURL: URL?
+    var isAdmin: Bool
     var description: String?
 
 }

@@ -92,8 +92,11 @@ class DefaultMessageRepository: MessageRepository {
             guard let dictionary = snapshot.value as? NSDictionary,
                   let nickname = dictionary["nickname"] as? String
             else { return }
-            var newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname)
+            var newUserInfo = UserInfo(userID: snapshot.key, nickname: nickname, isAdmin: false)
             if let position = dictionary["position"] as? String {
+                if position == "방장" {
+                    newUserInfo.isAdmin = true
+                }
                 newUserInfo.description = position
             }
             if newUserInfo.userID == IDManager.shared.userID() {

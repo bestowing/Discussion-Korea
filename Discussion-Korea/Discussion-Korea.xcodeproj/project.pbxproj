@@ -16,6 +16,7 @@
 		3F3DF9C927FA15C7006CDE71 /* DisscussionReservationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */; };
 		3F3DF9CD27FB248C006CDE71 /* ReservationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9CC27FB248C006CDE71 /* ReservationTableViewCell.swift */; };
 		3F3DF9D027FB3908006CDE71 /* AddReservationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9CF27FB3908006CDE71 /* AddReservationViewController.swift */; };
+		3F3DF9D227FB426B006CDE71 /* DisscussionNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DF9D127FB426B006CDE71 /* DisscussionNavigationController.swift */; };
 		3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */; };
 		3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */; };
 		3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA327E353B4005C71D9 /* HomeViewController.swift */; };
@@ -48,6 +49,7 @@
 		3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisscussionReservationViewController.swift; sourceTree = "<group>"; };
 		3F3DF9CC27FB248C006CDE71 /* ReservationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationTableViewCell.swift; sourceTree = "<group>"; };
 		3F3DF9CF27FB3908006CDE71 /* AddReservationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReservationViewController.swift; sourceTree = "<group>"; };
+		3F3DF9D127FB426B006CDE71 /* DisscussionNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisscussionNavigationController.swift; sourceTree = "<group>"; };
 		3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4DDC9F27E353B4005C71D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F4DDCA127E353B4005C71D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				3F3DF9CB27FB246E006CDE71 /* View */,
 				3F3DF9C827FA15C7006CDE71 /* DisscussionReservationViewController.swift */,
+				3F3DF9D127FB426B006CDE71 /* DisscussionNavigationController.swift */,
 			);
 			path = DisscussionReservationScene;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				3F3DF9D027FB3908006CDE71 /* AddReservationViewController.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
+				3F3DF9D227FB426B006CDE71 /* DisscussionNavigationController.swift in Sources */,
 				3F3DF9CD27FB248C006CDE71 /* ReservationTableViewCell.swift in Sources */,
 				3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */,
 				3F3DF9C427EF8E6A006CDE71 /* UserListTableViewCell.swift in Sources */,

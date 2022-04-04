@@ -26,6 +26,9 @@ final class DisscussionReservationViewController: UIViewController {
     private let repository: MessageRepository = DefaultMessageRepository(
         roomID: "1"
     )
+    private let identifier = "AddDisscussionSchedule"
+
+    var isAdmin: Bool?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +41,13 @@ final class DisscussionReservationViewController: UIViewController {
             self?.schedules.append(schedule)
             self?.tableView.reloadData()
         }.store(in: &self.cancellables)
+    }
+
+    @IBAction private func addButton(_ sender: UIBarButtonItem) {
+        guard let isAdmin = self.isAdmin,
+              isAdmin == true
+        else { return }
+        self.performSegue(withIdentifier: self.identifier, sender: sender)
     }
 
     @IBAction private func exitButton(_ sender: UIBarButtonItem) {
@@ -56,6 +66,9 @@ extension DisscussionReservationViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReservationTableViewCell") as? ReservationTableViewCell
         let schedule = self.schedules[indexPath.item]
         cell?.bind(with: schedule) { [weak self] in
+            guard let isAdmin = self?.isAdmin,
+                  isAdmin == true
+            else { return }
             self?.repository.cancleSchedule(by: schedule.ID)
             self?.schedules.remove(at: indexPath.item)
             self?.tableView.reloadData()
