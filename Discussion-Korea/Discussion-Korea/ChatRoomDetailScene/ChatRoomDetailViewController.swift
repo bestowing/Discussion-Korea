@@ -11,10 +11,10 @@ import UIKit
 final class ChatRoomDetailViewController: UIViewController {
 
     @IBOutlet private weak var chatRoomName: UILabel!
-    @IBOutlet private weak var calendarButton: UIButton!
     @IBOutlet private weak var userListTableView: UITableView!
 
     private var cancellables = Set<AnyCancellable>()
+    private var isAdmin: Bool?
     private var userList: [UserInfo] = []
     private let repository: MessageRepository = DefaultMessageRepository(
         roomID: "1"
@@ -27,6 +27,17 @@ final class ChatRoomDetailViewController: UIViewController {
         self.observeUserInfo()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navi = segue.destination as? UINavigationController,
+              let targetVC = navi.topViewController as? DisscussionReservationViewController
+        else { return }
+        targetVC.isAdmin = self.isAdmin
+    }
+
+    @IBAction func calendarButtonTouched(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "toDisscussionReservationViewController", sender: sender)
+    }
+
     private func observeChatRoomDetail() {
         self.repository.observeDetails().sink { [weak self] detail in
             self?.chatRoomName.text = detail.title
@@ -35,6 +46,9 @@ final class ChatRoomDetailViewController: UIViewController {
     }
     private func observeUserInfo() {
         self.repository.observeUserInfo().sink { [weak self] userInfo in
+            if userInfo.userID == IDManager.shared.userID() {
+                self?.isAdmin = userInfo.isAdmin
+            }
             self?.userList.append(userInfo)
             self?.userListTableView.reloadData()
         }.store(in: &self.cancellables)
