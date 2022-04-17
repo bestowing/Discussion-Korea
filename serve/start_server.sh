@@ -1,0 +1,1 @@
+torchserve --start --model-store model_store --models classification=klue-roberta-base-v1.0.mar summarization=kobart-v1.0.mar --ncs

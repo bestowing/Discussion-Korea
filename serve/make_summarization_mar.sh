@@ -1,0 +1,1 @@
+torch-model-archiver --model-name kobart-v1.0 --serialized-file summarization/pytorch_model.bin --version 1.0 --handler summarization/kobart_handler.py --export-path model_store -r summarization/requirements.txt --extra-files "summarization/config.json"

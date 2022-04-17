@@ -1,0 +1,4 @@
+pytorch>=1.10.0
+transformers==4.16.2
+pytorch-lightning==1.5.10
+streamlit==1.2.0
