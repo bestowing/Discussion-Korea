@@ -20,7 +20,7 @@ class ChatRoomViewController: UIViewController {
     )
     private var cancellables = Set<AnyCancellable>()
     private var messages: [Message] = []
-    private var nicknames: [String: String] = [:]
+    private var nicknames: [String: String] = ["bot": "방장봇"]
 
     // MARK: methods
 
@@ -66,13 +66,12 @@ class ChatRoomViewController: UIViewController {
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
         guard !self.messageTextView.text.isEmpty
         else { return }
-        let message = Message(userID: IDManager.shared.userID(), content: self.messageTextView.text, date: Date())
+        let message = Message(userID: IDManager.shared.userID(),
+                              content: self.messageTextView.text,
+                              date: Date(),
+                              nickName: self.nicknames[IDManager.shared.userID()])
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
-    }
-
-    @IBAction func menuButtonDidTouch(_ sender: UIBarButtonItem) {
-        
     }
 
     private func checkIfFirstEntering() {
@@ -90,6 +89,7 @@ class ChatRoomViewController: UIViewController {
     }
 
     private func showAlertForSettingNickname() {
+        // TODO: 찬성과 반대도 정하기
         let alert = UIAlertController(title: "닉네임 설정",
                                       message: "채팅방에 처음으로 입장할때 닉네임을 설정해야 합니다.",
                                       preferredStyle: UIAlertController.Style.alert)

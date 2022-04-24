@@ -40,7 +40,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="content" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9n-qh-Rs5" customClass="UIPaddingLabel" customModule="Discussion_Korea" customModuleProvider="target">
-                        <rect key="frame" x="55" y="34.5" width="49.5" height="95.5"/>
+                        <rect key="frame" x="55" y="34.5" width="63.5" height="95.5"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
@@ -66,7 +66,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nR-Dx-IWU">
-                        <rect key="frame" x="112.5" y="118" width="192.5" height="12"/>
+                        <rect key="frame" x="126.5" y="118" width="178.5" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -98,7 +98,7 @@
     </objects>
     <designables>
         <designable name="B9n-qh-Rs5">
-            <size key="intrinsicContentSize" width="49.5" height="17"/>
+            <size key="intrinsicContentSize" width="63.5" height="31"/>
         </designable>
     </designables>
     <resources>

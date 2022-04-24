@@ -29,13 +29,14 @@ class MessageCollectionViewCell: UICollectionViewCell {
         return layoutAttributes
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.profileImageView.image = nil
+    }
+
 }
 
 extension MessageCollectionViewCell: MessageCell {
-
-    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
-    }
 
     func bind(message: Message) {
         self.nicknameLabel.text = message.nickName ?? message.userID
@@ -48,6 +49,13 @@ extension MessageCollectionViewCell: MessageCell {
         } else {
             self.timeLabel.text = ""
         }
+        if message.userID == "bot" {
+            self.profileImageView.image = UIImage(named: "bot")
+        }
+    }
+
+    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
     }
 
 }

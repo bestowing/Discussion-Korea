@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/03/18.
 //
 
+import Alamofire
 import Combine
 import FirebaseDatabase
 import Foundation
@@ -40,7 +41,8 @@ class DefaultMessageRepository: MessageRepository {
 
     init(roomID: String) {
         let roomReference: DatabaseReference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+//            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
             .child("chatRoom")
             .child(roomID)
@@ -142,14 +144,45 @@ class DefaultMessageRepository: MessageRepository {
     func send(number: Int, message: Message) {
         guard let date = message.date
         else { return }
-        let values: [String: Any] = ["user": message.userID,
-                                     "content": message.content,
-                                     "date": self.dateFormatter.string(from: date)]
-        self.messagesReference.runTransactionBlock { currentData in
-            var messages = currentData.value as! [AnyObject]
-            messages.append(values as AnyObject)
-            currentData.value = messages
-            return TransactionResult.success(withValue: currentData)
+        let urlString = "http://14.33.78.118:8080/predictions/classification"
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let params = ["text": message.content] as Dictionary
+        do {
+            try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+        } catch {
+            print(error)
+        }
+        AF.request(request).responseString { [unowned self] response in
+            switch response.result {
+            case .success(let successMessage):
+                let botID = "bot"
+                let values: [String: Any] = ["user": message.userID,
+                                             "content": message.content,
+                                             "date": self.dateFormatter.string(from: date)]
+                let botValue: [String: Any] = ["user": botID,
+                                               "content": "\(message.nickName!)님, 비방성 표현 자제해주시기 바랍니다.",
+                                               "date": self.dateFormatter.string(from: date)]
+                self.messagesReference.runTransactionBlock { currentData in
+                    if var messages = currentData.value as? [AnyObject] {
+                        messages.append(values as AnyObject)
+                        if successMessage == "toxic" {
+                            messages.append(botValue as AnyObject)
+                        }
+                        currentData.value = messages
+                    } else {
+                        if successMessage == "toxic" {
+                            currentData.value = [values, botValue]
+                        } else {
+                            currentData.value = [values]
+                        }
+                    }
+                    return TransactionResult.success(withValue: currentData)
+                }
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 
