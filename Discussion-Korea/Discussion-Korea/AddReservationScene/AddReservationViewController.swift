@@ -11,10 +11,14 @@ final class AddReservationViewController: UIViewController {
 
     @IBOutlet private weak var submitButton: UIBarButtonItem!
     @IBOutlet private weak var topicTextField: UITextField!
-    @IBOutlet private weak var durationLabel: UILabel!
+    @IBOutlet private weak var introTimeLabel: UILabel!
+    @IBOutlet private weak var mainTimeLabel: UILabel!
+    @IBOutlet private weak var conclusionTimeLabel: UILabel!
     @IBOutlet private weak var datePicker: UIDatePicker!
 
-    private var duration: Int = 1
+    private var introDuration: Int = 1
+    private var mainDuration: Int = 1
+    private var conclusionDuration: Int = 1
 
     private let repository: MessageRepository = DefaultMessageRepository(
         roomID: "1"
@@ -35,9 +39,19 @@ final class AddReservationViewController: UIViewController {
         self.view.endEditing(true)
     }
 
-    @IBAction func stepperValueChanged(_ sender: UIStepper) {
-        self.duration = Int(sender.value)
-        self.durationLabel.text = String(Int(sender.value))
+    @IBAction func introStepperValueChanged(_ sender: UIStepper) {
+        self.introDuration = Int(sender.value)
+        self.introTimeLabel.text = String(Int(sender.value))
+    }
+
+    @IBAction func mainStepperValueChanged(_ sender: UIStepper) {
+        self.mainDuration = Int(sender.value)
+        self.mainTimeLabel.text = String(Int(sender.value))
+    }
+
+    @IBAction func conclusionStepperValueChanged(_ sender: UIStepper) {
+        self.conclusionDuration = Int(sender.value)
+        self.conclusionTimeLabel.text = String(Int(sender.value))
     }
 
     @IBAction func submitButtonTouched(_ sender: UIBarButtonItem) {
@@ -45,10 +59,11 @@ final class AddReservationViewController: UIViewController {
               !topic.isEmpty
         else { return }
         let date = self.datePicker.date
-        let duration = self.duration
         let schedule = DisscussionSchedule(ID: "",
                                            date: date,
-                                           duration: duration,
+                                           introduction: self.introDuration,
+                                           main: self.mainDuration,
+                                           conclusion: self.conclusionDuration,
                                            topic: topic)
         self.repository.addSchedule(schedule)
         self.navigationController?.popViewController(animated: true)
