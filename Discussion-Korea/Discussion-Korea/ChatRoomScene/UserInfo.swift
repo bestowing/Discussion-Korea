@@ -11,6 +11,7 @@ struct UserInfo {
 
     var userID: String
     var nickname: String
+    var side: Side?
     var profileURL: URL?
     var isAdmin: Bool
     var description: String?
