@@ -51,6 +51,8 @@ extension MessageCollectionViewCell: MessageCell {
         }
         if message.userID == "bot" {
             self.profileImageView.image = UIImage(named: "bot")
+        } else {
+            self.profileImageView.image = UIImage(systemName: "person.fill")
         }
     }
 

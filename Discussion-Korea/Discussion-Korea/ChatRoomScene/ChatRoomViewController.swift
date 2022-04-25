@@ -20,7 +20,7 @@ class ChatRoomViewController: UIViewController {
     )
     private var cancellables = Set<AnyCancellable>()
     private var messages: [Message] = []
-    private var nicknames: [String: String] = ["bot": "방장봇"]
+    private var nicknames: [String: UserInfo] = ["bot": UserInfo(userID: "bot", nickname: "방장봇", isAdmin: false)]
 
     // MARK: methods
 
@@ -36,6 +36,7 @@ class ChatRoomViewController: UIViewController {
 
         self.checkIfFirstEntering()
         self.observeUserInfo()
+        self.observePhase()
         self.configureViews()
         self.configureTapGestureRecognizer()
         self.configureMessageCollectionView()
@@ -69,7 +70,7 @@ class ChatRoomViewController: UIViewController {
         let message = Message(userID: IDManager.shared.userID(),
                               content: self.messageTextView.text,
                               date: Date(),
-                              nickName: self.nicknames[IDManager.shared.userID()])
+                              nickName: self.nicknames[IDManager.shared.userID()]?.nickname)
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
     }
@@ -84,12 +85,100 @@ class ChatRoomViewController: UIViewController {
 
     private func observeUserInfo() {
         self.repository.observeUserInfo().sink { [weak self] userInfo in
-            self?.nicknames[userInfo.userID] = userInfo.nickname
+            self?.nicknames[userInfo.userID] = userInfo
+        }.store(in: &self.cancellables)
+    }
+
+    private func observePhase() {
+        self.repository.observePhase().sink { [unowned self] phase in
+            if phase == 1 {
+                // FIXME: 매번 설정해야함
+                let alert = UIAlertController(title: "토론 진영 설정",
+                                              message: "토론이 예정되었습니다. 참여를 원하시면 진영을 선택해주세요.",
+                                              preferredStyle: UIAlertController.Style.alert)
+                let agreeAction = UIAlertAction(title: "찬성", style: .default) { _ in
+                    self.repository.setInfo(side: .agree)
+                    self.nicknames[IDManager.shared.userID()]?.side = .agree
+                }
+                let disagreeAction = UIAlertAction(title: "반대", style: .destructive) { _ in
+                    self.repository.setInfo(side: .disagree)
+                    self.nicknames[IDManager.shared.userID()]?.side = .disagree
+                }
+                let judgeAction = UIAlertAction(title: "판정단", style: .default) { _ in
+                    self.repository.setInfo(side: .judge)
+                    self.nicknames[IDManager.shared.userID()]?.side = .judge
+                }
+                let observerAction = UIAlertAction(title: "구경꾼", style: .default) { _ in
+                    self.repository.setInfo(side: .observer)
+                    self.nicknames[IDManager.shared.userID()]?.side = .observer
+                }
+                alert.addAction(agreeAction)
+                alert.addAction(disagreeAction)
+                alert.addAction(judgeAction)
+                alert.addAction(observerAction)
+                self.present(alert, animated: true)
+            } else if phase == 2 || phase == 5 {
+                // 내가 찬성측이라면 입력 가능
+                guard let side = self.nicknames[IDManager.shared.userID()]?.side,
+                      side == .agree
+                else {
+                    self.messageTextView.text = ""
+                    self.messageTextView.isEditable = false
+                    self.sendButton.isEnabled = false
+                    return
+                }
+                self.messageTextView.isEditable = true
+            } else if phase == 3 || phase == 6 {
+                // 내가 반대측이라면 입력 가능
+                guard let side = self.nicknames[IDManager.shared.userID()]?.side,
+                      side == .disagree
+                else {
+                    self.messageTextView.text = ""
+                    self.messageTextView.isEditable = false
+                    self.sendButton.isEnabled = false
+                    return
+                }
+                self.messageTextView.isEditable = true
+            } else if phase == 4 {
+                // 자유토론이라 둘 다 풀어줌
+                guard let side = self.nicknames[IDManager.shared.userID()]?.side,
+                      (side == .disagree || side == .agree)
+                else {
+                    self.messageTextView.text = ""
+                    self.messageTextView.isEditable = false
+                    self.sendButton.isEnabled = false
+                    return
+                }
+                self.messageTextView.isEditable = true
+            } else if phase == 7 {
+                // 아무도 말 못함
+                self.messageTextView.text = ""
+                self.messageTextView.isEditable = false
+                self.sendButton.isEnabled = false
+                guard let side = self.nicknames[IDManager.shared.userID()]?.side,
+                      side == .judge
+                else {
+                    return
+                }
+                let alert = UIAlertController(title: "판정단 투표",
+                                              message: "어느쪽이 더 잘했나요? 투표해주세요",
+                                              preferredStyle: UIAlertController.Style.alert)
+                let agreeAction = UIAlertAction(title: "찬성측", style: .default) { _ in
+                    self.repository.vote(side: .agree)
+                }
+                let disagreeAction = UIAlertAction(title: "반대측", style: .destructive) { _ in
+                    self.repository.vote(side: .disagree)
+                }
+                alert.addAction(agreeAction)
+                alert.addAction(disagreeAction)
+                self.present(alert, animated: true)
+            } else if phase == 0 {
+                self.messageTextView.isEditable = true
+            }
         }.store(in: &self.cancellables)
     }
 
     private func showAlertForSettingNickname() {
-        // TODO: 찬성과 반대도 정하기
         let alert = UIAlertController(title: "닉네임 설정",
                                       message: "채팅방에 처음으로 입장할때 닉네임을 설정해야 합니다.",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -99,7 +188,7 @@ class ChatRoomViewController: UIViewController {
         let registAction = UIAlertAction(title: "등록", style: .default) {_ in
             guard let nickname = alert.textFields?.first?.text
             else { return }
-            self.repository.setNickname(by: nickname)
+            self.repository.setInfo(name: nickname)
         }
         registAction.isEnabled = false
         alert.addTextField(configurationHandler: { textField in
@@ -167,7 +256,7 @@ class ChatRoomViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] message in
                 var message = message
-                message.nickName = self.nicknames[message.userID]
+                message.nickName = self.nicknames[message.userID]?.nickname
                 let item = self.messages.count
                 
                 if let lastMessage = self.messages.last,
@@ -187,6 +276,8 @@ class ChatRoomViewController: UIViewController {
     }
 
 }
+
+// 찬성측 말 못함 -> 찬성 고르고 나갔다 들어왔었음 -> 유저인포로 하다보니 그런듯? -> 반대측도 말 못함 지금 ㅅㅂ -> 투표도 지금 안뜬다;
 
 extension ChatRoomViewController: UICollectionViewDelegate,
                                   UICollectionViewDataSource {
