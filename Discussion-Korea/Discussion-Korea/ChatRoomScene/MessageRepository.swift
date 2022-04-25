@@ -69,8 +69,8 @@ class DefaultMessageRepository: MessageRepository {
 
     init(roomID: String) {
         let roomReference: DatabaseReference = Database
-            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
             .child("chatRoom")
             .child(roomID)
@@ -187,11 +187,13 @@ class DefaultMessageRepository: MessageRepository {
             guard let dic = snapshot.value as? NSDictionary,
                   let dateString = dic["date"] as? String,
                   let date = self?.dateFormatter.date(from: dateString),
-                  let duration = dic["duration"] as? Int,
+                  let introduction = dic["introduction"] as? Int,
+                  let main = dic["main"] as? Int,
+                  let conclusion = dic["conclusion"] as? Int,
                   let topic = dic["topic"] as? String
             else { return }
             let scheduleID = snapshot.key
-            self?.schedulePublisher.send(DisscussionSchedule(ID: scheduleID, date: date, duration: duration, topic: topic))
+            self?.schedulePublisher.send(DisscussionSchedule(ID: scheduleID, date: date, introduction: introduction, main: main, conclusion: conclusion, topic: topic))
         }
         return self.schedulePublisher.eraseToAnyPublisher()
     }
@@ -255,7 +257,9 @@ class DefaultMessageRepository: MessageRepository {
 
     func addSchedule(_ schedule: DisscussionSchedule) {
         let value: [String: Any] = ["date": self.dateFormatter.string(from: schedule.date),
-                                    "duration": schedule.duration,
+                                    "introduction": schedule.introduction,
+                                    "main": schedule.main,
+                                    "conclusion": schedule.conclusion,
                                     "topic": schedule.topic]
         self.schedulesReferece.childByAutoId().setValue(value)
     }

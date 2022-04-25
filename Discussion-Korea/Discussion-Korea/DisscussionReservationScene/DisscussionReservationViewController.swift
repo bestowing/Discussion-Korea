@@ -12,7 +12,9 @@ struct DisscussionSchedule {
 
     var ID: String
     var date: Date
-    var duration: Int
+    var introduction: Int
+    var main: Int
+    var conclusion: Int
     var topic: String
 
 }
