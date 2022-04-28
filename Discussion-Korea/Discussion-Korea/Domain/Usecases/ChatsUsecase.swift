@@ -11,5 +11,6 @@ import RxSwift
 protocol ChatsUsecase {
 
     func chats() -> Observable<[Chat]>
+    func save(chat: Chat) -> Observable<Void>
 
 }
