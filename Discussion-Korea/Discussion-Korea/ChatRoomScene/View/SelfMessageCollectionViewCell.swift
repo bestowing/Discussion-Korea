@@ -10,7 +10,7 @@ import UIKit
 protocol MessageCell: UICollectionViewCell {
 
     static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell
-    func bind(message: Message)
+    func bind(message: Chat)
 
 }
 
@@ -44,7 +44,7 @@ extension SelfMessageCollectionViewCell: MessageCell {
         return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? SelfMessageCollectionViewCell()
     }
 
-    func bind(message: Message) {
+    func bind(message: Chat) {
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")

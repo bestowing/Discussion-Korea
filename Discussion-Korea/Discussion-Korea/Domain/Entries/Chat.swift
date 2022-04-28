@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Message {
+struct Chat {
 
     var userID: String
     var content: String

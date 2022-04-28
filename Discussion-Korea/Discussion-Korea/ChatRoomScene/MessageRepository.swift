@@ -38,10 +38,10 @@ protocol MessageRepository {
     func setInfo(side: Side)
     func observePhase() -> AnyPublisher<Int, Never>
     func observeUserInfo() -> AnyPublisher<UserInfo, Never>
-    func observeChatMessage() -> AnyPublisher<Message, Never>
+    func observeChatMessage() -> AnyPublisher<Chat, Never>
     func observeDetails() -> AnyPublisher<ChatRoomDetail, Never>
     func observeSchedules() -> AnyPublisher<DisscussionSchedule, Never>
-    func send(number: Int, message: Message)
+    func send(number: Int, message: Chat)
     func vote(side: Side)
     func addSchedule(_ schedule: DisscussionSchedule)
     func cancleSchedule(by scheduleID: String)
@@ -60,7 +60,7 @@ final class DefaultMessageRepository: MessageRepository {
     private let phaseReferece: DatabaseReference
     private let sidesReferece: DatabaseReference
 
-    private let messagePublisher = PassthroughSubject<Message, Never>()
+    private let messagePublisher = PassthroughSubject<Chat, Never>()
     private let userInfoPublisher = PassthroughSubject<UserInfo, Never>()
     private let detailPublisher = PassthroughSubject<ChatRoomDetail, Never>()
     private let schedulePublisher = PassthroughSubject<DisscussionSchedule, Never>()
@@ -168,7 +168,7 @@ final class DefaultMessageRepository: MessageRepository {
         return self.userInfoPublisher.eraseToAnyPublisher()
     }
 
-    func observeChatMessage() -> AnyPublisher<Message, Never> {
+    func observeChatMessage() -> AnyPublisher<Chat, Never> {
         self.messagesReference.observe(.childAdded) { [weak self] snapshot in
             guard let dic = snapshot.value as? [String: Any],
                   let userID = dic["user"] as? String,
@@ -176,7 +176,7 @@ final class DefaultMessageRepository: MessageRepository {
                   let dateString = dic["date"] as? String,
                   let date = self?.dateFormatter.date(from: dateString)
             else { return }
-            let newMessage = Message(userID: userID, content: content, date: date)
+            let newMessage = Chat(userID: userID, content: content, date: date)
             self?.messagePublisher.send(newMessage)
         }
         return self.messagePublisher.eraseToAnyPublisher()
@@ -210,7 +210,7 @@ final class DefaultMessageRepository: MessageRepository {
         }
     }
 
-    func send(number: Int, message: Message) {
+    func send(number: Int, message: Chat) {
         guard let date = message.date
         else { return }
         let urlString = "http://119.194.17.59:8080/predictions/classification"

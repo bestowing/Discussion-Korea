@@ -10,6 +10,6 @@ import RxSwift
 
 protocol ChatsUsecase {
 
-    func chats() -> Observable<[Message]>
+    func chats() -> Observable<[Chat]>
 
 }

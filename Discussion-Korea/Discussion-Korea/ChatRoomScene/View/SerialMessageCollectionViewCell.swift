@@ -35,7 +35,7 @@ extension SerialMessageCollectionViewCell: MessageCell {
         return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? MessageCollectionViewCell()
     }
 
-    func bind(message: Message) {
+    func bind(message: Chat) {
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")

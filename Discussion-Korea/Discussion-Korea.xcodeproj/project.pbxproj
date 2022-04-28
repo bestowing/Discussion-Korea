@@ -30,7 +30,7 @@
 		3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */; };
 		3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */; };
 		3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */; };
-		3F4DDCCB27E4B8C4005C71D9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCA27E4B8C4005C71D9 /* Message.swift */; };
+		3F4DDCCB27E4B8C4005C71D9 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCA27E4B8C4005C71D9 /* Chat.swift */; };
 		3F4DDCCF27E4B90A005C71D9 /* MessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */; };
 		3F4DDCD027E4B90A005C71D9 /* MessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */; };
 		3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */; };
@@ -66,7 +66,7 @@
 		3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRepository.swift; sourceTree = "<group>"; };
-		3F4DDCCA27E4B8C4005C71D9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		3F4DDCCA27E4B8C4005C71D9 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F4DDCCE27E4B90A005C71D9 /* MessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPaddingLabel.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 		3F88F6E0281A69F9002FBB25 /* Entries */ = {
 			isa = PBXGroup;
 			children = (
-				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
+				3F4DDCCA27E4B8C4005C71D9 /* Chat.swift */,
 				3F75873327E7912F00D550D3 /* UserInfo.swift */,
 			);
 			path = Entries;
@@ -381,7 +381,7 @@
 				3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */,
 				3F3DF9C427EF8E6A006CDE71 /* UserListTableViewCell.swift in Sources */,
 				3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */,
-				3F4DDCCB27E4B8C4005C71D9 /* Message.swift in Sources */,
+				3F4DDCCB27E4B8C4005C71D9 /* Chat.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
 				3F3DF9C627FA0FC1006CDE71 /* ChatRoomDetail.swift in Sources */,
 				3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */,

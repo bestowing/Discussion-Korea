@@ -38,7 +38,7 @@ final class MessageCollectionViewCell: UICollectionViewCell {
 
 extension MessageCollectionViewCell: MessageCell {
 
-    func bind(message: Message) {
+    func bind(message: Chat) {
         self.nicknameLabel.text = message.nickName ?? message.userID
         self.contentLabel.text = message.content
         let dateFormatter = DateFormatter()

@@ -20,7 +20,7 @@ final class ChatRoomViewController: UIViewController {
         roomID: "1"
     )
     private var cancellables = Set<AnyCancellable>()
-    private var messages: [Message] = []
+    private var messages: [Chat] = []
     private var nicknames: [String: UserInfo] = ["bot": UserInfo(userID: "bot", nickname: "방장봇", isAdmin: false)]
 
     // MARK: methods
@@ -68,7 +68,7 @@ final class ChatRoomViewController: UIViewController {
     @IBAction func sendButtonDidTouch(_ sender: UIButton) {
         guard !self.messageTextView.text.isEmpty
         else { return }
-        let message = Message(userID: IDManager.shared.userID(),
+        let message = Chat(userID: IDManager.shared.userID(),
                               content: self.messageTextView.text,
                               date: Date(),
                               nickName: self.nicknames[IDManager.shared.userID()]?.nickname)
