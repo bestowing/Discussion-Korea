@@ -9,11 +9,11 @@ import Foundation
 
 struct UserInfo {
 
-    var userID: String
-    var nickname: String
+    let userID: String
+    let nickname: String
+    var isAdmin: Bool
     var side: Side?
     var profileURL: URL?
-    var isAdmin: Bool
     var description: String?
 
 }

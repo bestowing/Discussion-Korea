@@ -8,6 +8,8 @@
 import Foundation
 import RxSwift
 
-public protocol ChatsUsecase {
-    func chats() -> Observable<[]>
+protocol ChatsUsecase {
+
+    func chats() -> Observable<[Message]>
+
 }

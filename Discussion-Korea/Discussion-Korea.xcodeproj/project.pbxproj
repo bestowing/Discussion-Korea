@@ -38,6 +38,10 @@
 		3F75873427E7912F00D550D3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873327E7912F00D550D3 /* UserInfo.swift */; };
 		3F75873727EA144200D550D3 /* SelfMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75873527EA144200D550D3 /* SelfMessageCollectionViewCell.swift */; };
 		3F75873827EA144200D550D3 /* SelfMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F75873627EA144200D550D3 /* SelfMessageCollectionViewCell.xib */; };
+		3F88F6D8281A6689002FBB25 /* UsecaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F6D7281A6689002FBB25 /* UsecaseProvider.swift */; };
+		3F88F6DB281A67BA002FBB25 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3F88F6DA281A67BA002FBB25 /* RxCocoa */; };
+		3F88F6DD281A67BA002FBB25 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3F88F6DC281A67BA002FBB25 /* RxSwift */; };
+		3F88F6DF281A67E2002FBB25 /* ChatsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F6DE281A67E2002FBB25 /* ChatsUsecase.swift */; };
 		3F97B39328151615004F30A5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F97B39228151615004F30A5 /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +74,8 @@
 		3F75873327E7912F00D550D3 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		3F75873527EA144200D550D3 /* SelfMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfMessageCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F75873627EA144200D550D3 /* SelfMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelfMessageCollectionViewCell.xib; sourceTree = "<group>"; };
+		3F88F6D7281A6689002FBB25 /* UsecaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsecaseProvider.swift; sourceTree = "<group>"; };
+		3F88F6DE281A67E2002FBB25 /* ChatsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsUsecase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +86,10 @@
 				3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */,
 				3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */,
 				3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */,
+				3F88F6DB281A67BA002FBB25 /* RxCocoa in Frameworks */,
 				3F97B39328151615004F30A5 /* Alamofire in Frameworks */,
 				3F3DF9BF27EF2FF4006CDE71 /* SideMenu in Frameworks */,
+				3F88F6DD281A67BA002FBB25 /* RxSwift in Frameworks */,
 				3F4DDCB927E356BF005C71D9 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,6 +165,7 @@
 				3F3DF9C227EF8E44006CDE71 /* ChatRoomDetailScene */,
 				3F4DDCC527E35B0B005C71D9 /* ChatRoomScene */,
 				3F4DDCD427E51A09005C71D9 /* Common */,
+				3F88F6D52817DCE4002FBB25 /* Domain */,
 				3F3DF9C727FA158F006CDE71 /* DisscussionReservationScene */,
 				3F4DDCC427E35B02005C71D9 /* HomeScene */,
 				3F4DDCC227E35ADE005C71D9 /* Resource */,
@@ -208,8 +217,6 @@
 				3F4DDCCC27E4B8E9005C71D9 /* View */,
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
-				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
-				3F75873327E7912F00D550D3 /* UserInfo.swift */,
 			);
 			path = ChatRoomScene;
 			sourceTree = "<group>";
@@ -234,6 +241,33 @@
 				3F75873127E5FF2F00D550D3 /* IDManager.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		3F88F6D52817DCE4002FBB25 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F6E0281A69F9002FBB25 /* Entries */,
+				3F88F6D6281A664F002FBB25 /* Usecases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		3F88F6D6281A664F002FBB25 /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F6D7281A6689002FBB25 /* UsecaseProvider.swift */,
+				3F88F6DE281A67E2002FBB25 /* ChatsUsecase.swift */,
+			);
+			path = Usecases;
+			sourceTree = "<group>";
+		};
+		3F88F6E0281A69F9002FBB25 /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				3F4DDCCA27E4B8C4005C71D9 /* Message.swift */,
+				3F75873327E7912F00D550D3 /* UserInfo.swift */,
+			);
+			path = Entries;
 			sourceTree = "<group>";
 		};
 		3F97B39828151F64004F30A5 /* Utility */ = {
@@ -266,6 +300,8 @@
 				3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */,
 				3F3DF9BE27EF2FF4006CDE71 /* SideMenu */,
 				3F97B39228151615004F30A5 /* Alamofire */,
+				3F88F6DA281A67BA002FBB25 /* RxCocoa */,
+				3F88F6DC281A67BA002FBB25 /* RxSwift */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */;
@@ -299,6 +335,7 @@
 				3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				3F3DF9BD27EF2FF4006CDE71 /* XCRemoteSwiftPackageReference "SideMenu" */,
 				3F97B39128151614004F30A5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 3F4DDC9D27E353B4005C71D9 /* Products */;
 			projectDirPath = "";
@@ -337,8 +374,10 @@
 				3F3DF9D027FB3908006CDE71 /* AddReservationViewController.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
+				3F88F6DF281A67E2002FBB25 /* ChatsUsecase.swift in Sources */,
 				3F3DF9D227FB426B006CDE71 /* DisscussionNavigationController.swift in Sources */,
 				3F3DF9CD27FB248C006CDE71 /* ReservationTableViewCell.swift in Sources */,
+				3F88F6D8281A6689002FBB25 /* UsecaseProvider.swift in Sources */,
 				3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */,
 				3F3DF9C427EF8E6A006CDE71 /* UserListTableViewCell.swift in Sources */,
 				3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */,
@@ -591,6 +630,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		3F97B39128151614004F30A5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -626,6 +673,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		3F88F6DA281A67BA002FBB25 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		3F88F6DC281A67BA002FBB25 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 		3F97B39228151615004F30A5 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
