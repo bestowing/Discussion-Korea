@@ -166,7 +166,6 @@
 				3F88F6E1281A6C63002FBB25 /* FirebasePlatform */,
 				3F88F6E2281A6E40002FBB25 /* Presentation */,
 				3F4DDCC227E35ADE005C71D9 /* Resource */,
-				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
 			);
 			path = "Discussion-Korea";
 			sourceTree = "<group>";
@@ -277,6 +276,7 @@
 			children = (
 				3F4DDCD127E51150005C71D9 /* UIPaddingLabel.swift */,
 				3F88F6E3281A7056002FBB25 /* Scenes */,
+				3F4DDCC327E35AF1005C71D9 /* Storyboard */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
