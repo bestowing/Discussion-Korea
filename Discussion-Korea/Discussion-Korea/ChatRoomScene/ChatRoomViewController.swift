@@ -9,7 +9,8 @@ import Combine
 import UIKit
 import SideMenu
 
-class ChatRoomViewController: UIViewController {
+final class ChatRoomViewController: UIViewController {
+
     @IBOutlet private weak var messageCollectionView: UICollectionView!
     @IBOutlet private weak var messageTextView: UITextView!
     @IBOutlet private weak var sendButton: UIButton!

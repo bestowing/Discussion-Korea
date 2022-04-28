@@ -48,7 +48,7 @@ protocol MessageRepository {
 
 }
 
-class DefaultMessageRepository: MessageRepository {
+final class DefaultMessageRepository: MessageRepository {
 
     // MARK: properties
 

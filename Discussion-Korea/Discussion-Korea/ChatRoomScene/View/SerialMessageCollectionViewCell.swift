@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SerialMessageCollectionViewCell: UICollectionViewCell {
+final class SerialMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
 

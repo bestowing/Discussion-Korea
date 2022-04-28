@@ -14,7 +14,7 @@ protocol MessageCell: UICollectionViewCell {
 
 }
 
-class SelfMessageCollectionViewCell: UICollectionViewCell {
+final class SelfMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
 

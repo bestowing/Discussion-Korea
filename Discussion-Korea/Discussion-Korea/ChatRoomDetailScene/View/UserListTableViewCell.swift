@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserListTableViewCell: UITableViewCell {
+final class UserListTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var profileImageView: UIImageView!
     @IBOutlet private weak var nicknameLabel: UILabel!

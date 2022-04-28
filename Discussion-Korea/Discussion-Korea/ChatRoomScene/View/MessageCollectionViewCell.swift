@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MessageCollectionViewCell: UICollectionViewCell {
+final class MessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
 
