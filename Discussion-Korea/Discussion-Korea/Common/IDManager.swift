@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: 추상화하기
 class IDManager {
 
     static let shared = IDManager()
