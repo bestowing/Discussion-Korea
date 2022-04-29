@@ -10,6 +10,10 @@
 		3F88F7A9281BE7AB002FBB25 /* NetworkPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7A0281BE7AB002FBB25 /* NetworkPlatform.framework */; };
 		3F88F7AE281BE7AB002FBB25 /* NetworkPlatformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F7AD281BE7AB002FBB25 /* NetworkPlatformTests.swift */; };
 		3F88F7AF281BE7AB002FBB25 /* NetworkPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F88F7A3281BE7AB002FBB25 /* NetworkPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3F88F7D7281BE8B0002FBB25 /* ChatsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F7D3281BE8B0002FBB25 /* ChatsUsecase.swift */; };
+		3F88F7D8281BE8B0002FBB25 /* UsecaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F7D6281BE8B0002FBB25 /* UsecaseProvider.swift */; };
+		3F88F7D9281BE8B0002FBB25 /* ChatsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F7D5281BE8B0002FBB25 /* ChatsUsecase.swift */; };
+		3F88F7DA281BE8B0002FBB25 /* UsecaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F7D4281BE8B0002FBB25 /* UsecaseProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +31,16 @@
 		3F88F7A3281BE7AB002FBB25 /* NetworkPlatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkPlatform.h; sourceTree = "<group>"; };
 		3F88F7A8281BE7AB002FBB25 /* NetworkPlatformTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetworkPlatformTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F88F7AD281BE7AB002FBB25 /* NetworkPlatformTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPlatformTests.swift; sourceTree = "<group>"; };
+		3F88F7C3281BE891002FBB25 /* Chat+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chat+Mapping.swift"; sourceTree = "<group>"; };
+		3F88F7C4281BE891002FBB25 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
+		3F88F7CB281BE896002FBB25 /* ChatsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsNetwork.swift; sourceTree = "<group>"; };
+		3F88F7CD281BE89A002FBB25 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		3F88F7CF281BE8A3002FBB25 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		3F88F7D0281BE8A3002FBB25 /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		3F88F7D3281BE8B0002FBB25 /* ChatsUsecase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsUsecase.swift; sourceTree = "<group>"; };
+		3F88F7D4281BE8B0002FBB25 /* UsecaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsecaseProvider.swift; sourceTree = "<group>"; };
+		3F88F7D5281BE8B0002FBB25 /* ChatsUsecase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsUsecase.swift; sourceTree = "<group>"; };
+		3F88F7D6281BE8B0002FBB25 /* UsecaseProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsecaseProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +84,11 @@
 			isa = PBXGroup;
 			children = (
 				3F88F7A3281BE7AB002FBB25 /* NetworkPlatform.h */,
+				3F88F7CC281BE896002FBB25 /* API */,
+				3F88F7CE281BE89A002FBB25 /* Cache */,
+				3F88F7C6281BE891002FBB25 /* Entries */,
+				3F88F7D1281BE8A3002FBB25 /* Network */,
+				3F88F7D2281BE8B0002FBB25 /* Usecases */,
 			);
 			path = NetworkPlatform;
 			sourceTree = "<group>";
@@ -80,6 +99,59 @@
 				3F88F7AD281BE7AB002FBB25 /* NetworkPlatformTests.swift */,
 			);
 			path = NetworkPlatformTests;
+			sourceTree = "<group>";
+		};
+		3F88F7C5281BE891002FBB25 /* Encodable */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7C4281BE891002FBB25 /* Encodable.swift */,
+			);
+			path = Encodable;
+			sourceTree = "<group>";
+		};
+		3F88F7C6281BE891002FBB25 /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7C3281BE891002FBB25 /* Chat+Mapping.swift */,
+				3F88F7C5281BE891002FBB25 /* Encodable */,
+			);
+			path = Entries;
+			sourceTree = "<group>";
+		};
+		3F88F7CC281BE896002FBB25 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7CB281BE896002FBB25 /* ChatsNetwork.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		3F88F7CE281BE89A002FBB25 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7CD281BE89A002FBB25 /* Cache.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		3F88F7D1281BE8A3002FBB25 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7CF281BE8A3002FBB25 /* Network.swift */,
+				3F88F7D0281BE8A3002FBB25 /* NetworkProvider.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		3F88F7D2281BE8B0002FBB25 /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7D3281BE8B0002FBB25 /* ChatsUsecase.swift */,
+				3F88F7D6281BE8B0002FBB25 /* UsecaseProvider.swift */,
+				3F88F7D5281BE8B0002FBB25 /* ChatsUsecase.swift */,
+				3F88F7D4281BE8B0002FBB25 /* UsecaseProvider.swift */,
+			);
+			path = Usecases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,6 +263,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F88F7DA281BE8B0002FBB25 /* UsecaseProvider.swift in Sources */,
+				3F88F7D9281BE8B0002FBB25 /* ChatsUsecase.swift in Sources */,
+				3F88F7D8281BE8B0002FBB25 /* UsecaseProvider.swift in Sources */,
+				3F88F7D7281BE8B0002FBB25 /* ChatsUsecase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +472,7 @@
 		3F88F7B6281BE7AB002FBB25 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
@@ -412,6 +489,7 @@
 		3F88F7B7281BE7AB002FBB25 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
