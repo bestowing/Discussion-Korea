@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Domain
 
 protocol MessageCell: UICollectionViewCell {
 
@@ -17,8 +18,6 @@ protocol MessageCell: UICollectionViewCell {
 final class SelfMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
-
-    static let identifier = "SelfMessageCollectionViewCell"
 
     @IBOutlet private weak var contentLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!

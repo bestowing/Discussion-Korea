@@ -6,12 +6,11 @@
 //
 
 import UIKit
+import Domain
 
 final class SerialMessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
-
-    static let identifier = "SerialMessageCollectionViewCell"
 
     @IBOutlet private weak var contentLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!

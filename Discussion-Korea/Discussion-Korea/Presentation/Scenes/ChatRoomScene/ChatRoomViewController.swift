@@ -8,6 +8,7 @@
 import Combine
 import UIKit
 import SideMenu
+import Domain
 
 final class ChatRoomViewController: UIViewController {
 
@@ -69,9 +70,9 @@ final class ChatRoomViewController: UIViewController {
         guard !self.messageTextView.text.isEmpty
         else { return }
         let message = Chat(userID: IDManager.shared.userID(),
-                              content: self.messageTextView.text,
-                              date: Date(),
-                              nickName: self.nicknames[IDManager.shared.userID()]?.nickname)
+                           content: self.messageTextView.text,
+                           date: Date(),
+                           nickname: self.nicknames[IDManager.shared.userID()]?.nickname)
         self.messageTextView.text = ""
         self.repository.send(number: self.messages.count + 1, message: message)
     }

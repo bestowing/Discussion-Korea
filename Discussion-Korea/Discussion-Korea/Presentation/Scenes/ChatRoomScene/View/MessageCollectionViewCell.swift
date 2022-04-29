@@ -6,12 +6,11 @@
 //
 
 import UIKit
+import Domain
 
 final class MessageCollectionViewCell: UICollectionViewCell {
 
     // MARK: properties
-
-    static let identifier = "MessageCollectionViewCell"
 
     @IBOutlet private weak var profileImageView: UIImageView!
     @IBOutlet private weak var nicknameLabel: UILabel!

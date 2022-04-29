@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import Domain
 
 final class ChatRoomDetailViewController: UIViewController {
 

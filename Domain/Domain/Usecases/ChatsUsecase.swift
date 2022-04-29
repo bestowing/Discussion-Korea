@@ -1,14 +1,13 @@
 //
 //  ChatsUsecase.swift
-//  Discussion-Korea
+//  Domain
 //
-//  Created by 이청수 on 2022/04/28.
+//  Created by 이청수 on 2022/04/29.
 //
 
-import Foundation
 import RxSwift
 
-protocol ChatsUsecase {
+public protocol ChatsUsecase {
 
     func chats() -> Observable<[Chat]>
     func save(chat: Chat) -> Observable<Void>

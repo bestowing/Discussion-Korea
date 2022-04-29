@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Domain
 
 final class UserListTableViewCell: UITableViewCell {
 

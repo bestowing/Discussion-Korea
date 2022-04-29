@@ -9,40 +9,20 @@ import Alamofire
 import Combine
 import FirebaseDatabase
 import Foundation
-
-enum Side: String {
-    case agree = "agree"
-    case disagree = "disagree"
-    case judge = "judge"
-    case observer = "observer"
-
-    static func toSide(from string: String) -> Side {
-        switch string {
-        case "agree":
-            return Side.agree
-        case "disagree":
-            return Side.disagree
-        case "judge":
-            return Side.judge
-        default:
-            return Side.observer
-        }
-    }
-
-}
+import Domain
 
 protocol MessageRepository {
 
     func checkIfFirstEntering() -> AnyPublisher<Bool, Never>
     func setInfo(name: String)
-    func setInfo(side: Side)
+    func setInfo(side: UserInfo.Side)
     func observePhase() -> AnyPublisher<Int, Never>
     func observeUserInfo() -> AnyPublisher<UserInfo, Never>
     func observeChatMessage() -> AnyPublisher<Chat, Never>
     func observeDetails() -> AnyPublisher<ChatRoomDetail, Never>
     func observeSchedules() -> AnyPublisher<DisscussionSchedule, Never>
     func send(number: Int, message: Chat)
-    func vote(side: Side)
+    func vote(side: UserInfo.Side)
     func addSchedule(_ schedule: DisscussionSchedule)
     func cancleSchedule(by scheduleID: String)
 
@@ -110,7 +90,7 @@ final class DefaultMessageRepository: MessageRepository {
             .setValue(values)
     }
 
-    func setInfo(side: Side) {
+    func setInfo(side: UserInfo.Side) {
         // TODO: 이것도 중복되면 문제가...
         self.sidesReferece
             .child(side.rawValue)
@@ -198,7 +178,7 @@ final class DefaultMessageRepository: MessageRepository {
         return self.schedulePublisher.eraseToAnyPublisher()
     }
 
-    func vote(side: Side) {
+    func vote(side: UserInfo.Side) {
         self.votesReference.child(side.rawValue).runTransactionBlock { currentData in
             if var votes = currentData.value as? [AnyObject] {
                 votes.append(IDManager.shared.userID() as AnyObject)
