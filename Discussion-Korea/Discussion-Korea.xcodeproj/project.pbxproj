@@ -45,6 +45,10 @@
 		3F88F6F8281AFE9D002FBB25 /* RxAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F88F6F7281AFE9D002FBB25 /* RxAlamofire */; };
 		3F88F754281BCF0F002FBB25 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F750281BCE82002FBB25 /* Domain.framework */; platformFilter = ios; };
 		3F88F755281BCF0F002FBB25 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F750281BCE82002FBB25 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F88F7E1281BE94D002FBB25 /* NetworkPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */; platformFilter = ios; };
+		3F88F7E2281BE94D002FBB25 /* NetworkPlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F88F80E281BE9BC002FBB25 /* FirebasePlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; platformFilter = ios; };
+		3F88F80F281BE9BC002FBB25 /* FirebasePlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F97B39328151615004F30A5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F97B39228151615004F30A5 /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +81,20 @@
 			remoteGlobalIDString = 3F88F7A8281BE7AB002FBB25;
 			remoteInfo = NetworkPlatformTests;
 		};
+		3F88F80A281BE9AC002FBB25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F88F7ED281BE983002FBB25;
+			remoteInfo = FirebasePlatform;
+		};
+		3F88F80C281BE9AC002FBB25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F88F7F5281BE983002FBB25;
+			remoteInfo = FirebasePlatformTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -86,6 +104,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3F88F80F281BE9BC002FBB25 /* FirebasePlatform.framework in Embed Frameworks */,
+				3F88F7E2281BE94D002FBB25 /* NetworkPlatform.framework in Embed Frameworks */,
 				3F88F755281BCF0F002FBB25 /* Domain.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -126,6 +146,7 @@
 		3F88F6EC281A9CEB002FBB25 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Domain.xcodeproj; path = ../Domain/Domain.xcodeproj; sourceTree = "<group>"; };
 		3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NetworkPlatform.xcodeproj; path = ../NetworkPlatform/NetworkPlatform.xcodeproj; sourceTree = "<group>"; };
+		3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebasePlatform.xcodeproj; path = ../FirebasePlatform/FirebasePlatform.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,12 +154,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F88F80E281BE9BC002FBB25 /* FirebasePlatform.framework in Frameworks */,
 				3F88F754281BCF0F002FBB25 /* Domain.framework in Frameworks */,
 				3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */,
 				3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */,
 				3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */,
 				3F88F6DB281A67BA002FBB25 /* RxCocoa in Frameworks */,
 				3F97B39328151615004F30A5 /* Alamofire in Frameworks */,
+				3F88F7E1281BE94D002FBB25 /* NetworkPlatform.framework in Frameworks */,
 				3F3DF9BF27EF2FF4006CDE71 /* SideMenu in Frameworks */,
 				3F88F6F8281AFE9D002FBB25 /* RxAlamofire in Frameworks */,
 				3F88F6DD281A67BA002FBB25 /* RxSwift in Frameworks */,
@@ -196,6 +219,7 @@
 		3F4DDC9327E353B4005C71D9 = {
 			isa = PBXGroup;
 			children = (
+				3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */,
 				3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */,
 				3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */,
 				3F4DDC9E27E353B4005C71D9 /* Discussion-Korea */,
@@ -357,6 +381,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3F88F806281BE9AB002FBB25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */,
+				3F88F80D281BE9AC002FBB25 /* FirebasePlatformTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -428,6 +461,10 @@
 					ProjectRef = 3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */;
 				},
 				{
+					ProductGroup = 3F88F806281BE9AB002FBB25 /* Products */;
+					ProjectRef = 3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */;
+				},
+				{
 					ProductGroup = 3F88F7B9281BE863002FBB25 /* Products */;
 					ProjectRef = 3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */;
 				},
@@ -466,6 +503,20 @@
 			fileType = wrapper.cfbundle;
 			path = NetworkPlatformTests.xctest;
 			remoteRef = 3F88F7BF281BE863002FBB25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FirebasePlatform.framework;
+			remoteRef = 3F88F80A281BE9AC002FBB25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3F88F80D281BE9AC002FBB25 /* FirebasePlatformTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FirebasePlatformTests.xctest;
+			remoteRef = 3F88F80C281BE9AC002FBB25 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
