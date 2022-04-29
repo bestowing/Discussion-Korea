@@ -71,6 +71,20 @@
 			remoteGlobalIDString = 3F88F724281BCC0C002FBB25;
 			remoteInfo = DomainTests;
 		};
+		3F88F7BD281BE863002FBB25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F88F7A0281BE7AB002FBB25;
+			remoteInfo = NetworkPlatform;
+		};
+		3F88F7BF281BE863002FBB25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F88F7A8281BE7AB002FBB25;
+			remoteInfo = NetworkPlatformTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -127,6 +141,7 @@
 		3F88F70C281BC6F1002FBB25 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		3F88F70E281BC74C002FBB25 /* Chat+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chat+Mapping.swift"; sourceTree = "<group>"; };
 		3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Domain.xcodeproj; path = ../Domain/Domain.xcodeproj; sourceTree = "<group>"; };
+		3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NetworkPlatform.xcodeproj; path = ../NetworkPlatform/NetworkPlatform.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +212,7 @@
 		3F4DDC9327E353B4005C71D9 = {
 			isa = PBXGroup;
 			children = (
+				3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */,
 				3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */,
 				3F4DDC9E27E353B4005C71D9 /* Discussion-Korea */,
 				3F4DDC9D27E353B4005C71D9 /* Products */,
@@ -412,6 +428,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3F88F7B9281BE863002FBB25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */,
+				3F88F7C0281BE863002FBB25 /* NetworkPlatformTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -482,6 +507,10 @@
 					ProductGroup = 3F88F74B281BCE82002FBB25 /* Products */;
 					ProjectRef = 3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */;
 				},
+				{
+					ProductGroup = 3F88F7B9281BE863002FBB25 /* Products */;
+					ProjectRef = 3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -503,6 +532,20 @@
 			fileType = wrapper.cfbundle;
 			path = DomainTests.xctest;
 			remoteRef = 3F88F751281BCE82002FBB25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = NetworkPlatform.framework;
+			remoteRef = 3F88F7BD281BE863002FBB25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3F88F7C0281BE863002FBB25 /* NetworkPlatformTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NetworkPlatformTests.xctest;
+			remoteRef = 3F88F7BF281BE863002FBB25 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
