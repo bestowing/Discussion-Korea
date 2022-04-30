@@ -10,6 +10,7 @@ import Domain
 
 protocol HomeNavigator {
 
+    func toHome()
     func toChatRoom()
 
 }
@@ -18,21 +19,35 @@ final class DefaultHomeNavigator: HomeNavigator {
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
-    private let storyBoard: UIStoryboard
+    private let storyboard: UIStoryboard
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController,
-         storyBoard: UIStoryboard) {
+         storyboard: UIStoryboard) {
         self.services = services
         self.navigationController = navigationController
-        self.storyBoard = storyBoard
+        self.storyboard = storyboard
+    }
+
+    deinit {
+        print(#function, self)
+    }
+
+    func toHome() {
+        guard let homeViewController = self.storyboard.instantiateViewController(identifier: HomeViewController.identifier) as? HomeViewController
+        else { return }
+        let homeViewModel = HomeViewModel(navigator: self)
+        homeViewController.viewModel = homeViewModel
+        self.navigationController.pushViewController(homeViewController, animated: false)
     }
 
     func toChatRoom() {
-        let viewController = storyBoard.instantiateViewController(withIdentifier: ChatRoomViewController.identifier)
+        guard let chatRoomViewController = self.storyboard.instantiateViewController(withIdentifier: ChatRoomViewController.identifier) as? ChatRoomViewController
+        else { return }
+//        let chatRoomViewModel = ChatRoomViewModel
 //        viewController.viewModel = PostsViewModel(useCase: services.makeChatsUsecase(),
 //                                      navigator: self)
-        self.navigationController.pushViewController(viewController, animated: true)
+        self.navigationController.pushViewController(chatRoomViewController, animated: true)
     }
 
 }

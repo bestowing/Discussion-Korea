@@ -5,7 +5,6 @@
 //  Created by 이청수 on 2022/03/17.
 //
 
-import Firebase
 import UIKit
 
 @main
@@ -17,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        FirebaseApp.configure()
         return true
     }
 

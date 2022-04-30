@@ -24,10 +24,6 @@
 		3F4DDCA927E353B5005C71D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCA827E353B5005C71D9 /* Assets.xcassets */; };
 		3F4DDCAC27E353B5005C71D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCAA27E353B5005C71D9 /* LaunchScreen.storyboard */; };
 		3F4DDCB527E354BB005C71D9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F4DDCB427E354BB005C71D9 /* GoogleService-Info.plist */; };
-		3F4DDCB927E356BF005C71D9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCB827E356BF005C71D9 /* FirebaseAnalytics */; };
-		3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBA27E356BF005C71D9 /* FirebaseDatabase */; };
-		3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */; };
-		3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */; };
 		3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */; };
 		3F4DDCC927E4AE00005C71D9 /* MessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */; };
 		3F4DDCCF27E4B90A005C71D9 /* MessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4DDCCD27E4B90A005C71D9 /* MessageCollectionViewCell.swift */; };
@@ -42,14 +38,12 @@
 		3F88F6E8281A71D7002FBB25 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F6E7281A71D7002FBB25 /* ViewModelType.swift */; };
 		3F88F6EB281A98CA002FBB25 /* HomeNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F6EA281A98CA002FBB25 /* HomeNavigator.swift */; };
 		3F88F6ED281A9CEB002FBB25 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F6EC281A9CEB002FBB25 /* Application.swift */; };
-		3F88F6F8281AFE9D002FBB25 /* RxAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F88F6F7281AFE9D002FBB25 /* RxAlamofire */; };
 		3F88F754281BCF0F002FBB25 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F750281BCE82002FBB25 /* Domain.framework */; platformFilter = ios; };
 		3F88F755281BCF0F002FBB25 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F750281BCE82002FBB25 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F88F7E1281BE94D002FBB25 /* NetworkPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */; platformFilter = ios; };
 		3F88F7E2281BE94D002FBB25 /* NetworkPlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F88F80E281BE9BC002FBB25 /* FirebasePlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; platformFilter = ios; };
 		3F88F80F281BE9BC002FBB25 /* FirebasePlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3F97B39328151615004F30A5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F97B39228151615004F30A5 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,16 +150,10 @@
 			files = (
 				3F88F80E281BE9BC002FBB25 /* FirebasePlatform.framework in Frameworks */,
 				3F88F754281BCF0F002FBB25 /* Domain.framework in Frameworks */,
-				3F4DDCBD27E356BF005C71D9 /* FirebaseFunctions in Frameworks */,
-				3F4DDCBF27E356BF005C71D9 /* FirebaseStorage in Frameworks */,
-				3F4DDCBB27E356BF005C71D9 /* FirebaseDatabase in Frameworks */,
 				3F88F6DB281A67BA002FBB25 /* RxCocoa in Frameworks */,
-				3F97B39328151615004F30A5 /* Alamofire in Frameworks */,
 				3F88F7E1281BE94D002FBB25 /* NetworkPlatform.framework in Frameworks */,
 				3F3DF9BF27EF2FF4006CDE71 /* SideMenu in Frameworks */,
-				3F88F6F8281AFE9D002FBB25 /* RxAlamofire in Frameworks */,
 				3F88F6DD281A67BA002FBB25 /* RxSwift in Frameworks */,
-				3F4DDCB927E356BF005C71D9 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,15 +396,9 @@
 			);
 			name = "Discussion-Korea";
 			packageProductDependencies = (
-				3F4DDCB827E356BF005C71D9 /* FirebaseAnalytics */,
-				3F4DDCBA27E356BF005C71D9 /* FirebaseDatabase */,
-				3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */,
-				3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */,
 				3F3DF9BE27EF2FF4006CDE71 /* SideMenu */,
-				3F97B39228151615004F30A5 /* Alamofire */,
 				3F88F6DA281A67BA002FBB25 /* RxCocoa */,
 				3F88F6DC281A67BA002FBB25 /* RxSwift */,
-				3F88F6F7281AFE9D002FBB25 /* RxAlamofire */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F4DDC9C27E353B4005C71D9 /* Discussion-Korea.app */;
@@ -718,7 +700,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -748,7 +729,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -837,26 +817,6 @@
 			package = 3F3DF9BD27EF2FF4006CDE71 /* XCRemoteSwiftPackageReference "SideMenu" */;
 			productName = SideMenu;
 		};
-		3F4DDCB827E356BF005C71D9 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		3F4DDCBA27E356BF005C71D9 /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		3F4DDCBC27E356BF005C71D9 /* FirebaseFunctions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFunctions;
-		};
-		3F4DDCBE27E356BF005C71D9 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F4DDCB727E356BF005C71D9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorage;
-		};
 		3F88F6DA281A67BA002FBB25 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -866,16 +826,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F88F6D9281A67BA002FBB25 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
-		};
-		3F88F6F7281AFE9D002FBB25 /* RxAlamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F88F6F6281AFE9D002FBB25 /* XCRemoteSwiftPackageReference "RxAlamofire" */;
-			productName = RxAlamofire;
-		};
-		3F97B39228151615004F30A5 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F97B39128151614004F30A5 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
