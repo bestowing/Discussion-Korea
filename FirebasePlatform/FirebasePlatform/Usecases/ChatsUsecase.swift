@@ -17,12 +17,16 @@ final class ChatsUsecase: Domain.ChatsUsecase {
         self.reference = reference
     }
 
-    func chats() -> Observable<[Chat]> {
-        self.reference.getChats()
+    func chats(room: Int) -> Observable<[Chat]> {
+        self.reference.getChats(room: room)
     }
 
-    func save(chat: Chat) -> Observable<Void> {
-        self.reference.save(chat: chat)
+    func connect(room: Int) -> Observable<Chat> {
+        self.reference.receiveNewChats(room: room)
+    }
+
+    func send(room: Int, chat: Chat) -> Observable<Void> {
+        self.reference.save(room: room, chat: chat)
     }
 
 }

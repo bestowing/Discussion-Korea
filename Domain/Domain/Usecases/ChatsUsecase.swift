@@ -9,7 +9,9 @@ import RxSwift
 
 public protocol ChatsUsecase {
 
-    func chats() -> Observable<[Chat]>
-    func save(chat: Chat) -> Observable<Void>
+    func chats(room: Int) -> Observable<[Chat]>
+    func connect(room: Int) -> Observable<Chat>
+    // FIXME: 일단 Int로 했지만 String으로 할 생각도 있음
+    func send(room: Int, chat: Chat) -> Observable<Void>
 
 }

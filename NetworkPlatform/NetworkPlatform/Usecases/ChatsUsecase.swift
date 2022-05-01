@@ -10,6 +10,11 @@ import RxSwift
 import Domain
 
 final class ChatsUsecase: Domain.ChatsUsecase {
+    func send(room: Int, chat: Chat) -> Observable<Void> {
+        return self.network.createChat(chat: chat)
+            .map { _ in }
+    }
+    
 
     private let network: ChatsNetwork
 //    private let cache: Cache<Chat>
@@ -34,11 +39,6 @@ final class ChatsUsecase: Domain.ChatsUsecase {
         
         return stored
 //        return fetchChats.concat(stored)
-    }
-    
-    func save(chat: Chat) -> Observable<Void> {
-        return self.network.createChat(chat: chat)
-            .map { _ in }
     }
 
 }

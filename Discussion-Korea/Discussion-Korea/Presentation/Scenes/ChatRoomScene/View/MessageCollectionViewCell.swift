@@ -37,18 +37,18 @@ final class MessageCollectionViewCell: UICollectionViewCell {
 
 extension MessageCollectionViewCell: MessageCell {
 
-    func bind(message: Chat) {
-        self.nicknameLabel.text = message.nickName ?? message.userID
-        self.contentLabel.text = message.content
+    func bind(_ viewModel: ChatItemViewModel) {
+        self.nicknameLabel.text = viewModel.chat.nickName ?? viewModel.chat.userID
+        self.contentLabel.text = viewModel.chat.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "a h:mm"
-        if let date = message.date {
+        if let date = viewModel.chat.date {
             self.timeLabel.text = dateFormatter.string(from: date)
         } else {
             self.timeLabel.text = ""
         }
-        if message.userID == "bot" {
+        if viewModel.chat.userID == "bot" {
             self.profileImageView.image = UIImage(named: "bot")
         } else {
             self.profileImageView.image = UIImage(systemName: "person.fill")

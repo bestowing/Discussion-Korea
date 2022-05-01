@@ -44,6 +44,10 @@
 		3F88F7E2281BE94D002FBB25 /* NetworkPlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F7BE281BE863002FBB25 /* NetworkPlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F88F80E281BE9BC002FBB25 /* FirebasePlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; platformFilter = ios; };
 		3F88F80F281BE9BC002FBB25 /* FirebasePlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F88F80B281BE9AC002FBB25 /* FirebasePlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F88F846281D2915002FBB25 /* ChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F845281D2915002FBB25 /* ChatRoomViewModel.swift */; };
+		3F88F848281D2962002FBB25 /* ChatRoomNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F847281D2962002FBB25 /* ChatRoomNavigator.swift */; };
+		3F88F84A281D34C9002FBB25 /* Observable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F849281D34C9002FBB25 /* Observable+.swift */; };
+		3F88F84C281E5779002FBB25 /* ChatItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88F84B281E5779002FBB25 /* ChatItemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +145,10 @@
 		3F88F74A281BCE82002FBB25 /* Domain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Domain.xcodeproj; path = ../Domain/Domain.xcodeproj; sourceTree = "<group>"; };
 		3F88F7B8281BE863002FBB25 /* NetworkPlatform.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NetworkPlatform.xcodeproj; path = ../NetworkPlatform/NetworkPlatform.xcodeproj; sourceTree = "<group>"; };
 		3F88F805281BE9AB002FBB25 /* FirebasePlatform.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebasePlatform.xcodeproj; path = ../FirebasePlatform/FirebasePlatform.xcodeproj; sourceTree = "<group>"; };
+		3F88F845281D2915002FBB25 /* ChatRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewModel.swift; sourceTree = "<group>"; };
+		3F88F847281D2962002FBB25 /* ChatRoomNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomNavigator.swift; sourceTree = "<group>"; };
+		3F88F849281D34C9002FBB25 /* Observable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+.swift"; sourceTree = "<group>"; };
+		3F88F84B281E5779002FBB25 /* ChatItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,8 +286,11 @@
 			isa = PBXGroup;
 			children = (
 				3F4DDCCC27E4B8E9005C71D9 /* View */,
+				3F88F847281D2962002FBB25 /* ChatRoomNavigator.swift */,
 				3F4DDCC027E359DD005C71D9 /* ChatRoomViewController.swift */,
 				3F4DDCC827E4AE00005C71D9 /* MessageRepository.swift */,
+				3F88F845281D2915002FBB25 /* ChatRoomViewModel.swift */,
+				3F88F84B281E5779002FBB25 /* ChatItemViewModel.swift */,
 			);
 			path = ChatRoomScene;
 			sourceTree = "<group>";
@@ -340,6 +351,7 @@
 		3F88F6E9281A7275002FBB25 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				3F88F849281D34C9002FBB25 /* Observable+.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -531,18 +543,22 @@
 				3F3DF9C127EF829C006CDE71 /* ChatRoomDetailViewController.swift in Sources */,
 				3F3DF9D027FB3908006CDE71 /* AddReservationViewController.swift in Sources */,
 				3F4DDCA427E353B4005C71D9 /* HomeViewController.swift in Sources */,
+				3F88F84C281E5779002FBB25 /* ChatItemViewModel.swift in Sources */,
 				3F4DDCA027E353B4005C71D9 /* AppDelegate.swift in Sources */,
 				3F3DF9D227FB426B006CDE71 /* DisscussionNavigationController.swift in Sources */,
 				3F3DF9CD27FB248C006CDE71 /* ReservationTableViewCell.swift in Sources */,
+				3F88F848281D2962002FBB25 /* ChatRoomNavigator.swift in Sources */,
 				3F88F6ED281A9CEB002FBB25 /* Application.swift in Sources */,
 				3F88F6EB281A98CA002FBB25 /* HomeNavigator.swift in Sources */,
 				3F88F6E8281A71D7002FBB25 /* ViewModelType.swift in Sources */,
 				3F4DDCD227E51151005C71D9 /* UIPaddingLabel.swift in Sources */,
 				3F3DF9C427EF8E6A006CDE71 /* UserListTableViewCell.swift in Sources */,
 				3F75873227E5FF2F00D550D3 /* IDManager.swift in Sources */,
+				3F88F846281D2915002FBB25 /* ChatRoomViewModel.swift in Sources */,
 				3F4DDCA227E353B4005C71D9 /* SceneDelegate.swift in Sources */,
 				3F3DF9C627FA0FC1006CDE71 /* ChatRoomDetail.swift in Sources */,
 				3F3DF9BB27EA274C006CDE71 /* SerialMessageCollectionViewCell.swift in Sources */,
+				3F88F84A281D34C9002FBB25 /* Observable+.swift in Sources */,
 				3F3DF9C927FA15C7006CDE71 /* DisscussionReservationViewController.swift in Sources */,
 				3F75873727EA144200D550D3 /* SelfMessageCollectionViewCell.swift in Sources */,
 				3F4DDCC127E359DD005C71D9 /* ChatRoomViewController.swift in Sources */,

@@ -10,8 +10,7 @@ import Domain
 
 protocol MessageCell: UICollectionViewCell {
 
-    static func dequeueReusableCell(from collectionView: UICollectionView, for indexPath: IndexPath) -> MessageCell
-    func bind(message: Chat)
+    func bind(_ viewModel: ChatItemViewModel)
 
 }
 
@@ -43,12 +42,12 @@ extension SelfMessageCollectionViewCell: MessageCell {
         return collectionView.dequeueReusableCell(withReuseIdentifier: Self.identifier, for: indexPath) as? MessageCell ?? SelfMessageCollectionViewCell()
     }
 
-    func bind(message: Chat) {
-        self.contentLabel.text = message.content
+    func bind(_ viewModel: ChatItemViewModel) {
+        self.contentLabel.text = viewModel.chat.content
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "a h:mm"
-        if let date = message.date {
+        if let date = viewModel.chat.date {
             self.timeLabel.text = dateFormatter.string(from: date)
         } else {
             self.timeLabel.text = ""

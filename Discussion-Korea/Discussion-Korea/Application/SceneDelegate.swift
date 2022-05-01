@@ -19,7 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.windowScene = windowScene
+
         Application.shared.configureMainInterface(in: window)
+
         self.window = window
     }
 

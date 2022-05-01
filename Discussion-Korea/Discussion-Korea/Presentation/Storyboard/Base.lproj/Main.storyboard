@@ -63,9 +63,6 @@
                                 <rect key="frame" x="348.5" y="811.5" width="55.5" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="send"/>
-                                <connections>
-                                    <action selector="sendButtonDidTouch:" destination="BWM-qj-BFI" eventType="touchUpInside" id="SRf-Zm-Bmm"/>
-                                </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RPh-Dm-86J">
                                 <rect key="frame" x="20" y="802" width="318.5" height="50"/>

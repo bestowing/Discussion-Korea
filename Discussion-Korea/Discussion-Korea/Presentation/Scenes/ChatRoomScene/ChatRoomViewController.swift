@@ -9,14 +9,20 @@ import Combine
 import UIKit
 import SideMenu
 import Domain
+import RxSwift
 
 final class ChatRoomViewController: UIViewController {
+
+    // MARK: - properties
+
+    var viewModel: ChatRoomViewModel!
 
     @IBOutlet private weak var messageCollectionView: UICollectionView!
     @IBOutlet private weak var messageTextView: UITextView!
     @IBOutlet private weak var sendButton: UIButton!
     private var backgroundShadowView: UIView!
 
+    private let disposeBag = DisposeBag()
     private let repository: MessageRepository = DefaultMessageRepository(
         roomID: "1"
     )
@@ -24,31 +30,58 @@ final class ChatRoomViewController: UIViewController {
     private var messages: [Chat] = []
     private var nicknames: [String: UserInfo] = ["bot": UserInfo(userID: "bot", nickname: "방장봇", isAdmin: false)]
 
-    // MARK: methods
+    // MARK: - init/deinit
+
+    deinit {
+//        self.backgroundShadowView.removeFromSuperview()
+        print(#function, self)
+    }
+
+    // MARK: - methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.backgroundShadowView = UIView(frame: self.view.bounds)
-        self.backgroundShadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.backgroundShadowView.backgroundColor = .black
-        self.backgroundShadowView.alpha = 0.0
-        self.backgroundShadowView.isUserInteractionEnabled = false
-        self.navigationController?.view.addSubview(self.backgroundShadowView)
-
-        self.checkIfFirstEntering()
-        self.observeUserInfo()
-        self.observePhase()
-        self.configureViews()
-        self.configureTapGestureRecognizer()
         self.configureMessageCollectionView()
-        self.configureNotifications()
-        self.observeChatMessage()
+        self.bindViewModel()
+
+//        self.backgroundShadowView = UIView(frame: self.view.bounds)
+//        self.backgroundShadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        self.backgroundShadowView.backgroundColor = .black
+//        self.backgroundShadowView.alpha = 0.0
+//        self.backgroundShadowView.isUserInteractionEnabled = false
+//        self.navigationController?.view.addSubview(self.backgroundShadowView)
+
+//        self.checkIfFirstEntering()
+//        self.observeUserInfo()
+//        self.observePhase()
+//        self.configureViews()
+//        self.configureTapGestureRecognizer()
+        
+//        self.configureNotifications()
+//        self.observeChatMessage()
     }
 
-    deinit {
-        self.backgroundShadowView.removeFromSuperview()
-        print(#function, self)
+    private func bindViewModel() {
+        assert(self.viewModel != nil)
+
+        let input = ChatRoomViewModel.Input(
+            trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+                .mapToVoid()
+                .asDriverOnErrorJustComplete(),
+            send: self.sendButton.rx.tap.asDriver(),
+            content: self.messageTextView.rx.text.orEmpty.asDriver()
+        )
+        let output = self.viewModel.transform(input: input)
+
+        output.chats.drive(self.messageCollectionView.rx.items) { collectionView, index, model in
+            let indexPath = IndexPath(item: index, section: 0)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? MessageCell
+            cell?.bind(model)
+            return cell ?? UICollectionViewCell()
+        }.disposed(by: self.disposeBag)
+
+        output.events
+            .drive().disposed(by: self.disposeBag)
     }
 
     @objc func viewDidTap(_ gesture: UITapGestureRecognizer) {
@@ -216,8 +249,6 @@ final class ChatRoomViewController: UIViewController {
     }
 
     private func configureMessageCollectionView() {
-        self.messageCollectionView.delegate = self
-        self.messageCollectionView.dataSource = self
         self.messageCollectionView.register(
             UINib(nibName: MessageCollectionViewCell.identifier, bundle: nil),
             forCellWithReuseIdentifier: MessageCollectionViewCell.identifier
@@ -275,34 +306,6 @@ final class ChatRoomViewController: UIViewController {
                 self.messageCollectionView.insertItems(at: [indexPath])
                 self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }.store(in: &self.cancellables)
-    }
-
-}
-
-// 찬성측 말 못함 -> 찬성 고르고 나갔다 들어왔었음 -> 유저인포로 하다보니 그런듯? -> 반대측도 말 못함 지금 ㅅㅂ -> 투표도 지금 안뜬다;
-
-extension ChatRoomViewController: UICollectionViewDelegate,
-                                  UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.messages.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: MessageCell
-        let message = self.messages[indexPath.item]
-        if message.userID == IDManager.shared.userID() {
-            cell = SelfMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
-        } else {
-            if indexPath.item > 0 && self.messages[indexPath.item - 1].userID == message.userID {
-                cell = SerialMessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
-            } else {
-                cell = MessageCollectionViewCell.dequeueReusableCell(from: collectionView, for: indexPath)
-            }
-        }
-        cell.bind(message: message)
-        return cell
     }
 
 }
