@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
-		3F37B38E282075A300DB18B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38D282075A300DB18B7 /* GoogleService-Info.plist */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
 		3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B394282075E400DB18B7 /* ViewModelType.swift */; };
 		3F37B39A2820762D00DB18B7 /* Observable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3982820762C00DB18B7 /* Observable+.swift */; };
@@ -44,13 +43,13 @@
 		3F37B3E628207CCA00DB18B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E328207CCA00DB18B7 /* AppDelegate.swift */; };
 		3F37B3E828207CFB00DB18B7 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* Reference.swift */; };
 		3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E928207D0200DB18B7 /* ReferenceProvider.swift */; };
+		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F37B38B2820759D00DB18B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3F37B38D282075A300DB18B7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3F37B38F282075AF00DB18B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F37B394282075E400DB18B7 /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		3F37B3982820762C00DB18B7 /* Observable+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+.swift"; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		3F37B3E328207CCA00DB18B7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F37B3E728207CFB00DB18B7 /* Reference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
 		3F37B3E928207D0200DB18B7 /* ReferenceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceProvider.swift; sourceTree = "<group>"; };
+		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +104,7 @@
 			children = (
 				3F37B36B2820747500DB18B7 /* Discussion-Korea */,
 				3F37B36A2820747500DB18B7 /* Products */,
+				3FB357812821115A00F27C77 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -169,7 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				3F37B38F282075AF00DB18B7 /* Assets.xcassets */,
-				3F37B38D282075A300DB18B7 /* GoogleService-Info.plist */,
+				3FB3577F2821102500F27C77 /* GoogleService-Info.plist */,
 				3F37B38B2820759D00DB18B7 /* Info.plist */,
 				3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */,
 			);
@@ -274,6 +275,13 @@
 			path = Reference;
 			sourceTree = "<group>";
 		};
+		3FB357812821115A00F27C77 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -349,8 +357,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */,
-				3F37B38E282075A300DB18B7 /* GoogleService-Info.plist in Resources */,
 				3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */,
+				3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,7 +555,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -577,7 +585,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

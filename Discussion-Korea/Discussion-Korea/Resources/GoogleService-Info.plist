@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:67729016727:ios:6eeb3b9f768e6d15a1e6d2</string>
+	<string>1:67729016727:ios:dea39e65bad6afe1a1e6d2</string>
 	<key>DATABASE_URL</key>
 	<string>https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>

@@ -8,6 +8,7 @@
 import SnapKit
 import UIKit
 import RxSwift
+import RxKeyboard
 
 final class ChatRoomViewController: UIViewController {
 
@@ -28,6 +29,9 @@ final class ChatRoomViewController: UIViewController {
 
     private let messageTextView: UITextView = {
         let messageTextView = UITextView()
+        messageTextView.font = UIFont.systemFont(ofSize: 14.0)
+        messageTextView.text = "하위~"
+        messageTextView.isScrollEnabled = false
         return messageTextView
     }()
 
@@ -66,18 +70,18 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.sendButton)
         self.messageCollectionView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.bottom.equalTo(self.messageTextView.snp.top).offset(-10)
         }
+        self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
         self.messageTextView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(self.sendButton.snp.leading).offset(-10)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.height.equalTo(50)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(10)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
         }
         self.sendButton.snp.makeConstraints { make in
+            make.leading.equalTo(self.messageTextView.snp.trailing).offset(10)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.centerY.equalTo(self.messageTextView)
         }
@@ -87,6 +91,15 @@ final class ChatRoomViewController: UIViewController {
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
         self.messageCollectionView.collectionViewLayout = flowLayout
+
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        self.view.addGestureRecognizer(tap)
+
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [unowned self] keyboardVisibleHeight in
+                self.view.frame.origin.y = -keyboardVisibleHeight
+            })
+            .disposed(by: disposeBag)
     }
 
     private func bindViewModel() {
@@ -96,7 +109,7 @@ final class ChatRoomViewController: UIViewController {
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            send: sendButton.rx.tap.asDriver(),
+            send: self.sendButton.rx.tap.asDriver(),
             content: self.messageTextView.rx.text.orEmpty.asDriver()
         )
         let output = self.viewModel.transform(input: input)
@@ -110,6 +123,12 @@ final class ChatRoomViewController: UIViewController {
         }.disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
+        output.sendEvent
+            .drive(onNext: { [unowned self] in
+                self.messageTextView.text = ""
+            })
             .disposed(by: self.disposeBag)
     }
 

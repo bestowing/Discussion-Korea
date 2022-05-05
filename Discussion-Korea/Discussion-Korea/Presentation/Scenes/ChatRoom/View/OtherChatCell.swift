@@ -34,6 +34,8 @@ final class OtherChatCell: ChatCell {
         contentLabel.font = UIFont.systemFont(ofSize: 14.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
+        contentLabel.numberOfLines = 0
+        contentLabel.lineBreakMode = .byCharWrapping
         return contentLabel
     }()
 
@@ -67,6 +69,7 @@ final class OtherChatCell: ChatCell {
         }
         self.contentLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.nicknameLabel.snp.leading)
+            make.trailing.lessThanOrEqualToSuperview().offset(-80)
             make.top.equalTo(self.nicknameLabel.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
@@ -75,7 +78,6 @@ final class OtherChatCell: ChatCell {
         self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
         self.timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-30)
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
     }
@@ -83,6 +85,7 @@ final class OtherChatCell: ChatCell {
     // MARK: - methods
 
     override func bind(_ viewModel: ChatItemViewModel) {
+        self.profileImageView.image = UIImage(systemName: "person.fill")
         self.nicknameLabel.text = viewModel.chat.nickName
         self.contentLabel.text = viewModel.chat.content
         self.timeLabel.text = viewModel.timeString

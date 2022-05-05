@@ -19,6 +19,8 @@ final class SerialOtherChatCell: ChatCell {
         contentLabel.font = UIFont.systemFont(ofSize: 14.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
+        contentLabel.numberOfLines = 0
+        contentLabel.lineBreakMode = .byCharWrapping
         return contentLabel
     }()
 
@@ -40,6 +42,7 @@ final class SerialOtherChatCell: ChatCell {
         self.contentView.addSubview(self.timeLabel)
         self.contentLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(55)
+            make.trailing.lessThanOrEqualToSuperview().offset(-80)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -47,7 +50,6 @@ final class SerialOtherChatCell: ChatCell {
         self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
         self.timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-30)
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
     }

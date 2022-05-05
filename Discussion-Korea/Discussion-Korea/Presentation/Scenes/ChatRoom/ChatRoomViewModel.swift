@@ -30,35 +30,38 @@ final class ChatRoomViewModel: ViewModelType {
 
         let chats = input.trigger
             .withLatestFrom(uid)
-            .flatMapLatest { [unowned self] uid in
-                self.chatsUsecase.chats(room: 1)
+            .flatMap { [unowned self] uid in
+                self.chatsUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
-                    .map { (chats) -> [ChatItemViewModel] in
-                        zip(
-                            [Chat(userID: "a", content: "a", date: Date())] + chats.dropLast(), chats
-                        ).map {
-                            if $0.1.userID == uid {
-                                // 내가 보낸 메시지
-                                return SelfChatItemViewModel(with: $0.1)
+                    .scan([ChatItemViewModel]()) { viewModels, chat in
+                        let newItemViewModel: ChatItemViewModel
+                        if let last = viewModels.last,
+                           last.chat.userID == chat.userID,
+                           let lastDate = last.chat.date,
+                           let currentDate = chat.date,
+                           Int(currentDate.timeIntervalSince(lastDate)) < 60 {
+                            viewModels.last?.chat.date = nil
+                        }
+                        if chat.userID == uid {
+                            newItemViewModel = SelfChatItemViewModel(with: chat)
+                        } else {
+                            if let last = viewModels.last,
+                               last.chat.userID == chat.userID {
+                                newItemViewModel = SerialOtherChatItemViewModel(with: chat)
                             } else {
-                                if $0.0.userID == $0.1.userID {
-                                    // 같은 상대가 연속으로 보낸 메시지
-                                    return SerialOtherChatItemViewModel(with: $0.1)
-                                } else {
-                                    // 상대방이 처음으로 보낸 메시지
-                                    return OtherChatItemViewModel(with: $0.1)
-                                }
+                                newItemViewModel = OtherChatItemViewModel(with: chat)
                             }
                         }
+                        return viewModels + [newItemViewModel]
                     }
-
             }
 
         let canSend = input.content.map { !$0.isEmpty }
 
         let contentAndUID = Driver.combineLatest(input.content, uid)
 
-        let sendEvent = input.send.withLatestFrom(contentAndUID)
+        let sendEvent = input.send
+            .withLatestFrom(contentAndUID)
             .map { (content, uid) -> Chat in
                 Chat(userID: uid, content: content, date: Date())
             }
@@ -66,10 +69,9 @@ final class ChatRoomViewModel: ViewModelType {
                 self.chatsUsecase.send(room: 1, chat: $0)
                     .asDriverOnErrorJustComplete()
             }
+            .mapToVoid()
 
-        let events = sendEvent.mapToVoid()
-
-        return Output(chats: chats, sendEnable: canSend, events: events)
+        return Output(chats: chats, sendEnable: canSend, sendEvent: sendEvent)
     }
 
 }
@@ -85,7 +87,7 @@ extension ChatRoomViewModel {
     struct Output {
         let chats: Driver<[ChatItemViewModel]>
         let sendEnable: Driver<Bool>
-        let events: Driver<Void>
+        let sendEvent: Driver<Void>
     }
 
 }

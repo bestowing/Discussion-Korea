@@ -19,6 +19,8 @@ final class SelfChatCell: ChatCell {
         contentLabel.font = UIFont.systemFont(ofSize: 14.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
+        contentLabel.numberOfLines = 0
+        contentLabel.lineBreakMode = .byCharWrapping
         return contentLabel
     }()
 
@@ -39,12 +41,13 @@ final class SelfChatCell: ChatCell {
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
         self.contentLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.timeLabel.snp.trailing).offset(8)
+            make.leading.greaterThanOrEqualToSuperview().offset(80)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         self.timeLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(self.contentLabel.snp.leading).offset(-8)
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
     }

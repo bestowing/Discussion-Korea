@@ -9,7 +9,7 @@ import Foundation
 
 class ChatItemViewModel {
 
-    let chat: Chat
+    var chat: Chat
 
     private let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
