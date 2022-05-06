@@ -5,11 +5,13 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
+import SideMenu
 import UIKit
 
 protocol ChatRoomNavigator {
 
     func toChatRoom()
+    func toSideMenu()
 
 }
 
@@ -17,6 +19,8 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    private weak var presentingViewController: UIViewController?
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {
@@ -30,6 +34,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     func toChatRoom() {
         let chatRoomViewController = ChatRoomViewController()
+        self.presentingViewController = chatRoomViewController
         let chatRoomViewModel = ChatRoomViewModel(
             chatsUsecase: self.services.makeChatsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
@@ -37,6 +42,16 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         )
         chatRoomViewController.viewModel = chatRoomViewModel
         self.navigationController.pushViewController(chatRoomViewController, animated: true)
+    }
+
+    func toSideMenu() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultChatRoomSideMenuNavigator(
+            services: self.services,
+            viewController: presentingViewController
+        )
+        navigator.toChatRoomSideMenu()
     }
 
 }

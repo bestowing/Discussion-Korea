@@ -16,6 +16,12 @@ final class ChatRoomViewController: UIViewController {
 
     var viewModel: ChatRoomViewModel!
 
+    private let menuButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = "menu"
+        return button
+    }()
+
     private let messageCollectionView: UICollectionView = {
         let messageCollectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
@@ -69,6 +75,7 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.messageCollectionView)
         self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.sendButton)
+        self.navigationItem.rightBarButtonItem = self.menuButton
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
@@ -110,6 +117,7 @@ final class ChatRoomViewController: UIViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             send: self.sendButton.rx.tap.asDriver(),
+            menu: self.menuButton.rx.tap.asDriver(),
             content: self.messageTextView.rx.text.orEmpty.asDriver()
         )
         let output = self.viewModel.transform(input: input)
@@ -124,6 +132,8 @@ final class ChatRoomViewController: UIViewController {
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+
+        output.sideMenuEvent.drive().disposed(by: self.disposeBag)
 
         output.sendEvent
             .drive(onNext: { [unowned self] in

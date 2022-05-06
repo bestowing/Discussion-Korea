@@ -31,7 +31,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func userInfo() -> Observable<UserInfo> {
-        return self.reference.getUserInfo()
+        return self.reference.getUserInfo(room: 1)
     }
 
 }

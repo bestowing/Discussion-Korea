@@ -31,8 +31,6 @@ final class DefaultHomeNavigator: HomeNavigator {
 
     func toHome() {
         let homeViewController = HomeViewController()
-//        guard let homeViewController = self.storyboard.instantiateViewController(identifier: HomeViewController.identifier) as? HomeViewController
-//        else { return }
         let homeViewModel = HomeViewModel(navigator: self)
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)

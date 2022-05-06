@@ -60,6 +60,9 @@ final class ChatRoomViewModel: ViewModelType {
 
         let contentAndUID = Driver.combineLatest(input.content, uid)
 
+        let sideMenuEvent = input.menu
+            .do(onNext: self.navigator.toSideMenu)
+
         let sendEvent = input.send
             .withLatestFrom(contentAndUID)
             .map { (content, uid) -> Chat in
@@ -71,7 +74,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        return Output(chats: chats, sendEnable: canSend, sendEvent: sendEvent)
+        return Output(chats: chats, sendEnable: canSend, sideMenuEvent: sideMenuEvent, sendEvent: sendEvent)
     }
 
 }
@@ -81,12 +84,14 @@ extension ChatRoomViewModel {
     struct Input {
         let trigger: Driver<Void>
         let send: Driver<Void>
+        let menu: Driver<Void>
         let content: Driver<String>
     }
     
     struct Output {
         let chats: Driver<[ChatItemViewModel]>
         let sendEnable: Driver<Bool>
+        let sideMenuEvent: Driver<Void>
         let sendEvent: Driver<Void>
     }
 

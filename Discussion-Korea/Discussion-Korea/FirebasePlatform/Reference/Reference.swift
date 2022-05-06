@@ -60,8 +60,28 @@ final class Reference {
         return Observable<Void>.just(Void())
     }
 
-    func getUserInfo() -> Observable<UserInfo> {
-        return Observable.just(UserInfo(uid: "test", nickname: "테스트", profileURL: nil))
+    func getUserInfo(room: Int) -> Observable<UserInfo> {
+        return Observable<UserInfo>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom").child("\(room)").child("users")
+                .observe(.childAdded) { snapshot in
+                    guard let dic = snapshot.value as? NSDictionary,
+                          let nickname = dic["nickname"] as? String
+                    else { return }
+                    var userInfo = UserInfo(uid: snapshot.key, nickname: nickname)
+                    if let urlString = dic["profile"] as? String,
+                       let url = URL(string: urlString) {
+                        userInfo.profileURL = url
+                    }
+                    if let position = dic["position"] as? String {
+                        userInfo.position = position
+                    }
+                    subscribe.onNext(userInfo)
+                }
+            return Disposables.create()
+        }
     }
 
 }
+
+// 포지션 값도 키값으로 해야 할듯
