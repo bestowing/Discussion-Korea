@@ -33,9 +33,9 @@ final class OtherChatCell: ChatCell {
         contentLabel.textColor = .label
         contentLabel.font = UIFont.systemFont(ofSize: 14.0)
         contentLabel.layer.cornerRadius = 8
-        contentLabel.layer.masksToBounds = true
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
+        contentLabel.layer.masksToBounds = true
         return contentLabel
     }()
 
@@ -48,18 +48,24 @@ final class OtherChatCell: ChatCell {
     // MARK: - init/deinit
 
     required init?(coder: NSCoder) {
-        fatalError("not implemented")
+        super.init(coder: coder)
+        self.layoutViews()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.layoutViews()
+    }
+
+    // MARK: - methods
+
+    private func layoutViews() {
         self.contentView.addSubview(self.profileImageView)
         self.contentView.addSubview(self.nicknameLabel)
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
         self.profileImageView.snp.makeConstraints { make in
-            make.width.equalTo(38)
-            make.height.equalTo(41)
+            make.width.height.equalTo(35)
             make.leading.equalToSuperview().offset(10)
             make.top.equalToSuperview().offset(8)
         }
@@ -67,26 +73,24 @@ final class OtherChatCell: ChatCell {
             make.leading.equalTo(self.profileImageView.snp.trailing).offset(8)
             make.top.equalTo(self.profileImageView.snp.top).offset(2)
         }
+        self.nicknameLabel.snp.contentHuggingVerticalPriority = 252
         self.contentLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.nicknameLabel.snp.leading)
             make.trailing.lessThanOrEqualToSuperview().offset(-80)
             make.top.equalTo(self.nicknameLabel.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
-        self.nicknameLabel.snp.contentHuggingVerticalPriority = 252
         self.contentLabel.snp.contentHuggingHorizontalPriority = 252
-        self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
         self.timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
+        self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
     }
-
-    // MARK: - methods
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.profileImageView.image = UIImage(systemName: "person.fill")
-        self.nicknameLabel.text = viewModel.chat.nickName
+        self.nicknameLabel.text = "닉네임" //viewModel.chat.nickName
         self.contentLabel.text = viewModel.chat.content
         self.timeLabel.text = viewModel.timeString
     }
@@ -97,3 +101,5 @@ final class OtherChatCell: ChatCell {
     }
 
 }
+
+// 다만, 그 정도 타액을 신경쓰신다면 밥을 드실때도 마스크 입에만 구멍을 내서 식사를 하셔야 하는거 아닌가요? 세상 만사 다 불편해서 어떻게 식사를 합니까?

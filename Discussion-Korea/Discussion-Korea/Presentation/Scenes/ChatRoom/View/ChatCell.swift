@@ -13,6 +13,7 @@ class ChatCell: UICollectionViewCell {
         super.preferredLayoutAttributesFitting(layoutAttributes)
         self.layoutIfNeeded()
         let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        var frame = layoutAttributes.frame
         frame.size.height = ceil(size.height)
         layoutAttributes.frame = frame
         return layoutAttributes
