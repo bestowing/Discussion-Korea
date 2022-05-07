@@ -57,6 +57,15 @@ final class ChatRoomSideMenuViewController: UIViewController {
         return label
     }()
 
+    private let participantsTableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.register(ParticipantCell.self,
+                           forCellReuseIdentifier: ParticipantCell.identifier)
+        return tableView
+    }()
+
     private let disposeBag = DisposeBag()
 
     // MARK: - init/deinit
@@ -85,6 +94,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         self.stackView.addArrangedSubview(self.calendarButton)
         self.view.addSubview(self.line2)
         self.view.addSubview(self.participantLabel)
+        self.view.addSubview(self.participantsTableView)
         self.titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
@@ -117,6 +127,12 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
             make.top.equalTo(self.line2.snp.bottom).offset(20)
         }
+        self.participantsTableView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+            make.top.equalTo(self.participantLabel.snp.bottom).offset(10)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+        }
     }
 
     private func bindViewModel() {
@@ -130,21 +146,16 @@ final class ChatRoomSideMenuViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
+        output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
+            let indexPath = IndexPath(item: index, section: 0)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ParticipantCell.identifier, for: indexPath) as? ParticipantCell
+            else { return UITableViewCell() }
+            cell.bind(model)
+            return cell
+        }.disposed(by: self.disposeBag)
+
         output.calendarEvent.drive().disposed(by: self.disposeBag)
 
-    }
-
-}
-
-final class ChatRoomSideMenuNavigationController: SideMenuNavigationController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        self.sideMenuDelegate = self.presentingViewController as? ChatRoomViewController
-//        self.presentDuration = 0.3
-//        self.dismissDuration = 0.3
-        self.presentationStyle = .viewSlideOutMenuIn
-//        self.menuWidth = self.view.frame.width * 0.8
     }
 
 }

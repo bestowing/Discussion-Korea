@@ -67,6 +67,7 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
         )
         viewController.viewModel = viewModel
         let menu = DefaultSideMenuNavigation(rootViewController: viewController)
+        menu.isNavigationBarHidden = true
         self.viewController.present(menu, animated: true)
     }
 

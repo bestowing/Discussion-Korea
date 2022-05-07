@@ -18,6 +18,10 @@ final class Application {
     }
 
     func configureMainInterface(in window: UIWindow) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().standardAppearance = appearance
+
         let navigationController = UINavigationController()
         let homeNavigator = DefaultHomeNavigator(
             services: self.firebaseUseCaseProvider,

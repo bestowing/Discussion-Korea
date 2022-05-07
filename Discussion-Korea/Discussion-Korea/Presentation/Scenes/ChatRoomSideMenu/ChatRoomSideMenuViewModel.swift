@@ -16,7 +16,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
     }
     
     struct Output {
-        let userInfos: Driver<UserInfo>
+        let participants: Driver<[ParticipantItemViewModel]>
         let calendarEvent: Driver<Void>
     }
 
@@ -40,16 +40,19 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let userInfos = input.viewWillAppear
+        let participants = input.viewWillAppear
             .flatMap { [unowned self] in
                 self.userInfoUsecase.userInfo()
                     .asDriverOnErrorJustComplete()
+                    .scan([ParticipantItemViewModel]()) {viewModels, userInfo in
+                        return viewModels + [ParticipantItemViewModel(with: userInfo)]
+                    }
             }
 
         let calendarEvent = input.calendar
             .do(onNext: self.navigator.toChatRoomSchedule)
 
-        return Output(userInfos: userInfos, calendarEvent: calendarEvent)
+        return Output(participants: participants, calendarEvent: calendarEvent)
     }
 
 }
