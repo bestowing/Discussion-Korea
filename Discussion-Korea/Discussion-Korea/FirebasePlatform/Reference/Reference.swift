@@ -82,6 +82,45 @@ final class Reference {
         }
     }
 
+    func getDiscussions(room: Int) -> Observable<Discussion> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return Observable<Discussion>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/discussions")
+                .observe(.childAdded) { snapshot in
+                    guard let dic = snapshot.value as? NSDictionary,
+                          let dateString = dic["date"] as? String,
+                          let date = dateFormatter.date(from: dateString),
+                          let durations = dic["durations"] as? [Int],
+                          let topic = dic["topic"] as? String
+                    else { return }
+                    let discussion = Discussion(uid: snapshot.key,
+                                                date: date,
+                                                durations: durations,
+                                                topic: topic)
+                    subscribe.onNext(discussion)
+                }
+            return Disposables.create()
+        }
+    }
+
+    func addDiscussion(room: Int, discussion: Discussion) -> Observable<Void> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let value: [String: Any] = ["date": dateFormatter.string(from: discussion.date),
+                                    "durations": discussion.durations,
+                                    "topic": discussion.topic]
+        return Observable.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/discussions")
+                .childByAutoId()
+                .setValue(value)
+            subscribe.onNext(Void())
+            return Disposables.create()
+        }
+    }
+
 }
 
 // 포지션 값도 키값으로 해야 할듯

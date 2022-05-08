@@ -7,24 +7,30 @@
 
 import Firebase
 
-public final class FirebaseUsecaseProvider: UsecaseProvider {
+final class FirebaseUsecaseProvider: UsecaseProvider {
 
     private let referenceProvider: ReferenceProvider
 
-    public init() {
+    init() {
         FirebaseApp.configure()
         self.referenceProvider = ReferenceProvider()
     }
 
-    public func makeChatsUsecase() -> ChatsUsecase {
+    func makeChatsUsecase() -> ChatsUsecase {
         return FirebaseChatsUsecase(
             reference: self.referenceProvider.makeChatsRefence()
         )
     }
 
-    public func makeUserInfoUsecase() -> UserInfoUsecase {
+    func makeUserInfoUsecase() -> UserInfoUsecase {
         return FirebaseUserInfoUsecase(
             reference: self.referenceProvider.makeUserInfoReference()
+        )
+    }
+
+    func makeDiscussionUsecase() -> DiscussionUsecase {
+        return FirebaseDiscussionUsecase(
+            reference: self.referenceProvider.makeDiscussionReference()
         )
     }
 

@@ -7,7 +7,7 @@
 
 import RxSwift
 
-public protocol UserInfoUsecase {
+protocol UserInfoUsecase {
 
     func uid() -> Observable<String>
     func userInfo() -> Observable<UserInfo>

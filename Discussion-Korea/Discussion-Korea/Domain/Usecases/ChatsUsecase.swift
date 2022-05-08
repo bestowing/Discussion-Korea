@@ -7,7 +7,7 @@
 
 import RxSwift
 
-public protocol ChatsUsecase {
+protocol ChatsUsecase {
 
     func chats(room: Int) -> Observable<[Chat]>
     func connect(room: Int) -> Observable<Chat>

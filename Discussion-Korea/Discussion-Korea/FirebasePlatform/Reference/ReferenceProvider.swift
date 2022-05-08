@@ -27,4 +27,8 @@ final class ReferenceProvider {
         Reference(reference: self.reference)
     }
 
+    func makeDiscussionReference() -> Reference {
+        Reference(reference: self.reference)
+    }
+
 }

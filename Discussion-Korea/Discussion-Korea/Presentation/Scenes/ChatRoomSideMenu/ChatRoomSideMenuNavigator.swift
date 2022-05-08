@@ -43,14 +43,14 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
     // MARK: - properties
 
     private let services: UsecaseProvider
-    private let viewController: UIViewController // TODO: 순환참조?
+    private let presentedViewController: UIViewController
 
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
-         viewController: UIViewController) {
+         presentedViewController: UIViewController) {
         self.services = services
-        self.viewController = viewController
+        self.presentedViewController = presentedViewController
     }
 
     deinit {
@@ -68,15 +68,16 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
         viewController.viewModel = viewModel
         let menu = DefaultSideMenuNavigation(rootViewController: viewController)
         menu.isNavigationBarHidden = true
-        self.viewController.present(menu, animated: true)
+        self.presentedViewController.present(menu, animated: true)
     }
 
     func toChatRoomSchedule() {
-        self.viewController.dismiss(animated: true)
-        let navigator = DefaultChatRoomScheduleNavigator(services: self.services,
-                                                         presentingViewController: self.viewController)
+        self.presentedViewController.dismiss(animated: true)
+        let navigator = DefaultChatRoomScheduleNavigator(
+            services: self.services,
+            presentedViewController: self.presentedViewController
+        )
         navigator.toChatRoomSchedule()
-        
     }
 
 }

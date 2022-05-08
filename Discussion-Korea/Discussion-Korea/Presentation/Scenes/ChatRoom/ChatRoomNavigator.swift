@@ -34,7 +34,6 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     func toChatRoom() {
         let chatRoomViewController = ChatRoomViewController()
-        self.presentingViewController = chatRoomViewController
         let chatRoomViewModel = ChatRoomViewModel(
             chatsUsecase: self.services.makeChatsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
@@ -42,6 +41,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         )
         chatRoomViewController.viewModel = chatRoomViewModel
         self.navigationController.pushViewController(chatRoomViewController, animated: true)
+        self.presentingViewController = chatRoomViewController
     }
 
     func toSideMenu() {
@@ -49,7 +49,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         else { return }
         let navigator = DefaultChatRoomSideMenuNavigator(
             services: self.services,
-            viewController: presentingViewController
+            presentedViewController: presentingViewController
         )
         navigator.toChatRoomSideMenu()
     }
