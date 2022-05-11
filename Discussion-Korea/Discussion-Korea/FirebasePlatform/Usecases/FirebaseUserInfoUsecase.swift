@@ -17,9 +17,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func add(room: Int, userInfo: UserInfo) -> Observable<Void> {
-        return Observable<Void>.create { _ in
-            return Disposables.create()
-        }
+        self.reference.addUserInfo(room: room, userInfo: userInfo)
     }
 
     func uid() -> Observable<String> {
@@ -30,8 +28,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
-    func userInfo(room: Int) -> Observable<UserInfo?> {
-        let uid = self.getUID()
+    func userInfo(room: Int, with uid: String) -> Observable<UserInfo?> {
         return self.reference.getUserInfo(in: room, with: uid)
     }
 

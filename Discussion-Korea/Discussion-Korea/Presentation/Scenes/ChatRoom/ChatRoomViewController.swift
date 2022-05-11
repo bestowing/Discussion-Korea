@@ -9,6 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 import RxKeyboard
+import RxDataSources
 
 final class ChatRoomViewController: UIViewController {
 
@@ -142,6 +143,9 @@ final class ChatRoomViewController: UIViewController {
             })
             .disposed(by: self.disposeBag)
 
+        output.enterEvent
+            .drive()
+            .disposed(by: self.disposeBag)
     }
 
 }

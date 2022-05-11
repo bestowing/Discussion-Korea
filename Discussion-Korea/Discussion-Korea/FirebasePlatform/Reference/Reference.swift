@@ -16,6 +16,8 @@ final class Reference {
         self.reference = reference
     }
 
+    // MARK: - chats
+
     func getChats(room: Int) -> Observable<[Chat]> {
         Observable<[Chat]>.just([])
     }
@@ -78,6 +80,8 @@ final class Reference {
         }
     }
 
+    // MARK: - userInfos
+
     func getUserInfo(room: Int) -> Observable<UserInfo> {
         return Observable<UserInfo>.create { [unowned self] subscribe in
             self.reference
@@ -99,6 +103,21 @@ final class Reference {
             return Disposables.create()
         }
     }
+
+    func addUserInfo(room: Int, userInfo: UserInfo) -> Observable<Void> {
+        return Observable<Void>.create { [unowned self] subscribe in
+            let values: [String: Any] = ["nickname": userInfo.nickname, "position": "방장"]
+            self.reference
+                .child("chatRoom/\(room)/users")
+                .child(userInfo.uid)
+                .setValue(values)
+            subscribe.onNext(Void())
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    // MARK: - discussions
 
     func getDiscussions(room: Int) -> Observable<Discussion> {
         let dateFormatter = DateFormatter()

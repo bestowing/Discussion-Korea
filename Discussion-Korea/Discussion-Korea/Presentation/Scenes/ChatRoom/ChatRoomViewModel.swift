@@ -28,6 +28,24 @@ final class ChatRoomViewModel: ViewModelType {
             .uid()
             .asDriverOnErrorJustComplete()
 
+        let enterEvent = uid
+            .flatMap { [unowned self] uid in
+                self.userInfoUsecase
+                    .userInfo(room: 1, with: uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .filter { return $0 == nil }
+            .flatMap { [unowned self] _ in
+                self.navigator.toNicknameAlert()
+                    .asDriverOnErrorJustComplete()
+            }
+            .withLatestFrom(uid) { ($0, $1) }
+            .flatMap { [unowned self] (nickname, uid) in
+                self.userInfoUsecase.add(room: 1, userInfo: UserInfo(uid: uid, nickname: nickname))
+                    .asDriverOnErrorJustComplete()
+            }
+            .mapToVoid()
+
         // 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
         let userInfos = input.trigger
             .flatMap { [unowned self] in
@@ -95,7 +113,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        return Output(chatItems: chatItems, userInfos: userInfos, sendEnable: canSend, sideMenuEvent: sideMenuEvent, sendEvent: sendEvent)
+        return Output(chatItems: chatItems, userInfos: userInfos, sendEnable: canSend, sideMenuEvent: sideMenuEvent, sendEvent: sendEvent, enterEvent: enterEvent)
     }
 
 }
@@ -115,6 +133,7 @@ extension ChatRoomViewModel {
         let sendEnable: Driver<Bool>
         let sideMenuEvent: Driver<Void>
         let sendEvent: Driver<Void>
+        let enterEvent: Driver<Void>
     }
 
 }
