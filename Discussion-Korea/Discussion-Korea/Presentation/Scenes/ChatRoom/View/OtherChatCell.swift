@@ -90,7 +90,7 @@ final class OtherChatCell: ChatCell {
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.profileImageView.image = UIImage(systemName: "person.fill")
-        self.nicknameLabel.text = "닉네임" //viewModel.chat.nickName
+        self.nicknameLabel.text = viewModel.chat.nickName
         self.contentLabel.text = viewModel.chat.content
         self.timeLabel.text = viewModel.timeString
     }
@@ -101,5 +101,3 @@ final class OtherChatCell: ChatCell {
     }
 
 }
-
-// 다만, 그 정도 타액을 신경쓰신다면 밥을 드실때도 마스크 입에만 구멍을 내서 식사를 하셔야 하는거 아닌가요? 세상 만사 다 불편해서 어떻게 식사를 합니까?

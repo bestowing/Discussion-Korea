@@ -41,7 +41,6 @@
 		3F37B3E428207CCA00DB18B7 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E128207CCA00DB18B7 /* Application.swift */; };
 		3F37B3E528207CCA00DB18B7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E228207CCA00DB18B7 /* SceneDelegate.swift */; };
 		3F37B3E628207CCA00DB18B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E328207CCA00DB18B7 /* AppDelegate.swift */; };
-		3F37B3E828207CFB00DB18B7 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* Reference.swift */; };
 		3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E928207D0200DB18B7 /* ReferenceProvider.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
@@ -60,6 +59,7 @@
 		3FB357A82826279200F27C77 /* AddDiscussionNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A72826279200F27C77 /* AddDiscussionNavigator.swift */; };
 		3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */; };
 		3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357AB2826297700F27C77 /* AddDiscussionViewController.swift */; };
+		3FB357AD282992CE00F27C77 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* Reference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -471,10 +471,10 @@
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
 				3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */,
-				3F37B3E828207CFB00DB18B7 /* Reference.swift in Sources */,
 				3F37B3B62820766400DB18B7 /* HomeNavigator.swift in Sources */,
 				3F37B3A32820765100DB18B7 /* ChatRoomViewModel.swift in Sources */,
 				3F37B3E528207CCA00DB18B7 /* SceneDelegate.swift in Sources */,
+				3FB357AD282992CE00F27C77 /* Reference.swift in Sources */,
 				3F37B39B2820762D00DB18B7 /* NSObject+identifier.swift in Sources */,
 				3FB3578F28250A1800F27C77 /* ChatRoomScheduleNavigator.swift in Sources */,
 				3FB3579F282618D500F27C77 /* ScheduleItemViewModel.swift in Sources */,

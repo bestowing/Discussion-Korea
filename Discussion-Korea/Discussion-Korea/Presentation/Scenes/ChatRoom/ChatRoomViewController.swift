@@ -36,7 +36,6 @@ final class ChatRoomViewController: UIViewController {
     private let messageTextView: UITextView = {
         let messageTextView = UITextView()
         messageTextView.font = UIFont.systemFont(ofSize: 14.0)
-        messageTextView.text = "하위~"
         messageTextView.isScrollEnabled = false
         return messageTextView
     }()
@@ -122,13 +121,15 @@ final class ChatRoomViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.chats.drive(self.messageCollectionView.rx.items) { collectionView, index, model in
+        output.chatItems.drive(self.messageCollectionView.rx.items) { collectionView, index, model in
             let indexPath = IndexPath(item: index, section: 0)
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? ChatCell
             else { return UICollectionViewCell() }
             cell.bind(model)
             return cell
         }.disposed(by: self.disposeBag)
+
+        output.userInfos.drive().disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
@@ -140,6 +141,7 @@ final class ChatRoomViewController: UIViewController {
                 self.messageTextView.text = ""
             })
             .disposed(by: self.disposeBag)
+
     }
 
 }

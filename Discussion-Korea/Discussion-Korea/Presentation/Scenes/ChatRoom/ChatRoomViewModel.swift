@@ -28,32 +28,53 @@ final class ChatRoomViewModel: ViewModelType {
             .uid()
             .asDriverOnErrorJustComplete()
 
+        // 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
+        let userInfos = input.trigger
+            .flatMap { [unowned self] in
+                self.userInfoUsecase.connect(room: 1)
+                    .asDriverOnErrorJustComplete()
+                    .scan([String: UserInfo]()) { userInfos, userInfo in
+                        var userInfos = userInfos
+                        userInfos[userInfo.uid] = userInfo
+                        return userInfos
+                    }
+            }
+
+        let uidAndUserInfos = Driver.combineLatest(uid, userInfos)
+
         let chats = input.trigger
-            .withLatestFrom(uid)
-            .flatMap { [unowned self] uid in
+            .flatMap { [unowned self] in
                 self.chatsUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
-                    .scan([ChatItemViewModel]()) { viewModels, chat in
-                        let newItemViewModel: ChatItemViewModel
-                        if let last = viewModels.last,
-                           last.chat.userID == chat.userID,
-                           let lastDate = last.chat.date,
-                           let currentDate = chat.date,
-                           Int(currentDate.timeIntervalSince(lastDate)) < 60 {
-                            viewModels.last?.chat.date = nil
-                        }
-                        if chat.userID == uid {
-                            newItemViewModel = SelfChatItemViewModel(with: chat)
-                        } else {
-                            if let last = viewModels.last,
-                               last.chat.userID == chat.userID {
-                                newItemViewModel = SerialOtherChatItemViewModel(with: chat)
-                            } else {
-                                newItemViewModel = OtherChatItemViewModel(with: chat)
-                            }
-                        }
-                        return viewModels + [newItemViewModel]
+                    .do(onNext: { print($0) })
+            }
+
+        let chatItems = chats
+            .withLatestFrom(uidAndUserInfos) { ($0, $1) }
+            .scan([ChatItemViewModel]()) { (viewModels, args) in
+                var chat = args.0
+                let uid = args.1.0
+                let userInfos = args.1.1
+                chat.nickName = userInfos[chat.userID]?.nickname
+                let newItemViewModel: ChatItemViewModel
+                if let last = viewModels.last,
+                   last.chat.userID == chat.userID,
+                   let lastDate = last.chat.date,
+                   let currentDate = chat.date,
+                   Int(currentDate.timeIntervalSince(lastDate)) < 60 {
+                    viewModels.last?.chat.date = nil
+                }
+                if chat.userID == uid {
+                    newItemViewModel = SelfChatItemViewModel(with: chat)
+                } else {
+                    if let last = viewModels.last,
+                       last.chat.userID == chat.userID {
+                        newItemViewModel = SerialOtherChatItemViewModel(with: chat)
+                    } else {
+                        newItemViewModel = OtherChatItemViewModel(with: chat)
                     }
+                }
+                return viewModels + [newItemViewModel]
             }
 
         let canSend = input.content.map { !$0.isEmpty }
@@ -74,7 +95,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        return Output(chats: chats, sendEnable: canSend, sideMenuEvent: sideMenuEvent, sendEvent: sendEvent)
+        return Output(chatItems: chatItems, userInfos: userInfos, sendEnable: canSend, sideMenuEvent: sideMenuEvent, sendEvent: sendEvent)
     }
 
 }
@@ -89,7 +110,8 @@ extension ChatRoomViewModel {
     }
     
     struct Output {
-        let chats: Driver<[ChatItemViewModel]>
+        let chatItems: Driver<[ChatItemViewModel]>
+        let userInfos: Driver<[String: UserInfo]>
         let sendEnable: Driver<Bool>
         let sideMenuEvent: Driver<Void>
         let sendEvent: Driver<Void>

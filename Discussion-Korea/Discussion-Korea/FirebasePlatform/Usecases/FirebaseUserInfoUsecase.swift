@@ -16,8 +16,27 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference = reference
     }
 
+    func add(room: Int, userInfo: UserInfo) -> Observable<Void> {
+        return Observable<Void>.create { _ in
+            return Disposables.create()
+        }
+    }
+
     func uid() -> Observable<String> {
-        return Observable.just(self.getUID())
+        return Observable<String>.create { [unowned self] in
+            $0.onNext(self.getUID())
+            $0.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func userInfo(room: Int) -> Observable<UserInfo?> {
+        let uid = self.getUID()
+        return self.reference.getUserInfo(in: room, with: uid)
+    }
+
+    func connect(room: Int) -> Observable<UserInfo> {
+        self.reference.getUserInfo(room: room)
     }
 
     private func getUID() -> String {
@@ -28,10 +47,6 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         let newID = UUID().uuidString
         UserDefaults.standard.set(newID, forKey: key)
         return newID
-    }
-
-    func userInfo() -> Observable<UserInfo> {
-        return self.reference.getUserInfo(room: 1)
     }
 
 }

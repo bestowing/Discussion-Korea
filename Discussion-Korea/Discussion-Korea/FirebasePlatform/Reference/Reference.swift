@@ -60,6 +60,24 @@ final class Reference {
         return Observable<Void>.just(Void())
     }
 
+    func getUserInfo(in room: Int, with uid: String) -> Observable<UserInfo?> {
+        return Observable<UserInfo?>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/users/\(uid)")
+                .observeSingleEvent(of: .value, with: { snapshot in
+                    if let dictionary = snapshot.value as? NSDictionary,
+                       let nickname = dictionary["nickname"] as? String {
+                        subscribe.onNext(UserInfo(uid: uid, nickname: nickname))
+                    }
+                    else {
+                        subscribe.onNext(nil)
+                    }
+                    subscribe.onCompleted()
+                })
+            return Disposables.create()
+        }
+    }
+
     func getUserInfo(room: Int) -> Observable<UserInfo> {
         return Observable<UserInfo>.create { [unowned self] subscribe in
             self.reference
