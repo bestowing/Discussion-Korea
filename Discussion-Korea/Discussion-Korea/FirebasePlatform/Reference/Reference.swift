@@ -67,13 +67,18 @@ final class Reference {
             self.reference
                 .child("chatRoom/\(room)/users/\(uid)")
                 .observeSingleEvent(of: .value, with: { snapshot in
-                    if let dictionary = snapshot.value as? NSDictionary,
-                       let nickname = dictionary["nickname"] as? String {
-                        subscribe.onNext(UserInfo(uid: uid, nickname: nickname))
-                    }
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let nickname = dictionary["nickname"] as? String
                     else {
                         subscribe.onNext(nil)
+                        subscribe.onCompleted()
+                        return
                     }
+                    var userInfo = UserInfo(uid: uid, nickname: nickname)
+                    if let sideString = dictionary["side"] as? String {
+                        userInfo.side = Side.toSide(from: sideString)
+                    }
+                    subscribe.onNext(userInfo)
                     subscribe.onCompleted()
                 })
             return Disposables.create()
@@ -197,6 +202,26 @@ final class Reference {
                 guard let phase = snapshot.value as? Int
                 else { return }
                 subscribe.onNext(phase)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func getDiscussionTime(room: Int) -> Observable<Date> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/endDate").observe(.childAdded) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
+            self.reference.child("chatRoom/\(room)/endDate").observe(.childChanged) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
             }
             return Disposables.create()
         }

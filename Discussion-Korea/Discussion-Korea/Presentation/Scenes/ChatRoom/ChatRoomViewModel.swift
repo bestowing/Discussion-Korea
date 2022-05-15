@@ -7,6 +7,7 @@
 
 import Foundation
 import RxCocoa
+import RxSwift
 
 final class ChatRoomViewModel: ViewModelType {
 
@@ -31,12 +32,32 @@ final class ChatRoomViewModel: ViewModelType {
             .uid()
             .asDriverOnErrorJustComplete()
 
-        let enterEvent = uid
+        let myInfo = uid
             .flatMap { [unowned self] uid in
                 self.userInfoUsecase
                     .userInfo(room: 1, with: uid)
                     .asDriverOnErrorJustComplete()
             }
+
+        let remainTime = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.discussionUsecase.remainTime(room: 1)
+                    .asDriverOnErrorJustComplete()
+            }
+            .map { date -> Int in
+                let timeInterval = Date().timeIntervalSince(date)
+                print(Int(timeInterval))
+                return abs(Int(timeInterval))
+            }
+            .flatMapLatest { remainSeconds in
+                Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
+                    .map { remainSeconds - $0 }
+                    .take(until: { $0 == 0 })
+                    .asDriverOnErrorJustComplete()
+            }
+            .mapToVoid()
+
+        let enterEvent = myInfo
             .filter { return $0 == nil }
             .flatMap { [unowned self] _ in
                 self.navigator.toNicknameAlert()
@@ -51,7 +72,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         // 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
         let userInfos = input.trigger
-            .flatMap { [unowned self] in
+            .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
                     .scan([String: UserInfo]()) { userInfos, userInfo in
@@ -64,7 +85,7 @@ final class ChatRoomViewModel: ViewModelType {
         let uidAndUserInfos = Driver.combineLatest(uid, userInfos)
 
         let chats = input.trigger
-            .flatMap { [unowned self] in
+            .flatMapFirst { [unowned self] in
                 self.chatsUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
             }
@@ -98,19 +119,22 @@ final class ChatRoomViewModel: ViewModelType {
             }
 
         let status = input.trigger
-            .flatMap { [unowned self] in
+            .flatMapFirst { [unowned self] in
                 self.discussionUsecase.status(room: 1)
                     .asDriverOnErrorJustComplete()
             }
+            .do(onNext: { print($0) })
 
-        let side = status
+        let selectedSide = status
             .filter { return $0 == 1 }
             .flatMap { [unowned self] status in
                 self.navigator.toSideAlert()
                     .asDriverOnErrorJustComplete()
             }
 
-        let sideEvent = side
+        let side = Driver.of(selectedSide, myInfo.compactMap { $0?.side }).merge()
+
+        let sideEvent = selectedSide
             .withLatestFrom(uid) { ($0, $1) }
             .flatMap { [unowned self] (side, uid) in
                 self.userInfoUsecase.add(room: 1, uid: uid, side: side)
@@ -130,7 +154,11 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let contentEmpty = input.content.map { !$0.isEmpty }
+
         let canEditable = Driver.combineLatest(status, side) { (status, side) -> Bool in
+            guard [2, 3, 4, 5, 6, 7].contains(status)
+            else { return true }
             switch side {
             case .agree:
                 return [2, 4, 5].contains(status)
@@ -141,9 +169,12 @@ final class ChatRoomViewModel: ViewModelType {
             }
         }
 
-        let contentEmpty = input.content.map { !$0.isEmpty }
-
-        let canSend = Driver.of(contentEmpty, canEditable).merge()
+        let canSend = Driver.of(
+            contentEmpty,
+            canEditable
+                .withLatestFrom(contentEmpty) { return $0 && $1 }
+        )
+            .merge()
 
         let contentAndUID = Driver.combineLatest(input.content, uid)
 
@@ -161,7 +192,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent)
+        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, remainTime)
             .merge()
 
         return Output(

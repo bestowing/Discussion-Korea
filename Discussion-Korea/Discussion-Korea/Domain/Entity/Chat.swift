@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct Chat: Codable {
+struct Chat {
 
-    public var userID: String
-    public var content: String
-    public var date: Date?
-    public var nickName: String?
+    var userID: String
+    var content: String
+    var date: Date?
+    var nickName: String?
 
     public init(userID: String, content: String, date: Date) {
         self.userID = userID

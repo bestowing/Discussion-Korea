@@ -28,4 +28,8 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference.getDiscussionStatus(room: room)
     }
 
+    func remainTime(room: Int) -> Observable<Date> {
+        self.reference.getDiscussionTime(room: room)
+    }
+
 }
