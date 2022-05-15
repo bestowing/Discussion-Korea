@@ -16,7 +16,7 @@ final class SerialOtherChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = .systemBackground
         contentLabel.textColor = .label
-        contentLabel.font = UIFont.systemFont(ofSize: 14.0)
+        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
         contentLabel.numberOfLines = 0

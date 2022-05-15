@@ -22,11 +22,25 @@ final class ChatRoomViewController: UIViewController {
         return button
     }()
 
+    private let noticeView: UILabel = {
+        let label = PaddingLabel(padding: UIEdgeInsets(
+            top: 8.0, left: 20.0, bottom: 8.0, right: 20.0)
+        )
+        label.numberOfLines = 2
+        label.isHidden = true
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = .label
+        label.backgroundColor = UIColor.systemBackground
+        label.layer.cornerRadius = 4
+        label.layer.masksToBounds = true
+        return label
+    }()
+
     private let messageCollectionView: UICollectionView = {
         let messageCollectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
         )
-        messageCollectionView.backgroundColor = UIColor.systemGray6
+        messageCollectionView.backgroundColor = .clear
         messageCollectionView.register(SelfChatCell.self, forCellWithReuseIdentifier: SelfChatCell.identifier)
         messageCollectionView.register(OtherChatCell.self, forCellWithReuseIdentifier: OtherChatCell.identifier)
         messageCollectionView.register(SerialOtherChatCell.self, forCellWithReuseIdentifier: SerialOtherChatCell.identifier)
@@ -65,7 +79,7 @@ final class ChatRoomViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = UIColor.systemGray6
     }
 
     override func viewDidLoad() {
@@ -76,13 +90,20 @@ final class ChatRoomViewController: UIViewController {
 
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
+        self.view.addSubview(self.noticeView)
         self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.sendButton)
         self.navigationItem.rightBarButtonItem = self.menuButton
+        self.noticeView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+        }
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.top.equalToSuperview()
             make.bottom.equalTo(self.messageTextView.snp.top).offset(-10)
         }
         self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
@@ -135,6 +156,12 @@ final class ChatRoomViewController: UIViewController {
         }.disposed(by: self.disposeBag)
 
         output.userInfos.drive().disposed(by: self.disposeBag)
+
+        output.noticeHidden.drive(self.noticeView.rx.isHidden)
+            .disposed(by: self.disposeBag)
+
+        output.notice.drive(self.noticeView.rx.text)
+            .disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)

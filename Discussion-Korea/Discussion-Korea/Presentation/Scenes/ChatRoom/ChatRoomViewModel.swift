@@ -39,6 +39,8 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let noticeHidden = PublishSubject<Bool>()
+
         let remainTime = input.trigger
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.remainTime(room: 1)
@@ -46,16 +48,17 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .map { date -> Int in
                 let timeInterval = Date().timeIntervalSince(date)
-                print(Int(timeInterval))
                 return abs(Int(timeInterval))
             }
             .flatMapLatest { remainSeconds in
                 Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
                     .map { remainSeconds - $0 }
-                    .take(until: { $0 == 0 })
+                    .take(until: { $0 == -1 })
+                    .do(onNext: { _ in noticeHidden.on(.next(false)) },
+                        onCompleted: { noticeHidden.on(.next(true)) })
                     .asDriverOnErrorJustComplete()
             }
-            .mapToVoid()
+            .map { "남은 시간: \($0 / 60):\($0 % 60)" }
 
         let enterEvent = myInfo
             .filter { return $0 == nil }
@@ -123,7 +126,6 @@ final class ChatRoomViewModel: ViewModelType {
                 self.discussionUsecase.status(room: 1)
                     .asDriverOnErrorJustComplete()
             }
-            .do(onNext: { print($0) })
 
         let selectedSide = status
             .filter { return $0 == 1 }
@@ -192,13 +194,15 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, remainTime)
+        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent)
             .merge()
 
         return Output(
             chatItems: chatItems,
             userInfos: userInfos,
             sendEnable: canSend,
+            noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            notice: remainTime,
             editableEnable: canEditable,
             sendEvent: sendEvent,
             events: events
@@ -220,6 +224,8 @@ extension ChatRoomViewModel {
         let chatItems: Driver<[ChatItemViewModel]>
         let userInfos: Driver<[String: UserInfo]>
         let sendEnable: Driver<Bool>
+        let noticeHidden: Driver<Bool>
+        let notice: Driver<String>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>
