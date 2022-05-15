@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ChatItemViewModel {
 
@@ -26,6 +27,20 @@ class ChatItemViewModel {
 
     var identifier: String {
         fatalError("not implemented")
+    }
+
+    var image: UIImage? {
+        if self.chat.userID == "bot" {
+            return UIImage(named: "bot")
+        }
+        return UIImage(systemName: "person.fill")
+    }
+
+    var nickname: String {
+        if self.chat.userID == "bot" {
+            return "방장봇"
+        }
+        return self.chat.nickName ?? self.chat.userID
     }
 
     init(with chat: Chat) {
