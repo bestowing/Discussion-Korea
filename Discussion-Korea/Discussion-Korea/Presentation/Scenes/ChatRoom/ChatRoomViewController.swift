@@ -42,9 +42,13 @@ final class ChatRoomViewController: UIViewController {
 
     private let sendButton: UIButton = {
         let sendButton = UIButton()
-        sendButton.setTitle("보내기", for: .normal)
-        sendButton.setTitleColor(UIColor.label, for: .normal)
-        sendButton.setTitleColor(UIColor.red, for: .disabled)
+        sendButton.setBackgroundImage(UIImage(systemName: "paperplane.fill"), for: .normal)
+        sendButton.setBackgroundImage(UIImage(systemName: "paperplane"), for: .disabled)
+        sendButton.tintColor = UIColor.primaryColor
+        // TODO: 보내기버튼 둥글게 적용하기
+//        sendButton.layer.borderColor = UIColor.primaryColor?.cgColor
+//        sendButton.layer.borderWidth = 1.0
+//        sendButton.layer.cornerRadius = 13
         sendButton.isEnabled = false
         return sendButton
     }()
@@ -90,6 +94,7 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalTo(self.messageTextView.snp.trailing).offset(10)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.centerY.equalTo(self.messageTextView)
+            make.width.height.equalTo(26)
         }
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)

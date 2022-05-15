@@ -12,7 +12,7 @@ final class ParticipantCell: UITableViewCell {
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(named: "PrimaryColor")
+        imageView.backgroundColor = UIColor.primaryColor
         imageView.tintColor = .white
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true

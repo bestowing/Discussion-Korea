@@ -14,7 +14,7 @@ final class SelfChatCell: ChatCell {
 
     private let contentLabel: UILabel = {
         let contentLabel = PaddingLabel()
-        contentLabel.backgroundColor = UIColor(named: "PrimaryColor")
+        contentLabel.backgroundColor = UIColor.primaryColor
         contentLabel.textColor = .white
         contentLabel.font = UIFont.systemFont(ofSize: 14.0)
         contentLabel.layer.cornerRadius = 8
