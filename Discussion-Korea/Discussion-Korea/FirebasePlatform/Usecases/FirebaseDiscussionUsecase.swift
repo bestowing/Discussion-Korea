@@ -24,4 +24,8 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference.addDiscussion(room: room, discussion: discussion)
     }
 
+    func status(room: Int) -> Observable<Int> {
+        self.reference.getDiscussionStatus(room: room)
+    }
+
 }

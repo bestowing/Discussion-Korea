@@ -45,7 +45,6 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                 self.userInfoUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
                     .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
-                        print(userInfo)
                         return viewModels + [ParticipantItemViewModel(with: userInfo)]
                     }
             }

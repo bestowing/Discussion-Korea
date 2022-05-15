@@ -11,5 +11,6 @@ protocol DiscussionUsecase {
 
     func discussions(room: Int) -> Observable<Discussion>
     func add(room: Int, discussion: Discussion) -> Observable<Void>
+    func status(room: Int) -> Observable<Int>
 
 }

@@ -60,6 +60,7 @@
 		3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */; };
 		3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357AB2826297700F27C77 /* AddDiscussionViewController.swift */; };
 		3FB357AD282992CE00F27C77 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* Reference.swift */; };
+		3FF62D9F282D93F1001F343C /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF62D9E282D93F1001F343C /* Side.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +113,7 @@
 		3FB357A72826279200F27C77 /* AddDiscussionNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiscussionNavigator.swift; sourceTree = "<group>"; };
 		3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiscussionViewModel.swift; sourceTree = "<group>"; };
 		3FB357AB2826297700F27C77 /* AddDiscussionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiscussionViewController.swift; sourceTree = "<group>"; };
+		3FF62D9E282D93F1001F343C /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 				3F37B3C32820773600DB18B7 /* Chat.swift */,
 				3F37B3C42820773600DB18B7 /* UserInfo.swift */,
 				3FB357A02826192A00F27C77 /* Discussion.swift */,
+				3FF62D9E282D93F1001F343C /* Side.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 			files = (
 				3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */,
 				3FB357982826053E00F27C77 /* ParticipantCell.swift in Sources */,
+				3FF62D9F282D93F1001F343C /* Side.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,

@@ -20,6 +20,14 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference.addUserInfo(room: room, userInfo: userInfo)
     }
 
+    func add(room: Int, uid: String, side: Side) -> Observable<Void> {
+        self.reference.setSide(room: room, uid: uid, side: side)
+    }
+
+    func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
+        self.reference.vote(room: room, uid: uid, side: side)
+    }
+
     func uid() -> Observable<String> {
         return Observable<String>.create { [unowned self] in
             $0.onNext(self.getUID())

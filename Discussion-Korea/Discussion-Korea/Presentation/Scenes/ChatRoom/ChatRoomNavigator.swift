@@ -14,6 +14,8 @@ protocol ChatRoomNavigator {
     func toChatRoom()
     func toSideMenu()
     func toNicknameAlert() -> Observable<String>
+    func toSideAlert() -> Observable<Side>
+    func toVoteAlert() -> Observable<Side>
 
 }
 
@@ -39,6 +41,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         let chatRoomViewModel = ChatRoomViewModel(
             chatsUsecase: self.services.makeChatsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
+            discussionUsecase: self.services.makeDiscussionUsecase(),
             navigator: self
         )
         chatRoomViewController.viewModel = chatRoomViewModel
@@ -70,7 +73,6 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
                 else { return }
                 subscribe.onNext(nickname)
                 subscribe.onCompleted()
-//                self.repository.setInfo(name: nickname)
             }
             registAction.isEnabled = false
             alert.addTextField(configurationHandler: { textField in
@@ -81,6 +83,56 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
             })
             alert.addAction(exitAction)
             alert.addAction(registAction)
+            self.presentingViewController?.present(alert, animated: true)
+            return Disposables.create()
+        }
+    }
+
+    func toSideAlert() -> Observable<Side> {
+        return Observable.create { [unowned self] subscribe in
+            let alert = UIAlertController(title: "토론 진영 설정",
+                                          message: "토론이 예정되었습니다. 참여를 원하시면 진영을 선택해주세요.",
+                                          preferredStyle: UIAlertController.Style.alert)
+            let agreeAction = UIAlertAction(title: "찬성", style: .default) { _ in
+                subscribe.onNext(.agree)
+                subscribe.onCompleted()
+            }
+            let disagreeAction = UIAlertAction(title: "반대", style: .destructive) { _ in
+                subscribe.onNext(.disagree)
+                subscribe.onCompleted()
+            }
+            let judgeAction = UIAlertAction(title: "판정단", style: .default) { _ in
+                subscribe.onNext(.judge)
+                subscribe.onCompleted()
+            }
+            let observerAction = UIAlertAction(title: "구경꾼", style: .default) { _ in
+                subscribe.onNext(.observer)
+                subscribe.onCompleted()
+            }
+            alert.addAction(agreeAction)
+            alert.addAction(disagreeAction)
+            alert.addAction(judgeAction)
+            alert.addAction(observerAction)
+            self.presentingViewController?.present(alert, animated: true)
+            return Disposables.create()
+        }
+    }
+
+    func toVoteAlert() -> Observable<Side> {
+        return Observable.create { [unowned self] subscribe in
+            let alert = UIAlertController(title: "판정단 투표",
+                                          message: "어느쪽이 더 잘했나요? 투표해주세요",
+                                          preferredStyle: UIAlertController.Style.alert)
+            let agreeAction = UIAlertAction(title: "찬성측", style: .default) { _ in
+                subscribe.onNext(.agree)
+                subscribe.onCompleted()
+            }
+            let disagreeAction = UIAlertAction(title: "반대측", style: .destructive) { _ in
+                subscribe.onNext(.disagree)
+                subscribe.onCompleted()
+            }
+            alert.addAction(agreeAction)
+            alert.addAction(disagreeAction)
             self.presentingViewController?.present(alert, animated: true)
             return Disposables.create()
         }

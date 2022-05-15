@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 import RxSwift
 import RxKeyboard
-import RxDataSources
 
 final class ChatRoomViewController: UIViewController {
 
@@ -135,7 +134,9 @@ final class ChatRoomViewController: UIViewController {
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 
-        output.sideMenuEvent.drive().disposed(by: self.disposeBag)
+        output.editableEnable
+            .drive(self.messageTextView.rx.isEditable)
+            .disposed(by: self.disposeBag)
 
         output.sendEvent
             .drive(onNext: { [unowned self] in
@@ -143,9 +144,7 @@ final class ChatRoomViewController: UIViewController {
             })
             .disposed(by: self.disposeBag)
 
-        output.enterEvent
-            .drive()
-            .disposed(by: self.disposeBag)
+        output.events.drive().disposed(by: self.disposeBag)
     }
 
 }

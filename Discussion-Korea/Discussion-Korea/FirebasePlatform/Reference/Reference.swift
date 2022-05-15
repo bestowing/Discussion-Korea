@@ -46,7 +46,7 @@ final class Reference {
         // chatRoomViewModel에서 방 번호 혹은 아이디값을 가지고 있어야함
         // 여기서 번호를 부여하는게 아니라 걍 고유 아이디값으로 추가하면 안되나?
         guard let key = self.reference
-            .child("chatRoom").child("\(room)").child("messages")
+            .child("chatRoom/\(room)/messages")
             .childByAutoId().key,
               let date = chat.date
         else {
@@ -111,7 +111,35 @@ final class Reference {
                 .child("chatRoom/\(room)/users")
                 .child(userInfo.uid)
                 .setValue(values)
-            subscribe.onNext(Void())
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func setSide(room: Int, uid: String, side: Side) -> Observable<Void> {
+        return Observable<Void>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/sides/\(side.rawValue)")
+                .updateChildValues([uid: true])
+            self.reference
+                .child("chatRoom/\(room)/users/\(uid)")
+                .updateChildValues(["side": side.rawValue])
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/votes/\(side.rawValue)").runTransactionBlock { currentData in
+                if var votes = currentData.value as? [AnyObject] {
+                    votes.append(uid as AnyObject)
+                    currentData.value = votes
+                } else {
+                    currentData.value = [uid]
+                }
+                return TransactionResult.success(withValue: currentData)
+            }
             subscribe.onCompleted()
             return Disposables.create()
         }
@@ -154,6 +182,22 @@ final class Reference {
                 .childByAutoId()
                 .setValue(value)
             subscribe.onNext(Void())
+            return Disposables.create()
+        }
+    }
+
+    func getDiscussionStatus(room: Int) -> Observable<Int> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/phase").observe(.childAdded) { snapshot in
+                guard let phase = snapshot.value as? Int
+                else { return }
+                subscribe.onNext(phase)
+            }
+            self.reference.child("chatRoom/\(room)/phase").observe(.childChanged) { snapshot in
+                guard let phase = snapshot.value as? Int
+                else { return }
+                subscribe.onNext(phase)
+            }
             return Disposables.create()
         }
     }
