@@ -37,6 +37,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
     }
 
     func toChatRoom() {
+        self.makeTransparentNavigationBar()
         let chatRoomViewController = ChatRoomViewController()
         let chatRoomViewModel = ChatRoomViewModel(
             chatsUsecase: self.services.makeChatsUsecase(),
@@ -47,6 +48,12 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         chatRoomViewController.viewModel = chatRoomViewModel
         self.navigationController.pushViewController(chatRoomViewController, animated: true)
         self.presentingViewController = chatRoomViewController
+    }
+
+    private func makeTransparentNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        self.navigationController.navigationBar.standardAppearance = appearance
     }
 
     func toSideMenu() {
