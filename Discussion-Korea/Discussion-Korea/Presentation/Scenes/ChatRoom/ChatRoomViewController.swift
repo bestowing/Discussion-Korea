@@ -98,7 +98,7 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.height.equalTo(50)
+            make.height.greaterThanOrEqualTo(50)
         }
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
