@@ -90,7 +90,7 @@ final class OtherChatCell: ChatCell {
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.profileImageView.image = viewModel.image
-        self.nicknameLabel.text = viewModel.nickname
+        self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
         self.contentLabel.text = viewModel.chat.content
         self.timeLabel.text = viewModel.timeString
     }

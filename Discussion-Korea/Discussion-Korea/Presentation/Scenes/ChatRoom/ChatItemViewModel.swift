@@ -43,6 +43,17 @@ class ChatItemViewModel {
         return self.chat.nickName ?? self.chat.userID
     }
 
+    var sideString: String {
+        switch self.chat.side {
+        case .agree:
+            return " (찬성)"
+        case .disagree:
+            return " (반대)"
+        default:
+            return ""
+        }
+    }
+
     init(with chat: Chat) {
         self.chat = chat
     }

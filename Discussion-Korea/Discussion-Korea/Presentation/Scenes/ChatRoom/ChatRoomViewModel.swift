@@ -142,7 +142,9 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let side = Driver.of(selectedSide, myInfo.compactMap { $0?.side }).merge()
+        let side = Driver.of(
+            selectedSide.map { (side) -> Side? in return side }, myInfo.map { $0?.side }
+        ).merge()
 
         let sideEvent = selectedSide
             .withLatestFrom(uid) { ($0, $1) }
@@ -195,6 +197,11 @@ final class ChatRoomViewModel: ViewModelType {
             .withLatestFrom(contentAndUID)
             .map { (content, uid) -> Chat in
                 Chat(userID: uid, content: content, date: Date())
+            }
+            .withLatestFrom(side) {
+                var chat: Chat = $0
+                chat.side = $1
+                return chat
             }
             .flatMap { [unowned self] in
                 self.chatsUsecase.send(room: 1, chat: $0)

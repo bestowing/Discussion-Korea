@@ -36,7 +36,12 @@ final class Reference {
                           let dateString = dic["date"] as? String,
                           let date = dateFormatter.date(from: dateString)
                     else { return }
-                    subscribe.onNext(Chat(userID: userID, content: content, date: date))
+                    var chat = Chat(userID: userID, content: content, date: date)
+                    if let sideString = dic["side"] as? String {
+                        let side = Side.toSide(from: sideString)
+                        chat.side = side
+                    }
+                    subscribe.onNext(chat)
                 }
             return Disposables.create()
         }
@@ -54,24 +59,28 @@ final class Reference {
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let chat: [String: Any] = ["user": chat.userID,
+        var value: [String: Any] = ["user": chat.userID,
                     "content": chat.content,
                     "date": dateFormatter.string(from: date)]
-        let childUpdates = ["/chatRoom/\(room)/messages/\(key)": chat]
+        if let side = chat.side {
+            value["side"] = side.rawValue
+        }
+        let childUpdates = ["/chatRoom/\(room)/messages/\(key)": value]
         self.reference.updateChildValues(childUpdates)
         return Observable<Void>.just(Void())
     }
 
+    // MARK: - userInfos
+
     func getUserInfo(in room: Int, with uid: String) -> Observable<UserInfo?> {
-        return Observable<UserInfo?>.create { [unowned self] subscribe in
+        return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(room)/users/\(uid)")
-                .observeSingleEvent(of: .value, with: { snapshot in
+                .observe(.value) { snapshot in
                     guard let dictionary = snapshot.value as? NSDictionary,
                           let nickname = dictionary["nickname"] as? String
                     else {
                         subscribe.onNext(nil)
-                        subscribe.onCompleted()
                         return
                     }
                     var userInfo = UserInfo(uid: uid, nickname: nickname)
@@ -79,13 +88,10 @@ final class Reference {
                         userInfo.side = Side.toSide(from: sideString)
                     }
                     subscribe.onNext(userInfo)
-                    subscribe.onCompleted()
-                })
+                }
             return Disposables.create()
         }
     }
-
-    // MARK: - userInfos
 
     func getUserInfo(room: Int) -> Observable<UserInfo> {
         return Observable<UserInfo>.create { [unowned self] subscribe in
