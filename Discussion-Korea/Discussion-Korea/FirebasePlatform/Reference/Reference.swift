@@ -134,6 +134,16 @@ final class Reference {
         }
     }
 
+    func clearSide(room: Int, uid: String) -> Observable<Void> {
+        return Observable<Void>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/users/\(uid)/side")
+                .setValue(nil)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
     func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRoom/\(room)/votes/\(side.rawValue)").runTransactionBlock { currentData in

@@ -24,6 +24,10 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference.setSide(room: room, uid: uid, side: side)
     }
 
+    func clearSide(room: Int, uid: String) -> Observable<Void> {
+        self.reference.clearSide(room: room, uid: uid)
+    }
+
     func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
         self.reference.vote(room: room, uid: uid, side: side)
     }

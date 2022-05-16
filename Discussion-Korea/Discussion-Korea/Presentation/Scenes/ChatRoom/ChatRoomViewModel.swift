@@ -134,6 +134,14 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let clearSideEvent = status
+            .filter { return $0 == 0 }
+            .withLatestFrom(uid) { ($0, $1) }
+            .flatMap { [unowned self] (_, uid) in
+                self.userInfoUsecase.clearSide(room: 1, uid: uid)
+                    .asDriverOnErrorJustComplete()
+            }
+
         let side = Driver.of(selectedSide, myInfo.compactMap { $0?.side }).merge()
 
         let sideEvent = selectedSide
@@ -194,7 +202,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent)
+        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, clearSideEvent)
             .merge()
 
         return Output(
