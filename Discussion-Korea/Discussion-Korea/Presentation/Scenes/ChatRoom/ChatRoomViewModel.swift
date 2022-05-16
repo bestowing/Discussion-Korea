@@ -58,7 +58,7 @@ final class ChatRoomViewModel: ViewModelType {
                         onCompleted: { noticeHidden.on(.next(true)) })
                     .asDriverOnErrorJustComplete()
             }
-            .map { "남은 시간: \($0 / 60):\($0 % 60)" }
+            .map { "남은 시간: \(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))" }
 
         let enterEvent = myInfo
             .filter { return $0 == nil }
@@ -129,7 +129,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         let selectedSide = status
             .filter { return $0 == 1 }
-            .flatMap { [unowned self] status in
+            .flatMap { [unowned self] _ in
                 self.navigator.toSideAlert()
                     .asDriverOnErrorJustComplete()
             }
