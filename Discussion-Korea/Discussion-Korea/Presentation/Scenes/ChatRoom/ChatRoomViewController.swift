@@ -31,8 +31,10 @@ final class ChatRoomViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 15.0)
         label.textColor = .label
         label.backgroundColor = UIColor.systemBackground
-        label.layer.cornerRadius = 4
-        label.layer.masksToBounds = true
+//        label.layer.cornerRadius = 4
+        label.layer.shadowOpacity = 0.15
+        label.layer.shadowOffset = CGSize(width: 0, height: 1)
+        label.layer.masksToBounds = false
         return label
     }()
 
