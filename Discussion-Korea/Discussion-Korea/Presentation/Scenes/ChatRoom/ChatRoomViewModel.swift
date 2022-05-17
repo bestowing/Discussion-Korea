@@ -155,7 +155,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         let voteEvent = status
             .withLatestFrom(side) { ($0, $1) }
-            .filter { return $0.0 == 7 && $0.1 == Side.judge }
+            .filter { return $0.0 == 13 && $0.1 == Side.judge }
             .flatMap { [unowned self] status in
                 self.navigator.toVoteAlert()
                     .asDriverOnErrorJustComplete()
@@ -169,13 +169,13 @@ final class ChatRoomViewModel: ViewModelType {
         let contentEmpty = input.content.map { !$0.isEmpty }
 
         let canEditable = Driver.combineLatest(status, side) { (status, side) -> Bool in
-            guard [2, 3, 4, 5, 6, 7].contains(status)
+            guard status >= 2
             else { return true }
             switch side {
             case .agree:
-                return [2, 4, 5].contains(status)
+                return [2, 4, 5, 9, 10, 12].contains(status)
             case .disagree:
-                return [3, 4, 6].contains(status)
+                return [3, 4, 6, 8, 10, 11].contains(status)
             default:
                 return false
             }
