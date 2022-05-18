@@ -18,7 +18,8 @@ final class ChatRoomViewController: UIViewController {
 
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.title = "menu"
+        button.tintColor = .label
+        button.image = UIImage(systemName: "line.3.horizontal")
         return button
     }()
 
