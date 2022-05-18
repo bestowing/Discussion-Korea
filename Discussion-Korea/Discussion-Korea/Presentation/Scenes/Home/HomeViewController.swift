@@ -15,6 +15,14 @@ final class HomeViewController: UIViewController {
 
     var viewModel: HomeViewModel!
 
+    private let backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = ""
+        button.tintColor = .label
+        button.style = .plain
+        return button
+    }()
+
     private let enterChatRoomButton: UIButton = {
         let button = UIButton()
         button.setTitle("이동하기", for: .normal)
@@ -38,6 +46,7 @@ final class HomeViewController: UIViewController {
     }
 
     private func setSubViews() {
+        self.navigationItem.backBarButtonItem = self.backButton
         self.view.addSubview(self.enterChatRoomButton)
         self.enterChatRoomButton.snp.makeConstraints { make in
             make.center.equalToSuperview()
