@@ -53,6 +53,11 @@ final class ChatRoomViewController: UIViewController {
         let messageTextView = UITextView()
         messageTextView.font = UIFont.systemFont(ofSize: 14.0)
         messageTextView.isScrollEnabled = false
+        messageTextView.layer.borderColor = UIColor.systemGray5.cgColor
+        messageTextView.layer.borderWidth = 1.0
+        messageTextView.backgroundColor = .systemGray6
+        messageTextView.layer.cornerRadius = 15.0
+        messageTextView.layer.masksToBounds = true
         return messageTextView
     }()
 
@@ -93,6 +98,9 @@ final class ChatRoomViewController: UIViewController {
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
         self.view.addSubview(self.noticeView)
+        let inputBackground = UIView()
+        inputBackground.backgroundColor = .systemBackground
+        self.view.addSubview(inputBackground)
         self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.sendButton)
         self.navigationItem.rightBarButtonItem = self.menuButton
@@ -107,6 +115,12 @@ final class ChatRoomViewController: UIViewController {
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
             make.top.equalToSuperview()
             make.bottom.equalTo(self.messageTextView.snp.top).offset(-10)
+        }
+        inputBackground.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(self.messageCollectionView.snp.bottom)
+            make.bottom.equalToSuperview()
         }
         self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
         self.messageTextView.snp.makeConstraints { make in
