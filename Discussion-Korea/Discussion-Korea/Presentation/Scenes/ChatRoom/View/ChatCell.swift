@@ -23,4 +23,30 @@ class ChatCell: UICollectionViewCell {
         fatalError("not implemented")
     }
 
+    func getAccessibilityLabel(_ viewModel: ChatItemViewModel) -> String {
+        var label = "\(viewModel.chat.content)라고"
+        if let side = viewModel.chat.side,
+           side == .agree || side == .disagree {
+            label += " \(side == .agree ? "찬성" : "반대")측의"
+        }
+        label += " \(viewModel.nickname)님이"
+        if let date = viewModel.chat.date {
+            let dateString = self.humanFriendlyDateString(from: date)
+            label += "\(dateString)에 "
+        }
+        return label + " 채팅을 보냈어요."
+    }
+
+}
+
+fileprivate extension ChatCell {
+
+    func humanFriendlyDateString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "a h시 m분"
+        dateFormatter.locale = Locale(identifier: "ko")
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
+
 }

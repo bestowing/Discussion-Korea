@@ -20,6 +20,7 @@ final class ChatRoomViewController: UIViewController {
         let button = UIBarButtonItem()
         button.tintColor = .label
         button.image = UIImage(systemName: "line.3.horizontal")
+        button.accessibilityLabel = "메뉴"
         return button
     }()
 
@@ -59,6 +60,8 @@ final class ChatRoomViewController: UIViewController {
         messageTextView.backgroundColor = .systemGray6
         messageTextView.layer.cornerRadius = 15.0
         messageTextView.layer.masksToBounds = true
+        messageTextView.accessibilityLabel = "채팅 내용"
+        messageTextView.accessibilityHint = "채팅할 내용 입력"
         return messageTextView
     }()
 
@@ -72,6 +75,7 @@ final class ChatRoomViewController: UIViewController {
 //        sendButton.layer.borderWidth = 1.0
 //        sendButton.layer.cornerRadius = 13
         sendButton.isEnabled = false
+        sendButton.accessibilityLabel = "채팅 보내기"
         return sendButton
     }()
 
@@ -169,6 +173,8 @@ final class ChatRoomViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? ChatCell
             else { return UICollectionViewCell() }
             cell.bind(model)
+            cell.isAccessibilityElement = true
+            cell.accessibilityLabel = cell.getAccessibilityLabel(model)
             return cell
         }.disposed(by: self.disposeBag)
 

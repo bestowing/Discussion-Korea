@@ -19,6 +19,7 @@ final class ChatRoomScheduleViewController: UIViewController {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "xmark")
         button.tintColor = .label
+        button.accessibilityLabel = "닫기"
         return button
     }()
 
@@ -26,6 +27,7 @@ final class ChatRoomScheduleViewController: UIViewController {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "plus")
         button.tintColor = .label
+        button.accessibilityLabel = "토론 일정 추가"
         return button
     }()
 

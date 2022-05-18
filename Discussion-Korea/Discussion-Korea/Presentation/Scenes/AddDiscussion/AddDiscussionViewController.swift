@@ -17,6 +17,7 @@ final class AddDiscussionViewController: UIViewController {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "xmark")
         button.tintColor = .label
+        button.accessibilityLabel = "닫기"
         return button
     }()
 
@@ -24,6 +25,7 @@ final class AddDiscussionViewController: UIViewController {
         let button = UIBarButtonItem()
         button.title = "완료"
         button.tintColor = .label
+        button.accessibilityLabel = "토론 추가"
         return button
     }()
 
