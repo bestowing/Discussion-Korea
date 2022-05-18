@@ -30,35 +30,51 @@ import Foundation
 */
 
 final class DiscussionManager {
-    
+
     private let reference: DatabaseReference
     private let roomReference: DatabaseReference
     private let sideManager: SideManager
+    private let summaryManager: SummaryManager
     private let dateFormatter: DateFormatter
-    
+
     private var durations: [Double]
 
     private var isFirstHalf = true
 
-    init(sideManager: SideManager, dateFormatter: DateFormatter) {
+    init(sideManager: SideManager,
+         summaryManager: SummaryManager,
+         dateFormatter: DateFormatter) {
         self.reference = Database
         //            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
             .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
         self.roomReference = self.reference.child("chatRoom/1")
         self.sideManager = sideManager
+        self.summaryManager = summaryManager
+        summaryManager.connect(reference: self.roomReference.child("messages"))
         self.dateFormatter = dateFormatter
         self.durations = []
     }
-    
-    func transform() -> AnyPublisher<Bool, Never> {
+
+    func transform() -> AnyPublisher<Void, Never> {
         self.observeDiscussion()
         self.observeSide()
-        return self.sideManager.isDone()
+        let phaseTwoEvent = self.sideManager.isDone()
+            .dropFirst()
             .handleEvents(receiveOutput: { [unowned self] ready in
                 if ready { self.phaseOneEnd() }
             })
-            .eraseToAnyPublisher()
+            .map { _ -> Void in return Void() }
+
+//        let summaryEvent = self.summaryManager.summaries()
+//            .dropFirst()
+//            .handleEvents(receiveOutput: { contents in
+//                print(contents[0], contents[1])
+//            })
+//            .map { _ -> Void in return Void() }
+
+        let events = phaseTwoEvent.eraseToAnyPublisher()
+        return events
     }
 
     /// 새로운 토론이 추가되는 것을 관찰하고 처리한다
@@ -163,13 +179,13 @@ final class DiscussionManager {
         let childUpdates = ["/chatRoom/1/messages/\(key)": chat]
         self.reference.updateChildValues(childUpdates)
     }
-    
+
     private func send(phase: Int) {
         let value: [String: Any] = ["value": phase]
         self.roomReference.child("phase")
             .setValue(value)
     }
-    
+
     @objc private func notify(timer: Timer) {
         guard let userInfo = timer.userInfo as? [String: Any],
               let uid = userInfo["uid"] as? String,
@@ -230,7 +246,7 @@ final class DiscussionManager {
             self.send(phase: 9, until: end)
         }
     }
-    
+
     private func goPhaseFour() {
         let now = Date()
         self.send(chat: Chat(userID: "bot",
@@ -264,7 +280,7 @@ final class DiscussionManager {
             self.send(phase: 11, until: end)
         }
     }
-    
+
     private func goPhaseSix(content: String) {
         let now = Date()
         self.send(chat: Chat(userID: "bot",
@@ -304,11 +320,11 @@ final class DiscussionManager {
                              date: now,
                              nickName: nil))
         let date = Date(timeInterval: 60 * 1, since: now) // 투표는 기본 1분간
-        let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(phaseEightEnd), userInfo: nil, repeats: false)
+        let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(votePhaseEnd), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)
         self.send(phase: 13, until: date)
     }
-    
+
     private func endDiscussion() {
         self.send(chat: Chat(userID: "bot",
                              content: "판정단의 투표가 종료되었습니다. 투표를 집계하겠습니다...",
@@ -391,11 +407,11 @@ final class DiscussionManager {
             self.goPhaseThree(content: "이어서 찬성측 입론을 듣겠습니다")
         }
     }
-    
+
     @objc func phaseThreeEnd() {
         self.goPhaseFour()
     }
-    
+
     @objc func phaseFourEnd() {
         if self.isFirstHalf {
             self.goPhaseFive(content: "자유토론이 끝났습니다. 찬성측부터 결론을 말씀해주세요")
@@ -411,13 +427,25 @@ final class DiscussionManager {
             self.goPhaseSix(content: "찬성측 결론 말씀해주세요")
         }
     }
-    
+
     @objc func phaseSixEnd() {
         if self.isFirstHalf {
             self.isFirstHalf = false
-            self.goPhaseSeven()
+            self.summaryManager.summaries(completion: { [unowned self] contents in
+                self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
+                contents[0].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
+                contents[1].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                self.goPhaseSeven()
+            })
         } else {
-            self.goPhaseEight()
+            self.summaryManager.summaries(completion: { [unowned self] contents in
+                self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
+                contents[0].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
+                contents[1].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                self.goPhaseEight()
+            })
         }
     }
 
@@ -425,8 +453,8 @@ final class DiscussionManager {
         self.goPhaseTwo(content: "쉬는 시간이 종료되었습니다. 이번에는 반대측 입론부터 듣겠습니다.")
     }
 
-    @objc func phaseEightEnd() {
+    @objc func votePhaseEnd() {
         self.endDiscussion()
     }
-    
+
 }

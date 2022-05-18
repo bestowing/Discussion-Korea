@@ -20,7 +20,6 @@ final class SideManager {
             .combineLatest($disagrees, $judges)
             .map {
                 // FIXME: 판정단은 없어도 되는 상태
-                print($0)
                 return !$0.0.isEmpty && !$0.1.isEmpty && !$0.2.isEmpty
             }
             .eraseToAnyPublisher()
