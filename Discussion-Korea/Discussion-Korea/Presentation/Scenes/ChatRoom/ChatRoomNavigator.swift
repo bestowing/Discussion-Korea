@@ -16,6 +16,7 @@ protocol ChatRoomNavigator {
     func toNicknameAlert() -> Observable<String>
     func toSideAlert() -> Observable<Side>
     func toVoteAlert() -> Observable<Side>
+    func appear()
     func disappear()
 
 }
@@ -156,6 +157,10 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     private func toHome() {
         self.navigationController.popViewController(animated: true)
+    }
+
+    func appear() {
+        self.navigationController.tabBarController?.tabBar.isHidden = true
     }
 
     func disappear() {

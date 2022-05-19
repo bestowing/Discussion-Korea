@@ -214,10 +214,22 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let disappear = input.disappear
-            .do(onNext: navigator.disappear)
+        let appear = input.trigger
+            .do(onNext: self.navigator.appear)
 
-        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, clearSideEvent, disappear)
+        let disappear = input.disappear
+            .do(onNext: self.navigator.disappear)
+
+        let events = Driver.of(
+            voteEvent,
+            sideEvent,
+            sideMenuEvent,
+            sendEvent,
+            enterEvent,
+            clearSideEvent,
+            appear,
+            disappear
+        )
             .merge()
 
         return Output(
