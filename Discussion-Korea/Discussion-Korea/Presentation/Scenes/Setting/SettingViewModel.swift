@@ -1,22 +1,21 @@
 //
-//  HomeViewModel.swift
+//  SettingViewModel.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/05/02.
+//  Created by 이청수 on 2022/05/19.
 //
 
 import Foundation
-import RxCocoa
 
-final class HomeViewModel: ViewModelType {
+final class SettingViewModel: ViewModelType {
 
     // MARK: properties
 
-    private let navigator: HomeNavigator
+    private let navigator: SettingNavigator
 
     // MARK: - init/deinit
 
-    init(navigator: HomeNavigator) {
+    init(navigator: SettingNavigator) {
         self.navigator = navigator
     }
 
@@ -32,10 +31,9 @@ final class HomeViewModel: ViewModelType {
 
 }
 
-extension HomeViewModel {
+extension SettingViewModel {
 
     struct Input {}
-    
     struct Output {}
 
 }

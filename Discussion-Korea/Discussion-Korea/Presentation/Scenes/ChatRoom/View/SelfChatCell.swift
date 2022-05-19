@@ -10,13 +10,13 @@ import UIKit
 
 final class SelfChatCell: ChatCell {
 
-    // MARK: - properties
+    // MARK: properties
 
     private let contentLabel: UILabel = {
         let contentLabel = PaddingLabel()
-        contentLabel.backgroundColor = UIColor(named: "PrimaryColor")
+        contentLabel.backgroundColor = UIColor.primaryColor
         contentLabel.textColor = .white
-        contentLabel.font = UIFont.systemFont(ofSize: 14.0)
+        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
         contentLabel.numberOfLines = 0

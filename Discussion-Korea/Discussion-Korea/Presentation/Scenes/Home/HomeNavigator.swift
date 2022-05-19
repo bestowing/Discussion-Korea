@@ -10,14 +10,17 @@ import UIKit
 protocol HomeNavigator {
 
     func toHome()
-    func toChatRoom()
 
 }
 
 final class DefaultHomeNavigator: HomeNavigator {
 
+    // MARK: properties
+
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    // MARK: - init/deinit
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {
@@ -26,20 +29,18 @@ final class DefaultHomeNavigator: HomeNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
+
+    // MARK: - methods
 
     func toHome() {
         let homeViewController = HomeViewController()
+        homeViewController.title = "홈"
+        self.navigationController.navigationBar.prefersLargeTitles = true
         let homeViewModel = HomeViewModel(navigator: self)
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)
-    }
-
-    func toChatRoom() {
-        let chatRoomNavigator = DefaultChatRoomNavigator(services: self.services,
-                                                         navigationController: self.navigationController)
-        chatRoomNavigator.toChatRoom()
     }
 
 }

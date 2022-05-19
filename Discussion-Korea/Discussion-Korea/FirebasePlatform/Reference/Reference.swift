@@ -16,17 +16,48 @@ final class Reference {
         self.reference = reference
     }
 
+    // MARK: - chatRooms
+
+    func chatRooms() -> Observable<ChatRoom> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRooms")
+                .observe(.childAdded) { snapshot in
+                    guard let dic = snapshot.value as? NSDictionary,
+                          let title = dic["title"] as? String,
+                          let adminUID = dic["adminUID"] as? String
+                    else { return }
+                    let chatRoom = ChatRoom(
+                        uid: snapshot.key, title: title, adminUID: adminUID
+                    )
+                    subscribe.onNext(chatRoom)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func addChatRoom(title: String, adminUID: String) -> Observable<Void> {
+        let value: [String: Any] = ["title": title, "adminUID": adminUID]
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRooms")
+                .childByAutoId().setValue(value)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
     // MARK: - chats
 
     func getChats(room: Int) -> Observable<[Chat]> {
+        // TODO: 이미 있는 채팅을 가져오는 함수 구현
         Observable<[Chat]>.just([])
     }
 
     func receiveNewChats(room: Int) -> Observable<Chat> {
+        // TODO: 추가되는 새로운 채팅을 가져오는 함수로 변경
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        return Observable<Chat>.create { [unowned self] subscribe in
+        return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(room)/messages")
                 .observe(.childAdded) { snapshot in
@@ -36,7 +67,12 @@ final class Reference {
                           let dateString = dic["date"] as? String,
                           let date = dateFormatter.date(from: dateString)
                     else { return }
-                    subscribe.onNext(Chat(userID: userID, content: content, date: date))
+                    var chat = Chat(userID: userID, content: content, date: date)
+                    if let sideString = dic["side"] as? String {
+                        let side = Side.toSide(from: sideString)
+                        chat.side = side
+                    }
+                    subscribe.onNext(chat)
                 }
             return Disposables.create()
         }
@@ -46,7 +82,7 @@ final class Reference {
         // chatRoomViewModel에서 방 번호 혹은 아이디값을 가지고 있어야함
         // 여기서 번호를 부여하는게 아니라 걍 고유 아이디값으로 추가하면 안되나?
         guard let key = self.reference
-            .child("chatRoom").child("\(room)").child("messages")
+            .child("chatRoom/\(room)/messages")
             .childByAutoId().key,
               let date = chat.date
         else {
@@ -54,33 +90,39 @@ final class Reference {
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let chat: [String: Any] = ["user": chat.userID,
+        var value: [String: Any] = ["user": chat.userID,
                     "content": chat.content,
                     "date": dateFormatter.string(from: date)]
-        let childUpdates = ["/chatRoom/\(room)/messages/\(key)": chat]
+        if let side = chat.side {
+            value["side"] = side.rawValue
+        }
+        let childUpdates = ["/chatRoom/\(room)/messages/\(key)": value]
         self.reference.updateChildValues(childUpdates)
         return Observable<Void>.just(Void())
     }
 
+    // MARK: - userInfos
+
     func getUserInfo(in room: Int, with uid: String) -> Observable<UserInfo?> {
-        return Observable<UserInfo?>.create { [unowned self] subscribe in
+        return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(room)/users/\(uid)")
-                .observeSingleEvent(of: .value, with: { snapshot in
-                    if let dictionary = snapshot.value as? NSDictionary,
-                       let nickname = dictionary["nickname"] as? String {
-                        subscribe.onNext(UserInfo(uid: uid, nickname: nickname))
-                    }
+                .observe(.value) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let nickname = dictionary["nickname"] as? String
                     else {
                         subscribe.onNext(nil)
+                        return
                     }
-                    subscribe.onCompleted()
-                })
+                    var userInfo = UserInfo(uid: uid, nickname: nickname)
+                    if let sideString = dictionary["side"] as? String {
+                        userInfo.side = Side.toSide(from: sideString)
+                    }
+                    subscribe.onNext(userInfo)
+                }
             return Disposables.create()
         }
     }
-
-    // MARK: - userInfos
 
     func getUserInfo(room: Int) -> Observable<UserInfo> {
         return Observable<UserInfo>.create { [unowned self] subscribe in
@@ -111,7 +153,45 @@ final class Reference {
                 .child("chatRoom/\(room)/users")
                 .child(userInfo.uid)
                 .setValue(values)
-            subscribe.onNext(Void())
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func setSide(room: Int, uid: String, side: Side) -> Observable<Void> {
+        return Observable<Void>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/sides/\(side.rawValue)")
+                .updateChildValues([uid: true])
+            self.reference
+                .child("chatRoom/\(room)/users/\(uid)")
+                .updateChildValues(["side": side.rawValue])
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func clearSide(room: Int, uid: String) -> Observable<Void> {
+        return Observable<Void>.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(room)/users/\(uid)/side")
+                .setValue(nil)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/votes/\(side.rawValue)").runTransactionBlock { currentData in
+                if var votes = currentData.value as? [AnyObject] {
+                    votes.append(uid as AnyObject)
+                    currentData.value = votes
+                } else {
+                    currentData.value = [uid]
+                }
+                return TransactionResult.success(withValue: currentData)
+            }
             subscribe.onCompleted()
             return Disposables.create()
         }
@@ -154,6 +234,42 @@ final class Reference {
                 .childByAutoId()
                 .setValue(value)
             subscribe.onNext(Void())
+            return Disposables.create()
+        }
+    }
+
+    func getDiscussionStatus(room: Int) -> Observable<Int> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/phase").observe(.childAdded) { snapshot in
+                guard let phase = snapshot.value as? Int
+                else { return }
+                subscribe.onNext(phase)
+            }
+            self.reference.child("chatRoom/\(room)/phase").observe(.childChanged) { snapshot in
+                guard let phase = snapshot.value as? Int
+                else { return }
+                subscribe.onNext(phase)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func getDiscussionTime(room: Int) -> Observable<Date> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(room)/endDate").observe(.childAdded) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
+            self.reference.child("chatRoom/\(room)/endDate").observe(.childChanged) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
             return Disposables.create()
         }
     }

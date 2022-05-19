@@ -12,7 +12,7 @@ import RxSwift
 
 final class ChatRoomSideMenuViewController: UIViewController {
 
-    // MARK: - properties
+    // MARK: properties
 
     var viewModel: ChatRoomSideMenuViewModel!
 
@@ -71,7 +71,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
     // MARK: - init/deinit
 
     deinit {
-        print(#function, self)
+        print("🗑", Self.description())
     }
 
     // MARK: - methods

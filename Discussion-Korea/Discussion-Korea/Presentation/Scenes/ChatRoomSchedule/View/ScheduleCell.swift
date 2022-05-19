@@ -9,6 +9,8 @@ import UIKit
 
 final class ScheduleCell: UITableViewCell {
 
+    // MARK: properties
+
     private let topicLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
@@ -38,6 +40,8 @@ final class ScheduleCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layoutViews()
     }
+
+    // MARK: - methods
 
     func bind(_ viewModel: ScheduleItemViewModel) {
         self.topicLabel.text = viewModel.topicString

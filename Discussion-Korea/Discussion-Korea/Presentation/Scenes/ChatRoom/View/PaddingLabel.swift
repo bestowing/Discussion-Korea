@@ -9,16 +9,22 @@ import UIKit
 
 final class PaddingLabel: UILabel {
 
+    // MARK: properties
+
     var padding = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0) {
         didSet {
             self.invalidateIntrinsicContentSize()
         }
     }
 
+    // MARK: - init/deinit
+
     convenience init(padding: UIEdgeInsets) {
         self.init()
         self.padding = padding
     }
+
+    // MARK: - methods
 
     override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         let insetRect = bounds.inset(by: padding)

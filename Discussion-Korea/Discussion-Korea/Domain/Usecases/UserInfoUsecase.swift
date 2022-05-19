@@ -10,6 +10,9 @@ import RxSwift
 protocol UserInfoUsecase {
 
     func add(room: Int, userInfo: UserInfo) -> Observable<Void>
+    func add(room: Int, uid: String, side: Side) -> Observable<Void>
+    func clearSide(room: Int, uid: String) -> Observable<Void>
+    func vote(room: Int, uid: String, side: Side) -> Observable<Void>
     func uid() -> Observable<String>
     func userInfo(room: Int, with uid: String) -> Observable<UserInfo?>
     func connect(room: Int) -> Observable<UserInfo>

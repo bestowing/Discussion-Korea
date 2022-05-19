@@ -11,12 +11,15 @@ import SnapKit
 
 final class AddDiscussionViewController: UIViewController {
 
+    // MARK: properties
+
     var viewModel: AddDiscussionViewModel!
 
     private let exitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "xmark")
         button.tintColor = .label
+        button.accessibilityLabel = "닫기"
         return button
     }()
 
@@ -24,6 +27,7 @@ final class AddDiscussionViewController: UIViewController {
         let button = UIBarButtonItem()
         button.title = "완료"
         button.tintColor = .label
+        button.accessibilityLabel = "토론 추가"
         return button
     }()
 
@@ -94,7 +98,7 @@ final class AddDiscussionViewController: UIViewController {
     // MARK: - init/deinit
 
     deinit {
-        print(#function, self)
+        print("🗑", Self.description())
     }
 
     // MARK: - methods

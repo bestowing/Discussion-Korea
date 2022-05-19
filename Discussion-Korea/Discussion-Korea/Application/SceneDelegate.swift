@@ -9,11 +9,11 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    // MARK: properties
+    // MARK: - properties
 
     var window: UIWindow?
 
-    // MARK: methods
+    // MARK: - methods
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }

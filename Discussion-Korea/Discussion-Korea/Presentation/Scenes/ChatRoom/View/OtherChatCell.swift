@@ -10,7 +10,7 @@ import UIKit
 
 final class OtherChatCell: ChatCell {
 
-    // MARK: - properties
+    // MARK: properties
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
@@ -31,7 +31,7 @@ final class OtherChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = .systemBackground
         contentLabel.textColor = .label
-        contentLabel.font = UIFont.systemFont(ofSize: 14.0)
+        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
         contentLabel.layer.cornerRadius = 8
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
@@ -89,8 +89,8 @@ final class OtherChatCell: ChatCell {
     }
 
     override func bind(_ viewModel: ChatItemViewModel) {
-        self.profileImageView.image = UIImage(systemName: "person.fill")
-        self.nicknameLabel.text = viewModel.chat.nickName
+        self.profileImageView.image = viewModel.image
+        self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
         self.contentLabel.text = viewModel.chat.content
         self.timeLabel.text = viewModel.timeString
     }

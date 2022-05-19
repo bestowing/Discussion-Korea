@@ -10,31 +10,23 @@ import RxCocoa
 
 final class AddDiscussionViewModel: ViewModelType {
 
+    // MARK: properties
+
     private let navigator: AddDiscussionNavigator
     private let usecase: DiscussionUsecase
+
+    // MARK: - init/deinit
 
     init(navigator: AddDiscussionNavigator, usecase: DiscussionUsecase) {
         self.navigator = navigator
         self.usecase = usecase
     }
 
-    struct Input {
-        let exitTrigger: Driver<Void>
-        let title: Driver<String>
-        let introTime: Driver<Int>
-        let mainTime: Driver<Int>
-        let conclusionTime: Driver<Int>
-        let date: Driver<Date>
-        let submitTrigger: Driver<Void>
+    deinit {
+        print("🗑", self)
     }
 
-    struct Output {
-        let submitEnabled: Driver<Bool>
-        let intro: Driver<String>
-        let main: Driver<String>
-        let conclusion: Driver<String>
-        let dismiss: Driver<Void>
-    }
+    // MARK: - methods
 
     func transform(input: Input) -> Output {
 
@@ -69,6 +61,28 @@ final class AddDiscussionViewModel: ViewModelType {
             conclusion: input.conclusionTime.map {String($0)}.asDriver(),
             dismiss: dismiss
         )
+    }
+
+}
+
+extension AddDiscussionViewModel {
+
+    struct Input {
+        let exitTrigger: Driver<Void>
+        let title: Driver<String>
+        let introTime: Driver<Int>
+        let mainTime: Driver<Int>
+        let conclusionTime: Driver<Int>
+        let date: Driver<Date>
+        let submitTrigger: Driver<Void>
+    }
+
+    struct Output {
+        let submitEnabled: Driver<Bool>
+        let intro: Driver<String>
+        let main: Driver<String>
+        let conclusion: Driver<String>
+        let dismiss: Driver<Void>
     }
 
 }

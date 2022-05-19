@@ -7,8 +7,9 @@
 
 protocol UsecaseProvider {
 
+    func makeChatRoomsUsecase() -> ChatRoomsUsecase
     func makeChatsUsecase() -> ChatsUsecase
-    func makeUserInfoUsecase() -> UserInfoUsecase
     func makeDiscussionUsecase() -> DiscussionUsecase
+    func makeUserInfoUsecase() -> UserInfoUsecase
 
 }

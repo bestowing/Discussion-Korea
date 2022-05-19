@@ -10,9 +10,11 @@ import UIKit
 
 final class ParticipantCell: UITableViewCell {
 
+    // MARK: properties
+
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(named: "PrimaryColor")
+        imageView.backgroundColor = UIColor.primaryColor
         imageView.tintColor = .white
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
@@ -25,6 +27,8 @@ final class ParticipantCell: UITableViewCell {
         return label
     }()
 
+    // MARK: - init/deinit
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.layoutViews()
@@ -34,6 +38,8 @@ final class ParticipantCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.layoutViews()
     }
+
+    // MARK: - methods
 
     private func layoutViews() {
         self.backgroundColor = .clear

@@ -7,12 +7,13 @@
 
 import Foundation
 
-public struct UserInfo {
+struct UserInfo {
 
-    public let uid: String
-    public let nickname: String
-    public var position: String?
-    public var profileURL: URL?
+    let uid: String
+    let nickname: String
+    var position: String?
+    var profileURL: URL?
+    var side: Side?
 
     public init(uid: String, nickname: String) {
         self.uid = uid

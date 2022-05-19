@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 class ChatItemViewModel {
+
+    // MARK: properties
 
     var chat: Chat
 
@@ -27,6 +30,33 @@ class ChatItemViewModel {
     var identifier: String {
         fatalError("not implemented")
     }
+
+    var image: UIImage? {
+        if self.chat.userID == "bot" {
+            return UIImage(named: "bot")
+        }
+        return UIImage(systemName: "person.fill")
+    }
+
+    var nickname: String {
+        if self.chat.userID == "bot" {
+            return "방장봇"
+        }
+        return self.chat.nickName ?? self.chat.userID
+    }
+
+    var sideString: String {
+        switch self.chat.side {
+        case .agree:
+            return " (찬성)"
+        case .disagree:
+            return " (반대)"
+        default:
+            return ""
+        }
+    }
+
+    // MARK: - init/deinit
 
     init(with chat: Chat) {
         self.chat = chat

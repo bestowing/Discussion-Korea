@@ -16,21 +16,27 @@ final class FirebaseUsecaseProvider: UsecaseProvider {
         self.referenceProvider = ReferenceProvider()
     }
 
+    func makeChatRoomsUsecase() -> ChatRoomsUsecase {
+        return FirebaseChatRoomsUsecase(
+            reference: self.referenceProvider.makeChatRoomsReference()
+        )
+    }
+
     func makeChatsUsecase() -> ChatsUsecase {
         return FirebaseChatsUsecase(
             reference: self.referenceProvider.makeChatsRefence()
         )
     }
 
-    func makeUserInfoUsecase() -> UserInfoUsecase {
-        return FirebaseUserInfoUsecase(
-            reference: self.referenceProvider.makeUserInfoReference()
-        )
-    }
-
     func makeDiscussionUsecase() -> DiscussionUsecase {
         return FirebaseDiscussionUsecase(
             reference: self.referenceProvider.makeDiscussionReference()
+        )
+    }
+
+    func makeUserInfoUsecase() -> UserInfoUsecase {
+        return FirebaseUserInfoUsecase(
+            reference: self.referenceProvider.makeUserInfoReference()
         )
     }
 

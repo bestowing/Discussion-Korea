@@ -10,17 +10,7 @@ import RxCocoa
 
 final class ChatRoomSideMenuViewModel: ViewModelType {
 
-    struct Input {
-        let viewWillAppear: Driver<Void>
-        let calendar: Driver<Void>
-    }
-    
-    struct Output {
-        let participants: Driver<[ParticipantItemViewModel]>
-        let calendarEvent: Driver<Void>
-    }
-
-    // MARK: - properties
+    // MARK: properties
 
     private let userInfoUsecase: UserInfoUsecase
     private let navigator: ChatRoomSideMenuNavigator
@@ -33,7 +23,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
     // MARK: - methods
@@ -45,7 +35,6 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                 self.userInfoUsecase.connect(room: 1)
                     .asDriverOnErrorJustComplete()
                     .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
-                        print(userInfo)
                         return viewModels + [ParticipantItemViewModel(with: userInfo)]
                     }
             }
@@ -54,6 +43,20 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoomSchedule)
 
         return Output(participants: participants, calendarEvent: calendarEvent)
+    }
+
+}
+
+extension ChatRoomSideMenuViewModel {
+
+    struct Input {
+        let viewWillAppear: Driver<Void>
+        let calendar: Driver<Void>
+    }
+    
+    struct Output {
+        let participants: Driver<[ParticipantItemViewModel]>
+        let calendarEvent: Driver<Void>
     }
 
 }
