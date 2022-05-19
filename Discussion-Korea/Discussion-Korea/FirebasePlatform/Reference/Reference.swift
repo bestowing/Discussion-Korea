@@ -16,17 +16,48 @@ final class Reference {
         self.reference = reference
     }
 
+    // MARK: - chatRooms
+
+    func chatRooms() -> Observable<ChatRoom> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRooms")
+                .observe(.childAdded) { snapshot in
+                    guard let dic = snapshot.value as? NSDictionary,
+                          let title = dic["title"] as? String,
+                          let adminUID = dic["adminUID"] as? String
+                    else { return }
+                    let chatRoom = ChatRoom(
+                        uid: snapshot.key, title: title, adminUID: adminUID
+                    )
+                    subscribe.onNext(chatRoom)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func addChatRoom(title: String, adminUID: String) -> Observable<Void> {
+        let value: [String: Any] = ["title": title, "adminUID": adminUID]
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRooms")
+                .childByAutoId().setValue(value)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
     // MARK: - chats
 
     func getChats(room: Int) -> Observable<[Chat]> {
+        // TODO: 이미 있는 채팅을 가져오는 함수 구현
         Observable<[Chat]>.just([])
     }
 
     func receiveNewChats(room: Int) -> Observable<Chat> {
+        // TODO: 추가되는 새로운 채팅을 가져오는 함수로 변경
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        return Observable<Chat>.create { [unowned self] subscribe in
+        return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(room)/messages")
                 .observe(.childAdded) { snapshot in
