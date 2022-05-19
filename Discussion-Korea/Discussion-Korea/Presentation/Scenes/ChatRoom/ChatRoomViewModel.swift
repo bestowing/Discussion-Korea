@@ -214,7 +214,10 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, clearSideEvent)
+        let disappear = input.disappear
+            .do(onNext: navigator.disappear)
+
+        let events = Driver.of(voteEvent, sideEvent, sideMenuEvent, sendEvent, enterEvent, clearSideEvent, disappear)
             .merge()
 
         return Output(
@@ -238,6 +241,7 @@ extension ChatRoomViewModel {
         let send: Driver<Void>
         let menu: Driver<Void>
         let content: Driver<String>
+        let disappear: Driver<Void>
     }
     
     struct Output {

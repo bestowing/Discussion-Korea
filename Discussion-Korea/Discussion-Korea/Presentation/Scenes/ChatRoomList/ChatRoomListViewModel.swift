@@ -23,6 +23,7 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
+        // FIXME: 방 식별자를 전달하도록 변경 필요
         let enterEvent = input.enterChatRoomTrigger
             .map { return "1" }
             .do(onNext: navigator.toChatRoom)

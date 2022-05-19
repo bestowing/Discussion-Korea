@@ -9,11 +9,21 @@ import Foundation
 
 final class SettingViewModel: ViewModelType {
 
-    struct Input {}
-    struct Output {}
+    private let navigator: SettingNavigator
+
+    init(navigator: SettingNavigator) {
+        self.navigator = navigator
+    }
 
     func transform(input: Input) -> Output {
         return Output()
     }
+
+}
+
+extension SettingViewModel {
+
+    struct Input {}
+    struct Output {}
 
 }

@@ -164,7 +164,10 @@ final class ChatRoomViewController: UIViewController {
                 .asDriverOnErrorJustComplete(),
             send: self.sendButton.rx.tap.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
-            content: self.messageTextView.rx.text.orEmpty.asDriver()
+            content: self.messageTextView.rx.text.orEmpty.asDriver(),
+            disappear: self.rx.sentMessage(#selector(UIViewController.viewWillDisappear(_:)))
+                .mapToVoid()
+                .asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
 

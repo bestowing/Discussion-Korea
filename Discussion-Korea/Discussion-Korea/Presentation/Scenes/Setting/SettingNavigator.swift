@@ -30,7 +30,7 @@ final class DefaultSettingNavigator: SettingNavigator {
 
     func toSetting() {
         let settingViewController = SettingViewController()
-        let settingViewModel = SettingViewModel()
+        let settingViewModel = SettingViewModel(navigator: self)
         settingViewController.viewModel = settingViewModel
         self.navigationController.pushViewController(settingViewController, animated: true)
     }
