@@ -431,21 +431,41 @@ final class DiscussionManager {
     @objc func phaseSixEnd() {
         if self.isFirstHalf {
             self.isFirstHalf = false
-            self.summaryManager.summaries(completion: { [unowned self] contents in
+            let group = DispatchGroup()
+            group.enter()
+            group.enter()
+            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
+            self.summaryManager.summariesForAgree(completion: { [unowned self] contents in
                 self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents[0].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                group.leave()
+            })
+            self.summaryManager.summariesForDisAgree(completion: { [unowned self] contents in
                 self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents[1].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                group.leave()
+            })
+            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
                 self.goPhaseSeven()
-            })
+            }
         } else {
-            self.summaryManager.summaries(completion: { [unowned self] contents in
+            let group = DispatchGroup()
+            group.enter()
+            group.enter()
+            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
+            self.summaryManager.summariesForAgree(completion: { [unowned self] contents in
                 self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents[0].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
-                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents[1].forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
-                self.goPhaseEight()
+                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                group.leave()
             })
+            self.summaryManager.summariesForDisAgree(completion: { [unowned self] contents in
+                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
+                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+                group.leave()
+            })
+            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
+                self.goPhaseEight()
+            }
         }
     }
 

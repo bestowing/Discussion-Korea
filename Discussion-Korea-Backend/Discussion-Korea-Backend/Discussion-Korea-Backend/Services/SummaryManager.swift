@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/05/18.
 //
 
+import Alamofire
 import FirebaseDatabase
 import Foundation
 
@@ -45,25 +46,106 @@ final class SummaryManager {
     private func add(chat: Chat, side: Side) {
         guard side == .agree || side == .disagree
         else { return }
-        print(chat, "이 추가되었어요")
         let uid = chat.userID
         self.register(uid: uid, side: side)
         let content = chat.content
         if side == .agree {
             let index = self.agreeIndexes[uid]!
             self.agreeContents[index].append(content)
+            print("찬성측에 ", chat, "이 추가되었어요")
         } else {
             let index = self.disagreeIndexes[uid]!
             self.disagreeContents[index].append(content)
+            print("반대측에 ", chat, "이 추가되었어요")
         }
     }
 
-    func summaries(completion: @escaping ([[String]]) -> Void) {
+    func summariesForAgree(completion: @escaping ([String]) -> Void) {
         let agreeResult = self.agreeContents.map { $0.joined(separator: " ") }
+        self.resetAgree()
+        let queue = DispatchQueue.global(qos: .userInteractive)
+        let group = DispatchGroup()
+        queue.async {
+            var agreeSummaries = Array(repeating: "", count: agreeResult.count)
+            agreeResult.enumerated().forEach { (index, result) in
+                group.enter()
+                print("찬성측의 ", result, "를 요약하려고 함")
+                let urlString = "http://119.194.17.59:8080/predictions/summarization"
+                var request = URLRequest(url: URL(string: urlString)!)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                let params = ["text": result] as Dictionary
+                do {
+                    try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+                    AF.request(request).response { response in
+                        switch response.result {
+                        case .success(let data):
+                            if let data = data,
+                               let successMessage = String(bytes: data, encoding: .utf8) {
+                                agreeSummaries[index] = successMessage
+                            } else {
+                                agreeSummaries[index] = "요약에 실패했습니다."
+                            }
+                        case .failure(let error):
+                            agreeSummaries[index] = "요약에 실패했습니다."
+                            print(error)
+                        }
+                        group.leave()
+                    }
+                } catch {
+                    print(error)
+                    agreeSummaries[index] = "요약에 실패했습니다."
+                    group.leave()
+                }
+                group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
+                    completion(agreeSummaries)
+                }
+            }
+        }
+    }
+
+    func summariesForDisAgree(completion: @escaping ([String]) -> Void) {
         let disagreeResult = self.disagreeContents.map { $0.joined(separator: " ") }
-        self.reset()
-        print(agreeResult, disagreeResult)
-        completion([agreeResult, disagreeResult])
+        self.resetDisagree()
+        let queue = DispatchQueue.global(qos: .userInteractive)
+        queue.async {
+            var disagreeSummaries = Array(repeating: "", count: disagreeResult.count)
+            let group = DispatchGroup()
+            disagreeResult.enumerated().forEach { (index, result) in
+                group.enter()
+                print("반대측의 ", result, "를 요약하려고 함")
+                let urlString = "http://119.194.17.59:8080/predictions/summarization"
+                var request = URLRequest(url: URL(string: urlString)!)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                let params = ["text": result] as Dictionary
+                do {
+                    try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+                    AF.request(request).response { response in
+                        switch response.result {
+                        case .success(let data):
+                            if let data = data,
+                               let successMessage = String(bytes: data, encoding: .utf8) {
+                                disagreeSummaries[index] = successMessage
+                            } else {
+                                disagreeSummaries[index] = "요약에 실패했습니다."
+                            }
+                        case .failure(let error):
+                            disagreeSummaries[index] = "요약에 실패했습니다."
+                            print(error)
+                        }
+                        group.leave()
+                    }
+                } catch {
+                    print(error)
+                    disagreeSummaries[index] = "요약에 실패했습니다."
+                    group.leave()
+                }
+                group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
+                    completion(disagreeSummaries)
+                }
+            }
+        }
     }
 
     /// 먼저 사용자를 등록해야함
@@ -82,10 +164,13 @@ final class SummaryManager {
         }
     }
 
-    private func reset() {
+    private func resetAgree() {
         self.agreeContents = []
-        self.disagreeContents = []
         self.agreeIndexes = [:]
+    }
+
+    private func resetDisagree() {
+        self.disagreeContents = []
         self.disagreeIndexes = [:]
     }
 
