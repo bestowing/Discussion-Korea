@@ -9,6 +9,8 @@ import Foundation
 
 final class ScheduleItemViewModel {
 
+    // MARK: properties
+
     var discussion: Discussion
 
     var topicString: String {
@@ -25,6 +27,8 @@ final class ScheduleItemViewModel {
     var durationString: String {
         "\(self.discussion.durations.reduce(0, +))분동안 진행"
     }
+
+    // MARK: - init/deinit
 
     init(with discussion: Discussion) {
         self.discussion = discussion

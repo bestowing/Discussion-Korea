@@ -17,7 +17,7 @@ protocol ChatRoomScheduleNavigator {
 
 final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
 
-    // MARK: - properties
+    // MARK: properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController

@@ -10,8 +10,12 @@ import Foundation
 
 final class ChatRoomScheduleViewModel: ViewModelType {
 
+    // MARK: properties
+
     private let usecase: DiscussionUsecase
     private let navigator: ChatRoomScheduleNavigator
+
+    // MARK: - init/deinit
 
     init(usecase: DiscussionUsecase,
          navigator: ChatRoomScheduleNavigator) {
@@ -19,16 +23,7 @@ final class ChatRoomScheduleViewModel: ViewModelType {
         self.navigator = navigator
     }
 
-    struct Input {
-        let viewWillAppear: Driver<Void>
-        let exitTrigger: Driver<Void>
-        let addDiscussionTrigger: Driver<Void>
-    }
-    struct Output {
-        let schedules: Driver<[ScheduleItemViewModel]>
-        let exitEvent: Driver<Void>
-        let addDiscussionEvent: Driver<Void>
-    }
+    // MARK: - methods
 
     func transform(input: Input) -> Output {
 
@@ -48,6 +43,22 @@ final class ChatRoomScheduleViewModel: ViewModelType {
                 .do(onNext: self.navigator.toAddDiscussion)
 
         return Output(schedules: schedules, exitEvent: exitEvent, addDiscussionEvent: addDiscussionEvent)
+    }
+
+}
+
+extension ChatRoomScheduleViewModel {
+
+    struct Input {
+        let viewWillAppear: Driver<Void>
+        let exitTrigger: Driver<Void>
+        let addDiscussionTrigger: Driver<Void>
+    }
+
+    struct Output {
+        let schedules: Driver<[ScheduleItemViewModel]>
+        let exitEvent: Driver<Void>
+        let addDiscussionEvent: Driver<Void>
     }
 
 }
