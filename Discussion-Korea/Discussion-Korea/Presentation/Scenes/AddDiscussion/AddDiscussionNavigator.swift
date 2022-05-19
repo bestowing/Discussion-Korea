@@ -16,6 +16,8 @@ protocol AddDiscussionNavigator {
 
 final class DefaultAddDiscussionNavigator: AddDiscussionNavigator {
 
+    // MARK: properties
+
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 

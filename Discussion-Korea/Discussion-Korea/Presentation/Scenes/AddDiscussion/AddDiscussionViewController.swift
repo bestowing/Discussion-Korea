@@ -11,6 +11,8 @@ import SnapKit
 
 final class AddDiscussionViewController: UIViewController {
 
+    // MARK: properties
+
     var viewModel: AddDiscussionViewModel!
 
     private let exitButton: UIBarButtonItem = {
