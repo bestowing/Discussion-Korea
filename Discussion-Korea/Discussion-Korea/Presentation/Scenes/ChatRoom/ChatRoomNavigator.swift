@@ -60,9 +60,10 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     private func makeTransparentNavigationBar() {
         let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.systemGray6.withAlphaComponent(0.75)
         appearance.shadowImage = nil
         appearance.shadowColor = nil
-        appearance.backgroundEffect = UIBlurEffect.init(style: .systemMaterial)
         self.navigationController.navigationBar.standardAppearance = appearance
     }
 
