@@ -12,7 +12,7 @@ import RxKeyboard
 
 final class ChatRoomViewController: UIViewController {
 
-    // MARK: - properties
+    // MARK: properties
 
     var viewModel: ChatRoomViewModel!
 

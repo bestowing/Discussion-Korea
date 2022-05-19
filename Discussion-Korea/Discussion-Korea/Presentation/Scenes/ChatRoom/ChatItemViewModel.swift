@@ -10,6 +10,8 @@ import UIKit
 
 class ChatItemViewModel {
 
+    // MARK: properties
+
     var chat: Chat
 
     private let dateFormatter: DateFormatter = {
@@ -53,6 +55,8 @@ class ChatItemViewModel {
             return ""
         }
     }
+
+    // MARK: - init/deinit
 
     init(with chat: Chat) {
         self.chat = chat

@@ -23,12 +23,14 @@ protocol ChatRoomNavigator {
 
 final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
-    // MARK: - properties
+    // MARK: properties
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
 
     private weak var presentingViewController: UIViewController?
+
+    // MARK: - init/deinit
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {

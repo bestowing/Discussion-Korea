@@ -11,6 +11,8 @@ import RxSwift
 
 final class ChatRoomViewModel: ViewModelType {
 
+    // MARK: properties
+
     private let chatRoomID: String
 
     private let chatsUsecase: ChatsUsecase
@@ -18,6 +20,8 @@ final class ChatRoomViewModel: ViewModelType {
     private let discussionUsecase: DiscussionUsecase
 
     private let navigator: ChatRoomNavigator
+
+    // MARK: - init/deinit
 
     init(chatRoomID: String,
          chatsUsecase: ChatsUsecase,
@@ -30,6 +34,8 @@ final class ChatRoomViewModel: ViewModelType {
         self.discussionUsecase = discussionUsecase
         self.navigator = navigator
     }
+
+    // MARK: - methods
 
     func transform(input: Input) -> Output {
 
