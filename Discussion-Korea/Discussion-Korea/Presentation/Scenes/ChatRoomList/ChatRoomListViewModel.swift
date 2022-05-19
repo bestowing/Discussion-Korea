@@ -33,6 +33,19 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
+
+        let chatRooms = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.chatRoomsUsecase.chatRooms()
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let chatRoomItems = chatRooms
+            .scan([ChatRoomItemViewModel]()) { (viewModels, chatRoom) in
+                let viewModel = ChatRoomItemViewModel(chatRoom: chatRoom)
+                return viewModels + [viewModel]
+            }
+
         // FIXME: 방 식별자를 전달하도록 변경 필요
         let enterEvent = input.enterChatRoomTrigger
             .map { return "1" }
