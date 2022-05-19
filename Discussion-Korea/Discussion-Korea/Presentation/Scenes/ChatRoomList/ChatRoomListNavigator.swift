@@ -37,7 +37,11 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
 
     func toChatRoomList() {
         let chatRoomListViewController = ChatRoomListViewController()
-        let chatRoomListViewModel = ChatRoomListViewModel(navigator: self)
+        let chatRoomListViewModel = ChatRoomListViewModel(
+            navigator: self,
+            chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
+            userInfoUsecase: self.services.makeUserInfoUsecase()
+        )
         chatRoomListViewController.viewModel = chatRoomListViewModel
         self.navigationController.pushViewController(chatRoomListViewController, animated: true)
     }

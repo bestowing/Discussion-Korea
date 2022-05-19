@@ -13,11 +13,17 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - properties
 
     private let navigator: ChatRoomListNavigator
+    private let chatRoomsUsecase: ChatRoomsUsecase
+    private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: ChatRoomListNavigator) {
+    init(navigator: ChatRoomListNavigator,
+         chatRoomsUsecase: ChatRoomsUsecase,
+         userInfoUsecase: UserInfoUsecase) {
         self.navigator = navigator
+        self.chatRoomsUsecase = chatRoomsUsecase
+        self.userInfoUsecase = userInfoUsecase
     }
 
     deinit {
