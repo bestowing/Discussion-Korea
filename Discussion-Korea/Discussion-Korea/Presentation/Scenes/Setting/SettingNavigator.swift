@@ -15,8 +15,12 @@ protocol SettingNavigator {
 
 final class DefaultSettingNavigator: SettingNavigator {
 
+    // MARK: properties
+
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    // MARK: - init/deinit
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {
@@ -25,8 +29,10 @@ final class DefaultSettingNavigator: SettingNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
+
+    // MARK: - methods
 
     func toSetting() {
         let settingViewController = SettingViewController()

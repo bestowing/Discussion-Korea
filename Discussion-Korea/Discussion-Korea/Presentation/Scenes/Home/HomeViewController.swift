@@ -17,6 +17,12 @@ final class HomeViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
+    // MARK: - init/deinit
+
+    deinit {
+        print("🗑", Self.description())
+    }
+
     // MARK: - methods
 
     override func loadView() {

@@ -10,18 +10,32 @@ import RxCocoa
 
 final class HomeViewModel: ViewModelType {
 
+    // MARK: properties
+
     private let navigator: HomeNavigator
 
-    struct Input {}
-    
-    struct Output {}
+    // MARK: - init/deinit
 
     init(navigator: HomeNavigator) {
         self.navigator = navigator
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
+    // MARK: - methods
+
     func transform(input: Input) -> Output {
         return Output()
     }
+
+}
+
+extension HomeViewModel {
+
+    struct Input {}
+    
+    struct Output {}
 
 }

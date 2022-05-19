@@ -15,8 +15,12 @@ protocol HomeNavigator {
 
 final class DefaultHomeNavigator: HomeNavigator {
 
+    // MARK: properties
+
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    // MARK: - init/deinit
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {
@@ -25,8 +29,10 @@ final class DefaultHomeNavigator: HomeNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
+
+    // MARK: - methods
 
     func toHome() {
         let homeViewController = HomeViewController()

@@ -29,10 +29,10 @@ final class DefaultAddDiscussionNavigator: AddDiscussionNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
-    // MARK: methods
+    // MARK: - methods
 
     func toAddDiscussion() {
         let viewController = AddDiscussionViewController()

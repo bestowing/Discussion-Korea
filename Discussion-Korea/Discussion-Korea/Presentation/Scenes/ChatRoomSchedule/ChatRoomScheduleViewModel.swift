@@ -23,6 +23,10 @@ final class ChatRoomScheduleViewModel: ViewModelType {
         self.navigator = navigator
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     // MARK: - methods
 
     func transform(input: Input) -> Output {

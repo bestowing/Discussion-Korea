@@ -25,7 +25,12 @@ final class ScheduleItemViewModel {
     }
 
     var durationString: String {
-        "\(self.discussion.durations.reduce(0, +))분동안 진행"
+        guard self.discussion.durations.count >= 3
+        else { return "" }
+        let restTime = 10
+        let voteTime = 1
+        let duration = self.discussion.durations[0] * 4 + self.discussion.durations[1] * 2 + self.discussion.durations[2] * 4 + restTime + voteTime
+        return "\(duration)분동안 진행"
     }
 
     // MARK: - init/deinit

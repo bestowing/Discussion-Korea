@@ -54,7 +54,7 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
     // MARK: - methods

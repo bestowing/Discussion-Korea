@@ -32,7 +32,7 @@ final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
     // MARK: - methods

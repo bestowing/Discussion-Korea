@@ -84,7 +84,7 @@ final class ChatRoomViewController: UIViewController {
     // MARK: - init/deinit
 
     deinit {
-        print(#function, self)
+        print("🗑", Self.description())
     }
 
     // MARK: - methods

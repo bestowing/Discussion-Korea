@@ -30,7 +30,7 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
     // MARK: - methods

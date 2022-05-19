@@ -22,6 +22,10 @@ final class AddDiscussionViewModel: ViewModelType {
         self.usecase = usecase
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     // MARK: - methods
 
     func transform(input: Input) -> Output {

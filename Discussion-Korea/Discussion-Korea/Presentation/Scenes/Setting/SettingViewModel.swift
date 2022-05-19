@@ -9,11 +9,21 @@ import Foundation
 
 final class SettingViewModel: ViewModelType {
 
+    // MARK: properties
+
     private let navigator: SettingNavigator
+
+    // MARK: - init/deinit
 
     init(navigator: SettingNavigator) {
         self.navigator = navigator
     }
+
+    deinit {
+        print("🗑", self)
+    }
+
+    // MARK: - methods
 
     func transform(input: Input) -> Output {
         return Output()

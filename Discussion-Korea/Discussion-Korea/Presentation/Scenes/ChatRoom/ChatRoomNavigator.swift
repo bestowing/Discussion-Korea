@@ -39,7 +39,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
     }
 
     deinit {
-        print(#function, self)
+        print("🗑", self)
     }
 
     // MARK: - methods
