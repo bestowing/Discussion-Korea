@@ -43,6 +43,7 @@ final class ChatRoomListViewModel: ViewModelType {
 extension ChatRoomListViewModel {
 
     struct Input {
+        let trigger: Driver<Void>
         let enterChatRoomTrigger: Driver<Void>
     }
 

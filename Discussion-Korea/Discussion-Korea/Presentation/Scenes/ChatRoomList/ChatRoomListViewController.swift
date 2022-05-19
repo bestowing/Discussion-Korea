@@ -63,6 +63,9 @@ final class ChatRoomListViewController: UIViewController {
         assert(self.viewModel != nil)
 
         let input = ChatRoomListViewModel.Input(
+            trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+                .mapToVoid()
+                .asDriverOnErrorJustComplete(),
             enterChatRoomTrigger: self.enterChatRoomButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
