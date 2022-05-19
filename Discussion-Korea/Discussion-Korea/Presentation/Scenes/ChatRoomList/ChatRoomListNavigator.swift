@@ -10,7 +10,7 @@ import UIKit
 protocol ChatRoomListNavigator {
 
     func toChatRoomList()
-    func toChatRoom(_ chatRoomID: String)
+    func toChatRoom(_ chatRoom: ChatRoom)
 
 }
 
@@ -46,12 +46,12 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
         self.navigationController.pushViewController(chatRoomListViewController, animated: true)
     }
 
-    func toChatRoom(_ chatRoomID: String) {
+    func toChatRoom(_ chatRoom: ChatRoom) {
         let chatRoomNavigator = DefaultChatRoomNavigator(
             services: self.services,
             navigationController: self.navigationController
         )
-        chatRoomNavigator.toChatRoom(chatRoomID)
+        chatRoomNavigator.toChatRoom(chatRoom)
     }
 
 }

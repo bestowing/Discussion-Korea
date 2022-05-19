@@ -13,7 +13,7 @@ final class ChatRoomViewModel: ViewModelType {
 
     // MARK: properties
 
-    private let chatRoomID: String
+    private let chatRoom: ChatRoom
 
     private let chatsUsecase: ChatsUsecase
     private let userInfoUsecase: UserInfoUsecase
@@ -23,12 +23,12 @@ final class ChatRoomViewModel: ViewModelType {
 
     // MARK: - init/deinit
 
-    init(chatRoomID: String,
+    init(chatRoom: ChatRoom,
          chatsUsecase: ChatsUsecase,
          userInfoUsecase: UserInfoUsecase,
          discussionUsecase: DiscussionUsecase,
          navigator: ChatRoomNavigator) {
-        self.chatRoomID = chatRoomID
+        self.chatRoom = chatRoom
         self.chatsUsecase = chatsUsecase
         self.userInfoUsecase = userInfoUsecase
         self.discussionUsecase = discussionUsecase

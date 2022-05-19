@@ -15,6 +15,24 @@ final class ChatRoomListViewController: UIViewController {
 
     var viewModel: ChatRoomListViewModel!
 
+    private let addButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.image = UIImage(systemName: "plus")
+        button.tintColor = .label
+        button.accessibilityLabel = "채팅방 추가"
+        return button
+    }()
+
+    private let chatRoomsCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero ,collectionViewLayout: UICollectionViewLayout()
+        )
+        collectionView.register(
+            ChatRoomCell.self, forCellWithReuseIdentifier: ChatRoomCell.identifier
+        )
+        return collectionView
+    }()
+
     private let enterChatRoomButton: UIButton = {
         let button = UIButton()
         button.setTitle("이동하기", for: .normal)
@@ -53,10 +71,18 @@ final class ChatRoomListViewController: UIViewController {
 
     private func setSubViews() {
         self.navigationItem.backBarButtonItem = self.backButton
-        self.view.addSubview(self.enterChatRoomButton)
-        self.enterChatRoomButton.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        self.view.addSubview(self.chatRoomsCollectionView)
+        self.chatRoomsCollectionView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 7
+        self.chatRoomsCollectionView.collectionViewLayout = flowLayout
     }
 
     private func bindViewModel() {
@@ -66,9 +92,18 @@ final class ChatRoomListViewController: UIViewController {
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            enterChatRoomTrigger: self.enterChatRoomButton.rx.tap.asDriver()
+            selection: self.chatRoomsCollectionView.rx.itemSelected.asDriver(),
+            createChatRoomTrigger: self.addButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.chatRoomItems.drive(self.chatRoomsCollectionView.rx.items) { collectionView, index, viewModel in
+            let indexPath = IndexPath(item: index, section: 0)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatRoomCell.identifier, for: indexPath) as? ChatRoomCell
+            else { return UICollectionViewCell() }
+            cell.bind(viewModel)
+            return cell
+        }.disposed(by: self.disposeBag)
 
         output.events
             .drive().disposed(by: self.disposeBag)

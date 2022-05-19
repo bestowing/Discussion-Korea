@@ -33,6 +33,10 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
+        
+        let uid = self.userInfoUsecase
+            .uid()
+            .asDriverOnErrorJustComplete()
 
         let chatRooms = input.trigger
             .flatMapFirst { [unowned self] in
@@ -46,15 +50,16 @@ final class ChatRoomListViewModel: ViewModelType {
                 return viewModels + [viewModel]
             }
 
-        // FIXME: 방 식별자를 전달하도록 변경 필요
-        let enterEvent = input.enterChatRoomTrigger
-            .map { return "1" }
-            .do(onNext: navigator.toChatRoom)
+        let enterEvent = input.selection
+            .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) -> ChatRoom in
+                return chatRooms[indexPath.item].chatRoom
+            }
+            .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
         let events = enterEvent
 
-        return Output(events: events)
+        return Output(chatRoomItems: chatRoomItems, events: events)
     }
 
 }
@@ -63,10 +68,12 @@ extension ChatRoomListViewModel {
 
     struct Input {
         let trigger: Driver<Void>
-        let enterChatRoomTrigger: Driver<Void>
+        let selection: Driver<IndexPath>
+        let createChatRoomTrigger: Driver<Void>
     }
 
     struct Output {
+        let chatRoomItems: Driver<[ChatRoomItemViewModel]>
         let events: Driver<Void>
     }
 

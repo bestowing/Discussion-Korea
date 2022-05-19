@@ -45,9 +45,16 @@ final class ChatRoomViewController: UIViewController {
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
         )
         messageCollectionView.backgroundColor = .clear
-        messageCollectionView.register(SelfChatCell.self, forCellWithReuseIdentifier: SelfChatCell.identifier)
-        messageCollectionView.register(OtherChatCell.self, forCellWithReuseIdentifier: OtherChatCell.identifier)
-        messageCollectionView.register(SerialOtherChatCell.self, forCellWithReuseIdentifier: SerialOtherChatCell.identifier)
+        messageCollectionView.register(
+            SelfChatCell.self, forCellWithReuseIdentifier: SelfChatCell.identifier
+        )
+        messageCollectionView.register(
+            OtherChatCell.self, forCellWithReuseIdentifier: OtherChatCell.identifier
+        )
+        messageCollectionView.register(
+            SerialOtherChatCell.self,
+            forCellWithReuseIdentifier: SerialOtherChatCell.identifier
+        )
         return messageCollectionView
     }()
 

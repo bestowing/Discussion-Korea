@@ -9,7 +9,11 @@ import Foundation
 
 final class ChatRoomItemViewModel {
 
-    private let chatRoom: ChatRoom
+    let chatRoom: ChatRoom
+
+    var title: String {
+        return self.chatRoom.title
+    }
 
     init(chatRoom: ChatRoom) {
         self.chatRoom = chatRoom
