@@ -1,19 +1,19 @@
 //
-//  HomeViewController.swift
+//  SettingViewController.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/05/02.
+//  Created by 이청수 on 2022/05/19.
 //
 
 import SnapKit
 import UIKit
 import RxSwift
 
-final class HomeViewController: UIViewController {
+final class SettingViewController: UIViewController {
 
     // MARK: - properties
 
-    var viewModel: HomeViewModel!
+    var viewModel: SettingViewModel!
 
     private let disposeBag = DisposeBag()
 
@@ -35,7 +35,7 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
-        let input = HomeViewModel.Input()
+        let input = SettingViewModel.Input()
         _ = self.viewModel.transform(input: input)
     }
 

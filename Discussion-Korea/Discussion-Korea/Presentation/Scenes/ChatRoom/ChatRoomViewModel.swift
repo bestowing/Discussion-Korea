@@ -11,15 +11,20 @@ import RxSwift
 
 final class ChatRoomViewModel: ViewModelType {
 
+    private let chatRoomID: String
+
     private let chatsUsecase: ChatsUsecase
     private let userInfoUsecase: UserInfoUsecase
     private let discussionUsecase: DiscussionUsecase
+
     private let navigator: ChatRoomNavigator
 
-    init(chatsUsecase: ChatsUsecase,
+    init(chatRoomID: String,
+         chatsUsecase: ChatsUsecase,
          userInfoUsecase: UserInfoUsecase,
          discussionUsecase: DiscussionUsecase,
          navigator: ChatRoomNavigator) {
+        self.chatRoomID = chatRoomID
         self.chatsUsecase = chatsUsecase
         self.userInfoUsecase = userInfoUsecase
         self.discussionUsecase = discussionUsecase

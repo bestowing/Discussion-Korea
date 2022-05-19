@@ -10,7 +10,6 @@ import UIKit
 protocol HomeNavigator {
 
     func toHome()
-    func toChatRoom()
 
 }
 
@@ -34,12 +33,6 @@ final class DefaultHomeNavigator: HomeNavigator {
         let homeViewModel = HomeViewModel(navigator: self)
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)
-    }
-
-    func toChatRoom() {
-        let chatRoomNavigator = DefaultChatRoomNavigator(services: self.services,
-                                                         navigationController: self.navigationController)
-        chatRoomNavigator.toChatRoom()
     }
 
 }

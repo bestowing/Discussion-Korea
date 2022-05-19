@@ -12,23 +12,16 @@ final class HomeViewModel: ViewModelType {
 
     private let navigator: HomeNavigator
 
-    struct Input {
-        let enterChatRoomTrigger: Driver<Void>
-    }
+    struct Input {}
     
-    struct Output {
-        let events: Driver<Void>
-    }
+    struct Output {}
 
     init(navigator: HomeNavigator) {
         self.navigator = navigator
     }
 
     func transform(input: Input) -> Output {
-        let enter = input.enterChatRoomTrigger
-            .do(onNext: navigator.toChatRoom)
-
-        return Output(events: enter)
+        return Output()
     }
 
 }

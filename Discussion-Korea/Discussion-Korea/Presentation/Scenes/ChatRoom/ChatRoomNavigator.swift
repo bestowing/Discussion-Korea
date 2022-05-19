@@ -11,7 +11,7 @@ import RxSwift
 
 protocol ChatRoomNavigator {
 
-    func toChatRoom()
+    func toChatRoom(_ chatRoomID: String)
     func toSideMenu()
     func toNicknameAlert() -> Observable<String>
     func toSideAlert() -> Observable<Side>
@@ -20,6 +20,8 @@ protocol ChatRoomNavigator {
 }
 
 final class DefaultChatRoomNavigator: ChatRoomNavigator {
+
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
@@ -36,10 +38,13 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         print(#function, self)
     }
 
-    func toChatRoom() {
+    // MARK: - methods
+
+    func toChatRoom(_ chatRoomID: String) {
         self.makeTransparentNavigationBar()
         let chatRoomViewController = ChatRoomViewController()
         let chatRoomViewModel = ChatRoomViewModel(
+            chatRoomID: chatRoomID,
             chatsUsecase: self.services.makeChatsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             discussionUsecase: self.services.makeDiscussionUsecase(),
