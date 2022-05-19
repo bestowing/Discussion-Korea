@@ -16,8 +16,12 @@ protocol ChatRoomListNavigator {
 
 final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
 
+    // MARK: properties
+
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    // MARK: - init/deinit
 
     init(services: UsecaseProvider,
          navigationController: UINavigationController) {
@@ -28,6 +32,8 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
     deinit {
         print(#function, self)
     }
+
+    // MARK: - methods
 
     func toChatRoomList() {
         let chatRoomListViewController = ChatRoomListViewController()

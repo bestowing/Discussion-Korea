@@ -11,7 +11,7 @@ import RxSwift
 
 final class ChatRoomListViewController: UIViewController {
 
-    // MARK: - properties
+    // MARK: properties
 
     var viewModel: ChatRoomListViewModel!
 
@@ -31,6 +31,12 @@ final class ChatRoomListViewController: UIViewController {
     }()
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - init/deinit
+
+    deinit {
+        print(#function, self)
+    }
 
     // MARK: - methods
 
