@@ -36,6 +36,8 @@ final class DefaultHomeNavigator: HomeNavigator {
 
     func toHome() {
         let homeViewController = HomeViewController()
+        homeViewController.title = "홈"
+        self.navigationController.navigationBar.prefersLargeTitles = true
         let homeViewModel = HomeViewModel(navigator: self)
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)

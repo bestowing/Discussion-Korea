@@ -13,7 +13,8 @@ final class ChatRoomCell: UICollectionViewCell {
     // MARK: properties
 
     private let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "message.fill"))
+        let imageView = UIImageView(image: UIImage(systemName: "bubble.left.and.bubble.right.fill"))
+        imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .primaryColor
         return imageView
     }()

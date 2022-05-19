@@ -48,6 +48,7 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         self.makeTransparentNavigationBar()
         let chatRoomViewController = ChatRoomViewController()
         chatRoomViewController.title = chatRoom.title
+        chatRoomViewController.navigationItem.largeTitleDisplayMode = .never
         let chatRoomViewModel = ChatRoomViewModel(
             chatRoom: chatRoom,
             chatsUsecase: self.services.makeChatsUsecase(),

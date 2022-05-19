@@ -36,6 +36,7 @@ final class DefaultSettingNavigator: SettingNavigator {
 
     func toSetting() {
         let settingViewController = SettingViewController()
+        settingViewController.title = "설정"
         let settingViewModel = SettingViewModel(navigator: self)
         settingViewController.viewModel = settingViewModel
         self.navigationController.pushViewController(settingViewController, animated: true)

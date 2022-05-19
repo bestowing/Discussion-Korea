@@ -37,6 +37,8 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
 
     func toChatRoomList() {
         let chatRoomListViewController = ChatRoomListViewController()
+        chatRoomListViewController.title = "채팅"
+        self.navigationController.navigationBar.prefersLargeTitles = true
         let chatRoomListViewModel = ChatRoomListViewModel(
             navigator: self,
             chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
