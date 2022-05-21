@@ -68,6 +68,7 @@ final class Reference {
                           let date = dateFormatter.date(from: dateString)
                     else { return }
                     var chat = Chat(userID: userID, content: content, date: date)
+                    chat.uid = snapshot.key
                     if let sideString = dic["side"] as? String {
                         let side = Side.toSide(from: sideString)
                         chat.side = side
@@ -76,6 +77,20 @@ final class Reference {
                         chat.toxic = toxic
                     }
                     subscribe.onNext(chat)
+                }
+            return Disposables.create()
+        }
+    }
+
+    func observeChatMasked(uid: String) -> Observable<String> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(uid)/messages")
+                .observe(.childChanged) { snapshot in
+                    guard let dic = snapshot.value as? [String: Any],
+                          let toxic = dic["toxic"] as? Bool,
+                          toxic == true
+                    else { return }
+                    subscribe.onNext(snapshot.key)
                 }
             return Disposables.create()
         }

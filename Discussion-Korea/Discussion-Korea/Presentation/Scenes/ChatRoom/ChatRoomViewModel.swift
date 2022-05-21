@@ -136,6 +136,23 @@ final class ChatRoomViewModel: ViewModelType {
                 return viewModels + [newItemViewModel]
             }
 
+        let masking = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.chatsUsecase.masking(uid: "1")
+//                self.chatsUsecase.masking(uid: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .do(onNext: { print($0) })
+
+        let maskingChatItems = Driver.combineLatest(masking.startWith(""), chatItems)
+            .do(onNext: { print($0) })
+            .map { (uid: String, models) -> [ChatItemViewModel] in
+                print(uid, models)
+                let model = models.first { $0.chat.uid == uid }
+                model?.chat.toxic = true
+                return models
+            }
+
         let status = input.trigger
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.status(room: 1)
@@ -243,7 +260,7 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
-            chatItems: chatItems,
+            chatItems: Driver.of(chatItems, maskingChatItems).merge(),
             userInfos: userInfos,
             sendEnable: canSend,
             noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),

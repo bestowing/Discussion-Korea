@@ -9,6 +9,7 @@ import Foundation
 
 struct Chat {
 
+    var uid: String?
     var userID: String
     var content: String
     var date: Date?

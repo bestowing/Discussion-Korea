@@ -13,5 +13,6 @@ protocol ChatsUsecase {
     func connect(room: Int) -> Observable<Chat>
     // FIXME: 일단 Int로 했지만 String으로 할 생각도 있음
     func send(room: Int, chat: Chat) -> Observable<Void>
+    func masking(uid: String) -> Observable<String>
 
 }

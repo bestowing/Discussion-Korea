@@ -28,4 +28,8 @@ final class FirebaseChatsUsecase: ChatsUsecase {
         self.reference.save(room: room, chat: chat)
     }
 
+    func masking(uid: String) -> Observable<String> {
+        self.reference.observeChatMasked(uid: uid)
+    }
+
 }
