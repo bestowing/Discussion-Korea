@@ -24,7 +24,7 @@ final class Application {
 
         let homeNavigationController = UINavigationController()
         let homeButton = UITabBarItem(
-            title: nil,
+            title: "홈",
             image: UIImage(systemName: "house"),
             selectedImage: UIImage(systemName: "house.fill")
         )
@@ -36,7 +36,7 @@ final class Application {
 
         let chatRoomListNavigationController = UINavigationController()
         let chatRoomListButton = UITabBarItem(
-            title: nil,
+            title: "채팅",
             image: UIImage(systemName: "bubble.left"),
             selectedImage: UIImage(systemName: "bubble.left.fill")
         )
@@ -48,7 +48,7 @@ final class Application {
 
         let settingNavigationController = UINavigationController()
         let settingButton = UITabBarItem(
-            title: nil,
+            title: "설정",
             image: UIImage(systemName: "gearshape"),
             selectedImage: UIImage(systemName: "gearshape.fill")
         )

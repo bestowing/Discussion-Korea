@@ -15,9 +15,20 @@ final class ChatRoomListViewController: UIViewController {
 
     var viewModel: ChatRoomListViewModel!
 
+    private let titleItem: UIBarButtonItem = {
+        let label = UIBarButtonItem()
+        label.title = "채팅"
+        label.isEnabled = false
+        label.setTitleTextAttributes(
+            [.font: UIFont.boldSystemFont(ofSize: 25.0), NSAttributedString.Key.foregroundColor: UIColor.label],
+            for: .disabled
+        )
+        return label
+    }()
+
     private let addButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "plus")
+        button.image = UIImage(systemName: "plus.message")
         button.tintColor = .label
         button.accessibilityLabel = "채팅방 추가"
         return button
@@ -31,13 +42,6 @@ final class ChatRoomListViewController: UIViewController {
             ChatRoomCell.self, forCellWithReuseIdentifier: ChatRoomCell.identifier
         )
         return collectionView
-    }()
-
-    private let enterChatRoomButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("이동하기", for: .normal)
-        button.setTitleColor(UIColor.label, for: .normal)
-        return button
     }()
 
     private let backButton: UIBarButtonItem = {
@@ -71,6 +75,9 @@ final class ChatRoomListViewController: UIViewController {
 
     private func setSubViews() {
         self.navigationItem.backBarButtonItem = self.backButton
+        self.navigationItem.leftBarButtonItem = self.titleItem
+        self.navigationItem.leftItemsSupplementBackButton = true
+        self.navigationItem.rightBarButtonItem = self.addButton
         self.view.addSubview(self.chatRoomsCollectionView)
         self.chatRoomsCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
@@ -82,6 +89,7 @@ final class ChatRoomListViewController: UIViewController {
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
+
         self.chatRoomsCollectionView.collectionViewLayout = flowLayout
     }
 
