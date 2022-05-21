@@ -72,6 +72,9 @@ final class Reference {
                         let side = Side.toSide(from: sideString)
                         chat.side = side
                     }
+                    if let toxic = dic["toxic"] as? Bool {
+                        chat.toxic = toxic
+                    }
                     subscribe.onNext(chat)
                 }
             return Disposables.create()

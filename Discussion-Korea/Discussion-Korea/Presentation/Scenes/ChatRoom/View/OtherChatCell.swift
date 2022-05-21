@@ -91,7 +91,9 @@ final class OtherChatCell: ChatCell {
     override func bind(_ viewModel: ChatItemViewModel) {
         self.profileImageView.image = viewModel.image
         self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
-        self.contentLabel.text = viewModel.chat.content
+        self.contentLabel.text = viewModel.content
+        self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString
     }
 

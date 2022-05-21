@@ -31,11 +31,32 @@ class ChatItemViewModel {
         fatalError("not implemented")
     }
 
+    var textColor: UIColor? {
+        if self.toxic {
+            return .lightGray
+        }
+        return nil
+    }
+
+    var content: String {
+        if self.toxic {
+            return "⚠︎ 부적절한 내용이 감지되었습니다."
+        }
+        return self.chat.content
+    }
+
     var image: UIImage? {
         if self.chat.userID == "bot" {
             return UIImage(named: "bot")
         }
         return UIImage(systemName: "person.fill")
+    }
+
+    var contentFont: UIFont {
+        if self.toxic {
+            return UIFont.systemFont(ofSize: 14.0)
+        }
+        return UIFont.systemFont(ofSize: 15.0)
     }
 
     var nickname: String {
@@ -54,6 +75,10 @@ class ChatItemViewModel {
         default:
             return ""
         }
+    }
+
+    private var toxic: Bool {
+        return self.chat.toxic ?? false
     }
 
     // MARK: - init/deinit
