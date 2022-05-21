@@ -7,15 +7,19 @@
 
 import SnapKit
 import UIKit
-import RxSwift
 
 final class SettingViewController: UIViewController {
 
     // MARK: - properties
 
-    var viewModel: SettingViewModel!
+    var contents = [String]()
+    var selected = [() -> Void]()
 
-    private let disposeBag = DisposeBag()
+    private let settingTableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        return tableView
+    }()
 
     // MARK: - init/deinit
 
@@ -33,16 +37,50 @@ final class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setSubViews()
-        self.bindViewModel()
     }
 
-    private func setSubViews() {}
+    private func setSubViews() {
+        self.view.addSubview(self.settingTableView)
+        self.settingTableView.delegate = self
+        self.settingTableView.dataSource = self
+        self.settingTableView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+    }
 
-    private func bindViewModel() {
-        assert(self.viewModel != nil)
+}
 
-        let input = SettingViewModel.Input()
-        _ = self.viewModel.transform(input: input)
+extension SettingViewController: UITableViewDelegate,
+                                 UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selected[indexPath.item]()
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.contents.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        else {
+            return UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        }
+        self.setText(with: self.contents[indexPath.item], to: cell)
+        return cell
+    }
+
+    private func setText(with text: String, to cell: UITableViewCell) {
+        if #available(iOS 14.0, *) {
+            var content = cell.defaultContentConfiguration()
+            content.text = text
+            cell.contentConfiguration = content
+        } else {
+            cell.textLabel?.text = text
+        }
     }
 
 }

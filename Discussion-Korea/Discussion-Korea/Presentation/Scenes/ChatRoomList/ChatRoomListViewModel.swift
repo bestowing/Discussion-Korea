@@ -33,7 +33,7 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
-        
+
         let uid = self.userInfoUsecase
             .uid()
             .asDriverOnErrorJustComplete()
