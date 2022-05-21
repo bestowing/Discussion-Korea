@@ -36,11 +36,18 @@ final class DefaultSettingNavigator: SettingNavigator {
     // MARK: - methods
 
     func toSetting() {
+        self.makeOpaqueNavigationBar()
         let settingViewController = SettingViewController()
         settingViewController.contents = ["오픈소스 라이선스 이용고지"]
         settingViewController.selected = [toOpenSource]
         settingViewController.title = "설정"
         self.navigationController.pushViewController(settingViewController, animated: true)
+    }
+
+    private func makeOpaqueNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        self.navigationController.navigationBar.standardAppearance = appearance
     }
 
     func toOpenSource() {

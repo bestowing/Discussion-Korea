@@ -15,6 +15,14 @@ final class SettingViewController: UIViewController {
     var contents = [String]()
     var selected = [() -> Void]()
 
+    private let backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = ""
+        button.tintColor = .label
+        button.style = .plain
+        return button
+    }()
+
     private let settingTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -40,6 +48,7 @@ final class SettingViewController: UIViewController {
     }
 
     private func setSubViews() {
+        self.navigationItem.backBarButtonItem = self.backButton
         self.view.addSubview(self.settingTableView)
         self.settingTableView.delegate = self
         self.settingTableView.dataSource = self
@@ -69,6 +78,7 @@ extension SettingViewController: UITableViewDelegate,
         else {
             return UITableViewCell(style: .default, reuseIdentifier: "Cell")
         }
+        cell.selectionStyle = .none
         self.setText(with: self.contents[indexPath.item], to: cell)
         return cell
     }
