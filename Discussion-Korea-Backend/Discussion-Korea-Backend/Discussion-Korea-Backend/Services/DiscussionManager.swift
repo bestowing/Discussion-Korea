@@ -42,7 +42,6 @@ final class DiscussionManager {
     private var isFirstHalf = true
 
     init(sideManager: SideManager,
-         summaryManager: SummaryManager,
          dateFormatter: DateFormatter) {
         self.reference = Database
         //            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
@@ -50,8 +49,9 @@ final class DiscussionManager {
             .reference()
         self.roomReference = self.reference.child("chatRoom/1")
         self.sideManager = sideManager
-        self.summaryManager = summaryManager
-        summaryManager.connect(reference: self.roomReference.child("messages"))
+//    reference: self.roomReference.child("messages")
+//    summaryManager: SummaryManager(dateFormatter: dateFormatter),
+        self.summaryManager = SummaryManager(dateFormatter: dateFormatter, reference: self.roomReference.child("messages"))
         self.dateFormatter = dateFormatter
         self.durations = []
     }
@@ -59,12 +59,21 @@ final class DiscussionManager {
     func transform() -> AnyPublisher<Void, Never> {
         self.observeDiscussion()
         self.observeSide()
+
+        let maskingMessage = summaryManager.connect()
+            .handleEvents(receiveOutput: { [unowned self] message in
+                self.send(chat: Chat(userID: "bot", content: message, date: Date(), nickName: nil))
+            })
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
+
         let phaseTwoEvent = self.sideManager.isDone()
             .dropFirst()
             .handleEvents(receiveOutput: { [unowned self] ready in
                 if ready { self.phaseOneEnd() }
             })
-            .map { _ -> Void in return Void() }
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
 
 //        let summaryEvent = self.summaryManager.summaries()
 //            .dropFirst()
@@ -73,7 +82,10 @@ final class DiscussionManager {
 //            })
 //            .map { _ -> Void in return Void() }
 
-        let events = phaseTwoEvent.eraseToAnyPublisher()
+        let events = phaseTwoEvent
+            .merge(with: maskingMessage)
+            .eraseToAnyPublisher()
+
         return events
     }
 

@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import Combine
 import FirebaseDatabase
 import Foundation
 
@@ -18,29 +19,142 @@ final class SummaryManager {
     private var disagreeIndexes: [String: Int]
 
     private let dateFormatter: DateFormatter
+    private let reference: DatabaseReference
 
-    init(dateFormatter: DateFormatter) {
+    init(dateFormatter: DateFormatter,
+         reference: DatabaseReference) {
         self.agreeContents = []
         self.disagreeContents = []
         self.agreeIndexes = [:]
         self.disagreeIndexes = [:]
         self.dateFormatter = dateFormatter
+        self.reference = reference
     }
 
-    func connect(reference: DatabaseReference) {
+    func connect() -> AnyPublisher<String, Never> {
         let now = Date()
-        reference.observe(.childAdded) { [unowned self] snapshot in
-            guard let dic = snapshot.value as? [String: Any],
-                  let dateString = dic["date"] as? String,
-                  let date = dateFormatter.date(from: dateString),
-                  date > now,
-                  let userID = dic["user"] as? String,
-                  let content = dic["content"] as? String,
-                  let sideString = dic["side"] as? String
-            else { return }
-            let chat = Chat(userID: userID, content: content)
-            self.add(chat: chat, side: Side.toSide(from: sideString))
+        return Future<String, Never> { [unowned self] promise in
+            self.reference.observe(.childAdded) { [unowned self] snapshot in
+                guard let dic = snapshot.value as? [String: Any],
+                      let dateString = dic["date"] as? String,
+                      let date = dateFormatter.date(from: dateString),
+                      date > now,
+                      let userID = dic["user"] as? String,
+                      let content = dic["content"] as? String
+    //                  let sideString = dic["side"] as? String
+                else { return }
+                let sideString = "agree"
+                let uid = snapshot.key
+                let chat = Chat(userID: userID, content: content)
+                self.isDirty(chat: chat) { [unowned self] (dirty, comment) in
+                    if dirty == true,
+                       let comment = comment {
+                        self.masking(uid: uid, chat: chat)
+                        promise(.success(comment))
+                    } else {
+                        self.add(chat: chat, side: Side.toSide(from: sideString))
+                    }
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+
+    private func isDirty(chat: Chat, completion: @escaping (Bool, String?) -> Void) {
+        let group = DispatchGroup()
+        var vote = 0
+        var toxic: Chat.Toxic? = nil
+        let urlStrings = ["http://119.194.17.59:8080/predictions/classification",
+                          "http://119.194.17.59:8888/predictions/classification2",
+                          "http://119.194.17.59:8080/predictions/classification3"]
+        urlStrings.enumerated().forEach { [unowned self] (index, urlString) in
+            print("enter")
+            group.enter()
+            var result: Bool
+            if index == 2 {
+                result = self.request(content: chat.content, to: urlString) { (response: AFDataResponse<Data?>) in
+                    switch response.result {
+                    case .success(let data):
+                        if let data = data,
+                           let successMessage = String(bytes: data, encoding: .utf8) {
+                            toxic = Chat.Toxic.toToxic(from: successMessage)
+                            if toxic != .clean {
+                                print(index, "toxic으로 투표함")
+                                vote += 1
+                            }
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                    group.leave()
+                }
+            } else {
+                result = self.request(content: chat.content, to: urlString) { (response: AFDataResponse<String>) in
+                    switch response.result {
+                    case .success(let resultString):
+                        if resultString == "1" {
+                            print(index, "toxic으로 투표함")
+                            vote += 1
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                    group.leave()
+                }
+            }
+            if !result {
+                group.leave()
+            }
         }
+        group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
+            print(vote > 1, toxic?.rawValue)
+            completion(vote > 1, toxic?.rawValue)
+        }
+    }
+
+    private func request(content: String, to urlString: String,
+                         completionHandler: @escaping (AFDataResponse<String>) -> Void) -> Bool {
+        guard let url = URL(string: urlString)
+        else {
+            return false
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let params = ["text": content] as Dictionary
+        do {
+            try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+            AF.request(request).responseString(completionHandler: completionHandler)
+            return true
+        } catch {
+            print(error)
+            return false
+        }
+    }
+
+    private func request(content: String, to urlString: String,
+                         completionHandler: @escaping (AFDataResponse<Data?>) -> Void) -> Bool {
+        guard let url = URL(string: urlString)
+        else {
+            return false
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let params = ["text": content] as Dictionary
+        do {
+            try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+            AF.request(request).response(completionHandler: completionHandler)
+            return true
+        } catch {
+            print(error)
+            return false
+        }
+    }
+
+    private func masking(uid: String, chat: Chat) {
+        let values: [String: Any] = ["toxic": true]
+        self.reference.child(uid)
+            .updateChildValues(values)
     }
 
     private func add(chat: Chat, side: Side) {

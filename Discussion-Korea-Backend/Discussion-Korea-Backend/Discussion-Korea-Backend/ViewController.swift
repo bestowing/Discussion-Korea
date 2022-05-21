@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/04/24.
 //
 
+import Alamofire
 import Combine
 import UIKit
 
@@ -18,7 +19,6 @@ final class ViewController: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return DiscussionManager(
             sideManager: SideManager(),
-            summaryManager: SummaryManager(dateFormatter: dateFormatter),
             dateFormatter: dateFormatter
         )
     }()
