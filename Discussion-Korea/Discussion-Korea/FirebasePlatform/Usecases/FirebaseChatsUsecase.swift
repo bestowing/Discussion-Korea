@@ -16,12 +16,12 @@ final class FirebaseChatsUsecase: ChatsUsecase {
         self.reference = reference
     }
 
-    func chats(room: Int) -> Observable<[Chat]> {
-        self.reference.getChats(room: room)
+    func chats(uid: String) -> Observable<[Chat]> {
+        self.reference.getChats(uid: uid)
     }
 
-    func connect(room: Int) -> Observable<Chat> {
-        self.reference.receiveNewChats(room: room)
+    func connect(uid: String, after chatUID: String) -> Observable<Chat> {
+        self.reference.receiveNewChats(uid: uid, afterUID: chatUID)
     }
 
     func send(room: Int, chat: Chat) -> Observable<Void> {

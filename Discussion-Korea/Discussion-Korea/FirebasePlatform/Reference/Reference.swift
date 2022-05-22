@@ -22,13 +22,8 @@ final class Reference {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRooms")
                 .observe(.childAdded) { snapshot in
-                    guard let dic = snapshot.value as? NSDictionary,
-                          let title = dic["title"] as? String,
-                          let adminUID = dic["adminUID"] as? String
+                    guard let chatRoom = ChatRoom.toChatRoom(from: snapshot)
                     else { return }
-                    let chatRoom = ChatRoom(
-                        uid: snapshot.key, title: title, adminUID: adminUID
-                    )
                     subscribe.onNext(chatRoom)
             }
             return Disposables.create()
@@ -47,35 +42,33 @@ final class Reference {
 
     // MARK: - chats
 
-    func getChats(room: Int) -> Observable<[Chat]> {
-        // TODO: 이미 있는 채팅을 가져오는 함수 구현
-        Observable<[Chat]>.just([])
-    }
-
-    func receiveNewChats(room: Int) -> Observable<Chat> {
-        // TODO: 추가되는 새로운 채팅을 가져오는 함수로 변경
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+    func getChats(uid: String) -> Observable<[Chat]> {
         return Observable.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(room)/messages")
+                .child("chatRoom/\(uid)/messages")
+                .queryLimited(toLast: 30)
+                .observeSingleEvent(of: .value) { snapshot in
+                    let chats = snapshot.children.compactMap { child -> Chat? in
+                        guard let snapshot = child as? DataSnapshot
+                        else { return nil }
+                        return Chat.toChat(from: snapshot)
+                    }
+                    subscribe.onNext(chats)
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
+    }
+
+    func receiveNewChats(uid: String, afterUID: String) -> Observable<Chat> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(uid)/messages")
+                .queryOrderedByKey()
+                .queryStarting(afterValue: afterUID)
                 .observe(.childAdded) { snapshot in
-                    guard let dic = snapshot.value as? [String: Any],
-                          let userID = dic["user"] as? String,
-                          let content = dic["content"] as? String,
-                          let dateString = dic["date"] as? String,
-                          let date = dateFormatter.date(from: dateString)
+                    guard let chat = Chat.toChat(from: snapshot)
                     else { return }
-                    var chat = Chat(userID: userID, content: content, date: date)
-                    chat.uid = snapshot.key
-                    if let sideString = dic["side"] as? String {
-                        let side = Side.toSide(from: sideString)
-                        chat.side = side
-                    }
-                    if let toxic = dic["toxic"] as? Bool {
-                        chat.toxic = toxic
-                    }
                     subscribe.onNext(chat)
                 }
             return Disposables.create()
@@ -84,7 +77,8 @@ final class Reference {
 
     func observeChatMasked(uid: String) -> Observable<String> {
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRoom/\(uid)/messages")
+            self.reference
+                .child("chatRoom/\(uid)/messages")
                 .observe(.childChanged) { snapshot in
                     guard let dic = snapshot.value as? [String: Any],
                           let toxic = dic["toxic"] as? Bool,
@@ -295,3 +289,43 @@ final class Reference {
 }
 
 // 포지션 값도 키값으로 해야 할듯
+
+fileprivate extension ChatRoom {
+
+    static func toChatRoom(from snapshot: DataSnapshot) -> ChatRoom? {
+        guard let dic = snapshot.value as? NSDictionary,
+              let title = dic["title"] as? String,
+              let adminUID = dic["adminUID"] as? String
+        else { return nil }
+        let chatRoom = ChatRoom(
+            uid: snapshot.key, title: title, adminUID: adminUID
+        )
+        return chatRoom
+    }
+
+}
+
+fileprivate extension Chat {
+
+    static func toChat(from snapshot: DataSnapshot) -> Chat? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let dic = snapshot.value as? NSDictionary,
+              let userID = dic["user"] as? String,
+              let content = dic["content"] as? String,
+              let dateString = dic["date"] as? String,
+              let date = dateFormatter.date(from: dateString)
+        else { return nil }
+        var chat = Chat(userID: userID, content: content, date: date)
+        chat.uid = snapshot.key
+        if let sideString = dic["side"] as? String {
+            let side = Side.toSide(from: sideString)
+            chat.side = side
+        }
+        if let toxic = dic["toxic"] as? Bool {
+            chat.toxic = toxic
+        }
+        return chat
+    }
+
+}
