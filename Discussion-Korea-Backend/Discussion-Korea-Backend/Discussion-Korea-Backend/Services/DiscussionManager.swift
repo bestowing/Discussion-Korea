@@ -180,17 +180,13 @@ final class DiscussionManager {
             .child("messages")
             .childByAutoId().key,
               let date = chat.date
-        else {
-            print("실패")
-            return
-        }
+        else { return }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let chat: [String: Any] = ["user": chat.userID,
                                    "content": chat.content,
                                    "date": dateFormatter.string(from: date)]
         let childUpdates = ["/chatRoom/1/messages/\(key)": chat]
-        print("send")
         self.reference.updateChildValues(childUpdates)
     }
 

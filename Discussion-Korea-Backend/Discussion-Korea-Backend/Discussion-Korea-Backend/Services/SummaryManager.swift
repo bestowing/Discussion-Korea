@@ -63,8 +63,9 @@ final class SummaryManager {
         let group = DispatchGroup()
         var vote = 0
         var toxic: Chat.Toxic? = nil
-        let urlStrings = ["http://119.194.17.59:8080/predictions/classification",
-                          "http://119.194.17.59:8888/predictions/classification2",
+        let urlStrings = ["http://119.194.17.59:8080/predictions/classification1",
+                          "https://zw5k7gzpb5.execute-api.ap-northeast-2.amazonaws.com/dev/classification",
+//                          "http://119.194.17.59:8888/predictions/classification2",
                           "http://119.194.17.59:8080/predictions/classification3"]
         urlStrings.enumerated().forEach { [unowned self] (index, urlString) in
             print("enter")
@@ -106,7 +107,6 @@ final class SummaryManager {
             }
         }
         group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
-            print(vote > 1, toxic?.rawValue)
             completion(vote > 1, toxic?.rawValue)
         }
     }
@@ -177,9 +177,8 @@ final class SummaryManager {
     func summariesForAgree(completion: @escaping ([String]) -> Void) {
         let agreeResult = self.agreeContents.map { $0.joined(separator: " ") }
         self.resetAgree()
-        let queue = DispatchQueue.global(qos: .userInteractive)
-        let group = DispatchGroup()
-        queue.async {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let group = DispatchGroup()
             var agreeSummaries = Array(repeating: "", count: agreeResult.count)
             agreeResult.enumerated().forEach { (index, result) in
                 group.enter()
@@ -211,9 +210,9 @@ final class SummaryManager {
                     agreeSummaries[index] = "요약에 실패했습니다."
                     group.leave()
                 }
-                group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
-                    completion(agreeSummaries)
-                }
+            }
+            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
+                completion(agreeSummaries)
             }
         }
     }
@@ -221,10 +220,9 @@ final class SummaryManager {
     func summariesForDisAgree(completion: @escaping ([String]) -> Void) {
         let disagreeResult = self.disagreeContents.map { $0.joined(separator: " ") }
         self.resetDisagree()
-        let queue = DispatchQueue.global(qos: .userInteractive)
-        queue.async {
-            var disagreeSummaries = Array(repeating: "", count: disagreeResult.count)
+        DispatchQueue.global(qos: .userInteractive).async {
             let group = DispatchGroup()
+            var disagreeSummaries = Array(repeating: "", count: disagreeResult.count)
             disagreeResult.enumerated().forEach { (index, result) in
                 group.enter()
                 print("반대측의 ", result, "를 요약하려고 함")
@@ -249,15 +247,14 @@ final class SummaryManager {
                             print(error)
                         }
                         group.leave()
-                    }
-                } catch {
+                    }                } catch {
                     print(error)
                     disagreeSummaries[index] = "요약에 실패했습니다."
                     group.leave()
                 }
-                group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
-                    completion(disagreeSummaries)
-                }
+            }
+            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
+                completion(disagreeSummaries)
             }
         }
     }
