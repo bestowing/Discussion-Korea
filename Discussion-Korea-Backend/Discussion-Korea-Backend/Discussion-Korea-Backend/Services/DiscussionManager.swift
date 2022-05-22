@@ -49,8 +49,6 @@ final class DiscussionManager {
             .reference()
         self.roomReference = self.reference.child("chatRoom/1")
         self.sideManager = sideManager
-//    reference: self.roomReference.child("messages")
-//    summaryManager: SummaryManager(dateFormatter: dateFormatter),
         self.summaryManager = SummaryManager(dateFormatter: dateFormatter, reference: self.roomReference.child("messages"))
         self.dateFormatter = dateFormatter
         self.durations = []
@@ -182,13 +180,17 @@ final class DiscussionManager {
             .child("messages")
             .childByAutoId().key,
               let date = chat.date
-        else { return }
+        else {
+            print("실패")
+            return
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let chat: [String: Any] = ["user": chat.userID,
                                    "content": chat.content,
                                    "date": dateFormatter.string(from: date)]
         let childUpdates = ["/chatRoom/1/messages/\(key)": chat]
+        print("send")
         self.reference.updateChildValues(childUpdates)
     }
 

@@ -33,30 +33,30 @@ final class SummaryManager {
 
     func connect() -> AnyPublisher<String, Never> {
         let now = Date()
-        return Future<String, Never> { [unowned self] promise in
-            self.reference.observe(.childAdded) { [unowned self] snapshot in
-                guard let dic = snapshot.value as? [String: Any],
-                      let dateString = dic["date"] as? String,
-                      let date = dateFormatter.date(from: dateString),
-                      date > now,
-                      let userID = dic["user"] as? String,
-                      let content = dic["content"] as? String
-    //                  let sideString = dic["side"] as? String
-                else { return }
-                let sideString = "agree"
-                let uid = snapshot.key
-                let chat = Chat(userID: userID, content: content)
-                self.isDirty(chat: chat) { [unowned self] (dirty, comment) in
-                    if dirty == true,
-                       let comment = comment {
-                        self.masking(uid: uid, chat: chat)
-                        promise(.success(comment))
-                    } else {
-                        self.add(chat: chat, side: Side.toSide(from: sideString))
-                    }
+        let subject = PassthroughSubject<String, Never>()
+        self.reference.observe(.childAdded) { [unowned self] snapshot in
+            guard let dic = snapshot.value as? [String: Any],
+                  let dateString = dic["date"] as? String,
+                  let date = dateFormatter.date(from: dateString),
+                  date > now,
+                  let userID = dic["user"] as? String,
+                  userID != "bot",
+                  let content = dic["content"] as? String,
+                  let sideString = dic["side"] as? String
+            else { return }
+            let uid = snapshot.key
+            let chat = Chat(userID: userID, content: content)
+            self.isDirty(chat: chat) { [unowned self] (dirty, comment) in
+                if dirty == true,
+                   let comment = comment {
+                    self.masking(uid: uid, chat: chat)
+                    subject.send(comment)
+                } else {
+                    self.add(chat: chat, side: Side.toSide(from: sideString))
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+        return subject.eraseToAnyPublisher()
     }
 
     private func isDirty(chat: Chat, completion: @escaping (Bool, String?) -> Void) {
