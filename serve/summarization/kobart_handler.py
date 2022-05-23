@@ -76,7 +76,7 @@ class TransformersSeqSummaryHandler(BaseHandler, ABC):
         """
         text = input
         
-        summary_ids = self.model.generate(text, num_beams=50, max_length=1000, eos_token_id=1)
+        summary_ids = self.model.generate(text, num_beams=50, no_repeat_ngram_size = 2, max_length=1000, eos_token_id=1)
         
         result = [self.tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)]
         

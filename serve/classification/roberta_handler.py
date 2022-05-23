@@ -55,7 +55,7 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
         self.model = model_class("klue/roberta-base", 2)
     
         # Load state_dict from basemodel.pt
-        self.model.load_state_dict(torch.load(model_pt_path, map_location=torch.device('cpu'))['model_state_dict'])
+        self.model.load_state_dict(torch.load(model_pt_path, map_location=torch.device(self.device))['model_state_dict'])
         
         self.model.to(self.device)
         self.model.eval()
@@ -95,10 +95,11 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
             logits, _ = output
         except:
             logits = output
-        prediction = torch.argmax(logits, dim=-1)
+        logits = logits.squeeze().detach()
         
+        prediction = torch.argmax(logits, dim=-1)
         logger.info(f"logits: {logits}")
-        result = ["toxic" if int(prediction[0]) == 1 else "not toxic"]
+        result = [int(prediction)]
         
         return result
 

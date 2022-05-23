@@ -62,7 +62,7 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
         self.model.eval()
 
         logger.info(
-            "KLUE RoBERTa base model from path %s loaded successfully", model_dir
+            "Multi-label KLUE RoBERTa base model from path %s loaded successfully", model_dir
         )
 
     def preprocess(self, requests):
@@ -110,10 +110,12 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
         target = ["여성/가족", "남성", "성소수자", "인종/국적", "연령", "지역", "종교", "혐오", "욕설", "clean", "개인지칭"]
         
         
-        prediction = torch.argmax(inference_output)
+        prediction = int(torch.argmax(inference_output))
         
-        inference_output_dict = {"not_toxic_logit": float(inference_output[0]),"toxic_logit": float(inference_output[1]), "prediction": int(prediction)}
+        return [target[prediction]]
         
-        inference_output = json.dumps(inference_output_dict)
+        # inference_output_dict = {"not_toxic_logit": float(inference_output[0]),"toxic_logit": float(inference_output[1]), "prediction": int(prediction)}
         
-        return [inference_output]
+        # inference_output = json.dumps(inference_output_dict)
+        
+        # return [inference_output]
