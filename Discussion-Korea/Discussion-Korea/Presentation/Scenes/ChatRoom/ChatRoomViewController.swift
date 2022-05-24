@@ -44,7 +44,7 @@ final class ChatRoomViewController: UIViewController {
         let messageCollectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
         )
-        messageCollectionView.backgroundColor = .clear
+        messageCollectionView.backgroundColor = UIColor.systemGray6
         messageCollectionView.register(
             SelfChatCell.self, forCellWithReuseIdentifier: SelfChatCell.identifier
         )
@@ -98,7 +98,22 @@ final class ChatRoomViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = UIColor.systemGray6
+        self.view.backgroundColor = .systemBackground
+    }
+
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        self.messageCollectionView.snp.makeConstraints { make in
+            make.edges.equalTo(0)
+        }
+        self.messageTextView.snp.makeConstraints { make in
+            make.left.right.equalTo(0)
+            if #available(iOS 11.0, *) {
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+            } else {
+                make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+            }
+        }
     }
 
     override func viewDidLoad() {
@@ -132,7 +147,7 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(self.messageCollectionView.snp.bottom)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(self.messageTextView.snp.bottom).offset(10)
         }
         self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
         self.messageTextView.snp.makeConstraints { make in
@@ -157,9 +172,26 @@ final class ChatRoomViewController: UIViewController {
 
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [unowned self] keyboardVisibleHeight in
-                self.view.frame.origin.y = -keyboardVisibleHeight
+                self.messageTextView.snp.updateConstraints { make in
+                    make.bottom
+                        .equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+                        .offset(-keyboardVisibleHeight)
+                }
+                self.view.setNeedsLayout()
+                UIView.animate(withDuration: 0) {
+                    self.messageCollectionView.contentInset.bottom = keyboardVisibleHeight + self.messageTextView.frame.height
+                    self.messageCollectionView.verticalScrollIndicatorInsets.bottom = self.messageCollectionView.contentInset.bottom
+                    self.view.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
+
+        RxKeyboard.instance.willShowVisibleHeight
+            .drive(onNext: { keyboardVisibleHeight in
+                self.messageCollectionView.contentOffset.y += keyboardVisibleHeight
+            })
+            .disposed(by: self.disposeBag)
+
     }
 
     private func bindViewModel() {

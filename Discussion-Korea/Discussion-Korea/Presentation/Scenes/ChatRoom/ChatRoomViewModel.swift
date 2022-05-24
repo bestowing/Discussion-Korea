@@ -102,9 +102,49 @@ final class ChatRoomViewModel: ViewModelType {
 
         let uidAndUserInfos = Driver.combineLatest(uid, userInfos)
 
-        let chats = input.trigger
+        // 배열을 방출한다
+        // 여기서 오는건
+        let remainChats = input.trigger
             .flatMapFirst { [unowned self] in
-                self.chatsUsecase.connect(room: 1)
+                self.chatsUsecase.chats(uid: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let remainChatItems = remainChats
+            .withLatestFrom(uidAndUserInfos) { ($0, $1) }
+            .map { (chats, args) -> [ChatItemViewModel] in
+                let uid = args.0
+                let userInfos = args.1
+                var viewModels = [ChatItemViewModel]()
+                for chat in chats {
+                    var chat = chat
+                    chat.nickName = userInfos[chat.userID]?.nickname
+                    let newItemViewModel: ChatItemViewModel
+                    if let last = viewModels.last,
+                       last.chat.userID == chat.userID,
+                       let lastDate = last.chat.date,
+                       let currentDate = chat.date,
+                       Int(currentDate.timeIntervalSince(lastDate)) < 60 {
+                        viewModels.last?.chat.date = nil
+                    }
+                    if chat.userID == uid {
+                        newItemViewModel = SelfChatItemViewModel(with: chat)
+                    } else {
+                        if let last = viewModels.last,
+                           last.chat.userID == chat.userID {
+                            newItemViewModel = SerialOtherChatItemViewModel(with: chat)
+                        } else {
+                            newItemViewModel = OtherChatItemViewModel(with: chat)
+                        }
+                    }
+                    viewModels.append(newItemViewModel)
+                }
+                return viewModels
+            }
+
+        let chats = remainChats
+            .flatMapFirst { [unowned self] remains in
+                self.chatsUsecase.connect(uid: self.chatRoom.uid, after: remains.last!.uid!)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -138,16 +178,12 @@ final class ChatRoomViewModel: ViewModelType {
 
         let masking = input.trigger
             .flatMapFirst { [unowned self] in
-                self.chatsUsecase.masking(uid: "1")
-//                self.chatsUsecase.masking(uid: self.chatRoom.uid)
+                self.chatsUsecase.masking(uid: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .do(onNext: { print($0) })
 
         let maskingChatItems = Driver.combineLatest(masking.startWith(""), chatItems)
-            .do(onNext: { print($0) })
             .map { (uid: String, models) -> [ChatItemViewModel] in
-                print(uid, models)
                 let model = models.first { $0.chat.uid == uid }
                 model?.chat.toxic = true
                 return models
@@ -260,7 +296,7 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
-            chatItems: Driver.of(chatItems, maskingChatItems).merge(),
+            chatItems: remainChatItems, //Driver.of(chatItems, maskingChatItems).merge(),
             userInfos: userInfos,
             sendEnable: canSend,
             noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),
