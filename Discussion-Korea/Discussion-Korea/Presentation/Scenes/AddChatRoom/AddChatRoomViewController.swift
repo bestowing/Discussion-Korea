@@ -64,19 +64,20 @@ final class AddChatRoomViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = self.submitButton
 
         let descriptionLabel = UILabel()
-        descriptionLabel.text = "채팅방 제목을 입력해주세요"
-        descriptionLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        descriptionLabel.text = "채팅방 제목을\n입력해주세요"
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.font = UIFont.systemFont(ofSize: 27.0, weight: .semibold)
         self.view.addSubview(descriptionLabel)
         self.view.addSubview(self.titleTextfield)
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
         }
         self.titleTextfield.snp.makeConstraints { make in
             make.leading.equalTo(descriptionLabel.snp.leading)
             make.trailing.equalTo(descriptionLabel.snp.trailing)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(10)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
         }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
