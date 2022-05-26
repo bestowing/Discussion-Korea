@@ -16,7 +16,8 @@ final class HomeViewController: UIViewController {
     var viewModel: HomeViewModel!
 
     private let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
+        let imageView = UIImageView()
+        imageView.setDefaultProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .primaryColor

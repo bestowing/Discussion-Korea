@@ -32,6 +32,17 @@ final class EnterGuestViewController: UIViewController {
         return button
     }()
 
+    private let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.setDefaultProfileImage()
+        imageView.tintColor = UIColor.white
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .primaryColor
+        imageView.layer.cornerRadius = 50
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
+
     private let nicknameTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .none
@@ -66,8 +77,15 @@ final class EnterGuestViewController: UIViewController {
 
         let descriptionLabel = UILabel()
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.text = "안녕하세요, 처음 오셨군요!\n먼저 닉네임을 설정해주세요."
+        descriptionLabel.text = "안녕하세요, 처음 오셨군요!\n프로필 사진과 닉네임을 설정해주세요."
         descriptionLabel.font = UIFont.systemFont(ofSize: 20.0)
+
+        let profileBadge = UIImageView()
+        profileBadge.image = UIImage(systemName: "camera.circle.fill")
+        profileBadge.tintColor = .label
+        profileBadge.layer.cornerRadius = 20
+        profileBadge.layer.masksToBounds = true
+        profileBadge.backgroundColor = .white
 
         let divisor = UILabel()
         divisor.backgroundColor = .label
@@ -75,6 +93,8 @@ final class EnterGuestViewController: UIViewController {
         self.view.addSubview(descriptionLabel)
         self.view.addSubview(divisor)
         self.view.addSubview(self.guestButton)
+        self.view.addSubview(self.profileImageView)
+        self.view.addSubview(profileBadge)
         self.view.addSubview(self.nicknameTextfield)
 
         descriptionLabel.snp.makeConstraints { make in
@@ -88,10 +108,21 @@ final class EnterGuestViewController: UIViewController {
             make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
             make.height.equalTo(50)
         }
+        self.profileImageView.snp.makeConstraints { make in
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(30)
+            make.width.equalTo(100)
+            make.height.equalTo(102)
+        }
+        profileBadge.snp.makeConstraints { make in
+            make.trailing.equalTo(self.profileImageView.snp.trailing)
+            make.bottom.equalTo(self.profileImageView.snp.bottom)
+            make.size.equalTo(40)
+        }
         self.nicknameTextfield.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+            make.top.equalTo(self.profileImageView.snp.bottom).offset(30)
         }
         divisor.snp.makeConstraints { make in
             make.leading.equalTo(self.nicknameTextfield.snp.leading)

@@ -14,4 +14,8 @@ extension UIImageView {
         self.kf.setImage(with: url)
     }
 
+    func setDefaultProfileImage() {
+        self.image = UIImage(systemName: "person.fill")
+    }
+
 }
