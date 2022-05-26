@@ -50,7 +50,7 @@ final class ChatRoomViewModel: ViewModelType {
         let myInfo = uid
             .flatMap { [unowned self] uid in
                 self.userInfoUsecase
-                    .userInfo(room: 1, with: uid)
+                    .userInfo(roomID: self.chatRoom.uid, with: uid)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -83,7 +83,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .withLatestFrom(uid) { ($0, $1) }
             .flatMap { [unowned self] (nickname, uid) in
-                self.userInfoUsecase.add(room: 1, userInfo: UserInfo(uid: uid, nickname: nickname))
+                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userInfo: UserInfo(uid: uid, nickname: nickname))
                     .asDriverOnErrorJustComplete()
             }
             .mapToVoid()
@@ -91,7 +91,7 @@ final class ChatRoomViewModel: ViewModelType {
         // 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
         let userInfos = input.trigger
             .flatMapFirst { [unowned self] in
-                self.userInfoUsecase.connect(room: 1)
+                self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
                     .scan([String: UserInfo]()) { userInfos, userInfo in
                         var userInfos = userInfos
@@ -206,7 +206,7 @@ final class ChatRoomViewModel: ViewModelType {
             .filter { return $0 == 0 }
             .withLatestFrom(uid) { ($0, $1) }
             .flatMap { [unowned self] (_, uid) in
-                self.userInfoUsecase.clearSide(room: 1, uid: uid)
+                self.userInfoUsecase.clearSide(roomID: self.chatRoom.uid, userID: uid)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -217,7 +217,7 @@ final class ChatRoomViewModel: ViewModelType {
         let sideEvent = selectedSide
             .withLatestFrom(uid) { ($0, $1) }
             .flatMap { [unowned self] (side, uid) in
-                self.userInfoUsecase.add(room: 1, uid: uid, side: side)
+                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: uid, side: side)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -230,7 +230,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .withLatestFrom(uid) { ($0, $1) }
             .flatMap { [unowned self] (vote, uid) in
-                self.userInfoUsecase.vote(room: 1, uid: uid, side: vote)
+                self.userInfoUsecase.vote(roomID: self.chatRoom.uid, userID: uid, side: vote)
                     .asDriverOnErrorJustComplete()
             }
 
