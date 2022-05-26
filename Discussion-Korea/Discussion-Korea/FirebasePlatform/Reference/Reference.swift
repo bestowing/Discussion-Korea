@@ -91,11 +91,11 @@ final class Reference {
         }
     }
 
-    func save(room: Int, chat: Chat) -> Observable<Void> {
+    func save(uid: String, chat: Chat) -> Observable<Void> {
         // chatRoomViewModel에서 방 번호 혹은 아이디값을 가지고 있어야함
         // 여기서 번호를 부여하는게 아니라 걍 고유 아이디값으로 추가하면 안되나?
         guard let key = self.reference
-            .child("chatRoom/\(room)/messages")
+            .child("chatRoom/\(uid)/messages")
             .childByAutoId().key,
               let date = chat.date
         else {
@@ -109,7 +109,7 @@ final class Reference {
         if let side = chat.side {
             value["side"] = side.rawValue
         }
-        let childUpdates = ["/chatRoom/\(room)/messages/\(key)": value]
+        let childUpdates = ["/chatRoom/\(uid)/messages/\(key)": value]
         self.reference.updateChildValues(childUpdates)
         return Observable<Void>.just(Void())
     }

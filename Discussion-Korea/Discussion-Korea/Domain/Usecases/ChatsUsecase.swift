@@ -11,7 +11,7 @@ protocol ChatsUsecase {
 
     func chats(uid: String) -> Observable<[Chat]>
     func connect(uid: String, after chatUID: String) -> Observable<Chat>
-    func send(room: Int, chat: Chat) -> Observable<Void>
+    func send(uid: String, chat: Chat) -> Observable<Void>
     func masking(uid: String) -> Observable<String>
 
 }

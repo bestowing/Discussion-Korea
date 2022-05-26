@@ -272,7 +272,7 @@ final class ChatRoomViewModel: ViewModelType {
                 return chat
             }
             .flatMap { [unowned self] in
-                self.chatsUsecase.send(room: 1, chat: $0)
+                self.chatsUsecase.send(uid: self.chatRoom.uid, chat: $0)
                     .asDriverOnErrorJustComplete()
             }
             .mapToVoid()

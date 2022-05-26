@@ -24,8 +24,8 @@ final class FirebaseChatsUsecase: ChatsUsecase {
         self.reference.receiveNewChats(uid: uid, afterUID: chatUID)
     }
 
-    func send(room: Int, chat: Chat) -> Observable<Void> {
-        self.reference.save(room: room, chat: chat)
+    func send(uid: String, chat: Chat) -> Observable<Void> {
+        self.reference.save(uid: uid, chat: chat)
     }
 
     func masking(uid: String) -> Observable<String> {
