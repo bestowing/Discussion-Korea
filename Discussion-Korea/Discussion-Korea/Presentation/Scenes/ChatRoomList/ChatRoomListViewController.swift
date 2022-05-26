@@ -86,9 +86,9 @@ final class ChatRoomListViewController: UIViewController {
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 75)
         flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 7
+        flowLayout.minimumLineSpacing = 0
 
         self.chatRoomsCollectionView.collectionViewLayout = flowLayout
     }
