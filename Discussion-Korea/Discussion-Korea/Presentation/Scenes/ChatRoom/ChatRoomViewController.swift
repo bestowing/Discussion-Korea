@@ -188,7 +188,7 @@ final class ChatRoomViewController: UIViewController {
             send: self.sendButton.rx.tap.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
             content: self.messageTextView.rx.text.orEmpty.asDriver(),
-            disappear: self.rx.sentMessage(#selector(UIViewController.viewWillDisappear(_:)))
+            disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete()
         )
