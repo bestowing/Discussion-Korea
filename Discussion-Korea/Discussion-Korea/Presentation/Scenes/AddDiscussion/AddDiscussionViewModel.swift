@@ -52,7 +52,7 @@ final class AddDiscussionViewModel: ViewModelType {
 
         let dismiss = Driver.of(submit, input.exitTrigger)
             .merge()
-                .do(onNext: self.navigator.toChatRoom)
+            .do(onNext: self.navigator.toChatRoom)
 
         return Output(
             submitEnabled: canSubmit,

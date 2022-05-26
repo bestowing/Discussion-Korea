@@ -38,6 +38,9 @@ final class ChatRoomListViewModel: ViewModelType {
             .uid()
             .asDriverOnErrorJustComplete()
 
+        let addChatRoomEvent = input.createChatRoomTrigger
+            .do(onNext: self.navigator.toAddChatRoom)
+
         let chatRooms = input.trigger
             .flatMapFirst { [unowned self] in
                 self.chatRoomsUsecase.chatRooms()
@@ -57,7 +60,8 @@ final class ChatRoomListViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
-        let events = enterEvent
+        let events = Driver.of(enterEvent, addChatRoomEvent)
+            .merge()
 
         return Output(chatRoomItems: chatRoomItems, events: events)
     }

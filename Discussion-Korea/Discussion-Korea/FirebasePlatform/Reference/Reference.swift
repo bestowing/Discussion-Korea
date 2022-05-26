@@ -35,6 +35,7 @@ final class Reference {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRooms")
                 .childByAutoId().setValue(value)
+            subscribe.onNext(Void())
             subscribe.onCompleted()
             return Disposables.create()
         }
