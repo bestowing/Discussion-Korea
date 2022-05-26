@@ -69,9 +69,7 @@ final class HomeViewModel: ViewModelType {
 
 extension HomeViewModel {
 
-    struct Input {
-//        let trigger: Driver<Void>
-    }
+    struct Input {}
     
     struct Output {
         let nickname: Driver<String>

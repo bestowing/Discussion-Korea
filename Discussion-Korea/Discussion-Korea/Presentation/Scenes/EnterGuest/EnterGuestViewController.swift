@@ -40,6 +40,7 @@ final class EnterGuestViewController: UIViewController {
         imageView.backgroundColor = .primaryColor
         imageView.layer.cornerRadius = 50
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
@@ -77,7 +78,7 @@ final class EnterGuestViewController: UIViewController {
 
         let descriptionLabel = UILabel()
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.text = "안녕하세요, 처음 오셨군요!\n프로필 사진과 닉네임을 설정해주세요."
+        descriptionLabel.text = "안녕하세요, 처음 오신 것 같군요!\n시작하기 전에 프로필 사진과 닉네임을 설정해주세요."
         descriptionLabel.font = UIFont.systemFont(ofSize: 20.0)
 
         let profileBadge = UIImageView()
@@ -138,13 +139,21 @@ final class EnterGuestViewController: UIViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
+        let tapGesture = UITapGestureRecognizer()
+        self.profileImageView.addGestureRecognizer(tapGesture)
+
         let input = EnterGuestViewModel.Input(
             nickname: self.nicknameTextfield.rx.text.orEmpty
                 .asDriverOnErrorJustComplete(),
+            imageTrigger: tapGesture.rx.event.asDriver().mapToVoid(),
             guestTrigger: self.guestButton.rx.tap.asDriverOnErrorJustComplete(),
             submitTrigger: self.submitButton.rx.tap.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.profileImage.drive { [unowned self] url in
+            self.profileImageView.setImage(url)
+        }.disposed(by: self.disposeBag)
 
         output.submitEnable.drive(self.submitButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
