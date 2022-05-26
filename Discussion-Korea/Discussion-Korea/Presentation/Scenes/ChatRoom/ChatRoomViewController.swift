@@ -101,20 +101,20 @@ final class ChatRoomViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
     }
 
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-        self.messageCollectionView.snp.makeConstraints { make in
-            make.edges.equalTo(0)
-        }
-        self.messageTextView.snp.makeConstraints { make in
-            make.left.right.equalTo(0)
-            if #available(iOS 11.0, *) {
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-            } else {
-                make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
-            }
-        }
-    }
+//    override func updateViewConstraints() {
+//        super.updateViewConstraints()
+//        self.messageCollectionView.snp.makeConstraints { make in
+//            make.edges.equalTo(0)
+//        }
+//        self.messageTextView.snp.makeConstraints { make in
+//            make.left.right.equalTo(0)
+//            if #available(iOS 11.0, *) {
+//                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+//            } else {
+//                make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+//            }
+//        }
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,25 +172,9 @@ final class ChatRoomViewController: UIViewController {
 
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [unowned self] keyboardVisibleHeight in
-                self.messageTextView.snp.updateConstraints { make in
-                    make.bottom
-                        .equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-                        .offset(-keyboardVisibleHeight)
-                }
-                self.view.setNeedsLayout()
-                UIView.animate(withDuration: 0) {
-                    self.messageCollectionView.contentInset.bottom = keyboardVisibleHeight + self.messageTextView.frame.height
-                    self.messageCollectionView.verticalScrollIndicatorInsets.bottom = self.messageCollectionView.contentInset.bottom
-                    self.view.layoutIfNeeded()
-                }
+                self.view.frame.origin.y = -keyboardVisibleHeight
             })
             .disposed(by: disposeBag)
-
-        RxKeyboard.instance.willShowVisibleHeight
-            .drive(onNext: { keyboardVisibleHeight in
-                self.messageCollectionView.contentOffset.y += keyboardVisibleHeight
-            })
-            .disposed(by: self.disposeBag)
 
     }
 
