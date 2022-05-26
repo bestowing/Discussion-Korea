@@ -49,7 +49,13 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                 self.navigator.toChatRoomSchedule(self.chatRoom)
             })
 
-        return Output(participants: participants, calendarEvent: calendarEvent)
+        let chatRoomTitle = Driver.from([self.chatRoom.title])
+
+        return Output(
+            chatRoomTitle: chatRoomTitle,
+            participants: participants,
+            calendarEvent: calendarEvent
+        )
     }
 
 }
@@ -62,6 +68,7 @@ extension ChatRoomSideMenuViewModel {
     }
     
     struct Output {
+        let chatRoomTitle: Driver<String>
         let participants: Driver<[ParticipantItemViewModel]>
         let calendarEvent: Driver<Void>
     }
