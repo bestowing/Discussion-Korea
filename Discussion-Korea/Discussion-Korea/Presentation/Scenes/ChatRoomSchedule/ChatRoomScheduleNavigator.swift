@@ -9,8 +9,8 @@ import UIKit
 
 protocol ChatRoomScheduleNavigator {
 
-    func toChatRoomSchedule()
-    func toAddDiscussion()
+    func toChatRoomSchedule(_ chatRoom: ChatRoom)
+    func toAddDiscussion(_ chatRoom: ChatRoom)
     func toChatRoom()
 
 }
@@ -37,9 +37,10 @@ final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
 
     // MARK: - methods
 
-    func toChatRoomSchedule() {
+    func toChatRoomSchedule(_ chatRoom: ChatRoom) {
         let viewController = ChatRoomScheduleViewController()
         let viewModel = ChatRoomScheduleViewModel(
+            chatRoom: chatRoom,
             usecase: self.services.makeDiscussionUsecase(),
             navigator: self
         )
@@ -50,14 +51,14 @@ final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
         self.presentingViewController = viewController
     }
 
-    func toAddDiscussion() {
+    func toAddDiscussion(_ chatRoom: ChatRoom) {
         guard let presentingViewController = presentingViewController
         else { return }
         let navigator = DefaultAddDiscussionNavigator(
             services: self.services,
             presentedViewController: presentingViewController
         )
-        navigator.toAddDiscussion()
+        navigator.toAddDiscussion(chatRoom)
     }
 
     func toChatRoom() {

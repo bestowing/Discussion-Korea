@@ -212,12 +212,12 @@ final class Reference {
 
     // MARK: - discussions
 
-    func getDiscussions(room: Int) -> Observable<Discussion> {
+    func getDiscussions(from roomUID: String) -> Observable<Discussion> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return Observable<Discussion>.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(room)/discussions")
+                .child("chatRoom/\(roomUID)/discussions")
                 .observe(.childAdded) { snapshot in
                     guard let dic = snapshot.value as? NSDictionary,
                           let dateString = dic["date"] as? String,
@@ -235,7 +235,7 @@ final class Reference {
         }
     }
 
-    func addDiscussion(room: Int, discussion: Discussion) -> Observable<Void> {
+    func add(_ discussion: Discussion, to roomUID: String) -> Observable<Void> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let value: [String: Any] = ["date": dateFormatter.string(from: discussion.date),
@@ -243,7 +243,7 @@ final class Reference {
                                     "topic": discussion.topic]
         return Observable.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(room)/discussions")
+                .child("chatRoom/\(roomUID)/discussions")
                 .childByAutoId()
                 .setValue(value)
             subscribe.onNext(Void())
@@ -251,14 +251,14 @@ final class Reference {
         }
     }
 
-    func getDiscussionStatus(room: Int) -> Observable<Int> {
+    func getPhase(of roomUID: String) -> Observable<Int> {
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRoom/\(room)/phase").observe(.childAdded) { snapshot in
+            self.reference.child("chatRoom/\(roomUID)/phase").observe(.childAdded) { snapshot in
                 guard let phase = snapshot.value as? Int
                 else { return }
                 subscribe.onNext(phase)
             }
-            self.reference.child("chatRoom/\(room)/phase").observe(.childChanged) { snapshot in
+            self.reference.child("chatRoom/\(roomUID)/phase").observe(.childChanged) { snapshot in
                 guard let phase = snapshot.value as? Int
                 else { return }
                 subscribe.onNext(phase)
@@ -267,17 +267,17 @@ final class Reference {
         }
     }
 
-    func getDiscussionTime(room: Int) -> Observable<Date> {
+    func getDiscussionTime(of roomUID: String) -> Observable<Date> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRoom/\(room)/endDate").observe(.childAdded) { snapshot in
+            self.reference.child("chatRoom/\(roomUID)/endDate").observe(.childAdded) { snapshot in
                 guard let endDateString = snapshot.value as? String,
                       let endDate = dateFormatter.date(from: endDateString)
                 else { return }
                 subscribe.onNext(endDate)
             }
-            self.reference.child("chatRoom/\(room)/endDate").observe(.childChanged) { snapshot in
+            self.reference.child("chatRoom/\(roomUID)/endDate").observe(.childChanged) { snapshot in
                 guard let endDateString = snapshot.value as? String,
                       let endDate = dateFormatter.date(from: endDateString)
                 else { return }

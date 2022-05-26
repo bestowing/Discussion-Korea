@@ -16,20 +16,20 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference = reference
     }
 
-    func discussions(room: Int) -> Observable<Discussion> {
-        self.reference.getDiscussions(room: room)
+    func discussions(roomUID: String) -> Observable<Discussion> {
+        self.reference.getDiscussions(from: roomUID)
     }
     
-    func add(room: Int, discussion: Discussion) -> Observable<Void> {
-        self.reference.addDiscussion(room: room, discussion: discussion)
+    func add(roomUID: String, discussion: Discussion) -> Observable<Void> {
+        self.reference.add(discussion, to: roomUID)
     }
 
-    func status(room: Int) -> Observable<Int> {
-        self.reference.getDiscussionStatus(room: room)
+    func status(roomUID: String) -> Observable<Int> {
+        self.reference.getPhase(of: roomUID)
     }
 
-    func remainTime(room: Int) -> Observable<Date> {
-        self.reference.getDiscussionTime(room: room)
+    func remainTime(roomUID: String) -> Observable<Date> {
+        self.reference.getDiscussionTime(of: roomUID)
     }
 
 }

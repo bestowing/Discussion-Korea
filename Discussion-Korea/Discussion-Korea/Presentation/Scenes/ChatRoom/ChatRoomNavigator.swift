@@ -12,7 +12,7 @@ import RxSwift
 protocol ChatRoomNavigator {
 
     func toChatRoom(_ chatRoom: ChatRoom)
-    func toSideMenu()
+    func toSideMenu(_ chatRoom: ChatRoom)
     func toNicknameAlert() -> Observable<String>
     func toSideAlert() -> Observable<Side>
     func toVoteAlert() -> Observable<Side>
@@ -70,14 +70,14 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         self.navigationController.navigationBar.standardAppearance = appearance
     }
 
-    func toSideMenu() {
+    func toSideMenu(_ chatRoom: ChatRoom) {
         guard let presentingViewController = presentingViewController
         else { return }
         let navigator = DefaultChatRoomSideMenuNavigator(
             services: self.services,
             presentedViewController: presentingViewController
         )
-        navigator.toChatRoomSideMenu()
+        navigator.toChatRoomSideMenu(chatRoom)
     }
 
     func toNicknameAlert() -> Observable<String> {

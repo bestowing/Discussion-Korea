@@ -12,12 +12,17 @@ final class AddDiscussionViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let chatRoom: ChatRoom
+
     private let navigator: AddDiscussionNavigator
     private let usecase: DiscussionUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: AddDiscussionNavigator, usecase: DiscussionUsecase) {
+    init(chatRoom: ChatRoom,
+         navigator: AddDiscussionNavigator,
+         usecase: DiscussionUsecase) {
+        self.chatRoom = chatRoom
         self.navigator = navigator
         self.usecase = usecase
     }
@@ -46,7 +51,7 @@ final class AddDiscussionViewModel: ViewModelType {
                 date: $2, durations: [$1.0, $1.1, $1.2], topic: $0
             ) }
             .flatMapLatest { [unowned self] discussion in
-                self.usecase.add(room: 1, discussion: discussion)
+                self.usecase.add(roomUID: self.chatRoom.uid, discussion: discussion)
                     .asDriverOnErrorJustComplete()
             }
 

@@ -12,12 +12,17 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let chatRoom: ChatRoom
+
     private let userInfoUsecase: UserInfoUsecase
     private let navigator: ChatRoomSideMenuNavigator
 
     // MARK: - init/deinit
 
-    init(userInfoUsecase: UserInfoUsecase, navigator: ChatRoomSideMenuNavigator) {
+    init(chatRoom: ChatRoom,
+         userInfoUsecase: UserInfoUsecase,
+         navigator: ChatRoomSideMenuNavigator) {
+        self.chatRoom = chatRoom
         self.userInfoUsecase = userInfoUsecase
         self.navigator = navigator
     }
@@ -40,7 +45,9 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             }
 
         let calendarEvent = input.calendar
-            .do(onNext: self.navigator.toChatRoomSchedule)
+            .do(onNext: { [unowned self] in
+                self.navigator.toChatRoomSchedule(self.chatRoom)
+            })
 
         return Output(participants: participants, calendarEvent: calendarEvent)
     }

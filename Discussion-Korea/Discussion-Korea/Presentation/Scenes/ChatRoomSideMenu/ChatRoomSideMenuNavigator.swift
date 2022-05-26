@@ -10,8 +10,8 @@ import UIKit
 
 protocol ChatRoomSideMenuNavigator {
 
-    func toChatRoomSideMenu()
-    func toChatRoomSchedule()
+    func toChatRoomSideMenu(_ chatRoom: ChatRoom)
+    func toChatRoomSchedule(_ chatRoom: ChatRoom)
 
 }
 
@@ -59,9 +59,10 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
 
     // MARK: - methods
 
-    func toChatRoomSideMenu() {
+    func toChatRoomSideMenu(_ chatRoom: ChatRoom) {
         let viewController = ChatRoomSideMenuViewController()
         let viewModel = ChatRoomSideMenuViewModel(
+            chatRoom: chatRoom,
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             navigator: self
         )
@@ -71,13 +72,13 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
         self.presentedViewController.present(menu, animated: true)
     }
 
-    func toChatRoomSchedule() {
+    func toChatRoomSchedule(_ chatRoom: ChatRoom) {
         self.presentedViewController.dismiss(animated: true)
         let navigator = DefaultChatRoomScheduleNavigator(
             services: self.services,
             presentedViewController: self.presentedViewController
         )
-        navigator.toChatRoomSchedule()
+        navigator.toChatRoomSchedule(chatRoom)
     }
 
 }

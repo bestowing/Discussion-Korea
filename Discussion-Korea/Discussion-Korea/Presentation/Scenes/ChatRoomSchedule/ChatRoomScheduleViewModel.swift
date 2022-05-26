@@ -12,13 +12,17 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let chatRoom: ChatRoom
+
     private let usecase: DiscussionUsecase
     private let navigator: ChatRoomScheduleNavigator
 
     // MARK: - init/deinit
 
-    init(usecase: DiscussionUsecase,
+    init(chatRoom: ChatRoom,
+         usecase: DiscussionUsecase,
          navigator: ChatRoomScheduleNavigator) {
+        self.chatRoom = chatRoom
         self.usecase = usecase
         self.navigator = navigator
     }
@@ -33,7 +37,7 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
         let schedules = input.viewWillAppear
             .flatMap { [unowned self] in
-                self.usecase.discussions(room: 1)
+                self.usecase.discussions(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
                     .scan([ScheduleItemViewModel]()) { viewModels, discussion in
                         return viewModels + [ScheduleItemViewModel(with: discussion)]
@@ -44,7 +48,9 @@ final class ChatRoomScheduleViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoom)
 
         let addDiscussionEvent = input.addDiscussionTrigger
-                .do(onNext: self.navigator.toAddDiscussion)
+                .do(onNext: { [unowned self] in
+                    self.navigator.toAddDiscussion(self.chatRoom)
+                })
 
         return Output(schedules: schedules, exitEvent: exitEvent, addDiscussionEvent: addDiscussionEvent)
     }
