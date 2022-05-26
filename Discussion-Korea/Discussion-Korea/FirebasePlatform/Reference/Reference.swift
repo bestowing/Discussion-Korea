@@ -116,6 +116,36 @@ final class Reference {
 
     // MARK: - userInfos
 
+    func getUserInfo(userID: String) -> Observable<UserInfo?> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("users/\(userID)")
+                .observe(.value) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let nickname = dictionary["nickname"] as? String
+                    else {
+                        subscribe.onNext(nil)
+                        return
+                    }
+                    var userInfo = UserInfo(uid: userID, nickname: nickname)
+                    if let urlString = dictionary["profile"] as? String,
+                       let url = URL(string: urlString) {
+                        userInfo.profileURL = url
+                    }
+                    if let win = dictionary["win"] as? Int {
+                        userInfo.win = win
+                    }
+                    if let draw = dictionary["draw"] as? Int {
+                        userInfo.draw = draw
+                    }
+                    if let lose = dictionary["lose"] as? Int {
+                        userInfo.lose = lose
+                    }
+                    subscribe.onNext(userInfo)
+                }
+            return Disposables.create()
+        }
+    }
+
     func getUserInfo(in roomID: String, with userID: String) -> Observable<UserInfo?> {
         return Observable.create { [unowned self] subscribe in
             self.reference
@@ -166,6 +196,22 @@ final class Reference {
                 .child("chatRoom/\(roomID)/users")
                 .child(userInfo.uid)
                 .setValue(values)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func add(userInfo: UserInfo) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            let values: [String: Any] = [
+                "nickname": userInfo.nickname,
+                "win": 0,
+                "draw": 0,
+                "lose": 0
+            ]
+            self.reference.child("users/\(userInfo.uid)")
+                .setValue(values)
+            subscribe.onNext(Void())
             subscribe.onCompleted()
             return Disposables.create()
         }

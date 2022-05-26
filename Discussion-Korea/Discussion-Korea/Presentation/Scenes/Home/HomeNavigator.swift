@@ -10,6 +10,7 @@ import UIKit
 protocol HomeNavigator {
 
     func toHome()
+    func toEnterGame(_ userID: String)
 
 }
 
@@ -19,6 +20,8 @@ final class DefaultHomeNavigator: HomeNavigator {
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    private weak var presentingViewController: UIViewController?
 
     // MARK: - init/deinit
 
@@ -38,9 +41,21 @@ final class DefaultHomeNavigator: HomeNavigator {
         let homeViewController = HomeViewController()
         homeViewController.title = "홈"
         self.navigationController.navigationBar.prefersLargeTitles = true
-        let homeViewModel = HomeViewModel(navigator: self)
+        let homeViewModel = HomeViewModel(
+            navigator: self, userInfoUsecase: self.services.makeUserInfoUsecase()
+        )
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)
+        self.presentingViewController = homeViewController
+    }
+
+    func toEnterGame(_ userID: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultEnterGuestNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toEnterGuest(userID)
     }
 
 }

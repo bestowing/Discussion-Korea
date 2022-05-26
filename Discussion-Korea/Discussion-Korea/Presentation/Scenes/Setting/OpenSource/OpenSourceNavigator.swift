@@ -34,14 +34,18 @@ final class DefaultOpenSourceNavigator: OpenSourceNavigator {
     func toOpenSource() {
         let openSourceViewController = SettingViewController()
         openSourceViewController.contents = [
-            "Firebase", "RxKeyboard", "RxSwift", "SideMenu", "SnapKit"
+            "Firebase", "Kingfisher", "RxKeyboard", "RxSwift", "SideMenu", "SnapKit"
         ]
-        openSourceViewController.selected = [toFirebase, toRxKeyboard, toRxSwift, toSideMenu, toSnapKit]
+        openSourceViewController.selected = [toFirebase, toKingfisher, toRxKeyboard, toRxSwift, toSideMenu, toSnapKit]
         self.navigationController.pushViewController(openSourceViewController, animated: true)
     }
 
     private func toFirebase() {
         self.openURL(with: "https://github.com/firebase/firebase-ios-sdk/blob/master/LICENSE")
+    }
+
+    private func toKingfisher() {
+        self.openURL(with: "https://github.com/onevcat/Kingfisher/blob/master/LICENSE")
     }
 
     private func toRxKeyboard() {

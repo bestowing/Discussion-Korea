@@ -48,9 +48,9 @@ final class ChatRoomViewModel: ViewModelType {
             .asDriverOnErrorJustComplete()
 
         let myInfo = uid
-            .flatMap { [unowned self] uid in
+            .flatMap { [unowned self] userID in
                 self.userInfoUsecase
-                    .userInfo(roomID: self.chatRoom.uid, with: uid)
+                    .userInfo(roomID: self.chatRoom.uid, with: userID)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -88,7 +88,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        // 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
+        // TODO: 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
         let userInfos = input.trigger
             .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.connect(roomID: self.chatRoom.uid)

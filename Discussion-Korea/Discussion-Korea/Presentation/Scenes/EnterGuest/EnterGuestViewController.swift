@@ -1,0 +1,125 @@
+//
+//  EnterGuestViewController.swift
+//  Discussion-Korea
+//
+//  Created by 이청수 on 2022/05/26.
+//
+
+import SnapKit
+import UIKit
+import RxSwift
+
+final class EnterGuestViewController: UIViewController {
+
+    // MARK: - properties
+
+    var viewModel: EnterGuestViewModel!
+
+    private let guestButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("일단 둘러볼게요", for: .normal)
+        button.backgroundColor = .primaryColor
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.setTitleColor(UIColor.white, for: .normal)
+        return button
+    }()
+
+    private let submitButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = "완료"
+        button.tintColor = .label
+        return button
+    }()
+
+    private let nicknameTextfield: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .none
+        textField.placeholder = "닉네임을 입력해주세요"
+        return textField
+    }()
+
+    private let disposeBag = DisposeBag()
+
+    // MARK: - init/deinit
+
+    deinit {
+        print("🗑", Self.description())
+    }
+
+    // MARK: - methods
+
+    override func loadView() {
+        super.loadView()
+        self.title = "처음 설정하기"
+        self.view.backgroundColor = .systemBackground
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setSubViews()
+        self.bindViewModel()
+    }
+
+    private func setSubViews() {
+        self.navigationItem.rightBarButtonItem = self.submitButton
+
+        let descriptionLabel = UILabel()
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.text = "안녕하세요, 처음 오셨군요!\n먼저 닉네임을 설정해주세요."
+        descriptionLabel.font = UIFont.systemFont(ofSize: 20.0)
+
+        let divisor = UILabel()
+        divisor.backgroundColor = .label
+
+        self.view.addSubview(descriptionLabel)
+        self.view.addSubview(divisor)
+        self.view.addSubview(self.guestButton)
+        self.view.addSubview(self.nicknameTextfield)
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+        }
+        self.guestButton.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
+            make.height.equalTo(50)
+        }
+        self.nicknameTextfield.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+        }
+        divisor.snp.makeConstraints { make in
+            make.leading.equalTo(self.nicknameTextfield.snp.leading)
+            make.trailing.equalTo(self.nicknameTextfield.snp.trailing)
+            make.top.equalTo(self.nicknameTextfield.snp.bottom).offset(3)
+            make.height.equalTo(3)
+        }
+
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        self.view.addGestureRecognizer(tap)
+    }
+
+    private func bindViewModel() {
+        assert(self.viewModel != nil)
+
+        let input = EnterGuestViewModel.Input(
+            nickname: self.nicknameTextfield.rx.text.orEmpty
+                .asDriverOnErrorJustComplete(),
+            guestTrigger: self.guestButton.rx.tap.asDriverOnErrorJustComplete(),
+            submitTrigger: self.submitButton.rx.tap.asDriverOnErrorJustComplete()
+        )
+        let output = self.viewModel.transform(input: input)
+
+        output.submitEnable.drive(self.submitButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
+        output.events.drive()
+            .disposed(by: self.disposeBag)
+    }
+
+}

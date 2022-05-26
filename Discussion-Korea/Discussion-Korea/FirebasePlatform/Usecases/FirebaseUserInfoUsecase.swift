@@ -24,6 +24,10 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference.setSide(roomID: roomID, userID: userID, side: side)
     }
 
+    func add(userInfo: UserInfo) -> Observable<Void> {
+        self.reference.add(userInfo: userInfo)
+    }
+
     func clearSide(roomID: String, userID: String) -> Observable<Void> {
         self.reference.clearSide(from: roomID, of: userID)
     }
@@ -46,6 +50,10 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
 
     func connect(roomID: String) -> Observable<UserInfo> {
         self.reference.getUserInfo(from: roomID)
+    }
+
+    func userInfo(userID: String) -> Observable<UserInfo?> {
+        self.reference.getUserInfo(userID: userID)
     }
 
     private func getUID() -> String {

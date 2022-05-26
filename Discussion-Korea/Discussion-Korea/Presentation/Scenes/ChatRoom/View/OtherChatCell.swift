@@ -15,7 +15,7 @@ final class OtherChatCell: ChatCell {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
         imageView.tintColor = UIColor.white
-        imageView.backgroundColor = UIColor(named: "PrimaryColor")
+        imageView.backgroundColor = .primaryColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         return imageView
