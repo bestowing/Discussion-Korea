@@ -152,6 +152,8 @@ final class EnterGuestViewController: UIViewController {
         let output = self.viewModel.transform(input: input)
 
         output.profileImage.drive { [unowned self] url in
+            guard let url = url
+            else { return }
             self.profileImageView.setImage(url)
         }.disposed(by: self.disposeBag)
 

@@ -14,7 +14,8 @@ protocol EnterGuestNavigator {
     func toEnterGuest(_ userID: String)
     func toHome()
     func toSettingAppAlert()
-    func toImagePicker() -> Observable<URL>
+    func toImagePicker() -> Observable<URL?>
+    func toErrorAlert(_ error: Error)
 
 }
 
@@ -79,20 +80,29 @@ final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
         self.presentingViewController?.present(alert, animated: true)
     }
 
-    func toImagePicker() -> Observable<URL> {
+    func toImagePicker() -> Observable<URL?> {
         return PublishSubject.create { [unowned self] subscribe in
             let imagePicker = UIImagePickerController()
             imagePicker.sourceType = .photoLibrary
             imagePicker.delegate = self
             self.completion = { url in
-                if let url = url {
-                    subscribe.onNext(url)
-                }
+                subscribe.onNext(url)
                 subscribe.onCompleted()
             }
             self.presentingViewController?.present(imagePicker, animated: true)
             return Disposables.create()
         }.asObservable()
+    }
+
+    func toErrorAlert(_ error: Error) {
+        let alert = UIAlertController(
+            title: "오류!",
+            message: "오류가 발생했습니다. 재시도해주세요..",
+            preferredStyle: .alert
+        )
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        self.presentingViewController?.present(alert, animated: true)
     }
 
 }

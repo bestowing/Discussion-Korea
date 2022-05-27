@@ -36,6 +36,9 @@ final class EnterGuestViewModel: ViewModelType {
     // MARK: - methods
     func transform(input: Input) -> Output {
 
+        let activityTracker = ActivityTracker()
+        let errorTracker = ErrorTracker()
+
         // TODO: 이미지 관련 유즈케이스도 분리하기
         let permission = input.imageTrigger
             .flatMapLatest {
@@ -63,12 +66,12 @@ final class EnterGuestViewModel: ViewModelType {
             .do(onNext: self.navigator.toSettingAppAlert)
 
         let profileImage = albumAuthorized.filter { $0 }
-            .flatMapLatest { [unowned self] _ in
+            .flatMapLatest { [unowned self] _ -> Driver<URL?> in
                 self.navigator.toImagePicker()
                     .asDriverOnErrorJustComplete()
             }
 
-        let nicknameAndProfile = Driver.combineLatest(input.nickname, profileImage)
+        let nicknameAndProfile = Driver.combineLatest(input.nickname, profileImage.startWith(nil))
 
         let canSubmit = nicknameAndProfile.map { (title, _) in
             return !title.isEmpty
@@ -83,6 +86,8 @@ final class EnterGuestViewModel: ViewModelType {
             }
             .flatMapLatest { [unowned self] userInfo in
                 self.userInfoUsecase.add(userInfo: userInfo)
+                    .trackActivity(activityTracker)
+                    .trackError(errorTracker)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -90,10 +95,16 @@ final class EnterGuestViewModel: ViewModelType {
             .merge()
             .do(onNext: self.navigator.toHome)
 
-        let events = Driver.of(submitEvent, dismissEvent, settingAppEvent)
+        let loading = activityTracker.asDriver()
+        let errorEvent = errorTracker.asDriver()
+            .do(onNext: self.navigator.toErrorAlert)
+            .mapToVoid()
+
+        let events = Driver.of(submitEvent, dismissEvent, settingAppEvent, errorEvent)
             .merge()
 
         return Output(
+            loading: loading,
             profileImage: profileImage,
             submitEnable: canSubmit,
             events: events
@@ -112,7 +123,8 @@ extension EnterGuestViewModel {
     }
     
     struct Output {
-        let profileImage: Driver<URL>
+        let loading: Driver<Bool>
+        let profileImage: Driver<URL?>
         let submitEnable: Driver<Bool>
         let events: Driver<Void>
     }

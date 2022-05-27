@@ -9,6 +9,12 @@ import FirebaseDatabase
 import FirebaseStorage
 import RxSwift
 
+enum RefereceError: Error {
+
+    case profileError
+
+}
+
 final class Reference {
 
     private let reference: DatabaseReference
@@ -269,7 +275,10 @@ final class Reference {
                     ref.downloadURL() { url, error in
                         guard let url = url,
                               error == nil
-                        else { return }
+                        else {
+                            subscribe.onError(RefereceError.profileError)
+                            return
+                        }
                         values["profile"] = url.absoluteString
                         self.reference.child("users/\(userInfo.uid)")
                             .setValue(values)
@@ -277,6 +286,11 @@ final class Reference {
                         subscribe.onCompleted()
                     }
                 }
+            } else {
+                self.reference.child("users/\(userInfo.uid)")
+                    .setValue(values)
+                subscribe.onNext(Void())
+                subscribe.onCompleted()
             }
             return Disposables.create()
         }
