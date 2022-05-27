@@ -33,7 +33,8 @@ final class AddChatRoomViewController: UIViewController {
 
     private let titleTextfield: UITextField = {
         let textField = UITextField()
-        textField.borderStyle = .roundedRect
+        textField.borderStyle = .none
+        textField.placeholder = "채팅방 제목을 입력해주세요"
         return textField
     }()
 
@@ -68,6 +69,11 @@ final class AddChatRoomViewController: UIViewController {
         descriptionLabel.numberOfLines = 0
         descriptionLabel.font = UIFont.systemFont(ofSize: 27.0, weight: .semibold)
         self.view.addSubview(descriptionLabel)
+
+        let underline = UILabel()
+        underline.backgroundColor = .label
+        self.view.addSubview(underline)
+
         self.view.addSubview(self.titleTextfield)
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
@@ -78,6 +84,12 @@ final class AddChatRoomViewController: UIViewController {
             make.leading.equalTo(descriptionLabel.snp.leading)
             make.trailing.equalTo(descriptionLabel.snp.trailing)
             make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
+        }
+        underline.snp.makeConstraints { make in
+            make.leading.equalTo(self.titleTextfield.snp.leading)
+            make.trailing.equalTo(self.titleTextfield.snp.trailing)
+            make.top.equalTo(self.titleTextfield.snp.bottom).offset(3)
+            make.height.equalTo(3)
         }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
