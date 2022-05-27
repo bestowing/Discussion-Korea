@@ -13,7 +13,7 @@ protocol ChatRoomNavigator {
 
     func toChatRoom(_ chatRoom: ChatRoom)
     func toSideMenu(_ chatRoom: ChatRoom)
-    func toNicknameAlert() -> Observable<String>
+    func toEnterAlert() -> Observable<Bool>
     func toSideAlert() -> Observable<Side>
     func toVoteAlert() -> Observable<Side>
     func appear()
@@ -80,28 +80,20 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         navigator.toChatRoomSideMenu(chatRoom)
     }
 
-    func toNicknameAlert() -> Observable<String> {
+    func toEnterAlert() -> Observable<Bool> {
         return Observable.create { [unowned self] subscribe in
-            let alert = UIAlertController(title: "닉네임 설정",
-                                          message: "채팅방에 처음으로 입장할때 닉네임을 설정해야 합니다.",
+            let alert = UIAlertController(title: "채팅방 참가",
+                                          message: "채팅방에 처음으로 입장했습니다. 참가자로 등록할까요?",
                                           preferredStyle: UIAlertController.Style.alert)
             let exitAction = UIAlertAction(title: "나가기", style: .cancel) {_ in
+                subscribe.onNext(false)
                 subscribe.onCompleted()
                 self.toHome()
             }
             let registAction = UIAlertAction(title: "등록", style: .default) {_ in
-                guard let nickname = alert.textFields?.first?.text
-                else { return }
-                subscribe.onNext(nickname)
+                subscribe.onNext(true)
                 subscribe.onCompleted()
             }
-            registAction.isEnabled = false
-            alert.addTextField(configurationHandler: { textField in
-                NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"), object: textField, queue: OperationQueue.main, using: { _ in
-                    registAction.isEnabled = !(textField.text?.isEmpty ?? true)
-                })
-                textField.placeholder = "닉네임을 입력해주세요"
-            })
             alert.addAction(exitAction)
             alert.addAction(registAction)
             self.presentingViewController?.present(alert, animated: true)
