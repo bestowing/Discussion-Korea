@@ -49,7 +49,14 @@ class ChatItemViewModel {
         if self.chat.userID == "bot" {
             return UIImage(named: "bot")
         }
-        return UIImage(systemName: "person.fill")
+        if self.chat.profileURL == nil {
+            return UIImage(systemName: "person.fill")
+        }
+        return nil
+    }
+
+    var url: URL? {
+        return self.chat.profileURL
     }
 
     var contentFont: UIFont {

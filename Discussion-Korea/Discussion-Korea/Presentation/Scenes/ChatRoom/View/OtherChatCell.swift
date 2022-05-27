@@ -89,7 +89,11 @@ final class OtherChatCell: ChatCell {
     }
 
     override func bind(_ viewModel: ChatItemViewModel) {
-        self.profileImageView.image = viewModel.image
+        if let image = viewModel.image {
+            self.profileImageView.image = image
+        } else if let url = viewModel.url {
+            self.profileImageView.setImage(url)
+        }
         self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
         self.contentLabel.text = viewModel.content
         self.contentLabel.textColor = viewModel.textColor ?? .label

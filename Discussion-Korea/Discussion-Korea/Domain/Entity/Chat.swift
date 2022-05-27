@@ -11,6 +11,7 @@ struct Chat {
 
     var uid: String?
     var userID: String
+    var profileURL: URL?
     var content: String
     var date: Date?
     var nickName: String?

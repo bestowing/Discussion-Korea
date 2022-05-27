@@ -150,17 +150,16 @@ final class Reference {
     }
 
     func getUserInfo(in roomID: String, with userID: String) -> Observable<UserInfo?> {
-        return Observable.create { [unowned self] subscribe in
+        return Observable<UserInfo?>.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/users/\(userID)")
                 .observe(.value) { snapshot in
-                    guard let dictionary = snapshot.value as? NSDictionary,
-                          let nickname = dictionary["nickname"] as? String
+                    guard let dictionary = snapshot.value as? NSDictionary
                     else {
                         subscribe.onNext(nil)
                         return
                     }
-                    var userInfo = UserInfo(uid: userID, nickname: nickname)
+                    var userInfo = UserInfo(uid: userID, nickname: "")
                     if let sideString = dictionary["side"] as? String {
                         userInfo.side = Side.toSide(from: sideString)
                     }
@@ -175,30 +174,56 @@ final class Reference {
             self.reference
                 .child("chatRoom").child("\(roomID)").child("users")
                 .observe(.childAdded) { snapshot in
-                    guard let dic = snapshot.value as? NSDictionary,
-                          let nickname = dic["nickname"] as? String
+                    guard let dic = snapshot.value as? NSDictionary
                     else { return }
-                    var userInfo = UserInfo(uid: snapshot.key, nickname: nickname)
-                    if let urlString = dic["profile"] as? String,
-                       let url = URL(string: urlString) {
-                        userInfo.profileURL = url
-                    }
+                    var userInfo = UserInfo(uid: snapshot.key, nickname: "")
                     if let position = dic["position"] as? String {
                         userInfo.position = position
                     }
                     subscribe.onNext(userInfo)
                 }
             return Disposables.create()
+        }.flatMap { [unowned self] userInfo in
+            self.observeUserInfo(userInfo: userInfo)
         }
     }
 
-    func add(_ userInfo: UserInfo, to roomID: String) -> Observable<Void> {
-        return Observable<Void>.create { [unowned self] subscribe in
-            let values: [String: Any] = ["nickname": userInfo.nickname, "position": "방장"]
+    private func observeUserInfo(userInfo: UserInfo) -> Observable<UserInfo> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("users/\(userInfo.uid)")
+                .observe(.value) { snapshot in
+                    guard let dic = snapshot.value as? NSDictionary,
+                          let nickname = dic["nickname"] as? String
+                    else { return }
+                    var userInfo = UserInfo(uid: snapshot.key, nickname: nickname)
+                    if let profile = dic["profile"] as? String,
+                       let url = URL(string: profile) {
+                        userInfo.profileURL = url
+                    }
+                    if let win = dic["win"] as? Int {
+                        userInfo.win = win
+                    }
+                    if let draw = dic["draw"] as? Int {
+                        userInfo.draw = draw
+                    }
+                    if let lose = dic["lose"] as? Int {
+                        userInfo.lose = lose
+                    }
+                    subscribe.onNext(userInfo)
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
+    }
+
+    func add(_ userID: String, to roomID: String) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            let values: [String: Any] = ["position": "participant"]
             self.reference
                 .child("chatRoom/\(roomID)/users")
-                .child(userInfo.uid)
+                .child(userID)
                 .setValue(values)
+            subscribe.onNext(Void())
             subscribe.onCompleted()
             return Disposables.create()
         }
@@ -216,7 +241,7 @@ final class Reference {
                 let ref = self.storageReference
                     .child("\(userInfo.uid)/profile/\(profileURL.lastPathComponent)")
                 ref.putFile(from: profileURL, metadata: nil) { metadata, error in
-                    guard let metadata = metadata,
+                    guard let _ = metadata,
                           error == nil
                     else { return }
                     ref.downloadURL() { url, error in

@@ -78,12 +78,12 @@ final class ChatRoomViewModel: ViewModelType {
         let enterEvent = myInfo
             .filter { return $0 == nil }
             .flatMap { [unowned self] _ in
-                self.navigator.toNicknameAlert()
+                self.navigator.toEnterAlert()
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(uid) { ($0, $1) }
-            .flatMap { [unowned self] (nickname, uid) in
-                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userInfo: UserInfo(uid: uid, nickname: nickname))
+            .withLatestFrom(uid)
+            .flatMap { [unowned self] (uid) in
+                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: uid)
                     .asDriverOnErrorJustComplete()
             }
             .mapToVoid()
@@ -119,6 +119,7 @@ final class ChatRoomViewModel: ViewModelType {
                 for chat in chats {
                     var chat = chat
                     chat.nickName = userInfos[chat.userID]?.nickname
+                    chat.profileURL = userInfos[chat.userID]?.profileURL
                     let newItemViewModel: ChatItemViewModel
                     if let last = viewModels.last,
                        last.chat.userID == chat.userID,
@@ -155,6 +156,7 @@ final class ChatRoomViewModel: ViewModelType {
                 let uid = args.1.0
                 let userInfos = args.1.1
                 chat.nickName = userInfos[chat.userID]?.nickname
+                chat.profileURL = userInfos[chat.userID]?.profileURL
                 let newItemViewModel: ChatItemViewModel
                 if let last = viewModels.last,
                    last.chat.userID == chat.userID,
@@ -298,7 +300,7 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
-            chatItems: remainChatItems, //Driver.of(chatItems, maskingChatItems).merge(),
+            chatItems: Driver.of(chatItems, maskingChatItems).merge(),
             userInfos: userInfos,
             sendEnable: canSend,
             noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),

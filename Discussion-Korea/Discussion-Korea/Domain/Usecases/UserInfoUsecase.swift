@@ -9,7 +9,7 @@ import RxSwift
 
 protocol UserInfoUsecase {
 
-    func add(roomID: String, userInfo: UserInfo) -> Observable<Void>
+    func add(roomID: String, userID: String) -> Observable<Void>
     func add(roomID: String, userID: String, side: Side) -> Observable<Void>
     func add(userInfo: UserInfo) -> Observable<Void>
     func clearSide(roomID: String, userID: String) -> Observable<Void>
