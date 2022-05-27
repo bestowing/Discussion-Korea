@@ -6,14 +6,17 @@
 //
 
 import FirebaseDatabase
+import FirebaseStorage
 import RxSwift
 
 final class Reference {
 
     private let reference: DatabaseReference
+    private let storageReference: StorageReference
 
-    init(reference: DatabaseReference) {
+    init(reference: DatabaseReference, storageReference: StorageReference) {
         self.reference = reference
+        self.storageReference = storageReference
     }
 
     // MARK: - chatRooms
@@ -203,16 +206,31 @@ final class Reference {
 
     func add(userInfo: UserInfo) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
-            let values: [String: Any] = [
+            var values: [String: Any] = [
                 "nickname": userInfo.nickname,
                 "win": 0,
                 "draw": 0,
                 "lose": 0
             ]
-            self.reference.child("users/\(userInfo.uid)")
-                .setValue(values)
-            subscribe.onNext(Void())
-            subscribe.onCompleted()
+            if let profileURL = userInfo.profileURL {
+                let ref = self.storageReference
+                    .child("\(userInfo.uid)/profile/\(profileURL.lastPathComponent)")
+                ref.putFile(from: profileURL, metadata: nil) { metadata, error in
+                    guard let metadata = metadata,
+                          error == nil
+                    else { return }
+                    ref.downloadURL() { url, error in
+                        guard let url = url,
+                              error == nil
+                        else { return }
+                        values["profile"] = url.absoluteString
+                        self.reference.child("users/\(userInfo.uid)")
+                            .setValue(values)
+                        subscribe.onNext(Void())
+                        subscribe.onCompleted()
+                    }
+                }
+            }
             return Disposables.create()
         }
     }

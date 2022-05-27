@@ -38,7 +38,17 @@ final class ChatRoomListViewModel: ViewModelType {
             .uid()
             .asDriverOnErrorJustComplete()
 
+        let isGuest = uid
+            .flatMapLatest { uid in
+                self.userInfoUsecase.userInfo(userID: uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .map { $0 == nil }
+
         let addChatRoomEvent = input.createChatRoomTrigger
+            .withLatestFrom(isGuest)
+            .filter { !$0 }
+            .mapToVoid()
             .do(onNext: self.navigator.toAddChatRoom)
 
         let chatRooms = input.trigger

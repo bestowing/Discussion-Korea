@@ -38,7 +38,7 @@ final class EnterGuestViewController: UIViewController {
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .primaryColor
-        imageView.layer.cornerRadius = 50
+        imageView.layer.cornerRadius = 70
         imageView.layer.masksToBounds = true
         imageView.isUserInteractionEnabled = true
         return imageView
@@ -112,8 +112,8 @@ final class EnterGuestViewController: UIViewController {
         self.profileImageView.snp.makeConstraints { make in
             make.centerX.equalTo(self.view.safeAreaLayoutGuide)
             make.top.equalTo(descriptionLabel.snp.bottom).offset(30)
-            make.width.equalTo(100)
-            make.height.equalTo(102)
+            make.width.equalTo(140)
+            make.height.equalTo(142)
         }
         profileBadge.snp.makeConstraints { make in
             make.trailing.equalTo(self.profileImageView.snp.trailing)

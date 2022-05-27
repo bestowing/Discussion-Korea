@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController {
     private let nicknameLabel: UILabel = {
         let label = UILabel()
         label.text = "guest"
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
         return label
     }()
 

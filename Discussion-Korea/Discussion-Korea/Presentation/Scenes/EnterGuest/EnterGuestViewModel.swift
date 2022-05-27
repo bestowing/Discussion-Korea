@@ -36,22 +36,6 @@ final class EnterGuestViewModel: ViewModelType {
     // MARK: - methods
     func transform(input: Input) -> Output {
 
-        let nickname = input.nickname
-
-        let canSubmit = nickname.map { title in
-            return !title.isEmpty
-        }
-
-        let submitEvent = input.submitTrigger
-            .withLatestFrom(nickname)
-            .map { [unowned self] nickname in
-                return UserInfo(uid: self.userID, nickname: nickname)
-            }
-            .flatMapLatest { [unowned self] userInfo in
-                self.userInfoUsecase.add(userInfo: userInfo)
-                    .asDriverOnErrorJustComplete()
-            }
-
         // TODO: 이미지 관련 유즈케이스도 분리하기
         let permission = input.imageTrigger
             .flatMapLatest {
@@ -81,6 +65,24 @@ final class EnterGuestViewModel: ViewModelType {
         let profileImage = albumAuthorized.filter { $0 }
             .flatMapLatest { [unowned self] _ in
                 self.navigator.toImagePicker()
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let nicknameAndProfile = Driver.combineLatest(input.nickname, profileImage)
+
+        let canSubmit = nicknameAndProfile.map { (title, _) in
+            return !title.isEmpty
+        }
+
+        let submitEvent = input.submitTrigger
+            .withLatestFrom(nicknameAndProfile)
+            .map { [unowned self] (nickname, profileURL) in
+                var userInfo = UserInfo(uid: self.userID, nickname: nickname)
+                userInfo.profileURL = profileURL
+                return userInfo
+            }
+            .flatMapLatest { [unowned self] userInfo in
+                self.userInfoUsecase.add(userInfo: userInfo)
                     .asDriverOnErrorJustComplete()
             }
 
