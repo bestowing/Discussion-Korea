@@ -203,8 +203,9 @@ final class Reference {
                 }
             return Disposables.create()
         }.flatMap { [unowned self] userInfo in
-            self.observeUserInfo(userInfo: userInfo)
+            return self.observeUserInfo(userInfo: userInfo)
         }
+        .do(onNext: { print($0) })
     }
 
     private func observeUserInfo(userInfo: UserInfo) -> Observable<UserInfo> {
@@ -214,7 +215,9 @@ final class Reference {
                     guard let dic = snapshot.value as? NSDictionary,
                           let nickname = dic["nickname"] as? String
                     else { return }
-                    var userInfo = UserInfo(uid: snapshot.key, nickname: nickname)
+                    let position = userInfo.position
+                    var userInfo = UserInfo(uid: userInfo.uid, nickname: nickname)
+                    userInfo.position = position
                     if let profile = dic["profile"] as? String,
                        let url = URL(string: profile) {
                         userInfo.profileURL = url

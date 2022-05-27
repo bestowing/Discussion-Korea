@@ -60,8 +60,12 @@ final class ParticipantCell: UITableViewCell {
     }
 
     func bind(_ viewModel: ParticipantItemViewModel) {
-        self.profileImageView.image = UIImage(systemName: "person.fill")
-        self.nicknameLabel.text = viewModel.userInfo.nickname
+        if let url = viewModel.userInfo.profileURL {
+            self.profileImageView.setImage(url)
+        } else {
+            self.profileImageView.image = UIImage(systemName: "person.fill")
+        }
+        self.nicknameLabel.text = viewModel.nickname
     }
 
     override func prepareForReuse() {

@@ -35,12 +35,18 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
+        let uid = userInfoUsecase.uid()
+            .asDriverOnErrorJustComplete()
+
         let participants = input.viewWillAppear
-            .flatMap { [unowned self] in
+            .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
-                        return viewModels + [ParticipantItemViewModel(with: userInfo)]
+                    .withLatestFrom(uid) { ($0, $1) }
+                    .scan([ParticipantItemViewModel]()) { viewModels, args in
+                        let userInfo = args.0
+                        let uid = args.1
+                        return viewModels + [ParticipantItemViewModel(with: userInfo, isSelf: uid == userInfo.uid)]
                     }
             }
 
