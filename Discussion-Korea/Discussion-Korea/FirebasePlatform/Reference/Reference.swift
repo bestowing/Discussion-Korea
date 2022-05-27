@@ -34,10 +34,19 @@ final class Reference {
     }
 
     func addChatRoom(title: String, adminUID: String) -> Observable<Void> {
-        let value: [String: Any] = ["title": title, "adminUID": adminUID]
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRooms")
-                .childByAutoId().setValue(value)
+            guard let key = self.reference
+                .child("chatRooms")
+                .childByAutoId().key
+            else {
+                subscribe.onCompleted()
+                return Disposables.create()
+            }
+            let value: [String: Any] = ["title": title, "adminUID": adminUID]
+            let userValue: [String: Any] = ["position": "admin"]
+            let childUpdates = ["/chatRooms/\(key)": value,
+                                "/chatRoom/\(key)/users/\(adminUID)": userValue]
+            self.reference.updateChildValues(childUpdates)
             subscribe.onNext(Void())
             subscribe.onCompleted()
             return Disposables.create()
@@ -64,17 +73,27 @@ final class Reference {
         }
     }
 
-    func receiveNewChats(uid: String, afterUID: String) -> Observable<Chat> {
+    func receiveNewChats(uid: String, afterUID: String?) -> Observable<Chat> {
         return Observable.create { [unowned self] subscribe in
-            self.reference
-                .child("chatRoom/\(uid)/messages")
-                .queryOrderedByKey()
-                .queryStarting(afterValue: afterUID)
-                .observe(.childAdded) { snapshot in
-                    guard let chat = Chat.toChat(from: snapshot)
-                    else { return }
-                    subscribe.onNext(chat)
-                }
+            if let afterUID = afterUID {
+                self.reference
+                    .child("chatRoom/\(uid)/messages")
+                    .queryOrderedByKey()
+                    .queryStarting(afterValue: afterUID)
+                    .observe(.childAdded) { snapshot in
+                        guard let chat = Chat.toChat(from: snapshot)
+                        else { return }
+                        subscribe.onNext(chat)
+                    }
+            } else {
+                self.reference
+                    .child("chatRoom/\(uid)/messages")
+                    .observe(.childAdded) { snapshot in
+                        guard let chat = Chat.toChat(from: snapshot)
+                        else { return }
+                        subscribe.onNext(chat)
+                    }
+            }
             return Disposables.create()
         }
     }

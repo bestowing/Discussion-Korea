@@ -145,7 +145,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         let chats = remainChats
             .flatMapFirst { [unowned self] remains in
-                self.chatsUsecase.connect(roomUID: self.chatRoom.uid, after: remains.last!.uid!)
+                self.chatsUsecase.connect(roomUID: self.chatRoom.uid, after: remains.last?.uid)
                     .asDriverOnErrorJustComplete()
             }
 
