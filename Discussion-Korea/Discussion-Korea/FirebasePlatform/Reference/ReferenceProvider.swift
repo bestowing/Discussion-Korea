@@ -13,13 +13,13 @@ final class ReferenceProvider {
     private let reference: Reference
 
     init() {
-//        let urlString = "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app"
-        let urlString = "http://localhost:9000?ns=test-3dbd4-default-rtdb"
+        let urlString = "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app"
+//        let urlString = "http://localhost:9000?ns=test-3dbd4-default-rtdb"
 //        let databaseReference = Database.database(url: urlString)
 //            .reference()
         let database = Database.database(url: urlString)
         let storage = Storage.storage()
-        storage.useEmulator(withHost: "localhost", port: 9199)
+//        storage.useEmulator(withHost: "localhost", port: 9199)
         self.reference = Reference(
             reference: database.reference(),
             storageReference: storage.reference()

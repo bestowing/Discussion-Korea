@@ -15,6 +15,16 @@ final class EnterGuestViewController: UIViewController {
 
     var viewModel: EnterGuestViewModel!
 
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.backgroundColor = .gray
+        indicator.layer.cornerRadius = 10.0
+        return indicator
+    }()
+
     private let guestButton: UIButton = {
         let button = UIButton()
         button.setTitle("일단 둘러볼게요", for: .normal)
@@ -98,6 +108,9 @@ final class EnterGuestViewController: UIViewController {
         self.view.addSubview(profileBadge)
         self.view.addSubview(self.nicknameTextfield)
 
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
+
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
@@ -150,6 +163,9 @@ final class EnterGuestViewController: UIViewController {
             submitTrigger: self.submitButton.rx.tap.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.loading.drive(self.activityIndicator.rx.isAnimating)
+            .disposed(by: self.disposeBag)
 
         output.profileImage.drive { [unowned self] url in
             guard let url = url
