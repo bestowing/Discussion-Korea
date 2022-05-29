@@ -14,12 +14,18 @@ struct UserInfo {
     var position: String?
     var profileURL: URL?
     var side: Side?
+    var win: Int
+    var draw: Int
+    var lose: Int
 
     public init(uid: String, nickname: String) {
         self.uid = uid
         self.nickname = nickname
         self.position = nil
         self.profileURL = nil
+        self.win = 0
+        self.draw = 0
+        self.lose = 0
     }
 
 }

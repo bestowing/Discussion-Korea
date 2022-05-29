@@ -10,6 +10,7 @@ import UIKit
 protocol SettingNavigator {
 
     func toSetting()
+    func toOpenSource()
 
 }
 
@@ -35,11 +36,23 @@ final class DefaultSettingNavigator: SettingNavigator {
     // MARK: - methods
 
     func toSetting() {
+        self.makeOpaqueNavigationBar()
         let settingViewController = SettingViewController()
+        settingViewController.contents = ["오픈소스 라이선스 이용고지"]
+        settingViewController.selected = [toOpenSource]
         settingViewController.title = "설정"
-        let settingViewModel = SettingViewModel(navigator: self)
-        settingViewController.viewModel = settingViewModel
         self.navigationController.pushViewController(settingViewController, animated: true)
+    }
+
+    private func makeOpaqueNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        self.navigationController.navigationBar.standardAppearance = appearance
+    }
+
+    func toOpenSource() {
+        let openSourceNavigator = DefaultOpenSourceNavigator(navigationController: self.navigationController)
+        openSourceNavigator.toOpenSource()
     }
 
 }

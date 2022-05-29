@@ -11,6 +11,7 @@ protocol ChatRoomListNavigator {
 
     func toChatRoomList()
     func toChatRoom(_ chatRoom: ChatRoom)
+    func toAddChatRoom()
 
 }
 
@@ -20,6 +21,8 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
+
+    private weak var presentingViewController: UIViewController?
 
     // MARK: - init/deinit
 
@@ -37,8 +40,6 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
 
     func toChatRoomList() {
         let chatRoomListViewController = ChatRoomListViewController()
-        chatRoomListViewController.title = "채팅"
-        self.navigationController.navigationBar.prefersLargeTitles = true
         let chatRoomListViewModel = ChatRoomListViewModel(
             navigator: self,
             chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
@@ -46,6 +47,7 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
         )
         chatRoomListViewController.viewModel = chatRoomListViewModel
         self.navigationController.pushViewController(chatRoomListViewController, animated: true)
+        self.presentingViewController = chatRoomListViewController
     }
 
     func toChatRoom(_ chatRoom: ChatRoom) {
@@ -54,6 +56,16 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
             navigationController: self.navigationController
         )
         chatRoomNavigator.toChatRoom(chatRoom)
+    }
+
+    func toAddChatRoom() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let addChatRoomNavigator = DefaultAddChatRoomNavigator(
+            services: self.services,
+            presentedViewController: presentingViewController
+        )
+        addChatRoomNavigator.toAddChatRoom()
     }
 
 }

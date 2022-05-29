@@ -33,10 +33,23 @@ final class ChatRoomListViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
-        
+
         let uid = self.userInfoUsecase
             .uid()
             .asDriverOnErrorJustComplete()
+
+        let isGuest = uid
+            .flatMapLatest { uid in
+                self.userInfoUsecase.userInfo(userID: uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .map { $0 == nil }
+
+        let addChatRoomEvent = input.createChatRoomTrigger
+            .withLatestFrom(isGuest)
+            .filter { !$0 }
+            .mapToVoid()
+            .do(onNext: self.navigator.toAddChatRoom)
 
         let chatRooms = input.trigger
             .flatMapFirst { [unowned self] in
@@ -57,7 +70,8 @@ final class ChatRoomListViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
-        let events = enterEvent
+        let events = Driver.of(enterEvent, addChatRoomEvent)
+            .merge()
 
         return Output(chatRoomItems: chatRoomItems, events: events)
     }

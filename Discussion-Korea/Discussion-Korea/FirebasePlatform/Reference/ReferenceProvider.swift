@@ -6,17 +6,24 @@
 //
 
 import FirebaseDatabase
+import FirebaseStorage
 
 final class ReferenceProvider {
 
     private let reference: Reference
 
     init() {
-        let urlString = "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app"
-//        let localURLString = "http://localhost:9000?ns=test-3dbd4-default-rtdb"
-        let databaseReference = Database.database(url: urlString)
-            .reference()
-        self.reference = Reference(reference: databaseReference)
+        let storage = Storage.storage()
+        #if DEBUG
+        let database = Database.database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+        storage.useEmulator(withHost: "localhost", port: 9199)
+        #elseif RELEASE
+        let database = Database.database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+        #endif
+        self.reference = Reference(
+            reference: database.reference(),
+            storageReference: storage.reference()
+        )
     }
 
     func makeChatRoomsReference() -> Reference {

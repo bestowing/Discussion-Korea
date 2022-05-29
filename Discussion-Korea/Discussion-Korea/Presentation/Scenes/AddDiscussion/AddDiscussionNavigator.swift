@@ -9,7 +9,7 @@ import UIKit
 
 protocol AddDiscussionNavigator {
 
-    func toAddDiscussion()
+    func toAddDiscussion(_ chatRoom: ChatRoom)
     func toChatRoom()
 
 }
@@ -34,9 +34,13 @@ final class DefaultAddDiscussionNavigator: AddDiscussionNavigator {
 
     // MARK: - methods
 
-    func toAddDiscussion() {
+    func toAddDiscussion(_ chatRoom: ChatRoom) {
         let viewController = AddDiscussionViewController()
-        viewController.viewModel = AddDiscussionViewModel(navigator: self, usecase: self.services.makeDiscussionUsecase())
+        viewController.viewModel = AddDiscussionViewModel(
+            chatRoom: chatRoom,
+            navigator: self,
+            usecase: self.services.makeDiscussionUsecase()
+        )
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.presentedViewController.present(navigationController, animated: true)

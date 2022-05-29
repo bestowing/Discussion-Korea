@@ -18,7 +18,6 @@ final class ChatRoomSideMenuViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "캡스톤디자인 토론방" // FIXME: 채팅방 이름으로 수정 필요
         return titleLabel
     }()
 
@@ -154,7 +153,11 @@ final class ChatRoomSideMenuViewController: UIViewController {
             return cell
         }.disposed(by: self.disposeBag)
 
-        output.calendarEvent.drive().disposed(by: self.disposeBag)
+        output.chatRoomTitle.drive(self.titleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+
+        output.calendarEvent.drive()
+            .disposed(by: self.disposeBag)
 
     }
 

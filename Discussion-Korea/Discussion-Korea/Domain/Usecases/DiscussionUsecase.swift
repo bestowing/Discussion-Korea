@@ -10,9 +10,9 @@ import RxSwift
 
 protocol DiscussionUsecase {
 
-    func discussions(room: Int) -> Observable<Discussion>
-    func add(room: Int, discussion: Discussion) -> Observable<Void>
-    func status(room: Int) -> Observable<Int>
-    func remainTime(room: Int) -> Observable<Date>
+    func discussions(roomUID: String) -> Observable<Discussion>
+    func add(roomUID: String, discussion: Discussion) -> Observable<Void>
+    func status(roomUID: String) -> Observable<Int>
+    func remainTime(roomUID: String) -> Observable<Date>
 
 }

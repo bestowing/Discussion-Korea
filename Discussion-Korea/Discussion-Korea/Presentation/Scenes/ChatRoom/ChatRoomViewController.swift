@@ -44,7 +44,7 @@ final class ChatRoomViewController: UIViewController {
         let messageCollectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
         )
-        messageCollectionView.backgroundColor = .clear
+        messageCollectionView.backgroundColor = UIColor.systemGray6
         messageCollectionView.register(
             SelfChatCell.self, forCellWithReuseIdentifier: SelfChatCell.identifier
         )
@@ -54,6 +54,12 @@ final class ChatRoomViewController: UIViewController {
         messageCollectionView.register(
             SerialOtherChatCell.self,
             forCellWithReuseIdentifier: SerialOtherChatCell.identifier
+        )
+        messageCollectionView.register(
+            BotChatCell.self, forCellWithReuseIdentifier: BotChatCell.identifier
+        )
+        messageCollectionView.register(
+            SerialBotChatCell.self, forCellWithReuseIdentifier: SerialBotChatCell.identifier
         )
         return messageCollectionView
     }()
@@ -98,8 +104,23 @@ final class ChatRoomViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = UIColor.systemGray6
+        self.view.backgroundColor = .systemBackground
     }
+
+//    override func updateViewConstraints() {
+//        super.updateViewConstraints()
+//        self.messageCollectionView.snp.makeConstraints { make in
+//            make.edges.equalTo(0)
+//        }
+//        self.messageTextView.snp.makeConstraints { make in
+//            make.left.right.equalTo(0)
+//            if #available(iOS 11.0, *) {
+//                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+//            } else {
+//                make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+//            }
+//        }
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +153,7 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(self.messageCollectionView.snp.bottom)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(self.messageTextView.snp.bottom).offset(10)
         }
         self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
         self.messageTextView.snp.makeConstraints { make in
@@ -160,6 +181,7 @@ final class ChatRoomViewController: UIViewController {
                 self.view.frame.origin.y = -keyboardVisibleHeight
             })
             .disposed(by: disposeBag)
+
     }
 
     private func bindViewModel() {
@@ -172,7 +194,7 @@ final class ChatRoomViewController: UIViewController {
             send: self.sendButton.rx.tap.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
             content: self.messageTextView.rx.text.orEmpty.asDriver(),
-            disappear: self.rx.sentMessage(#selector(UIViewController.viewWillDisappear(_:)))
+            disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete()
         )

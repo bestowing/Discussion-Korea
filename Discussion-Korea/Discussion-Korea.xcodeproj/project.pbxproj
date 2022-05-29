@@ -54,6 +54,20 @@
 		3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696AF2836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift */; };
 		3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696B128362D300077E5B3 /* ChatRoomItemViewModel.swift */; };
 		3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */; };
+		3F6696BD28390ADE0077E5B3 /* OpenSourceNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */; };
+		3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */; };
+		3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */; };
+		3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910431283F6F5600446239 /* AddChatRoomViewController.swift */; };
+		3F910435283FB29200446239 /* EnterGuestNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910434283FB29200446239 /* EnterGuestNavigator.swift */; };
+		3F910437283FB33C00446239 /* EnterGuestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910436283FB33C00446239 /* EnterGuestViewModel.swift */; };
+		3F910439283FB34300446239 /* EnterGuestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910438283FB34300446239 /* EnterGuestViewController.swift */; };
+		3F91043B283FBA1F00446239 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91043A283FBA1F00446239 /* UIImageView+.swift */; };
+		3F91043E283FBA7900446239 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 3F91043D283FBA7900446239 /* Kingfisher */; };
+		3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F91043F283FE5C500446239 /* FirebaseStorage */; };
+		3F9104422840D94C00446239 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9104412840D94C00446239 /* ErrorTracker.swift */; };
+		3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9104432840DC5700446239 /* ActivityTracker.swift */; };
+		3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC94284361CF008DF2D2 /* BotChatCell.swift */; };
+		3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -120,6 +134,18 @@
 		3F6696AF2836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseChatRoomsUsecase.swift; sourceTree = "<group>"; };
 		3F6696B128362D300077E5B3 /* ChatRoomItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomItemViewModel.swift; sourceTree = "<group>"; };
 		3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCell.swift; sourceTree = "<group>"; };
+		3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceNavigator.swift; sourceTree = "<group>"; };
+		3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomNavigator.swift; sourceTree = "<group>"; };
+		3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewModel.swift; sourceTree = "<group>"; };
+		3F910431283F6F5600446239 /* AddChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewController.swift; sourceTree = "<group>"; };
+		3F910434283FB29200446239 /* EnterGuestNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterGuestNavigator.swift; sourceTree = "<group>"; };
+		3F910436283FB33C00446239 /* EnterGuestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterGuestViewModel.swift; sourceTree = "<group>"; };
+		3F910438283FB34300446239 /* EnterGuestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterGuestViewController.swift; sourceTree = "<group>"; };
+		3F91043A283FBA1F00446239 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		3F9104412840D94C00446239 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
+		3F9104432840DC5700446239 /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
+		3F95BC94284361CF008DF2D2 /* BotChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotChatCell.swift; sourceTree = "<group>"; };
+		3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialBotChatCell.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -147,8 +173,10 @@
 			files = (
 				3F37B3DA2820782600DB18B7 /* FirebaseDatabase in Frameworks */,
 				3F37B3D1282077B700DB18B7 /* RxSwift in Frameworks */,
+				3F91043E283FBA7900446239 /* Kingfisher in Frameworks */,
 				3F37B3D7282077D400DB18B7 /* SnapKit in Frameworks */,
 				3F37B3D4282077C700DB18B7 /* RxKeyboard in Frameworks */,
+				3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */,
 				3F37B3DD2820784E00DB18B7 /* SideMenu in Frameworks */,
 				3F37B3CF282077B700DB18B7 /* RxCocoa in Frameworks */,
 			);
@@ -238,9 +266,12 @@
 		3F37B391282075C400DB18B7 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				3F9104412840D94C00446239 /* ErrorTracker.swift */,
 				3F37B3992820762D00DB18B7 /* NSObject+identifier.swift */,
 				3F37B3982820762C00DB18B7 /* Observable+.swift */,
 				3F66968B283103280077E5B3 /* UIColor+.swift */,
+				3F91043A283FBA1F00446239 /* UIImageView+.swift */,
+				3F9104432840DC5700446239 /* ActivityTracker.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -248,11 +279,13 @@
 		3F37B392282075D500DB18B7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				3F91042C283F6B1500446239 /* AddChatRoom */,
 				3FB357A62826276100F27C77 /* AddDiscussion */,
 				3F37B39C2820763B00DB18B7 /* ChatRoom */,
 				3F66969E2835BF5B0077E5B3 /* ChatRoomList */,
 				3FB3578D282509E600F27C77 /* ChatRoomSchedule */,
 				3FB35784282406AB00F27C77 /* ChatRoomSideMenu */,
+				3F910433283FB27400446239 /* EnterGuest */,
 				3F37B39D2820763F00DB18B7 /* Home */,
 				3F66969D2835BF0E0077E5B3 /* Setting */,
 			);
@@ -292,10 +325,12 @@
 		3F37B3A62820765300DB18B7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
 				3F37B3AB2820765900DB18B7 /* OtherChatCell.swift */,
 				3F37B3A72820765900DB18B7 /* PaddingLabel.swift */,
 				3F37B3A92820765900DB18B7 /* SelfChatCell.swift */,
+				3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */,
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
 			);
 			path = View;
@@ -349,6 +384,7 @@
 		3F66969D2835BF0E0077E5B3 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				3F6696BB28390ABD0077E5B3 /* OpenSource */,
 				3F6696A92835C16C0077E5B3 /* SettingNavigator.swift */,
 				3F6696A52835C12B0077E5B3 /* SettingViewController.swift */,
 				3F6696A72835C15F0077E5B3 /* SettingViewModel.swift */,
@@ -376,6 +412,34 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		3F6696BB28390ABD0077E5B3 /* OpenSource */ = {
+			isa = PBXGroup;
+			children = (
+				3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */,
+			);
+			path = OpenSource;
+			sourceTree = "<group>";
+		};
+		3F91042C283F6B1500446239 /* AddChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+				3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */,
+				3F910431283F6F5600446239 /* AddChatRoomViewController.swift */,
+				3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */,
+			);
+			path = AddChatRoom;
+			sourceTree = "<group>";
+		};
+		3F910433283FB27400446239 /* EnterGuest */ = {
+			isa = PBXGroup;
+			children = (
+				3F910434283FB29200446239 /* EnterGuestNavigator.swift */,
+				3F910438283FB34300446239 /* EnterGuestViewController.swift */,
+				3F910436283FB33C00446239 /* EnterGuestViewModel.swift */,
+			);
+			path = EnterGuest;
+			sourceTree = "<group>";
+		};
 		3FB357812821115A00F27C77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,8 +451,8 @@
 			isa = PBXGroup;
 			children = (
 				3FB357962826050D00F27C77 /* View */,
-				3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */,
 				3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */,
+				3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */,
 				3FB3578928240D6600F27C77 /* ChatRoomSideMenuViewModel.swift */,
 				3FB357992826063C00F27C77 /* ParticipantItemViewModel.swift */,
 			);
@@ -456,6 +520,8 @@
 				3F37B3D6282077D400DB18B7 /* SnapKit */,
 				3F37B3D92820782600DB18B7 /* FirebaseDatabase */,
 				3F37B3DC2820784E00DB18B7 /* SideMenu */,
+				3F91043D283FBA7900446239 /* Kingfisher */,
+				3F91043F283FE5C500446239 /* FirebaseStorage */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F37B3692820747500DB18B7 /* Discussion-Korea.app */;
@@ -492,6 +558,7 @@
 				3F37B3D5282077D400DB18B7 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				3F37B3D82820782600DB18B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				3F37B3DB2820784E00DB18B7 /* XCRemoteSwiftPackageReference "SideMenu" */,
+				3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 3F37B36A2820747500DB18B7 /* Products */;
 			projectDirPath = "";
@@ -523,13 +590,17 @@
 				3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */,
 				3FB357982826053E00F27C77 /* ParticipantCell.swift in Sources */,
 				3FF62D9F282D93F1001F343C /* Side.swift in Sources */,
+				3F910435283FB29200446239 /* EnterGuestNavigator.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
+				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,
 				3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */,
 				3F37B3AE2820765900DB18B7 /* SelfChatCell.swift in Sources */,
+				3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */,
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */,
+				3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */,
 				3F37B3E628207CCA00DB18B7 /* AppDelegate.swift in Sources */,
 				3FB3579A2826063C00F27C77 /* ParticipantItemViewModel.swift in Sources */,
 				3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */,
@@ -555,16 +626,22 @@
 				3F37B3C52820773600DB18B7 /* Chat.swift in Sources */,
 				3FB3579D282618A900F27C77 /* ScheduleCell.swift in Sources */,
 				3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */,
+				3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */,
 				3F6696A42835BFDB0077E5B3 /* ChatRoomListViewModel.swift in Sources */,
+				3F91043B283FBA1F00446239 /* UIImageView+.swift in Sources */,
+				3F6696BD28390ADE0077E5B3 /* OpenSourceNavigator.swift in Sources */,
 				3F37B3A52820765100DB18B7 /* ChatRoomViewController.swift in Sources */,
 				3F37B39A2820762D00DB18B7 /* Observable+.swift in Sources */,
+				3F910437283FB33C00446239 /* EnterGuestViewModel.swift in Sources */,
 				3F6696AE283623A80077E5B3 /* ChatRoom.swift in Sources */,
 				3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */,
 				3F6696A62835C12B0077E5B3 /* SettingViewController.swift in Sources */,
 				3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */,
 				3FB357A528261D4100F27C77 /* FirebaseDiscussionUsecase.swift in Sources */,
+				3F9104422840D94C00446239 /* ErrorTracker.swift in Sources */,
 				3F6696AC283623810077E5B3 /* ChatRoomsUsecase.swift in Sources */,
 				3F37B3DF28207A9100DB18B7 /* FirebaseUserInfoUsecase.swift in Sources */,
+				3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */,
 				3F37B3C22820772A00DB18B7 /* FirebaseUsecaseProvider.swift in Sources */,
 				3F6696A82835C15F0077E5B3 /* SettingViewModel.swift in Sources */,
 				3FB357A12826192A00F27C77 /* Discussion.swift in Sources */,
@@ -576,6 +653,8 @@
 				3FB3579328250B5000F27C77 /* ChatRoomScheduleViewModel.swift in Sources */,
 				3F37B3E428207CCA00DB18B7 /* Application.swift in Sources */,
 				3FB3578A28240D6600F27C77 /* ChatRoomSideMenuViewModel.swift in Sources */,
+				3F910439283FB34300446239 /* EnterGuestViewController.swift in Sources */,
+				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
 				3F37B3AC2820765900DB18B7 /* PaddingLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -715,11 +794,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202205291;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -729,7 +809,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -746,11 +826,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202205291;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -760,7 +841,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -833,6 +914,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -865,6 +954,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F37B3DB2820784E00DB18B7 /* XCRemoteSwiftPackageReference "SideMenu" */;
 			productName = SideMenu;
+		};
+		3F91043D283FBA7900446239 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		3F91043F283FE5C500446239 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F37B3D82820782600DB18B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

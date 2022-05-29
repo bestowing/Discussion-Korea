@@ -9,9 +9,9 @@ import RxSwift
 
 protocol ChatsUsecase {
 
-    func chats(room: Int) -> Observable<[Chat]>
-    func connect(room: Int) -> Observable<Chat>
-    // FIXME: 일단 Int로 했지만 String으로 할 생각도 있음
-    func send(room: Int, chat: Chat) -> Observable<Void>
+    func chats(roomUID: String) -> Observable<[Chat]>
+    func connect(roomUID: String, after chatUID: String?) -> Observable<Chat>
+    func send(roomUID: String, chat: Chat) -> Observable<Void>
+    func masking(roomUID: String) -> Observable<String>
 
 }

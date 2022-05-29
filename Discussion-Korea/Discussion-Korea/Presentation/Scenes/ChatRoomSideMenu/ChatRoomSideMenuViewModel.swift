@@ -12,12 +12,17 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let chatRoom: ChatRoom
+
     private let userInfoUsecase: UserInfoUsecase
     private let navigator: ChatRoomSideMenuNavigator
 
     // MARK: - init/deinit
 
-    init(userInfoUsecase: UserInfoUsecase, navigator: ChatRoomSideMenuNavigator) {
+    init(chatRoom: ChatRoom,
+         userInfoUsecase: UserInfoUsecase,
+         navigator: ChatRoomSideMenuNavigator) {
+        self.chatRoom = chatRoom
         self.userInfoUsecase = userInfoUsecase
         self.navigator = navigator
     }
@@ -30,19 +35,33 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
+        let uid = userInfoUsecase.uid()
+            .asDriverOnErrorJustComplete()
+
         let participants = input.viewWillAppear
-            .flatMap { [unowned self] in
-                self.userInfoUsecase.connect(room: 1)
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
-                        return viewModels + [ParticipantItemViewModel(with: userInfo)]
+                    .withLatestFrom(uid) { ($0, $1) }
+                    .scan([ParticipantItemViewModel]()) { viewModels, args in
+                        let userInfo = args.0
+                        let uid = args.1
+                        return viewModels + [ParticipantItemViewModel(with: userInfo, isSelf: uid == userInfo.uid)]
                     }
             }
 
         let calendarEvent = input.calendar
-            .do(onNext: self.navigator.toChatRoomSchedule)
+            .do(onNext: { [unowned self] in
+                self.navigator.toChatRoomSchedule(self.chatRoom)
+            })
 
-        return Output(participants: participants, calendarEvent: calendarEvent)
+        let chatRoomTitle = Driver.from([self.chatRoom.title])
+
+        return Output(
+            chatRoomTitle: chatRoomTitle,
+            participants: participants,
+            calendarEvent: calendarEvent
+        )
     }
 
 }
@@ -55,6 +74,7 @@ extension ChatRoomSideMenuViewModel {
     }
     
     struct Output {
+        let chatRoomTitle: Driver<String>
         let participants: Driver<[ParticipantItemViewModel]>
         let calendarEvent: Driver<Void>
     }

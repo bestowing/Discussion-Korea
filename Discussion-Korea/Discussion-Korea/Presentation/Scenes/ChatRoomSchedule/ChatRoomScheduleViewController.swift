@@ -49,7 +49,7 @@ final class ChatRoomScheduleViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
     }
 
     override func viewDidLoad() {

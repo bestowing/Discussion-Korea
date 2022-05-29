@@ -16,20 +16,24 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference = reference
     }
 
-    func add(room: Int, userInfo: UserInfo) -> Observable<Void> {
-        self.reference.addUserInfo(room: room, userInfo: userInfo)
+    func add(roomID: String, userID: String) -> Observable<Void> {
+        self.reference.add(userID, to: roomID)
     }
 
-    func add(room: Int, uid: String, side: Side) -> Observable<Void> {
-        self.reference.setSide(room: room, uid: uid, side: side)
+    func add(roomID: String, userID: String, side: Side) -> Observable<Void> {
+        self.reference.setSide(roomID: roomID, userID: userID, side: side)
     }
 
-    func clearSide(room: Int, uid: String) -> Observable<Void> {
-        self.reference.clearSide(room: room, uid: uid)
+    func add(userInfo: UserInfo) -> Observable<Void> {
+        self.reference.add(userInfo: userInfo)
     }
 
-    func vote(room: Int, uid: String, side: Side) -> Observable<Void> {
-        self.reference.vote(room: room, uid: uid, side: side)
+    func clearSide(roomID: String, userID: String) -> Observable<Void> {
+        self.reference.clearSide(from: roomID, of: userID)
+    }
+
+    func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
+        self.reference.vote(roomID: roomID, userID: userID, side: side)
     }
 
     func uid() -> Observable<String> {
@@ -40,12 +44,16 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
-    func userInfo(room: Int, with uid: String) -> Observable<UserInfo?> {
-        return self.reference.getUserInfo(in: room, with: uid)
+    func userInfo(roomID: String, with userID: String) -> Observable<UserInfo?> {
+        return self.reference.getUserInfo(in: roomID, with: userID)
     }
 
-    func connect(room: Int) -> Observable<UserInfo> {
-        self.reference.getUserInfo(room: room)
+    func connect(roomID: String) -> Observable<UserInfo> {
+        self.reference.getUserInfo(from: roomID)
+    }
+
+    func userInfo(userID: String) -> Observable<UserInfo?> {
+        self.reference.getUserInfo(userID: userID)
     }
 
     private func getUID() -> String {
