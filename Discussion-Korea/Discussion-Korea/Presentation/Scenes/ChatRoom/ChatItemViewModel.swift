@@ -31,6 +31,20 @@ class ChatItemViewModel {
         fatalError("not implemented")
     }
 
+    var backgroundColor: UIColor? {
+        if let side = self.chat.side {
+            switch side {
+            case .agree:
+                return UIColor(named: "agree")
+            case .disagree:
+                return UIColor(named: "disagree")
+            default:
+                break
+            }
+        }
+        return nil
+    }
+
     var textColor: UIColor? {
         if self.toxic {
             return .lightGray
@@ -102,12 +116,26 @@ final class SelfChatItemViewModel: ChatItemViewModel {
         return SelfChatCell.identifier
     }
 
+    override var textColor: UIColor? {
+        if let textColor = super.textColor {
+            return textColor
+        }
+        if self.chat.side == nil {
+            return .white
+        }
+        return .label
+    }
+
 }
 
 final class OtherChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
         return OtherChatCell.identifier
+    }
+
+    override var textColor: UIColor? {
+        return super.textColor ?? UIColor.label
     }
 
 }
@@ -118,6 +146,10 @@ final class SerialOtherChatItemViewModel: ChatItemViewModel {
         return SerialOtherChatCell.identifier
     }
 
+    override var textColor: UIColor? {
+        return super.textColor ?? UIColor.label
+    }
+
 }
 
 final class BotChatItemViewModel: ChatItemViewModel {
@@ -126,12 +158,20 @@ final class BotChatItemViewModel: ChatItemViewModel {
         return BotChatCell.identifier
     }
 
+    override var textColor: UIColor? {
+        return super.textColor ?? UIColor.label
+    }
+
 }
 
 final class SerialBotChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
         return SerialBotChatCell.identifier
+    }
+
+    override var textColor: UIColor? {
+        return super.textColor ?? UIColor.label
     }
 
 }

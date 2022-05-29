@@ -68,7 +68,7 @@ final class BotChatCell: ChatCell {
         let stackView = UIStackView(
             arrangedSubviews: [self.profileImageView, self.nicknameLabel]
         )
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.spacing = 10
         self.contentView.addSubview(stackView)
 
@@ -87,7 +87,7 @@ final class BotChatCell: ChatCell {
         self.contentLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.leading.greaterThanOrEqualToSuperview().offset(60)
-            make.trailing.lessThanOrEqualToSuperview().offset(-80)
+            make.trailing.lessThanOrEqualToSuperview().offset(-60)
             make.top.equalTo(stackView.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }

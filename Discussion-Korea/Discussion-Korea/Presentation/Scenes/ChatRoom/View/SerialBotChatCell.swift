@@ -64,6 +64,7 @@ final class SerialBotChatCell: ChatCell {
     override func bind(_ viewModel: ChatItemViewModel) {
         self.contentLabel.text = viewModel.content
         self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .systemBackground
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString
     }

@@ -56,7 +56,8 @@ final class SelfChatCell: ChatCell {
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.contentLabel.text = viewModel.content
-        self.contentLabel.textColor = viewModel.textColor ?? .white
+        self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .primaryColor
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString
     }
