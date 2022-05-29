@@ -55,6 +55,12 @@ final class ChatRoomViewController: UIViewController {
             SerialOtherChatCell.self,
             forCellWithReuseIdentifier: SerialOtherChatCell.identifier
         )
+        messageCollectionView.register(
+            BotChatCell.self, forCellWithReuseIdentifier: BotChatCell.identifier
+        )
+        messageCollectionView.register(
+            SerialBotChatCell.self, forCellWithReuseIdentifier: SerialBotChatCell.identifier
+        )
         return messageCollectionView
     }()
 

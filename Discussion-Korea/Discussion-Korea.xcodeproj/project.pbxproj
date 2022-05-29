@@ -66,6 +66,8 @@
 		3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3F91043F283FE5C500446239 /* FirebaseStorage */; };
 		3F9104422840D94C00446239 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9104412840D94C00446239 /* ErrorTracker.swift */; };
 		3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9104432840DC5700446239 /* ActivityTracker.swift */; };
+		3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC94284361CF008DF2D2 /* BotChatCell.swift */; };
+		3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -142,6 +144,8 @@
 		3F91043A283FBA1F00446239 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		3F9104412840D94C00446239 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		3F9104432840DC5700446239 /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
+		3F95BC94284361CF008DF2D2 /* BotChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotChatCell.swift; sourceTree = "<group>"; };
+		3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialBotChatCell.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -321,10 +325,12 @@
 		3F37B3A62820765300DB18B7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
 				3F37B3AB2820765900DB18B7 /* OtherChatCell.swift */,
 				3F37B3A72820765900DB18B7 /* PaddingLabel.swift */,
 				3F37B3A92820765900DB18B7 /* SelfChatCell.swift */,
+				3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */,
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
 			);
 			path = View;
@@ -594,6 +600,7 @@
 				3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */,
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */,
+				3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */,
 				3F37B3E628207CCA00DB18B7 /* AppDelegate.swift in Sources */,
 				3FB3579A2826063C00F27C77 /* ParticipantItemViewModel.swift in Sources */,
 				3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */,
@@ -619,6 +626,7 @@
 				3F37B3C52820773600DB18B7 /* Chat.swift in Sources */,
 				3FB3579D282618A900F27C77 /* ScheduleCell.swift in Sources */,
 				3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */,
+				3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */,
 				3F6696A42835BFDB0077E5B3 /* ChatRoomListViewModel.swift in Sources */,
 				3F91043B283FBA1F00446239 /* UIImageView+.swift in Sources */,
 				3F6696BD28390ADE0077E5B3 /* OpenSourceNavigator.swift in Sources */,
@@ -786,11 +794,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202205221;
+				CURRENT_PROJECT_VERSION = 202205291;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -817,11 +826,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202205221;
+				CURRENT_PROJECT_VERSION = 202205291;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

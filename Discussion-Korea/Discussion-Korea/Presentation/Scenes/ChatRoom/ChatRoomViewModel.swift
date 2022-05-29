@@ -144,8 +144,9 @@ final class ChatRoomViewModel: ViewModelType {
             }
 
         let chats = remainChats
+        // FIXME: 고치기
             .flatMapFirst { [unowned self] remains in
-                self.chatsUsecase.connect(roomUID: self.chatRoom.uid, after: remains.last?.uid)
+                self.chatsUsecase.connect(roomUID: self.chatRoom.uid, after: nil)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -167,6 +168,13 @@ final class ChatRoomViewModel: ViewModelType {
                 }
                 if chat.userID == uid {
                     newItemViewModel = SelfChatItemViewModel(with: chat)
+                } else if chat.userID == "bot" {
+                    if let last = viewModels.last,
+                       last.chat.userID == chat.userID {
+                        newItemViewModel = SerialBotChatItemViewModel(with: chat)
+                    } else {
+                        newItemViewModel = BotChatItemViewModel(with: chat)
+                    }
                 } else {
                     if let last = viewModels.last,
                        last.chat.userID == chat.userID {

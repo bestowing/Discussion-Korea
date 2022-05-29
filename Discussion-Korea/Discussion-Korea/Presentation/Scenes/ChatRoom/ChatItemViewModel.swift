@@ -119,3 +119,19 @@ final class SerialOtherChatItemViewModel: ChatItemViewModel {
     }
 
 }
+
+final class BotChatItemViewModel: ChatItemViewModel {
+
+    override var identifier: String {
+        return BotChatCell.identifier
+    }
+
+}
+
+final class SerialBotChatItemViewModel: ChatItemViewModel {
+
+    override var identifier: String {
+        return SerialBotChatCell.identifier
+    }
+
+}
