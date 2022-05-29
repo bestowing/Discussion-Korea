@@ -31,6 +31,8 @@ import Foundation
 
 final class DiscussionManager {
 
+    private let chatRoomID: String
+
     private let reference: DatabaseReference
     private let roomReference: DatabaseReference
     private let sideManager: SideManager
@@ -41,13 +43,20 @@ final class DiscussionManager {
 
     private var isFirstHalf = true
 
-    init(sideManager: SideManager,
+    init(chatRoomID: String,
+         sideManager: SideManager,
          dateFormatter: DateFormatter) {
+        self.chatRoomID = chatRoomID
+        #if DEBUG
         self.reference = Database
-        //            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+            .reference()
+        #elseif RELEASE
+        self.reference =
             .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
-        self.roomReference = self.reference.child("chatRoom/1")
+        #endif
+        self.roomReference = self.reference.child("chatRoom/\(chatRoomID)")
         self.sideManager = sideManager
         self.summaryManager = SummaryManager(dateFormatter: dateFormatter, reference: self.roomReference.child("messages"))
         self.dateFormatter = dateFormatter
@@ -93,7 +102,7 @@ final class DiscussionManager {
             .observe(.childAdded) { [unowned self] snapshot in
                 guard let dic = snapshot.value as? NSDictionary,
                       let dateString = dic["date"] as? String,
-                      let date = dateFormatter.date(from: dateString),
+                      let date = self.dateFormatter.date(from: dateString),
                       let durations = dic["durations"] as? Array<Double>,
                       let topic = dic["topic"] as? String
                 else { return }
@@ -126,7 +135,7 @@ final class DiscussionManager {
         guard discussion.date > now else { return }
         self.durations = discussion.durations
         self.send(chat: Chat(userID: "bot",
-                             content: "새로운 토론이 등록되었습니다. 주제는 \"\(discussion.topic)\"입니다.",
+                             content: "새로운 토론이 등록되었습니다.\n주제는 \"\(discussion.topic)\"입니다.",
                              date: now,
                              nickName: nil))
         let dateBeforeOneDay = Date(timeInterval: -86400, since: discussion.date)
@@ -186,7 +195,7 @@ final class DiscussionManager {
         let chat: [String: Any] = ["user": chat.userID,
                                    "content": chat.content,
                                    "date": dateFormatter.string(from: date)]
-        let childUpdates = ["/chatRoom/1/messages/\(key)": chat]
+        let childUpdates = ["/chatRoom/\(self.chatRoomID)/messages/\(key)": chat]
         self.reference.updateChildValues(childUpdates)
     }
 
@@ -384,15 +393,9 @@ final class DiscussionManager {
     }
     
     private func clean() {
-        // 각 사용자의 side를 제거해줘야함 -> 이건 각자 phase값 보고 알아서 판단
-        // TODO: votes를 제거해야 함 -> 애초에 두 군데 동시에 저장해서 필요없는것만 삭제하자
-        self.reference.child("chatRoom/1/votes").setValue(nil)
-        
-        // TODO: sides를 제거해야 함
-        self.reference.child("chatRoom/1/sides").setValue(nil)
-        
-        self.reference.child("chatRoom/1/endDate").setValue(nil)
-        // TODO: dicussions는 냅둬도 괜찮은데... 따로 아카이빙할 필요가 있어보인다
+        self.reference.child("chatRoom/\(self.chatRoomID)/votes").setValue(nil)
+        self.reference.child("chatRoom/\(self.chatRoomID)/sides").setValue(nil)
+        self.reference.child("chatRoom/\(self.chatRoomID)/endDate").setValue(nil)
     }
 
     /// phase를 갱신할때 제한 시간이 있는 경우
@@ -401,8 +404,8 @@ final class DiscussionManager {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let value: [String: Any] = ["value": phase]
         let dateValue: [String: Any] = ["value": dateFormatter.string(from: date)]
-        let childUpdates = ["/chatRoom/1/phase": value,
-                            "/chatRoom/1/endDate": dateValue]
+        let childUpdates = ["/chatRoom/\(self.chatRoomID)/phase": value,
+                            "/chatRoom/\(self.chatRoomID)/endDate": dateValue]
         self.reference.updateChildValues(childUpdates)
     }
 
