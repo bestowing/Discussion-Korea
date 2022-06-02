@@ -14,6 +14,8 @@
 		3F6696992834B12A0077E5B3 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696982834B12A0077E5B3 /* Side.swift */; };
 		3F66969C2834D7020077E5B3 /* SummaryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F66969B2834D7020077E5B3 /* SummaryManager.swift */; };
 		3F6696BA2836592B0077E5B3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3F6696B92836592B0077E5B3 /* Alamofire */; };
+		3F95BC99284385F0008DF2D2 /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC98284385F0008DF2D2 /* UserInfoManager.swift */; };
+		3F95BC9B28438606008DF2D2 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95BC9A28438606008DF2D2 /* UserInfo.swift */; };
 		3F97B3BB2815735A004F30A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F97B3BA2815735A004F30A5 /* AppDelegate.swift */; };
 		3F97B3BD2815735A004F30A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F97B3BC2815735A004F30A5 /* SceneDelegate.swift */; };
 		3F97B3BF2815735A004F30A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F97B3BE2815735A004F30A5 /* ViewController.swift */; };
@@ -31,6 +33,8 @@
 		3F66969428326A4F0077E5B3 /* DiscussionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionManager.swift; sourceTree = "<group>"; };
 		3F6696982834B12A0077E5B3 /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 		3F66969B2834D7020077E5B3 /* SummaryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryManager.swift; sourceTree = "<group>"; };
+		3F95BC98284385F0008DF2D2 /* UserInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoManager.swift; sourceTree = "<group>"; };
+		3F95BC9A28438606008DF2D2 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		3F97B3B72815735A004F30A5 /* Discussion-Korea-Backend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea-Backend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F97B3BA2815735A004F30A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F97B3BC2815735A004F30A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +65,7 @@
 				3F66968F283185310077E5B3 /* Chat.swift */,
 				3F669692283267C00077E5B3 /* Discussion.swift */,
 				3F6696982834B12A0077E5B3 /* Side.swift */,
+				3F95BC9A28438606008DF2D2 /* UserInfo.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -71,6 +76,7 @@
 				3F66969428326A4F0077E5B3 /* DiscussionManager.swift */,
 				3F66968D283185140077E5B3 /* SideManager.swift */,
 				3F66969B2834D7020077E5B3 /* SummaryManager.swift */,
+				3F95BC98284385F0008DF2D2 /* UserInfoManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -190,12 +196,14 @@
 			files = (
 				3F66968E283185150077E5B3 /* SideManager.swift in Sources */,
 				3F97B3BF2815735A004F30A5 /* ViewController.swift in Sources */,
+				3F95BC99284385F0008DF2D2 /* UserInfoManager.swift in Sources */,
 				3F6696992834B12A0077E5B3 /* Side.swift in Sources */,
 				3F97B3BB2815735A004F30A5 /* AppDelegate.swift in Sources */,
 				3F669693283267C00077E5B3 /* Discussion.swift in Sources */,
 				3F66969528326A4F0077E5B3 /* DiscussionManager.swift in Sources */,
 				3F66969C2834D7020077E5B3 /* SummaryManager.swift in Sources */,
 				3F669690283185310077E5B3 /* Chat.swift in Sources */,
+				3F95BC9B28438606008DF2D2 /* UserInfo.swift in Sources */,
 				3F97B3BD2815735A004F30A5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,7 +364,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -385,7 +393,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

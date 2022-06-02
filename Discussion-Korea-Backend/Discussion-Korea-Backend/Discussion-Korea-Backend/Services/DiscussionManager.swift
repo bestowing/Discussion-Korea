@@ -35,6 +35,7 @@ final class DiscussionManager {
 
     private let reference: DatabaseReference
     private let roomReference: DatabaseReference
+
     private let sideManager: SideManager
     private let summaryManager: SummaryManager
     private let dateFormatter: DateFormatter
@@ -47,15 +48,15 @@ final class DiscussionManager {
          sideManager: SideManager,
          dateFormatter: DateFormatter) {
         self.chatRoomID = chatRoomID
-        #if DEBUG
+//        #if DEBUG
+//        self.reference = Database
+//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
+//            .reference()
+//        #elseif RELEASE
         self.reference = Database
-            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-            .reference()
-        #elseif RELEASE
-        self.reference =
             .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
             .reference()
-        #endif
+//        #endif
         self.roomReference = self.reference.child("chatRoom/\(chatRoomID)")
         self.sideManager = sideManager
         self.summaryManager = SummaryManager(dateFormatter: dateFormatter, reference: self.roomReference.child("messages"))
@@ -374,16 +375,19 @@ final class DiscussionManager {
                 disagreeNumber = disagrees.count
             }
             if agreeNumber > disagreeNumber {
+                self.sideManager.win(side: .agree)
                 self.send(chat: Chat(userID: "bot",
                                      content: "찬성 팀이 이겼습니다!",
                                      date: Date(),
                                      nickName: nil))
             } else if agreeNumber < disagreeNumber {
+                self.sideManager.win(side: .disagree)
                 self.send(chat: Chat(userID: "bot",
                                      content: "반대 팀이 이겼습니다!",
                                      date: Date(),
                                      nickName: nil))
             } else {
+                self.sideManager.draw()
                 self.send(chat: Chat(userID: "bot",
                                      content: "무승부입니다!",
                                      date: Date(),
@@ -448,14 +452,20 @@ final class DiscussionManager {
             group.enter()
             group.enter()
             self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
-            self.summaryManager.summariesForAgree(completion: { [unowned self] contents in
-                self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+            self.summaryManager.summariesForAgree(completion: { [unowned self] results in
+                results.forEach { uid, contents in
+                    let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
+                    self.send(chat: Chat(userID: "bot", content: "찬성측 \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
+                }
                 group.leave()
             })
-            self.summaryManager.summariesForDisAgree(completion: { [unowned self] contents in
-                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+            self.summaryManager.summariesForDisAgree(completion: { [unowned self] results in
+                results.forEach { uid, contents in
+                    let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
+                    self.send(chat: Chat(userID: "bot", content: "반대측 \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
+                }
                 group.leave()
             })
             group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
@@ -466,14 +476,20 @@ final class DiscussionManager {
             group.enter()
             group.enter()
             self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
-            self.summaryManager.summariesForAgree(completion: { [unowned self] contents in
-                self.send(chat: Chat(userID: "bot", content: "찬성측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+            self.summaryManager.summariesForAgree(completion: { [unowned self] results in
+                results.forEach { uid, contents in
+                    let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
+                    self.send(chat: Chat(userID: "bot", content: "찬성측 \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
+                }
                 group.leave()
             })
-            self.summaryManager.summariesForDisAgree(completion: { [unowned self] contents in
-                self.send(chat: Chat(userID: "bot", content: "반대측 발언 요약입니다:", date: Date(), nickName: nil))
-                contents.forEach { self.send(chat: Chat(userID: "bot", content: $0, date: Date(), nickName: nil)) }
+            self.summaryManager.summariesForDisAgree(completion: { [unowned self] results in
+                results.forEach { uid, contents in
+                    let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
+                    self.send(chat: Chat(userID: "bot", content: "반대측 \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
+                }
                 group.leave()
             })
             group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
