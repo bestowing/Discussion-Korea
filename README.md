@@ -1,7 +1,7 @@
 # Model Serving
 
 ## Model Server Architecture
-<p align="center"> <img width="50%" height="50%" alt="Model Server Architecture" src="https://user-images.githubusercontent.com/100838059/171661848-46da60e3-9358-4c89-9bdc-3d4e34aea5df.png">
+<p align="center"> <img width="60%" height="60%" alt="Model Server Architecture" src="https://user-images.githubusercontent.com/100838059/171661848-46da60e3-9358-4c89-9bdc-3d4e34aea5df.png">
 
 ## File Structure
  Because of the capacity problem, the model parameter file and the torch model archiver file(MAR) were not uploaded.
@@ -74,7 +74,7 @@
 ```
  python serve/request_example.py
 ```
-<p align="center"> <img width="50%" height="50%"  alt="request_example.py" src="https://user-images.githubusercontent.com/100838059/171678696-fbc64e5d-98e7-4c8d-acd5-4932e34cd7c4.png">
+<p align="center"> <img width="70%" height="70%"  alt="request_example.py" src="https://user-images.githubusercontent.com/100838059/171678696-fbc64e5d-98e7-4c8d-acd5-4932e34cd7c4.png">
 
 ## OpenSource License
 
