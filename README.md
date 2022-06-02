@@ -12,28 +12,24 @@ This is a new concept discussion platform introducing AI host. We have developed
 **This repository contains the source code of the Team A of Capstone Design Project at SKKU (Spring 2022).**
 
 ## File Structure
-If you want to make your own AI host, please check the ./torch_model folder.
+If you want to make your own AI host, please check the ./classifier and ./summarization folder.
 ```
 ./classifier
   ./multi
     ./src
     ├── main.py - main 
-    ├── test.py - test 
     ├── model.py - contain all models
-    ├── option.py - options (arguments, model configs, etc.)
     ├── train.py - train/eval/test
-    ├── multi_label.py - multi label version2 model training
-    ├── generate.py - generate outputs
+    ...
     └── utils - utilities
         ├── dataset.py - dataset & dataloader 
         ├── preprocessing.py - dataset preprocessing & save
-        └── utils.py - others (set seed, num_workers, etc.)
+        ...
   ./binary
   ...
   ./crawling
     ├── main.py - main 
-    ├── page_comment.py - page comment crawling
-    └── page_link.py - page link crawling
+    ...
 ```
 If you want to check the application code, please check the ./app folder.
 
