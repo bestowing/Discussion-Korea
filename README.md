@@ -58,6 +58,7 @@ If you want to check the application code, please check the ./app folder.
 
 ## OpenSource License
 
+- [Alamofire (MIT)](https://github.com/Alamofire/Alamofire/blob/master/LICENSE)
 - [Firebase (Apache 2.0)](https://github.com/firebase/firebase-ios-sdk/blob/master/LICENSE)
 - [Kingfisher (MIT)](https://github.com/onevcat/Kingfisher/blob/master/LICENSE)
 - [RxKeyboard (MIT)](https://github.com/RxSwiftCommunity/RxKeyboard/blob/master/LICENSE)
