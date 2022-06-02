@@ -1,0 +1,1 @@
+torch-model-archiver --model-name multi-label-klue-roberta-base-v1.0 --model-file multi_label_classification/model.py --serialized-file multi_label_classification/multi-base3.pt --version 1.0 --handler multi_label_classification/multi_label_roberta_handler.py --export-path model_store -r multi_label_classification/requirements.txt
