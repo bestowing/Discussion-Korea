@@ -39,7 +39,7 @@ final class Reference {
         }
     }
 
-    func addChatRoom(title: String, adminUID: String) -> Observable<Void> {
+    func addChatRoom(chatRoom: ChatRoom) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             guard let key = self.reference
                 .child("chatRooms")
@@ -48,15 +48,123 @@ final class Reference {
                 subscribe.onCompleted()
                 return Disposables.create()
             }
-            let value: [String: Any] = ["title": title, "adminUID": adminUID]
+            var values: [String: Any] = ["title": chatRoom.title, "adminUID": chatRoom.adminUID]
             let userValue: [String: Any] = ["position": "admin"]
-            let childUpdates = ["/chatRooms/\(key)": value,
-                                "/chatRoom/\(key)/users/\(adminUID)": userValue]
-            self.reference.updateChildValues(childUpdates)
-            subscribe.onNext(Void())
-            subscribe.onCompleted()
+            if let profileURL = chatRoom.profileURL {
+                let ref = self.storageReference
+                    .child("\(chatRoom.uid)/profile/\(profileURL.lastPathComponent)")
+                ref.putFile(from: profileURL, metadata: nil) { metadata, error in
+                    guard let _ = metadata,
+                          error == nil
+                    else {
+                        subscribe.onError(RefereceError.profileError)
+                        return
+                    }
+                    ref.downloadURL() { url, error in
+                        guard let url = url,
+                              error == nil
+                        else {
+                            subscribe.onError(RefereceError.profileError)
+                            return
+                        }
+                        values["profile"] = url.absoluteString
+                        let childUpdates = ["/chatRooms/\(key)": values,
+                                            "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue]
+                        self.reference.updateChildValues(childUpdates)
+                        subscribe.onNext(Void())
+                        subscribe.onCompleted()
+                    }
+                }
+            } else {
+                let childUpdates = ["/chatRooms/\(key)": values,
+                                    "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue]
+                self.reference.updateChildValues(childUpdates)
+                subscribe.onNext(Void())
+                subscribe.onCompleted()
+            }
             return Disposables.create()
         }
+    }
+
+    func latestChat(chatRoomID: String) -> Observable<Chat> {
+        return Observable.create { [unowned self] subscribe in
+            var lastChat: Chat?
+            self.reference
+                .child("chatRoom/\(chatRoomID)/messages")
+                .queryLimited(toLast: 1)
+                .observeSingleEvent(of: .value) { snapshot in
+                    if let chat = snapshot.children.compactMap({ child -> Chat? in
+                        guard let snapshot = child as? DataSnapshot
+                        else { return nil }
+                        return Chat.toChat(from: snapshot)
+                    }).first {
+                        subscribe.onNext(chat)
+                        lastChat = chat
+                    }
+                    if let afterUID = lastChat?.uid {
+                        self.reference
+                            .child("chatRoom/\(chatRoomID)/messages")
+                            .queryOrderedByKey()
+                            .queryStarting(afterValue: afterUID)
+                            .observe(.childAdded) { snapshot in
+                                guard let chat = Chat.toChat(from: snapshot)
+                                else { return }
+                                subscribe.onNext(chat)
+                            }
+                    } else {
+                        self.reference
+                            .child("chatRoom/\(chatRoomID)/messages")
+                            .observe(.childAdded) { snapshot in
+                                guard let chat = Chat.toChat(from: snapshot)
+                                else { return }
+                                subscribe.onNext(chat)
+                            }
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+
+    func numberOfUsers(chatRoomID: String) -> Observable<UInt> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(chatRoomID)/users")
+                .observe(.value) { snapshot in
+                    subscribe.onNext(snapshot.childrenCount)
+                }
+            return Disposables.create()
+        }
+    }
+
+    func discussionResult(userID: String, chatRoomID: String) -> Observable<DiscussionResult> {
+        // 최근 결과 느낌으로 해야할듯
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(chatRoomID)/users/\(userID)")
+                .observe(.value) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let resultString = dictionary["result"] as? String
+                    else { return }
+                    print(resultString)
+                    switch resultString {
+                    case "win":
+                        subscribe.onNext(.win)
+                    case "draw":
+                        subscribe.onNext(.draw)
+                    case "lose":
+                        subscribe.onNext(.lose)
+                    default:
+                        break
+                    }
+                    self.clearResult(userID: userID, chatRoomID: chatRoomID)
+                }
+            return Disposables.create()
+        }
+    }
+
+    private func clearResult(userID: String, chatRoomID: String) {
+        self.reference
+            .child("chatRoom/\(chatRoomID)/users/\(userID)/result")
+            .setValue(nil)
+        return
     }
 
     // MARK: - chats
@@ -211,7 +319,6 @@ final class Reference {
         }.flatMap { [unowned self] userInfo in
             return self.observeUserInfo(userInfo: userInfo)
         }
-        .do(onNext: { print($0) })
     }
 
     private func observeUserInfo(userInfo: UserInfo) -> Observable<UserInfo> {
@@ -271,7 +378,10 @@ final class Reference {
                 ref.putFile(from: profileURL, metadata: nil) { metadata, error in
                     guard let _ = metadata,
                           error == nil
-                    else { return }
+                    else {
+                        subscribe.onError(RefereceError.profileError)
+                        return
+                    }
                     ref.downloadURL() { url, error in
                         guard let url = url,
                               error == nil
@@ -423,9 +533,13 @@ fileprivate extension ChatRoom {
               let title = dic["title"] as? String,
               let adminUID = dic["adminUID"] as? String
         else { return nil }
-        let chatRoom = ChatRoom(
+        var chatRoom = ChatRoom(
             uid: snapshot.key, title: title, adminUID: adminUID
         )
+        if let profile = dic["profile"] as? String,
+           let url = URL(string: profile) {
+            chatRoom.profileURL = url
+        }
         return chatRoom
     }
 

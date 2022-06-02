@@ -17,7 +17,7 @@ final class ReferenceProvider {
         #if DEBUG
         let database = Database.database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
         storage.useEmulator(withHost: "localhost", port: 9199)
-        #elseif RELEASE
+        #else
         let database = Database.database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
         #endif
         self.reference = Reference(

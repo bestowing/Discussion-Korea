@@ -9,6 +9,10 @@ import Foundation
 import RxCocoa
 import RxSwift
 
+enum NicknameError: Error {
+    case unknownUID
+}
+
 final class ChatRoomViewModel: ViewModelType {
 
     // MARK: properties
@@ -86,6 +90,15 @@ final class ChatRoomViewModel: ViewModelType {
                 self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: uid)
                     .asDriverOnErrorJustComplete()
             }
+            .mapToVoid()
+
+        let resultEvent = input.trigger
+            .withLatestFrom(uid)
+            .flatMapFirst { [unowned self] userID in
+                self.discussionUsecase.discussionResult(userID: userID, chatRoomID: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .do(onNext: self.navigator.toDiscussionResultAlert)
             .mapToVoid()
 
         // TODO: 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
@@ -183,8 +196,9 @@ final class ChatRoomViewModel: ViewModelType {
                         newItemViewModel = OtherChatItemViewModel(with: chat)
                     }
                 }
-                return viewModels + [newItemViewModel]
+                return [newItemViewModel]
             }
+            .map { $0.first! }
 
         let masking = input.trigger
             .flatMapFirst { [unowned self] in
@@ -192,12 +206,12 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let maskingChatItems = Driver.combineLatest(masking.startWith(""), chatItems)
-            .map { (uid: String, models) -> [ChatItemViewModel] in
-                let model = models.first { $0.chat.uid == uid }
-                model?.chat.toxic = true
-                return models
-            }
+//        let maskingChatItems = Driver.combineLatest(masking.startWith(""), chatItems)
+//            .map { (uid: String, models) -> [ChatItemViewModel] in
+//                let model = models.first { $0.chat.uid == uid }
+//                model?.chat.toxic = true
+//                return models
+//            }
 
         let status = input.trigger
             .flatMapFirst { [unowned self] in
@@ -302,13 +316,15 @@ final class ChatRoomViewModel: ViewModelType {
             sendEvent,
             enterEvent,
             clearSideEvent,
+            resultEvent,
             appear,
             disappear
         )
             .merge()
 
         return Output(
-            chatItems: Driver.of(chatItems, maskingChatItems).merge(),
+            chatItems: chatItems,
+            mask: masking,
             userInfos: userInfos,
             sendEnable: canSend,
             noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),
@@ -332,7 +348,8 @@ extension ChatRoomViewModel {
     }
     
     struct Output {
-        let chatItems: Driver<[ChatItemViewModel]>
+        let chatItems: Driver<ChatItemViewModel>
+        let mask: Driver<String>
         let userInfos: Driver<[String: UserInfo]>
         let sendEnable: Driver<Bool>
         let noticeHidden: Driver<Bool>

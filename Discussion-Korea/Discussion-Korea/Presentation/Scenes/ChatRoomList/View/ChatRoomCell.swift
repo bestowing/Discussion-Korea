@@ -13,9 +13,11 @@ final class ChatRoomCell: UICollectionViewCell {
     // MARK: properties
 
     private let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "bubble.left.and.bubble.right.fill"))
-        imageView.contentMode = .scaleAspectFit
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         imageView.tintColor = .primaryColor
+        imageView.layer.cornerRadius = 25
+        imageView.layer.masksToBounds = true
         return imageView
     }()
 
@@ -26,11 +28,18 @@ final class ChatRoomCell: UICollectionViewCell {
         return label
     }()
 
+    private let numberOfUsersLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        return label
+    }()
+
     private let latestChatLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.font = UIFont.systemFont(ofSize: 12.0)
         label.numberOfLines = 2
         label.lineBreakMode = .byCharWrapping
+        label.textColor = .systemGray
         return label
     }()
 
@@ -57,39 +66,48 @@ final class ChatRoomCell: UICollectionViewCell {
     // MARK: - methods
 
     private func layoutViews() {
-        // FIXME: 채팅방 이름이 길때 생기는 문제 해결해야함
         self.contentView.addSubview(self.profileImageView)
         self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.numberOfUsersLabel)
         self.contentView.addSubview(self.latestChatLabel)
         self.contentView.addSubview(self.latestChatDateLabel)
         self.profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
-            make.size.equalTo(45)
+            make.size.equalTo(50)
         }
         self.titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.profileImageView.snp.trailing).offset(10)
-            make.trailing.lessThanOrEqualToSuperview().offset(-30)
+            make.leading.equalTo(self.profileImageView.snp.trailing).offset(12)
             make.top.equalTo(self.profileImageView.snp.top).offset(3)
+        }
+        self.numberOfUsersLabel.snp.contentCompressionResistanceHorizontalPriority = 999
+        self.numberOfUsersLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.titleLabel.snp.trailing).offset(5)
+            make.trailing.lessThanOrEqualToSuperview().offset(-80)
+            make.centerY.equalTo(self.titleLabel)
         }
 //        self.titleLabel.snp.contentHuggingHorizontalPriority = 252
         self.latestChatLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.titleLabel.snp.leading)
-//            make.trailing.lessThanOrEqualTo(self.latestChatDateLabel.snp.leading).offset(-5)
+            make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
         }
-//        self.latestChatDateLabel.snp.contentHuggingHorizontalPriority = 752
-//        self.latestChatDateLabel.snp.contentCompressionResistanceHorizontalPriority = 752
         self.latestChatDateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-10)
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
+            make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalTo(self.titleLabel)
         }
     }
 
     func bind(_ viewModel: ChatRoomItemViewModel) {
+        if let url = viewModel.chatRoom.profileURL {
+            self.profileImageView.setImage(url)
+        } else {
+            self.profileImageView.setDefaultChatRoomProfileImage()
+        }
         self.titleLabel.text = viewModel.title
-        self.latestChatLabel.text = "테스트중이에요"
-        self.latestChatDateLabel.text = "오후 3:52"
+        self.latestChatLabel.text = viewModel.latestChatContent
+        self.latestChatDateLabel.text = viewModel.latestChatDate
+        self.numberOfUsersLabel.text = viewModel.numbersOfUser
     }
 
 }

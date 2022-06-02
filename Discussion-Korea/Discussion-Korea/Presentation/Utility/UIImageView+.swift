@@ -18,4 +18,8 @@ extension UIImageView {
         self.image = UIImage(systemName: "person.fill")
     }
 
+    func setDefaultChatRoomProfileImage() {
+        self.image = UIImage(systemName: "bubble.left.and.bubble.right.fill")
+    }
+
 }

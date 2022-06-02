@@ -48,7 +48,7 @@ final class ChatRoomListViewModel: ViewModelType {
         let addChatRoomEvent = input.createChatRoomTrigger
             .withLatestFrom(isGuest)
             .filter { !$0 }
-            .mapToVoid()
+            .withLatestFrom(uid)
             .do(onNext: self.navigator.toAddChatRoom)
 
         let chatRooms = input.trigger
@@ -57,10 +57,42 @@ final class ChatRoomListViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let chatRoomLatestChatContent = chatRooms
+            .flatMap { [unowned self] chatRoom in
+                self.chatRoomsUsecase.latestChat(chatRoomID: chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+                    .map { (chatRoom.uid, $0) }
+            }
+
+        let chatRoomUsers = chatRooms
+            .flatMap { [unowned self] chatRoom in
+                self.chatRoomsUsecase.numberOfUsers(chatRoomID: chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+                    .map { (chatRoom.uid, $0) }
+            }
+
         let chatRoomItems = chatRooms
             .scan([ChatRoomItemViewModel]()) { (viewModels, chatRoom) in
                 let viewModel = ChatRoomItemViewModel(chatRoom: chatRoom)
                 return viewModels + [viewModel]
+            }
+
+        let chatRoomItemsWithInfos = Driver.combineLatest(chatRoomLatestChatContent.startWith(((""), Chat(userID: "", content: "", date: Date()))), chatRoomItems)
+            .map { (args, models) -> [ChatRoomItemViewModel] in
+                let uid = args.0
+                let chat = args.1
+                let model = models.first { $0.chatRoom.uid == uid }
+                model?.latestChat = chat
+                return models
+            }
+
+        let chatRoomItemsWithUserInfos = Driver.combineLatest(chatRoomUsers, chatRoomItemsWithInfos)
+            .map { (args, models) -> [ChatRoomItemViewModel] in
+                let uid = args.0
+                let numbers = args.1
+                let model = models.first { $0.chatRoom.uid == uid }
+                model?.users = numbers
+                return models
             }
 
         let enterEvent = input.selection
@@ -70,10 +102,10 @@ final class ChatRoomListViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
-        let events = Driver.of(enterEvent, addChatRoomEvent)
+        let events = Driver.of(enterEvent, addChatRoomEvent.mapToVoid())
             .merge()
 
-        return Output(chatRoomItems: chatRoomItems, events: events)
+        return Output(chatRoomItems: chatRoomItemsWithUserInfos, events: events)
     }
 
 }

@@ -11,7 +11,7 @@ protocol ChatRoomListNavigator {
 
     func toChatRoomList()
     func toChatRoom(_ chatRoom: ChatRoom)
-    func toAddChatRoom()
+    func toAddChatRoom(_ userID: String)
 
 }
 
@@ -58,14 +58,14 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
         chatRoomNavigator.toChatRoom(chatRoom)
     }
 
-    func toAddChatRoom() {
+    func toAddChatRoom(_ userID: String) {
         guard let presentingViewController = presentingViewController
         else { return }
         let addChatRoomNavigator = DefaultAddChatRoomNavigator(
             services: self.services,
             presentedViewController: presentingViewController
         )
-        addChatRoomNavigator.toAddChatRoom()
+        addChatRoomNavigator.toAddChatRoom(userID)
     }
 
 }
