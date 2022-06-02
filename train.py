@@ -116,7 +116,7 @@ class Base(pl.LightningModule):
 class KoBARTConditionalGeneration(Base):
     def __init__(self, hparams, trainer=None, **kwargs):
         super(KoBARTConditionalGeneration, self).__init__(hparams, trainer, **kwargs)
-        self.model = BartForConditionalGeneration.from_pretrained('gogamza/kobart-base-v1')
+        self.model = BartForConditionalGeneration.from_pretrained('./kobart_summary_version4_e29')#gogamza/kobart-base-v1
         self.model.train()
         self.bos_token = '<s>'
         self.eos_token = '</s>'
@@ -153,7 +153,17 @@ class KoBARTConditionalGeneration(Base):
             losses.append(loss)
         self.log('val_loss', torch.stack(losses).mean(), prog_bar=True)
 
+
+def load_model(model_dir=None):
+    model = BartForConditionalGeneration.from_pretrained(model_dir)
+    return model
+
+
 if __name__ == '__main__':
+    # os.environ["NCCL_DEBUG"] = "INFO"
+    # os.environ["MASTER_ADDR"] = "localhost"
+    # os.environ["MASTER_PORT"] = "29500"
+    
     parser = Base.add_model_specific_args(parser)
     parser = ArgsBase.add_model_specific_args(parser)
     parser = KobartSummaryModule.add_model_specific_args(parser)
@@ -171,7 +181,7 @@ if __name__ == '__main__':
     
     checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor='val_loss',
                                                        dirpath=args.default_root_dir,
-                                                       filename='model_chp/{epoch:02d}-{val_loss:.3f}',
+                                                       filename='model_chp/total{epoch:02d}-{val_loss:.3f}',
                                                        verbose=True,
                                                        save_last=True,
                                                        mode='min',
@@ -183,4 +193,5 @@ if __name__ == '__main__':
                                             callbacks=[checkpoint_callback, lr_logger])
 
     model = KoBARTConditionalGeneration(args, trainer)
+    # model = load_model(f'./kobart_summary_version4_e29')
     trainer.fit(model, dm)

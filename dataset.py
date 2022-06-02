@@ -40,6 +40,7 @@ class KoBARTSummaryDataset(Dataset):
         return inputs
     
     def __getitem__(self, idx):
+        # print(f"idx: {idx}")
         instance = self.docs.iloc[idx]
         input_ids = self.tokenizer.encode(instance['news'])
         input_ids = self.add_padding_data(input_ids)
