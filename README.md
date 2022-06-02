@@ -1,4 +1,6 @@
 # Torchserve Serving Model
 
-* serve
-  * bash start_server.sh
+Torchserve model serving folder.
+
+## how to use
+ ```sh bash start_server.sh```
