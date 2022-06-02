@@ -13,12 +13,12 @@ This is a new concept discussion platform introducing AI host. We have developed
 
 ## Contributors
 <p align="center">
-|name|contribute|responsible folder|
-|------|---|---|
-|Kim Seok|model serving|made ./server folder|
-|Park Jinwoo|summarization model|made ./summarization folder|
-|Lee Chungsoo|application dev|made ./Discussion-Korea and ./Discussion-Korea-Backend folder|
-|Jang Chaeyoon|offensive comment classifier| made ./classifier folder|
+    |name|contribute|responsible folder|
+    |------|---|---|
+    |Kim Seok|model serving|made ./server folder|
+    |Park Jinwoo|summarization model|made ./summarization folder|
+    |Lee Chungsoo|application dev|made ./Discussion-Korea and ./Discussion-Korea-Backend folder|
+    |Jang Chaeyoon|offensive comment classifier| made ./classifier folder|
 </p>
 
 ## File Structure
