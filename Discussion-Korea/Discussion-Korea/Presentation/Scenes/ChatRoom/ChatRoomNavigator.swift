@@ -9,6 +9,12 @@ import SideMenu
 import UIKit
 import RxSwift
 
+enum DiscussionResult {
+    case win
+    case draw
+    case lose
+}
+
 protocol ChatRoomNavigator {
 
     func toChatRoom(_ chatRoom: ChatRoom)
@@ -16,6 +22,7 @@ protocol ChatRoomNavigator {
     func toEnterAlert() -> Observable<Bool>
     func toSideAlert() -> Observable<Side>
     func toVoteAlert() -> Observable<Side>
+    func toDiscussionResultAlert(result: DiscussionResult)
     func appear()
     func disappear()
 
@@ -153,6 +160,24 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     private func toHome() {
         self.navigationController.popViewController(animated: true)
+    }
+
+    func toDiscussionResultAlert(result: DiscussionResult) {
+        let message: String
+        switch result {
+        case .win:
+            message = "이겼습니다🥳 축하합니다!!"
+        case .draw:
+            message = "비겼습니다😑"
+        case .lose:
+            message = "졌습니다...🥲"
+        }
+        let alert = UIAlertController(title: "결과",
+                                      message: message,
+                                      preferredStyle: UIAlertController.Style.alert)
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        self.presentingViewController?.present(alert, animated: true)
     }
 
     func appear() {

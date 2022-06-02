@@ -24,7 +24,13 @@ class ChatCell: UICollectionViewCell {
     }
 
     func getAccessibilityLabel(_ viewModel: ChatItemViewModel) -> String {
-        var label = "\(viewModel.chat.content)라고"
+        var label = ""
+        if let toxic = viewModel.chat.toxic,
+           toxic {
+            label += "방장봇에 의해 가려진 채팅을"
+        } else {
+            label += "\(viewModel.chat.content)라고"
+        }
         if let side = viewModel.chat.side,
            side == .agree || side == .disagree {
             label += " \(side == .agree ? "찬성" : "반대")측의"
