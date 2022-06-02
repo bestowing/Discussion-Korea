@@ -46,7 +46,9 @@ If you want to make your own AI host, please check the ./torch_model folder.
 If you want to check the application code, please check the ./app folder.
 
 ## How to use and Demo
-
+<p align="center">
+    <img width="80%" height="80%" alt="어플 아키텍쳐" src="https://user-images.githubusercontent.com/67726968/171690436-753e2566-c5fc-4b0e-bfd1-5238e95963eb.png">
+</p>
 
 ## Referneces
 [1] Park, Sungjoon, et al. "Klue: Korean language understanding evaluation.", arXiv preprint arXiv:2105.09680, (2021).
