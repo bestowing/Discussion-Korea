@@ -194,4 +194,4 @@ if __name__ == '__main__':
 
     model = KoBARTConditionalGeneration(args, trainer)
     # model = load_model(f'./kobart_summary_version4_e29')
-    trainer.fit(model, dm)
+    trainer.fit(model, dm) #train
