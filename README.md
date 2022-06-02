@@ -7,6 +7,8 @@
  Because of the capacity problem, the model parameter file and the torch model archiver file(MAR) were not uploaded.
 ```
 ./serve
+  ./badword_classification
+    ├── classification2.py - badword classifier with flask
   ./classification
     ├── basemodel.pt - model parameter file
     ├── model.py - model file
@@ -38,16 +40,37 @@
     ├── multi-label-klue-roberta-base-v1.0.mar
 ```
  
- Make summarization model mar file: zsh make_summarization_mar.sh
+ Make summarization model mar file: 
+```
+ zsh serve/make_summarization_mar.sh
+```
  
- Make binary classification model mar file: zsh make_classification_mar.sh
+ Make binary classification model mar file:
+```
+ zsh serve/make_classification_mar.sh
+```
  
- Make multi-label classification model mar file: zsh make_multi_label_classification_mar.sh
+ Make multi-label classification model mar file:
+```
+zsh serve/make_multi_label_classification_mar.sh
+```
  
- Run the server on your local environment: zsh start_server.sh
+ Serve badword classifier on your local environment:
+```
+ zsh python serve/badword_classification/classification2.py
+```
  
- Run the server at the same time as the docker environment runs: see docker_run.txt
+ Serve models on your local environment:
+```
+ zsh serve/start_server.sh
+```
+ 
+ Serve models on the docker:
+```
+ docker run --gpus all -it -p 8080:8080 --name torchserve -v C:\Users\admin\model-store:/home/model-server/model-store pytorch/torchserve:latest torchserve --start --model-store model-store --models classification1=klue-roberta-base-v1.1.mar classification3=multi-label-klue-roberta-base-v1.0.mar summarization=kobart-v1.3.mar --ncs
+```
 
 ## OpenSource License
 
 - [TorchServe (Apache 2.0)](https://github.com/pytorch/serve/blob/master/LICENSE)
+- [Gentleman (EULA)](https://github.com/organization/Gentleman/blob/master/LICENSE.md)
