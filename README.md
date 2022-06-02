@@ -11,6 +11,14 @@ This is a new concept discussion platform introducing AI host. We have developed
 
 **This repository contains the source code of the Team A of Capstone Design Project at SKKU (Spring 2022).**
 
+# Contributors
+|이름|역할|설명|
+|------|---|---|
+|김석|모델 서빙|made ./server folder|
+|박진우|대화 요약 모델|made ./summarization folder|
+|이청수|앱 개발|made ./Discussion-Korea and ./Discussion-Korea-Backend folder|
+|장채윤|비방성 마스킹 모델| made ./classifier folder|
+
 ## File Structure
 If you want to make your own AI host, please check the ./classifier and ./summarization folder.
 ```
