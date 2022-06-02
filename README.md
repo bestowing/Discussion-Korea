@@ -12,12 +12,12 @@ This is a new concept discussion platform introducing AI host. We have developed
 **This repository contains the source code of the Team A of Capstone Design Project at SKKU (Spring 2022).**
 
 ## Contributors
-    |name|contribute|responsible folder|
-    |------|---|---|
-    |Kim Seok|model serving|made ./server folder|
-    |Park Jinwoo|summarization model|made ./summarization folder|
-    |Lee Chungsoo|application dev|made ./Discussion-Korea and ./Discussion-Korea-Backend folder|
-    |Jang Chaeyoon|offensive comment classifier| made ./classifier folder|
+|name|contribute|responsible folder|
+|------|-------------------------------|------------------------------------|
+|Kim Seok|model serving|made ./server folder|
+|Park Jinwoo|summarization model|made ./summarization folder|
+|Lee Chungsoo|application dev|made ./Discussion-Korea and ./Discussion-Korea-Backend folder|
+|Jang Chaeyoon|offensive comment classifier| made ./classifier folder|
 
 
 ## File Structure
