@@ -11,14 +11,6 @@ This is a new concept discussion platform introducing AI host. We have developed
 
 **This repository contains the source code of the Team A of Capstone Design Project at SKKU (Spring 2022).**
 
-## Overall Architecture
-<p align="center">
-    <img width="50%" height="50%" alt="인공 지능 모델" src="https://user-images.githubusercontent.com/67726968/171651834-598a6816-397f-4665-97ea-55bea149353f.png">
-</p>
-
-- For training the summarization model, we use the pretrained ```ko-bart``` model 
-- For training the offensive comment classification model, we use the pretrained ```klue-roberta``` model
-
 ## File Structure
 If you want to make your own AI host, please check the ./torch_model folder.
 ```
