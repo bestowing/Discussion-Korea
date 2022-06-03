@@ -70,7 +70,7 @@
  docker run --gpus all -it -p 8080:8080 --name torchserve -v C:\Users\admin\model-store:/home/model-server/model-store pytorch/torchserve:latest torchserve --start --model-store model-store --models classification1=klue-roberta-base-v1.1.mar classification3=multi-label-klue-roberta-base-v1.0.mar summarization=kobart-v1.3.mar --ncs
 ```
 
-## Use model
+## Using model
 ```
  python serve/request_example.py
 ```
