@@ -1,11 +1,5 @@
 <img width="100%" alt="방구석 대한민국" src="https://user-images.githubusercontent.com/59321616/171611106-442b5a0e-06d1-4f05-9445-92c9b8e70b05.png">
 
-<p align="center">
-    <img src="https://img.shields.io/badge/Swift-v5.0-red?logo=swift" />
-    <img src="https://img.shields.io/badge/Xcode-v13.3-blue?logo=Xcode" />
-    <img src="https://img.shields.io/badge/iOS-13.0+-black?logo=apple" />  
-</p>
-
 # 방구석 대한민국 (Virtual Korea)
 This is a new concept discussion platform introducing AI host. We have developed a discussion platform centered on a fair AI host capable of offensive comment masking and summarizing discussion content. 
 
@@ -55,13 +49,3 @@ If you want to check the application code, please check the ./app folder.
 [3] Sun, Chi, et al. "How to fine-tune bert for text classification?." China national conference on Chinese computational linguistics., (2019).
 
 [4] Mike Lewis, et al. "Bart: Denoising sequence-tosequence pre-training for natural language generation, translation, and comprehension.", arXiv preprint arXiv:1910.13461, (2019).
-
-## OpenSource License
-
-- [Alamofire (MIT)](https://github.com/Alamofire/Alamofire/blob/master/LICENSE)
-- [Firebase (Apache 2.0)](https://github.com/firebase/firebase-ios-sdk/blob/master/LICENSE)
-- [Kingfisher (MIT)](https://github.com/onevcat/Kingfisher/blob/master/LICENSE)
-- [RxKeyboard (MIT)](https://github.com/RxSwiftCommunity/RxKeyboard/blob/master/LICENSE)
-- [RxSwift (MIT)](https://github.com/ReactiveX/RxSwift/blob/main/LICENSE.md)
-- [SideMenu (MIT)](https://github.com/jonkykong/SideMenu/blob/master/LICENSE)
-- [SnapKit (MIT)](https://github.com/SnapKit/SnapKit/blob/develop/LICENSE)
