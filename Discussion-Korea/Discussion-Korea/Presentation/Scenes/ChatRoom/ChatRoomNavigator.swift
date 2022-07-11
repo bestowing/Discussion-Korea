@@ -17,7 +17,7 @@ enum DiscussionResult {
 
 protocol ChatRoomNavigator {
 
-    func toChatRoom(_ chatRoom: ChatRoom)
+    func toChatRoom(_ uid: String, _ chatRoom: ChatRoom)
     func toSideMenu(_ chatRoom: ChatRoom)
     func toEnterAlert() -> Observable<Bool>
     func toSideAlert() -> Observable<Side>
@@ -51,16 +51,17 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
 
     // MARK: - methods
 
-    func toChatRoom(_ chatRoom: ChatRoom) {
+    func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {
         self.makeTransparentNavigationBar()
         let chatRoomViewController = ChatRoomViewController()
         chatRoomViewController.title = chatRoom.title
         let chatRoomViewModel = ChatRoomViewModel(
+            uid: uid,
             chatRoom: chatRoom,
+            navigator: self,
             chatsUsecase: self.services.makeChatsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
-            discussionUsecase: self.services.makeDiscussionUsecase(),
-            navigator: self
+            discussionUsecase: self.services.makeDiscussionUsecase()
         )
         chatRoomViewController.viewModel = chatRoomViewModel
         self.navigationController.pushViewController(chatRoomViewController, animated: true)

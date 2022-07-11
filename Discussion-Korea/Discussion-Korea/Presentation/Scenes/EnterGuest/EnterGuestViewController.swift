@@ -28,7 +28,7 @@ final class EnterGuestViewController: UIViewController {
     private let guestButton: UIButton = {
         let button = UIButton()
         button.setTitle("일단 둘러볼게요", for: .normal)
-        button.backgroundColor = .primaryColor
+        button.backgroundColor = .accentColor
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         button.setTitleColor(UIColor.white, for: .normal)
@@ -47,7 +47,7 @@ final class EnterGuestViewController: UIViewController {
         imageView.setDefaultProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .primaryColor
+        imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 70
         imageView.layer.masksToBounds = true
         imageView.isUserInteractionEnabled = true

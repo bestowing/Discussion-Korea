@@ -15,7 +15,7 @@ final class BotChatCell: ChatCell {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
         imageView.tintColor = UIColor.white
-        imageView.backgroundColor = .primaryColor
+        imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         return imageView
