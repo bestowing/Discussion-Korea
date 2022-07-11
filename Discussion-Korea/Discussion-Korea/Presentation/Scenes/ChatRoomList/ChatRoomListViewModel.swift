@@ -99,6 +99,7 @@ final class ChatRoomListViewModel: ViewModelType {
             .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) -> ChatRoom in
                 return chatRooms[indexPath.item].chatRoom
             }
+            .withLatestFrom(uid) { ($1, $0) }
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 

@@ -250,6 +250,42 @@ final class Reference {
         return Observable<Void>.just(Void())
     }
 
+    func edit(roomID: String, chat: Chat) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            var value: [String: Any] = ["user": chat.userID,
+                        "content": chat.content]
+            if let side = chat.side {
+                value["side"] = side.rawValue
+            }
+            let childUpdates = ["/chatRoom/\(roomID)/editing/\(chat.userID)": value]
+            self.reference.updateChildValues(childUpdates)
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func getEdit(roomID: String) -> Observable<Chat> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(roomID)/editing")
+                .observe(.childAdded) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let content = dictionary["content"] as? String
+                    else { return }
+                    subscribe.onNext(Chat(userID: snapshot.key, content: content, date: Date()))
+                }
+            self.reference
+                .child("chatRoom/\(roomID)/editing")
+                .observe(.childChanged) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let content = dictionary["content"] as? String
+                    else { return }
+                    subscribe.onNext(Chat(userID: snapshot.key, content: content, date: Date()))
+                }
+            return Disposables.create()
+        }
+    }
+
     // MARK: - userInfos
 
     func getUserInfo(userID: String) -> Observable<UserInfo?> {

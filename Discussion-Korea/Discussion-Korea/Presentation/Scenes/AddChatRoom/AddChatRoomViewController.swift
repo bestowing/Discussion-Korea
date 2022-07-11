@@ -46,7 +46,7 @@ final class AddChatRoomViewController: UIViewController {
         imageView.setDefaultChatRoomProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .center
-        imageView.backgroundColor = .primaryColor
+        imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 70
         imageView.layer.masksToBounds = true
         imageView.isUserInteractionEnabled = true

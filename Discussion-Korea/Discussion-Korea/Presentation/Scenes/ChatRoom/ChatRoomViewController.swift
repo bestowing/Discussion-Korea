@@ -9,6 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 import RxKeyboard
+import RxGesture
 
 final class ChatRoomViewController: UIViewController {
 
@@ -17,6 +18,7 @@ final class ChatRoomViewController: UIViewController {
     var viewModel: ChatRoomViewModel!
 
     private var itemViewModels: [ChatItemViewModel] = []
+    private var writingViewModels: [ChatItemViewModel] = []
 
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -42,6 +44,8 @@ final class ChatRoomViewController: UIViewController {
         return label
     }()
 
+    private let chatPreview = ChatPreview()
+
     private let messageCollectionView: UICollectionView = {
         let messageCollectionView = UICollectionView(
             frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
@@ -62,6 +66,9 @@ final class ChatRoomViewController: UIViewController {
         )
         messageCollectionView.register(
             SerialBotChatCell.self, forCellWithReuseIdentifier: SerialBotChatCell.identifier
+        )
+        messageCollectionView.register(
+            WritingChatCell.self, forCellWithReuseIdentifier: WritingChatCell.identifier
         )
         return messageCollectionView
     }()
@@ -84,7 +91,7 @@ final class ChatRoomViewController: UIViewController {
         let sendButton = UIButton()
         sendButton.setBackgroundImage(UIImage(systemName: "paperplane.fill"), for: .normal)
         sendButton.setBackgroundImage(UIImage(systemName: "paperplane"), for: .disabled)
-        sendButton.tintColor = UIColor.primaryColor
+        sendButton.tintColor = UIColor.accentColor
         // TODO: 보내기버튼 둥글게 적용하기
 //        sendButton.layer.borderColor = UIColor.primaryColor?.cgColor
 //        sendButton.layer.borderWidth = 1.0
@@ -109,21 +116,6 @@ final class ChatRoomViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
     }
 
-//    override func updateViewConstraints() {
-//        super.updateViewConstraints()
-//        self.messageCollectionView.snp.makeConstraints { make in
-//            make.edges.equalTo(0)
-//        }
-//        self.messageTextView.snp.makeConstraints { make in
-//            make.left.right.equalTo(0)
-//            if #available(iOS 11.0, *) {
-//                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-//            } else {
-//                make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
-//            }
-//        }
-//    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setSubViews()
@@ -132,14 +124,13 @@ final class ChatRoomViewController: UIViewController {
 
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
-        self.messageCollectionView.dataSource = self
-
         self.view.addSubview(self.noticeView)
         let inputBackground = UIView()
         inputBackground.backgroundColor = .systemBackground
         self.view.addSubview(inputBackground)
-        self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.sendButton)
+        self.view.addSubview(self.chatPreview)
+        self.view.addSubview(self.messageTextView)
         self.navigationItem.rightBarButtonItem = self.menuButton
         self.noticeView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
@@ -147,11 +138,18 @@ final class ChatRoomViewController: UIViewController {
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.height.greaterThanOrEqualTo(50)
         }
+        self.messageCollectionView.dataSource = self
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
             make.top.equalToSuperview()
             make.bottom.equalTo(self.messageTextView.snp.top).offset(-10)
+        }
+        self.chatPreview.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
+            make.bottom.equalTo(self.messageCollectionView.snp.bottom).offset(-10)
+//            make.height.equalTo(30)
         }
         inputBackground.snp.makeConstraints { make in
             make.leading.equalToSuperview()
@@ -191,9 +189,22 @@ final class ChatRoomViewController: UIViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
+        let bottomScrolled = self.messageCollectionView.rx.contentOffset
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .map { [unowned self] offset -> Bool in
+                let contentHeight = self.messageCollectionView.contentSize.height
+                let frameHeight = self.messageCollectionView.frame.size.height
+                let margin: CGFloat = 40
+                return offset.y + margin >= (contentHeight - frameHeight)
+            }
+            .asDriverOnErrorJustComplete()
+
         let input = ChatRoomViewModel.Input(
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
+                .asDriverOnErrorJustComplete(),
+            bottomScrolled: bottomScrolled,
+            previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
             send: self.sendButton.rx.tap.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
@@ -204,11 +215,43 @@ final class ChatRoomViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.chatItems.drive { [unowned self] model in
+        output.writingChats
+            .withLatestFrom(bottomScrolled) { ($0, $1) }
+            .drive { [unowned self] model, scrolled in
+            if let modelIndex = self.writingViewModels.firstIndex(where: { $0.chat.uid == model.chat.uid }) {
+                if model.content.isEmpty {
+                    self.writingViewModels.remove(at: modelIndex)
+                    self.messageCollectionView.deleteItems(at: [IndexPath(item: modelIndex, section: 1)])
+                } else {
+                    let indexPath = IndexPath(item: modelIndex, section: 1)
+                    self.writingViewModels[modelIndex] = model
+                    self.messageCollectionView.reloadItems(at: [indexPath])
+                    if scrolled {
+                        self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    }
+                }
+            } else {
+                guard !model.content.isEmpty else { return }
+                let indexPath = IndexPath(item: self.writingViewModels.count, section: 1)
+                self.writingViewModels.append(model)
+                self.messageCollectionView.insertItems(at: [indexPath])
+                if scrolled {
+                    self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+        }.disposed(by: self.disposeBag)
+
+        output.chatItems
+            .withLatestFrom(bottomScrolled) { ($0, $1) }
+            .drive { [unowned self] model, scrolled in
             let indexPath = IndexPath(item: self.itemViewModels.count, section: 0)
             self.itemViewModels.append(model)
             self.messageCollectionView.insertItems(at: [indexPath])
-            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            if scrolled {
+                self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            } else {
+                self.chatPreview.bind(model)
+            }
         }.disposed(by: self.disposeBag)
 
         output.mask.drive { [unowned self] uid in
@@ -219,9 +262,18 @@ final class ChatRoomViewController: UIViewController {
             }
         }.disposed(by: self.disposeBag)
 
-        output.userInfos.drive().disposed(by: self.disposeBag)
+        output.toBottom.drive { [unowned self] _ in
+            let indexPath = IndexPath(item: self.itemViewModels.count - 1, section: 0)
+            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        }
+        .disposed(by: self.disposeBag)
 
-        output.noticeHidden.drive(self.noticeView.rx.isHidden)
+        output.isPreviewHidden.distinctUntilChanged()
+            .filter { $0 }
+            .drive(self.chatPreview.rx.isHidden)
+            .disposed(by: self.disposeBag)
+
+        output.notice.map { $0.isEmpty }.drive(self.noticeView.rx.isHidden)
             .disposed(by: self.disposeBag)
 
         output.notice.drive(self.noticeView.rx.text)
@@ -246,12 +298,17 @@ final class ChatRoomViewController: UIViewController {
 }
 
 extension ChatRoomViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.itemViewModels.count
+        return section == 0 ? self.itemViewModels.count : self.writingViewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = self.itemViewModels[indexPath.item]
+        let model = indexPath.section == 0 ? self.itemViewModels[indexPath.item] : self.writingViewModels[indexPath.item]
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? ChatCell
         else { return UICollectionViewCell() }
         cell.bind(model)
@@ -259,6 +316,5 @@ extension ChatRoomViewController: UICollectionViewDataSource {
         cell.accessibilityLabel = cell.getAccessibilityLabel(model)
         return cell
     }
-    
 
 }

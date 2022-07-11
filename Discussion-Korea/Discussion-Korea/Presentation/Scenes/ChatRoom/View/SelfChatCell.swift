@@ -14,7 +14,7 @@ final class SelfChatCell: ChatCell {
 
     private let contentLabel: UILabel = {
         let contentLabel = PaddingLabel()
-        contentLabel.backgroundColor = UIColor.primaryColor
+        contentLabel.backgroundColor = UIColor.accentColor
         contentLabel.textColor = .white
         contentLabel.font = UIFont.systemFont(ofSize: 15.0)
         contentLabel.layer.cornerRadius = 8
@@ -57,7 +57,7 @@ final class SelfChatCell: ChatCell {
     override func bind(_ viewModel: ChatItemViewModel) {
         self.contentLabel.text = viewModel.content
         self.contentLabel.textColor = viewModel.textColor ?? .label
-        self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .primaryColor
+        self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .accentColor
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString
     }

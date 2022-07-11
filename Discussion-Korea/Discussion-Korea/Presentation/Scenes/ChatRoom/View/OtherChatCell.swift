@@ -8,14 +8,14 @@
 import SnapKit
 import UIKit
 
-final class OtherChatCell: ChatCell {
+class OtherChatCell: ChatCell {
 
     // MARK: properties
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
         imageView.tintColor = UIColor.white
-        imageView.backgroundColor = .primaryColor
+        imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         return imageView
@@ -39,7 +39,7 @@ final class OtherChatCell: ChatCell {
         return contentLabel
     }()
 
-    private let timeLabel: UILabel = {
+    fileprivate let timeLabel: UILabel = {
         let timeLabel = UILabel()
         timeLabel.font = UIFont.systemFont(ofSize: 10.0)
         return timeLabel
@@ -105,6 +105,15 @@ final class OtherChatCell: ChatCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.profileImageView.image = nil
+    }
+
+}
+
+final class WritingChatCell: OtherChatCell {
+
+    override func bind(_ viewModel: ChatItemViewModel) {
+        super.bind(viewModel)
+        self.timeLabel.text = "작성중..."
     }
 
 }

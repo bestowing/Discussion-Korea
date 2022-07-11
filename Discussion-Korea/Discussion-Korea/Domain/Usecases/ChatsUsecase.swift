@@ -13,5 +13,7 @@ protocol ChatsUsecase {
     func connect(roomUID: String, after chatUID: String?) -> Observable<Chat>
     func send(roomUID: String, chat: Chat) -> Observable<Void>
     func masking(roomUID: String) -> Observable<String>
+    func edit(roomUID: String, chat: Chat) -> Observable<Void>
+    func getEditing(roomUID: String) -> Observable<Chat>
 
 }

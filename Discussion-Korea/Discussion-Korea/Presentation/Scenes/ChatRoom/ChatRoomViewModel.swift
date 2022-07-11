@@ -17,26 +17,28 @@ final class ChatRoomViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let uid: String
     private let chatRoom: ChatRoom
+    private let navigator: ChatRoomNavigator
 
     private let chatsUsecase: ChatsUsecase
     private let userInfoUsecase: UserInfoUsecase
     private let discussionUsecase: DiscussionUsecase
 
-    private let navigator: ChatRoomNavigator
-
     // MARK: - init/deinit
 
-    init(chatRoom: ChatRoom,
+    init(uid: String,
+         chatRoom: ChatRoom,
+         navigator: ChatRoomNavigator,
          chatsUsecase: ChatsUsecase,
          userInfoUsecase: UserInfoUsecase,
-         discussionUsecase: DiscussionUsecase,
-         navigator: ChatRoomNavigator) {
+         discussionUsecase: DiscussionUsecase) {
+        self.uid = uid
         self.chatRoom = chatRoom
+        self.navigator = navigator
         self.chatsUsecase = chatsUsecase
         self.userInfoUsecase = userInfoUsecase
         self.discussionUsecase = discussionUsecase
-        self.navigator = navigator
     }
 
     deinit {
@@ -47,20 +49,7 @@ final class ChatRoomViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let uid = self.userInfoUsecase
-            .uid()
-            .asDriverOnErrorJustComplete()
-
-        let myInfo = uid
-            .flatMap { [unowned self] userID in
-                self.userInfoUsecase
-                    .userInfo(roomID: self.chatRoom.uid, with: userID)
-                    .asDriverOnErrorJustComplete()
-            }
-
-        let noticeHidden = PublishSubject<Bool>()
-
-        let remainTime = input.trigger
+        let remainTime: Driver<String> = input.trigger
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.remainTime(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
@@ -72,30 +61,33 @@ final class ChatRoomViewModel: ViewModelType {
             .flatMapLatest { remainSeconds in
                 Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
                     .map { remainSeconds - $0 }
-                    .take(until: { $0 == -1 })
-                    .do(onNext: { _ in noticeHidden.on(.next(false)) },
-                        onCompleted: { noticeHidden.on(.next(true)) })
+                    .take(until: { $0 == -2 })
                     .asDriverOnErrorJustComplete()
             }
-            .map { "남은 시간: \(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))" }
+            .map {
+                if $0 == -1 { return "" }
+                return "남은 시간: \(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))"
+            }
 
-        let enterEvent = myInfo
-            .filter { return $0 == nil }
+        let enterEvent: Driver<Void> = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.userInfo(roomID: self.chatRoom.uid, with: self.uid)
+                    .asDriverOnErrorJustComplete()
+                    .filter { return $0 == nil }
+            }
             .flatMap { [unowned self] _ in
                 self.navigator.toEnterAlert()
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(uid)
-            .flatMap { [unowned self] (uid) in
-                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: uid)
+            .flatMap { [unowned self] _ in
+                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: self.uid)
                     .asDriverOnErrorJustComplete()
             }
             .mapToVoid()
 
-        let resultEvent = input.trigger
-            .withLatestFrom(uid)
-            .flatMapFirst { [unowned self] userID in
-                self.discussionUsecase.discussionResult(userID: userID, chatRoomID: self.chatRoom.uid)
+        let resultEvent: Driver<Void> = input.trigger
+            .flatMapFirst { [unowned self] _ in
+                self.discussionUsecase.discussionResult(userID: self.uid, chatRoomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
             .do(onNext: self.navigator.toDiscussionResultAlert)
@@ -113,8 +105,6 @@ final class ChatRoomViewModel: ViewModelType {
                     }
             }
 
-        let uidAndUserInfos = Driver.combineLatest(uid, userInfos)
-
         // 배열을 방출한다
         // 여기서 오는건
         let remainChats = input.trigger
@@ -123,11 +113,10 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let remainChatItems = remainChats
-            .withLatestFrom(uidAndUserInfos) { ($0, $1) }
-            .map { (chats, args) -> [ChatItemViewModel] in
-                let uid = args.0
-                let userInfos = args.1
+        let _ = remainChats
+            .withLatestFrom(userInfos) { ($0, $1) }
+            .map { [unowned self] (chats, userInfos) -> [ChatItemViewModel] in
+                let uid = self.uid
                 var viewModels = [ChatItemViewModel]()
                 for chat in chats {
                     var chat = chat
@@ -164,11 +153,11 @@ final class ChatRoomViewModel: ViewModelType {
             }
 
         let chatItems = chats
-            .withLatestFrom(uidAndUserInfos) { ($0, $1) }
+            .withLatestFrom(userInfos) { ($0, $1) }
             .scan([ChatItemViewModel]()) { (viewModels, args) in
                 var chat = args.0
-                let uid = args.1.0
-                let userInfos = args.1.1
+                let uid = self.uid
+                let userInfos = args.1
                 chat.nickName = userInfos[chat.userID]?.nickname
                 chat.profileURL = userInfos[chat.userID]?.profileURL
                 let newItemViewModel: ChatItemViewModel
@@ -218,30 +207,30 @@ final class ChatRoomViewModel: ViewModelType {
                 self.discussionUsecase.status(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
+            .startWith(0)
 
-        let selectedSide = status
+        let side = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.userInfo(roomID: self.chatRoom.uid, with: self.uid)
+                    .asDriverOnErrorJustComplete()
+                    .map { $0?.side }
+            }
+
+        let selectSideEvent = status
             .filter { return $0 == 1 }
             .flatMap { [unowned self] _ in
                 self.navigator.toSideAlert()
                     .asDriverOnErrorJustComplete()
             }
-
-        let clearSideEvent = status
-            .filter { return $0 == 0 }
-            .withLatestFrom(uid) { ($0, $1) }
-            .flatMap { [unowned self] (_, uid) in
-                self.userInfoUsecase.clearSide(roomID: self.chatRoom.uid, userID: uid)
+            .flatMap { [unowned self] side in
+                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: self.uid, side: side)
                     .asDriverOnErrorJustComplete()
             }
 
-        let side = Driver.of(
-            selectedSide.map { (side) -> Side? in return side }, myInfo.map { $0?.side }
-        ).merge()
-
-        let sideEvent = selectedSide
-            .withLatestFrom(uid) { ($0, $1) }
-            .flatMap { [unowned self] (side, uid) in
-                self.userInfoUsecase.add(roomID: self.chatRoom.uid, userID: uid, side: side)
+        let clearSideEvent = status
+            .filter { return $0 == 0 }
+            .flatMap { [unowned self] _ in
+                self.userInfoUsecase.clearSide(roomID: self.chatRoom.uid, userID: self.uid)
                     .asDriverOnErrorJustComplete()
             }
 
@@ -252,45 +241,68 @@ final class ChatRoomViewModel: ViewModelType {
                 self.navigator.toVoteAlert()
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(uid) { ($0, $1) }
-            .flatMap { [unowned self] (vote, uid) in
-                self.userInfoUsecase.vote(roomID: self.chatRoom.uid, userID: uid, side: vote)
+            .flatMap { [unowned self] vote in
+                self.userInfoUsecase.vote(roomID: self.chatRoom.uid, userID: self.uid, side: vote)
                     .asDriverOnErrorJustComplete()
             }
 
-        let contentEmpty = input.content.map { !$0.isEmpty }
-
-        let canEditable = Driver.combineLatest(status, side) { (status, side) -> Bool in
-            guard status >= 2
-            else { return true }
-            switch side {
-            case .agree:
-                return [2, 4, 5, 9, 10, 12].contains(status)
-            case .disagree:
-                return [3, 4, 6, 8, 10, 11].contains(status)
-            default:
-                return false
+        let canEditable = Driver.combineLatest(status, side)
+            .map { (status, side) -> Bool in
+                guard status >= 2
+                else { return true }
+                switch side {
+                case .agree:
+                    return [2, 4, 5, 9, 10, 12].contains(status)
+                case .disagree:
+                    return [3, 4, 6, 8, 10, 11].contains(status)
+                default:
+                    return false
+                }
             }
+
+        let canSend = Driver.combineLatest(canEditable, input.content) {
+            return $0 && !$1.isEmpty
         }
-
-        let canSend = Driver.of(
-            contentEmpty,
-            canEditable
-                .withLatestFrom(contentEmpty) { return $0 && $1 }
-        )
-            .merge()
-
-        let contentAndUID = Driver.combineLatest(input.content, uid)
 
         let sideMenuEvent = input.menu
             .do(onNext: { [unowned self] in
                 self.navigator.toSideMenu(self.chatRoom)
             })
 
+        let writingChats = input.trigger
+            .flatMapFirst { [unowned self] _ in
+                self.chatsUsecase.getEditing(roomUID: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+                    .filter { [unowned self] in return $0.userID != self.uid }
+            }
+            .withLatestFrom(userInfos) { ($0, $1) }
+            .map { chat, userInfos -> ChatItemViewModel in
+                var chat = chat
+                chat.nickName = userInfos[chat.userID]?.nickname
+                chat.profileURL = userInfos[chat.userID]?.profileURL
+                return WritingChatItemViewModel(with: chat)
+            }
+
+        let writingEvent = input.content
+            .throttle(.milliseconds(1500))
+            .distinctUntilChanged()
+            .map { [unowned self] content -> Chat in
+                Chat(userID: self.uid, content: content, date: Date())
+            }
+            .withLatestFrom(side) {
+                var chat: Chat = $0
+                chat.side = $1
+                return chat
+            }
+            .flatMap { [unowned self] chat -> Driver<Void> in
+                return self.chatsUsecase.edit(roomUID: self.chatRoom.uid, chat: chat)
+                    .asDriverOnErrorJustComplete()
+            }
+
         let sendEvent = input.send
-            .withLatestFrom(contentAndUID)
-            .map { (content, uid) -> Chat in
-                Chat(userID: uid, content: content, date: Date())
+            .withLatestFrom(input.content)
+            .map { [unowned self] content -> Chat in
+                Chat(userID: self.uid, content: content, date: Date())
             }
             .withLatestFrom(side) {
                 var chat: Chat = $0
@@ -311,23 +323,25 @@ final class ChatRoomViewModel: ViewModelType {
 
         let events = Driver.of(
             voteEvent,
-            sideEvent,
+            selectSideEvent,
             sideMenuEvent,
             sendEvent,
             enterEvent,
             clearSideEvent,
             resultEvent,
             appear,
-            disappear
+            disappear,
+            writingEvent
         )
             .merge()
 
         return Output(
+            writingChats: writingChats,
             chatItems: chatItems,
             mask: masking,
-            userInfos: userInfos,
+            toBottom: input.previewTouched,
             sendEnable: canSend,
-            noticeHidden: noticeHidden.distinctUntilChanged().asDriverOnErrorJustComplete(),
+            isPreviewHidden: input.bottomScrolled,
             notice: remainTime,
             editableEnable: canEditable,
             sendEvent: sendEvent,
@@ -341,22 +355,26 @@ extension ChatRoomViewModel {
 
     struct Input {
         let trigger: Driver<Void>
+        let bottomScrolled: Driver<Bool>
+        let previewTouched: Driver<Void>
         let send: Driver<Void>
         let menu: Driver<Void>
         let content: Driver<String>
         let disappear: Driver<Void>
     }
-    
+
     struct Output {
+        let writingChats: Driver<ChatItemViewModel>
         let chatItems: Driver<ChatItemViewModel>
         let mask: Driver<String>
-        let userInfos: Driver<[String: UserInfo]>
+        let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
-        let noticeHidden: Driver<Bool>
+        let isPreviewHidden: Driver<Bool>
         let notice: Driver<String>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>
+//        let chatItems: Driver<([ChatItemViewModel], Bool)>
     }
 
 }

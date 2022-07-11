@@ -64,7 +64,7 @@ final class Application {
             chatRoomListNavigationController,
             settingNavigationController
         ]
-        tapBarController.tabBar.tintColor = .primaryColor
+        tapBarController.tabBar.tintColor = .accentColor
         homeNavigator.toHome()
         chatRoomListNavigator.toChatRoomList()
         settingNavigator.toSetting()
