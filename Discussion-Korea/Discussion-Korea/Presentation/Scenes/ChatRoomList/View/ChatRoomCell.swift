@@ -15,7 +15,7 @@ final class ChatRoomCell: UICollectionViewCell {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.tintColor = .primaryColor
+        imageView.tintColor = .accentColor
         imageView.layer.cornerRadius = 25
         imageView.layer.masksToBounds = true
         return imageView

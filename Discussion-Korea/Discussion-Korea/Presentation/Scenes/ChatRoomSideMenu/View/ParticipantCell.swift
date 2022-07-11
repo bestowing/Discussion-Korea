@@ -14,7 +14,7 @@ final class ParticipantCell: UITableViewCell {
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.primaryColor
+        imageView.backgroundColor = UIColor.accentColor
         imageView.tintColor = .white
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true

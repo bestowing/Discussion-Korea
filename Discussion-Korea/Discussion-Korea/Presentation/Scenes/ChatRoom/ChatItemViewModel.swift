@@ -140,6 +140,18 @@ final class OtherChatItemViewModel: ChatItemViewModel {
 
 }
 
+final class WritingChatItemViewModel: ChatItemViewModel {
+
+    override var identifier: String {
+        return WritingChatCell.identifier
+    }
+
+    override var textColor: UIColor? {
+        return super.textColor ?? UIColor.label
+    }
+
+}
+
 final class SerialOtherChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {

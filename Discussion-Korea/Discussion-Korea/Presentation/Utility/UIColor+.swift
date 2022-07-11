@@ -9,6 +9,6 @@ import UIKit
 
 extension UIColor {
 
-    static var primaryColor: UIColor? { UIColor(named: "PrimaryColor") }
+    static var accentColor: UIColor? { UIColor(named: "AccentColor") }
 
 }

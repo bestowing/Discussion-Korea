@@ -20,7 +20,7 @@ final class HomeViewController: UIViewController {
         imageView.setDefaultProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .primaryColor
+        imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         return imageView

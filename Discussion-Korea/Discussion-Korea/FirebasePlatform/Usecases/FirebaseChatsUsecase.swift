@@ -32,4 +32,12 @@ final class FirebaseChatsUsecase: ChatsUsecase {
         self.reference.observeChatMasked(uid: roomUID)
     }
 
+    func edit(roomUID: String, chat: Chat) -> Observable<Void> {
+        self.reference.edit(roomID: roomUID, chat: chat)
+    }
+
+    func getEditing(roomUID: String) -> Observable<Chat> {
+        self.reference.getEdit(roomID: roomUID)
+    }
+
 }
