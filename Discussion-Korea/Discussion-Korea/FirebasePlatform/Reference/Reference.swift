@@ -252,8 +252,13 @@ final class Reference {
 
     func edit(roomID: String, chat: Chat) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
+            guard let date = chat.date
+            else { return Disposables.create() }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             var value: [String: Any] = ["user": chat.userID,
-                        "content": chat.content]
+                        "content": chat.content,
+                        "date": dateFormatter.string(from: date)]
             if let side = chat.side {
                 value["side"] = side.rawValue
             }
@@ -269,18 +274,16 @@ final class Reference {
             self.reference
                 .child("chatRoom/\(roomID)/editing")
                 .observe(.childAdded) { snapshot in
-                    guard let dictionary = snapshot.value as? NSDictionary,
-                          let content = dictionary["content"] as? String
+                    guard let chat = Chat.toChat(from: snapshot)
                     else { return }
-                    subscribe.onNext(Chat(userID: snapshot.key, content: content, date: Date()))
+                    subscribe.onNext(chat)
                 }
             self.reference
                 .child("chatRoom/\(roomID)/editing")
                 .observe(.childChanged) { snapshot in
-                    guard let dictionary = snapshot.value as? NSDictionary,
-                          let content = dictionary["content"] as? String
+                    guard let chat = Chat.toChat(from: snapshot)
                     else { return }
-                    subscribe.onNext(Chat(userID: snapshot.key, content: content, date: Date()))
+                    subscribe.onNext(chat)
                 }
             return Disposables.create()
         }
