@@ -68,18 +68,24 @@ final class Reference {
                             return
                         }
                         values["profile"] = url.absoluteString
-                        let childUpdates = ["/chatRooms/\(key)": values,
-                                            "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue]
+                        let childUpdates: [String: Any] = [
+                            "/chatRooms/\(key)": values,
+                            "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue,
+                            "/chatRoom/\(key)/phase/value": 0
+                        ]
                         self.reference.updateChildValues(childUpdates)
-                        subscribe.onNext(Void())
+                        subscribe.onNext(())
                         subscribe.onCompleted()
                     }
                 }
             } else {
-                let childUpdates = ["/chatRooms/\(key)": values,
-                                    "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue]
+                let childUpdates: [String: Any] = [
+                    "/chatRooms/\(key)": values,
+                    "/chatRoom/\(key)/users/\(chatRoom.adminUID)": userValue,
+                    "/chatRoom/\(key)/phase/value": 0
+                ]
                 self.reference.updateChildValues(childUpdates)
-                subscribe.onNext(Void())
+                subscribe.onNext(())
                 subscribe.onCompleted()
             }
             return Disposables.create()
