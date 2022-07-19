@@ -20,15 +20,7 @@ final class UserInfoManager {
     }
 
     func observe() {
-//        #if DEBUG
-//        let reference = Database
-//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .reference()
-//        #elseif RELEASE
-        let reference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
-            .reference()
-//        #endif
+        let reference = ReferenceManager.reference
         reference.child("users").observe(.childAdded) { [unowned self] snapshot in
             guard let dictionary = snapshot.value as? NSDictionary,
                   let nickname = dictionary["nickname"] as? String

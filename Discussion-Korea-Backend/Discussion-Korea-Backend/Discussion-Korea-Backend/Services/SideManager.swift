@@ -57,15 +57,7 @@ final class SideManager {
     }
 
     func win(side: Side) {
-//        #if DEBUG
-//        let reference = Database
-//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .reference()
-//        #elseif RELEASE
-        let reference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
-            .reference()
-//        #endif
+        let reference = ReferenceManager.reference
         var updates = [String: Any]()
         let chatRoomID = self.chatRoomID
         self.agrees.forEach {

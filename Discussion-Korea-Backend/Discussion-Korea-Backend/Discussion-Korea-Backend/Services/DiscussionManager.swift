@@ -49,14 +49,7 @@ final class DiscussionManager {
          dateFormatter: DateFormatter) {
         self.chatRoomID = chatRoomID
 //        #if DEBUG
-//        self.reference = Database
-//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .reference()
-//        #elseif RELEASE
-        self.reference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
-            .reference()
-//        #endif
+        self.reference = ReferenceManager.reference
         self.roomReference = self.reference.child("chatRoom/\(chatRoomID)")
         self.sideManager = sideManager
         self.summaryManager = SummaryManager(dateFormatter: dateFormatter, reference: self.roomReference.child("messages"))
