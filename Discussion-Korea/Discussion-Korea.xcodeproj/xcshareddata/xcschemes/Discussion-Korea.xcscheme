@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3FBDBBDF2886DFE200A09BF4"
+               BuildableName = "Discussion-Korea-ViewModelTests.xctest"
+               BlueprintName = "Discussion-Korea-ViewModelTests"
+               ReferencedContainer = "container:Discussion-Korea.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

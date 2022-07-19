@@ -113,7 +113,7 @@ class ChatItemViewModel {
 final class SelfChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return SelfChatCell.identifier
+        return "SelfChatCell"
     }
 
     override var textColor: UIColor? {
@@ -131,7 +131,7 @@ final class SelfChatItemViewModel: ChatItemViewModel {
 final class OtherChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return OtherChatCell.identifier
+        return "OtherChatCell"
     }
 
     override var textColor: UIColor? {
@@ -143,7 +143,7 @@ final class OtherChatItemViewModel: ChatItemViewModel {
 final class WritingChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return WritingChatCell.identifier
+        return "WritingChatCell"
     }
 
     override var textColor: UIColor? {
@@ -155,7 +155,7 @@ final class WritingChatItemViewModel: ChatItemViewModel {
 final class SerialOtherChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return SerialOtherChatCell.identifier
+        return "SerialOtherChatCell"
     }
 
     override var textColor: UIColor? {
@@ -167,7 +167,7 @@ final class SerialOtherChatItemViewModel: ChatItemViewModel {
 final class BotChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return BotChatCell.identifier
+        return "BotChatCell"
     }
 
     override var textColor: UIColor? {
@@ -179,7 +179,7 @@ final class BotChatItemViewModel: ChatItemViewModel {
 final class SerialBotChatItemViewModel: ChatItemViewModel {
 
     override var identifier: String {
-        return SerialBotChatCell.identifier
+        return "SerialBotChatCell"
     }
 
     override var textColor: UIColor? {

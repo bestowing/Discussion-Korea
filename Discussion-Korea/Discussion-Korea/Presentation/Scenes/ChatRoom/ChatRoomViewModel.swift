@@ -207,7 +207,7 @@ final class ChatRoomViewModel: ViewModelType {
                 self.discussionUsecase.status(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .startWith(0)
+//            .startWith(0)
 
         let side = input.trigger
             .flatMapFirst { [unowned self] in
