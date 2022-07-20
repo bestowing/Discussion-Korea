@@ -52,13 +52,9 @@ jobs:
     - name: Archive
       run: | 
         xcodebuild archive -project "$XC_PROJECT" -scheme "$XC_SCHEME" -configuration release -archivePath "$XC_ARCHIVE"
-      env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN}}
-
     - name: Export app
       run: | 
         xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
-
     - name: Upload app to TestFlight
       uses: apple-actions/upload-testflight-build@v1
       with:
