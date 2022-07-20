@@ -49,6 +49,13 @@ final class ChatRoomSideMenuViewController: UIViewController {
         return line
     }()
 
+    private let sideControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: [
+            "찬성", "반대", "기타"
+        ])
+        return control
+    }()
+
     private let participantLabel: UILabel = {
         let label = UILabel()
         label.text = "참가자"
@@ -92,6 +99,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         self.view.addSubview(self.stackView)
         self.stackView.addArrangedSubview(self.calendarButton)
         self.view.addSubview(self.line2)
+        self.view.addSubview(self.sideControl)
         self.view.addSubview(self.participantLabel)
         self.view.addSubview(self.participantsTableView)
         self.titleLabel.snp.makeConstraints { make in
@@ -121,10 +129,15 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.top.equalTo(self.stackView.snp.bottom).offset(20)
             make.height.equalTo(1)
         }
+        self.sideControl.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
+            make.top.equalTo(self.line2.snp.bottom).offset(10)
+        }
         self.participantLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
-            make.top.equalTo(self.line2.snp.bottom).offset(20)
+            make.top.equalTo(self.sideControl.snp.bottom).offset(20)
         }
         self.participantsTableView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
@@ -141,9 +154,26 @@ final class ChatRoomSideMenuViewController: UIViewController {
             viewWillAppear: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            calendar: self.calendarButton.rx.tap.asDriver()
+            calendar: self.calendarButton.rx.tap.asDriver(),
+            side: self.sideControl.rx.value.map {
+                switch $0 {
+                case 0:
+                    return .agree
+                case 1:
+                    return .disagree
+                default:
+                    return .judge
+                }
+            }.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.selectedSide.drive {
+            let indexes = [Side.agree, Side.disagree, Side.judge]
+            guard let index = indexes.firstIndex(of: $0)
+            else { return }
+            self.sideControl.selectedSegmentIndex = index
+        }.disposed(by: self.disposeBag)
 
         output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
             let indexPath = IndexPath(item: index, section: 0)
@@ -156,7 +186,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.chatRoomTitle.drive(self.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
 
-        output.calendarEvent.drive()
+        output.events.drive()
             .disposed(by: self.disposeBag)
 
     }

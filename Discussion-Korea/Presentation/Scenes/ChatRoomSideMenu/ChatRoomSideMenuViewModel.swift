@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import RxSwift
 import RxCocoa
 
 final class ChatRoomSideMenuViewModel: ViewModelType {
 
     // MARK: properties
 
+    private let uid: String
     private let chatRoom: ChatRoom
 
     private let userInfoUsecase: UserInfoUsecase
@@ -19,9 +21,11 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     // MARK: - init/deinit
 
-    init(chatRoom: ChatRoom,
+    init(uid: String,
+         chatRoom: ChatRoom,
          userInfoUsecase: UserInfoUsecase,
          navigator: ChatRoomSideMenuNavigator) {
+        self.uid = uid
         self.chatRoom = chatRoom
         self.userInfoUsecase = userInfoUsecase
         self.navigator = navigator
@@ -35,18 +39,12 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let uid = userInfoUsecase.uid()
-            .asDriverOnErrorJustComplete()
-
         let participants = input.viewWillAppear
             .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .withLatestFrom(uid) { ($0, $1) }
-                    .scan([ParticipantItemViewModel]()) { viewModels, args in
-                        let userInfo = args.0
-                        let uid = args.1
-                        return viewModels + [ParticipantItemViewModel(with: userInfo, isSelf: uid == userInfo.uid)]
+                    .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
+                        return viewModels + [ParticipantItemViewModel(with: userInfo, isSelf: self.uid == userInfo.uid)]
                     }
             }
 
@@ -57,10 +55,28 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         let chatRoomTitle = Driver.from([self.chatRoom.title])
 
+        let sideEvent = input.side
+            .flatMapFirst { [unowned self] side in
+                self.userInfoUsecase.vote(roomID: self.chatRoom.uid, userID: uid, side: side)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let selectedSide = Observable<Side>.create {
+            $0.onNext(Side.agree)
+            return Disposables.create()
+        }.asDriverOnErrorJustComplete()
+
+        let events = Driver.of(
+            calendarEvent,
+            sideEvent
+        )
+            .merge()
+
         return Output(
             chatRoomTitle: chatRoomTitle,
+            selectedSide: selectedSide,
             participants: participants,
-            calendarEvent: calendarEvent
+            events: events
         )
     }
 
@@ -71,12 +87,14 @@ extension ChatRoomSideMenuViewModel {
     struct Input {
         let viewWillAppear: Driver<Void>
         let calendar: Driver<Void>
+        let side: Driver<Side>
     }
     
     struct Output {
         let chatRoomTitle: Driver<String>
+        let selectedSide: Driver<Side>
         let participants: Driver<[ParticipantItemViewModel]>
-        let calendarEvent: Driver<Void>
+        let events: Driver<Void>
     }
 
 }

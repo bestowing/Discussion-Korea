@@ -52,9 +52,10 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
 
     // MARK: - methods
 
-    func toChatRoomSideMenu(_ chatRoom: ChatRoom) {
+    func toChatRoomSideMenu(_ uid: String, _ chatRoom: ChatRoom) {
         let viewController = ChatRoomSideMenuViewController()
         let viewModel = ChatRoomSideMenuViewModel(
+            uid: uid,
             chatRoom: chatRoom,
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             navigator: self

@@ -7,7 +7,7 @@
 
 protocol ChatRoomSideMenuNavigator {
 
-    func toChatRoomSideMenu(_ chatRoom: ChatRoom)
+    func toChatRoomSideMenu(_ uid: String, _ chatRoom: ChatRoom)
     func toChatRoomSchedule(_ chatRoom: ChatRoom)
 
 }

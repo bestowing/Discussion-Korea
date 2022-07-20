@@ -59,14 +59,14 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         self.navigationController.navigationBar.standardAppearance = appearance
     }
 
-    func toSideMenu(_ chatRoom: ChatRoom) {
+    func toSideMenu(_ uid: String, _ chatRoom: ChatRoom) {
         guard let presentingViewController = presentingViewController
         else { return }
         let navigator = DefaultChatRoomSideMenuNavigator(
             services: self.services,
             presentedViewController: presentingViewController
         )
-        navigator.toChatRoomSideMenu(chatRoom)
+        navigator.toChatRoomSideMenu(uid, chatRoom)
     }
 
     func toEnterAlert() -> Observable<Bool> {

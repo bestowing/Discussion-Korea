@@ -224,7 +224,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         let sideMenuEvent = input.menu
             .do(onNext: { [unowned self] in
-                self.navigator.toSideMenu(self.chatRoom)
+                self.navigator.toSideMenu(self.uid, self.chatRoom)
             })
 
         let writingChat = input.trigger
