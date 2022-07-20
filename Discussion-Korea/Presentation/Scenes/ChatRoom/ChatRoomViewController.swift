@@ -28,21 +28,7 @@ final class ChatRoomViewController: UIViewController {
         return button
     }()
 
-    private let noticeView: UILabel = {
-        let label = PaddingLabel(padding: UIEdgeInsets(
-            top: 8.0, left: 20.0, bottom: 8.0, right: 20.0)
-        )
-        label.numberOfLines = 2
-        label.isHidden = true
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = .label
-        label.backgroundColor = UIColor.systemBackground
-//        label.layer.cornerRadius = 4
-        label.layer.shadowOpacity = 0.15
-        label.layer.shadowOffset = CGSize(width: 0, height: 1)
-        label.layer.masksToBounds = false
-        return label
-    }()
+    private let noticeView = NoticeView()
 
     private let chatPreview = ChatPreview()
 
@@ -276,7 +262,7 @@ final class ChatRoomViewController: UIViewController {
         output.notice.map { $0.isEmpty }.drive(self.noticeView.rx.isHidden)
             .disposed(by: self.disposeBag)
 
-        output.notice.drive(self.noticeView.rx.text)
+        output.notice.drive { [unowned self] in self.noticeView.bind(with: $0) }
             .disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)

@@ -147,6 +147,7 @@
 		3FBDBC412886EAFF00A09BF4 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBDBC402886EAFF00A09BF4 /* RxCocoa */; };
 		3FBDBC432886EAFF00A09BF4 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBDBC422886EAFF00A09BF4 /* RxSwift */; };
 		3FBDBC452886EAFF00A09BF4 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBDBC442886EAFF00A09BF4 /* RxTest */; };
+		3FBDBC472887E00B00A09BF4 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC462887E00B00A09BF4 /* NoticeView.swift */; };
 		3FF62D9F282D93F1001F343C /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF62D9E282D93F1001F343C /* Side.swift */; };
 /* End PBXBuildFile section */
 
@@ -257,6 +258,7 @@
 		3FBDBC112886E3A100A09BF4 /* DefaultEnterGuestNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnterGuestNavigator.swift; sourceTree = "<group>"; };
 		3FBDBC132886E3CB00A09BF4 /* DefaultHomeNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHomeNavigator.swift; sourceTree = "<group>"; };
 		3FBDBC152886E3DF00A09BF4 /* DefaultSettingNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSettingNavigator.swift; sourceTree = "<group>"; };
+		3FBDBC462887E00B00A09BF4 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		3FF62D9E282D93F1001F343C /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -442,6 +444,7 @@
 				3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */,
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
+				3FBDBC462887E00B00A09BF4 /* NoticeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -777,6 +780,7 @@
 				3FBDBC082886E28300A09BF4 /* DefaultAddDiscussionNavigator.swift in Sources */,
 				3F910435283FB29200446239 /* EnterGuestNavigator.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
+				3FBDBC472887E00B00A09BF4 /* NoticeView.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,
