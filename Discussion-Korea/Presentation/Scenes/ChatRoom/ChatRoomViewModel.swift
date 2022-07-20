@@ -66,7 +66,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .map {
                 if $0 == -1 { return "" }
-                return "남은 시간: \(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))"
+                return "\(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))"
             }
 
         let enterEvent: Driver<Void> = input.trigger
