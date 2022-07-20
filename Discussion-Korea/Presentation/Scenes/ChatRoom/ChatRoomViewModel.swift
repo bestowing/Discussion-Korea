@@ -105,8 +105,6 @@ final class ChatRoomViewModel: ViewModelType {
                     }
             }
 
-        // 배열을 방출한다
-        // 여기서 오는건
         let remainChats = input.trigger
             .flatMapFirst { [unowned self] in
                 self.chatsUsecase.chats(roomUID: self.chatRoom.uid)
@@ -162,13 +160,6 @@ final class ChatRoomViewModel: ViewModelType {
                 self.chatsUsecase.masking(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-
-//        let maskingChatItems = Driver.combineLatest(masking.startWith(""), chatItems)
-//            .map { (uid: String, models) -> [ChatItemViewModel] in
-//                let model = models.first { $0.chat.uid == uid }
-//                model?.chat.toxic = true
-//                return models
-//            }
 
         let status = input.trigger
             .flatMapFirst { [unowned self] in
@@ -340,7 +331,6 @@ extension ChatRoomViewModel {
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>
-//        let chatItems: Driver<([ChatItemViewModel], Bool)>
     }
 
 }

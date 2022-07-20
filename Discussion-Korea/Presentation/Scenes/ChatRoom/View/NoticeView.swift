@@ -27,8 +27,6 @@ final class NoticeView: UIView {
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 15.0)
         label.textColor = .label
-//        label.backgroundColor = UIColor.systemBackground
-//        label.layer.cornerRadius = 4
         label.lineBreakMode = .byTruncatingHead
         label.layer.shadowOpacity = 0.15
         label.layer.shadowOffset = CGSize(width: 0, height: 1)
