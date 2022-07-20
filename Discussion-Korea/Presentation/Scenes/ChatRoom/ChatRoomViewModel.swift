@@ -175,7 +175,6 @@ final class ChatRoomViewModel: ViewModelType {
                 self.discussionUsecase.status(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-//            .startWith(0)
 
         let side = input.trigger
             .flatMapFirst { [unowned self] in
@@ -237,11 +236,10 @@ final class ChatRoomViewModel: ViewModelType {
                 self.navigator.toSideMenu(self.chatRoom)
             })
 
-        let writingChats = input.trigger
+        let writingChat = input.trigger
             .flatMapFirst { [unowned self] _ in
                 self.chatsUsecase.getEditing(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .filter { [unowned self] in return $0.userID != self.uid }
             }
             .withLatestFrom(userInfos) { ($0, $1) }
             .map { chat, userInfos -> ChatItemViewModel in
@@ -304,13 +302,13 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
-            writingChats: writingChats,
+            remainTime: remainTime,
             chatItems: chatItems,
             mask: masking,
             toBottom: input.previewTouched,
             sendEnable: canSend,
             isPreviewHidden: input.bottomScrolled,
-            notice: remainTime,
+            realTimeChat: writingChat,
             editableEnable: canEditable,
             sendEvent: sendEvent,
             events: events
@@ -332,13 +330,13 @@ extension ChatRoomViewModel {
     }
 
     struct Output {
-        let writingChats: Driver<ChatItemViewModel>
+        let remainTime: Driver<String>
         let chatItems: Driver<ChatItemViewModel>
         let mask: Driver<String>
         let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
         let isPreviewHidden: Driver<Bool>
-        let notice: Driver<String>
+        let realTimeChat: Driver<ChatItemViewModel>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>
