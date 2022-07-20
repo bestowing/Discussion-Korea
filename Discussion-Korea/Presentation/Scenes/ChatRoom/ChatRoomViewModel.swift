@@ -113,38 +113,6 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let _ = remainChats
-            .withLatestFrom(userInfos) { ($0, $1) }
-            .map { [unowned self] (chats, userInfos) -> [ChatItemViewModel] in
-                let uid = self.uid
-                var viewModels = [ChatItemViewModel]()
-                for chat in chats {
-                    var chat = chat
-                    chat.nickName = userInfos[chat.userID]?.nickname
-                    chat.profileURL = userInfos[chat.userID]?.profileURL
-                    let newItemViewModel: ChatItemViewModel
-                    if let last = viewModels.last,
-                       last.chat.userID == chat.userID,
-                       let lastDate = last.chat.date,
-                       let currentDate = chat.date,
-                       Int(currentDate.timeIntervalSince(lastDate)) < 60 {
-                        viewModels.last?.chat.date = nil
-                    }
-                    if chat.userID == uid {
-                        newItemViewModel = SelfChatItemViewModel(with: chat)
-                    } else {
-                        if let last = viewModels.last,
-                           last.chat.userID == chat.userID {
-                            newItemViewModel = SerialOtherChatItemViewModel(with: chat)
-                        } else {
-                            newItemViewModel = OtherChatItemViewModel(with: chat)
-                        }
-                    }
-                    viewModels.append(newItemViewModel)
-                }
-                return viewModels
-            }
-
         let chats = remainChats
         // FIXME: 고치기
             .flatMapFirst { [unowned self] remains in
