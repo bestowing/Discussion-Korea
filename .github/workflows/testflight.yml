@@ -1,0 +1,73 @@
+name: Testflight
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    env: 
+      XC_PROJECT: ${{ 'Discussion-Korea.xcodeproj' }}
+      XC_SCHEME: ${{ 'Discussion-Korea' }}
+      XC_ARCHIVE: ${{ 'Discussion-Korea.xcarchive' }}
+
+      ENCRYPTED_CERTS_FILE_PATH: ${{ '.github/secrets/certs.p12.gpg' }}
+      DECRYPTED_CERTS_FILE_PATH: ${{ '.github/secrets/certs.p12' }} # 어디에 복호화 할 것인지 명시
+      CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTO_PWD }}
+
+      ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/distribution_discussion_Korea.mobileprovision.gpg' }}
+      DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/distribution_discussion_Korea.mobileprovision' }} # 어디에 복호화 할 것인지 명시
+      PROFILES_ENCRYPTO_PWD: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
+
+      CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
+
+      KEYCHAIN: ${{ 'test.keychain' }} # GitHub가상 머신에 키체인 생성할때의 이름
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Select latest Xcode
+      run: "sudo xcode-select -s /Applications/Xcode.app"
+    - name: Configure Keychain
+      run: | 
+        security create-keychain -p "" "$KEYCHAIN" 
+        security list-keychains -s "$KEYCHAIN" 
+        security default-keychain -s "$KEYCHAIN" 
+        security unlock-keychain -p "" "$KEYCHAIN"
+        security set-keychain-settings
+    - name : Configure Code Signing
+      run: | 
+        gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERTS_ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
+        gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROFILES_ENCRYPTO_PWD" "$ENCRYPTED_PROVISION_FILE_PATH"
+        security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$CERTS_EXPORT_PWD" -A
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+        echo `ls .github/secrets/*.mobileprovision`
+        # 프로파일들을 rename하고 새로만든 디렉토리에 복사
+        for PROVISION in `ls .github/secrets/*.mobileprovision`
+          do
+            UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+          cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+          done
+    - name: Archive
+      run: | 
+        xcodebuild archive -project "$XC_PROJECT" -scheme "$XC_SCHEME" -configuration release -archivePath "$XC_ARCHIVE"
+    - name: Export app
+      run: | 
+        xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+    - name: Upload app to TestFlight
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-path: 'Discussion-Korea.ipa'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+    - name: action-slack
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        author_name: Github Action Test # default: 8398a7@action-slack
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: always() # Pick up events even if the job fails or is canceled.
