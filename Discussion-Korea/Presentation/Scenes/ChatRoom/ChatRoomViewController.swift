@@ -18,7 +18,15 @@ final class ChatRoomViewController: UIViewController {
     var viewModel: ChatRoomViewModel!
 
     private var itemViewModels: [ChatItemViewModel] = []
-    private var writingViewModels: [ChatItemViewModel] = []
+
+    private let time: UIBarButtonItem = {
+        let item = UIBarButtonItem()
+        item.tintColor = .label
+        item.setTitleTextAttributes(
+            [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)], for: .normal
+        )
+        return item
+    }()
 
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -28,22 +36,7 @@ final class ChatRoomViewController: UIViewController {
         return button
     }()
 
-    private let noticeView: UILabel = {
-        let label = PaddingLabel(padding: UIEdgeInsets(
-            top: 8.0, left: 20.0, bottom: 8.0, right: 20.0)
-        )
-        label.numberOfLines = 2
-        label.isHidden = true
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = .label
-        label.backgroundColor = UIColor.systemBackground
-//        label.layer.cornerRadius = 4
-        label.layer.shadowOpacity = 0.15
-        label.layer.shadowOffset = CGSize(width: 0, height: 1)
-        label.layer.masksToBounds = false
-        return label
-    }()
-
+    private let noticeView = NoticeView()
     private let chatPreview = ChatPreview()
 
     private let messageCollectionView: UICollectionView = {
@@ -131,12 +124,11 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.sendButton)
         self.view.addSubview(self.chatPreview)
         self.view.addSubview(self.messageTextView)
-        self.navigationItem.rightBarButtonItem = self.menuButton
+        self.navigationItem.rightBarButtonItems = [self.menuButton, self.time]
         self.noticeView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.height.greaterThanOrEqualTo(50)
         }
         self.messageCollectionView.dataSource = self
         self.messageCollectionView.snp.makeConstraints { make in
@@ -215,31 +207,7 @@ final class ChatRoomViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.writingChats
-            .withLatestFrom(bottomScrolled) { ($0, $1) }
-            .drive { [unowned self] model, scrolled in
-            if let modelIndex = self.writingViewModels.firstIndex(where: { $0.chat.uid == model.chat.uid }) {
-                if model.content.isEmpty {
-                    self.writingViewModels.remove(at: modelIndex)
-                    self.messageCollectionView.deleteItems(at: [IndexPath(item: modelIndex, section: 1)])
-                } else {
-                    let indexPath = IndexPath(item: modelIndex, section: 1)
-                    self.writingViewModels[modelIndex] = model
-                    self.messageCollectionView.reloadItems(at: [indexPath])
-                    if scrolled {
-                        self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                    }
-                }
-            } else {
-                guard !model.content.isEmpty else { return }
-                let indexPath = IndexPath(item: self.writingViewModels.count, section: 1)
-                self.writingViewModels.append(model)
-                self.messageCollectionView.insertItems(at: [indexPath])
-                if scrolled {
-                    self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                }
-            }
-        }.disposed(by: self.disposeBag)
+        output.remainTime.drive(self.time.rx.title).disposed(by: self.disposeBag)
 
         output.chatItems
             .withLatestFrom(bottomScrolled) { ($0, $1) }
@@ -273,11 +241,9 @@ final class ChatRoomViewController: UIViewController {
             .drive(self.chatPreview.rx.isHidden)
             .disposed(by: self.disposeBag)
 
-        output.notice.map { $0.isEmpty }.drive(self.noticeView.rx.isHidden)
-            .disposed(by: self.disposeBag)
-
-        output.notice.drive(self.noticeView.rx.text)
-            .disposed(by: self.disposeBag)
+        output.realTimeChat.drive { [unowned self] in
+            self.noticeView.bind(with: $0)
+        }.disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
@@ -299,16 +265,12 @@ final class ChatRoomViewController: UIViewController {
 
 extension ChatRoomViewController: UICollectionViewDataSource {
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return section == 0 ? self.itemViewModels.count : self.writingViewModels.count
+        return self.itemViewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = indexPath.section == 0 ? self.itemViewModels[indexPath.item] : self.writingViewModels[indexPath.item]
+        let model = self.itemViewModels[indexPath.item]
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? ChatCell
         else { return UICollectionViewCell() }
         cell.bind(model)
