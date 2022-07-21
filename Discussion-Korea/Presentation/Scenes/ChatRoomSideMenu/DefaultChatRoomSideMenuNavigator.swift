@@ -57,7 +57,7 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
         let viewModel = ChatRoomSideMenuViewModel(
             uid: uid,
             chatRoom: chatRoom,
-            navigator: self
+            navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             discussionUsecase: self.services.makeDiscussionUsecase()
         )
