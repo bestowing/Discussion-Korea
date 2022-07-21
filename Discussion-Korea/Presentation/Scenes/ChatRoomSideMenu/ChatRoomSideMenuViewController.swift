@@ -168,7 +168,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.selectedSide.drive {
+        output.selectedSide.drive { [unowned self] in
             let indexes = [Side.agree, Side.disagree, Side.judge]
             guard let index = indexes.firstIndex(of: $0)
             else { return }
