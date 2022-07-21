@@ -21,7 +21,7 @@ final class FirebaseChatRoomsUsecase: ChatRoomsUsecase {
     }
 
     func create(chatRoom: ChatRoom) -> Observable<Void> {
-        self.reference.addChatRoom(chatRoom: chatRoom)
+        self.reference.add(chatRoom: chatRoom)
     }
 
     func latestChat(chatRoomID: String) -> Observable<Chat> {

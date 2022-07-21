@@ -56,15 +56,16 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
         let chatRoomTitle = Driver.from([self.chatRoom.title])
 
         let sideEvent = input.side
-            .flatMapFirst { [unowned self] side in
-                self.userInfoUsecase.vote(roomID: self.chatRoom.uid, userID: uid, side: side)
+            .flatMap { [unowned self] side in
+                self.userInfoUsecase.support(side: side, roomID: self.chatRoom.uid, userID: self.uid)
                     .asDriverOnErrorJustComplete()
             }
 
-        let selectedSide = Observable<Side>.create {
-            $0.onNext(Side.agree)
-            return Disposables.create()
-        }.asDriverOnErrorJustComplete()
+        let supportSide = input.viewWillAppear
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.supporter(roomID: self.chatRoom.uid, userID: self.uid)
+                    .asDriverOnErrorJustComplete()
+            }
 
         let events = Driver.of(
             calendarEvent,
@@ -74,7 +75,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         return Output(
             chatRoomTitle: chatRoomTitle,
-            selectedSide: selectedSide,
+            selectedSide: supportSide,
             participants: participants,
             events: events
         )

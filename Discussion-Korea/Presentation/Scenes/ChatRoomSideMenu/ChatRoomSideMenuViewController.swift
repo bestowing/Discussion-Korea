@@ -155,7 +155,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             calendar: self.calendarButton.rx.tap.asDriver(),
-            side: self.sideControl.rx.value.map {
+            side: self.sideControl.rx.value.distinctUntilChanged().filter { (0...2) ~= $0 }.map {
                 switch $0 {
                 case 0:
                     return .agree
