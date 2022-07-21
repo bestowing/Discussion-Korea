@@ -186,6 +186,10 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.chatRoomTitle.drive(self.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
 
+        output.discussionOngoing.map { !$0 }
+            .drive(self.sideControl.rx.isHidden)
+            .disposed(by: self.disposeBag)
+
         output.events.drive()
             .disposed(by: self.disposeBag)
 

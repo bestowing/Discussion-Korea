@@ -57,6 +57,14 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             })
 
         let chatRoomTitle = Driver.from([self.chatRoom.title])
+        
+        let status = input.viewWillAppear
+            .flatMapFirst { [unowned self] in
+                self.discussionUsecase.status(roomUID: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let discussionOngoing: Driver<Bool> = status.map { $0 > 1 }
 
         let sideEvent = input.side
             .flatMap { [unowned self] side in
@@ -80,6 +88,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             chatRoomTitle: chatRoomTitle,
             selectedSide: supportSide,
             participants: participants,
+            discussionOngoing: discussionOngoing,
             events: events
         )
     }
@@ -98,6 +107,7 @@ extension ChatRoomSideMenuViewModel {
         let chatRoomTitle: Driver<String>
         let selectedSide: Driver<Side>
         let participants: Driver<[ParticipantItemViewModel]>
+        let discussionOngoing: Driver<Bool>
         let events: Driver<Void>
     }
 
