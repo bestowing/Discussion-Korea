@@ -78,6 +78,11 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let selectedSide: Driver<Side?> = Driver.combineLatest(discussionOngoing, supportSide) {
+            guard $0 else { return nil }
+            return $1
+        }
+
         let events = Driver.of(
             calendarEvent,
             sideEvent
@@ -86,7 +91,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         return Output(
             chatRoomTitle: chatRoomTitle,
-            selectedSide: supportSide,
+            selectedSide: selectedSide,
             participants: participants,
             discussionOngoing: discussionOngoing,
             events: events
@@ -105,7 +110,7 @@ extension ChatRoomSideMenuViewModel {
     
     struct Output {
         let chatRoomTitle: Driver<String>
-        let selectedSide: Driver<Side>
+        let selectedSide: Driver<Side?>
         let participants: Driver<[ParticipantItemViewModel]>
         let discussionOngoing: Driver<Bool>
         let events: Driver<Void>

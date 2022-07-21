@@ -168,11 +168,23 @@ final class ChatRoomSideMenuViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.selectedSide.drive { [unowned self] in
+        output.selectedSide.drive { [unowned self] side in
+            guard let side = side else { return }
             let indexes = [Side.agree, Side.disagree, Side.judge]
-            guard let index = indexes.firstIndex(of: $0)
+            guard let index = indexes.firstIndex(of: side)
             else { return }
             self.sideControl.selectedSegmentIndex = index
+        }.disposed(by: self.disposeBag)
+
+        output.selectedSide.map { (side: Side?) -> UIColor? in
+            guard let side = side else { return nil }
+            let dictionary: [Side: UIColor?] = [
+                Side.agree: UIColor(named: Side.agree.rawValue),
+                Side.disagree: UIColor(named: Side.disagree.rawValue)
+            ]
+            return dictionary[side] ?? nil
+        }.drive { [unowned self] color in
+            self.view.backgroundColor = color ?? UIColor.systemGray6
         }.disposed(by: self.disposeBag)
 
         output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
