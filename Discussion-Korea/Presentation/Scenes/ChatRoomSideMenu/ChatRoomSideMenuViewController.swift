@@ -186,7 +186,13 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.chatRoomTitle.drive(self.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
 
-        output.discussionOngoing.map { !$0 }
+        output.discussionOngoing.do(onNext: { [unowned self] isOngoing in
+            self.participantLabel.snp.remakeConstraints { make in
+                make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+                make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
+                make.top.equalTo(isOngoing ? self.sideControl.snp.bottom : self.line2.snp.bottom).offset(20)
+            }
+        }).map { !$0 }
             .drive(self.sideControl.rx.isHidden)
             .disposed(by: self.disposeBag)
 
