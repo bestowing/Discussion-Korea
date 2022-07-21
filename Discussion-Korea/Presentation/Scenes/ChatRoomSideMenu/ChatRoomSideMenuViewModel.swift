@@ -15,20 +15,23 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     private let uid: String
     private let chatRoom: ChatRoom
+    private let navigator: ChatRoomSideMenuNavigator
 
     private let userInfoUsecase: UserInfoUsecase
-    private let navigator: ChatRoomSideMenuNavigator
+    private let discussionUsecase: DiscussionUsecase
 
     // MARK: - init/deinit
 
     init(uid: String,
          chatRoom: ChatRoom,
+         navigator: ChatRoomSideMenuNavigator,
          userInfoUsecase: UserInfoUsecase,
-         navigator: ChatRoomSideMenuNavigator) {
+         discussionUsecase: DiscussionUsecase) {
         self.uid = uid
         self.chatRoom = chatRoom
-        self.userInfoUsecase = userInfoUsecase
         self.navigator = navigator
+        self.userInfoUsecase = userInfoUsecase
+        self.discussionUsecase = discussionUsecase
     }
 
     deinit {

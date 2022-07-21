@@ -57,8 +57,9 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
         let viewModel = ChatRoomSideMenuViewModel(
             uid: uid,
             chatRoom: chatRoom,
-            userInfoUsecase: self.services.makeUserInfoUsecase(),
             navigator: self
+            userInfoUsecase: self.services.makeUserInfoUsecase(),
+            discussionUsecase: self.services.makeDiscussionUsecase()
         )
         viewController.viewModel = viewModel
         let menu = DefaultSideMenuNavigation(rootViewController: viewController)
