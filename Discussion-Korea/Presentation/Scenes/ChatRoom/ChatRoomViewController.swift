@@ -36,7 +36,7 @@ final class ChatRoomViewController: UIViewController {
         return button
     }()
 
-    private let noticeView = NoticeView()
+    private let liveChatView = LiveChatView()
     private let chatPreview = ChatPreview()
 
     private let messageCollectionView: UICollectionView = {
@@ -117,7 +117,7 @@ final class ChatRoomViewController: UIViewController {
 
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
-        self.view.addSubview(self.noticeView)
+        self.view.addSubview(self.liveChatView)
         let inputBackground = UIView()
         inputBackground.backgroundColor = .systemBackground
         self.view.addSubview(inputBackground)
@@ -125,7 +125,7 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.chatPreview)
         self.view.addSubview(self.messageTextView)
         self.navigationItem.rightBarButtonItems = [self.menuButton, self.time]
-        self.noticeView.snp.makeConstraints { make in
+        self.liveChatView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -241,9 +241,8 @@ final class ChatRoomViewController: UIViewController {
             .drive(self.chatPreview.rx.isHidden)
             .disposed(by: self.disposeBag)
 
-        output.realTimeChat.drive { [unowned self] in
-            self.noticeView.bind(with: $0)
-        }.disposed(by: self.disposeBag)
+        output.realTimeChat.drive(self.liveChatView.rx.chatViewModel)
+            .disposed(by: self.disposeBag)
 
         output.sendEnable.drive(self.sendButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
