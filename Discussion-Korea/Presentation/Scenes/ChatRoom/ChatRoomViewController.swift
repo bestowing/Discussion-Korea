@@ -85,10 +85,6 @@ final class ChatRoomViewController: UIViewController {
         sendButton.setBackgroundImage(UIImage(systemName: "paperplane.fill"), for: .normal)
         sendButton.setBackgroundImage(UIImage(systemName: "paperplane"), for: .disabled)
         sendButton.tintColor = UIColor.accentColor
-        // TODO: 보내기버튼 둥글게 적용하기
-//        sendButton.layer.borderColor = UIColor.primaryColor?.cgColor
-//        sendButton.layer.borderWidth = 1.0
-//        sendButton.layer.cornerRadius = 13
         sendButton.isEnabled = false
         sendButton.accessibilityLabel = "채팅 보내기"
         return sendButton
@@ -141,7 +137,6 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.bottom.equalTo(self.messageCollectionView.snp.bottom).offset(-10)
-//            make.height.equalTo(30)
         }
         inputBackground.snp.makeConstraints { make in
             make.leading.equalToSuperview()
