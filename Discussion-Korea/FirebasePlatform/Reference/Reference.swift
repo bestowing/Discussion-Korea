@@ -612,6 +612,29 @@ final class Reference {
         }
     }
 
+    func opinions(of roomID: String) -> Observable<(UInt, UInt)> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(roomID)/supporters").observe(.value) { snapshot in
+                guard let dictionary = snapshot.value as? NSDictionary
+                else { return }
+                let agree: UInt
+                if let agrees = dictionary[Side.agree.rawValue] as? [String] {
+                    agree = UInt(agrees.count)
+                } else {
+                    agree = 0
+                }
+                let disagree: UInt
+                if let disagrees = dictionary[Side.disagree.rawValue] as? [String] {
+                    disagree = UInt(disagrees.count)
+                } else {
+                    disagree = 0
+                }
+                subscribe.onNext((agree, disagree))
+            }
+            return Disposables.create()
+        }
+    }
+
 }
 
 // 포지션 값도 키값으로 해야 할듯

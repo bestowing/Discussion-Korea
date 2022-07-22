@@ -64,6 +64,20 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let opinions = input.viewWillAppear
+            .flatMapFirst { [unowned self] in
+                self.discussionUsecase.opinions(roomID: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let ratioOpinions: Driver<Double> = opinions
+            .map { (agree, disagree) in
+                if agree == 0 && disagree == 0 { return 0.5 }
+                else if agree == 0 { return 0.0 }
+                else if disagree == 0 { return 1.0 }
+                return Double(agree) / Double((agree + disagree))
+            }
+
         let discussionOngoing: Driver<Bool> = status.map { $0 > 1 }
 
         let sideEvent = input.side
@@ -92,6 +106,9 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
         return Output(
             chatRoomTitle: chatRoomTitle,
             selectedSide: selectedSide,
+            agreeOpinions: opinions.map { $0.0 },
+            disagreeOpinions: opinions.map { $0.1 },
+            ratioOpinions: ratioOpinions,
             participants: participants,
             discussionOngoing: discussionOngoing,
             events: events
@@ -111,6 +128,9 @@ extension ChatRoomSideMenuViewModel {
     struct Output {
         let chatRoomTitle: Driver<String>
         let selectedSide: Driver<Side?>
+        let agreeOpinions: Driver<UInt>
+        let disagreeOpinions: Driver<UInt>
+        let ratioOpinions: Driver<Double>
         let participants: Driver<[ParticipantItemViewModel]>
         let discussionOngoing: Driver<Bool>
         let events: Driver<Void>

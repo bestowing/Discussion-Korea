@@ -82,7 +82,7 @@ final class OpinionView: UIView {
         self.agreeView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(self.supportLabel.snp.bottom).offset(10)
-            make.width.equalTo(self.chartView.snp.width).multipliedBy(0.5).priority(.medium).constraint
+            make.width.equalTo(self.chartView.snp.width).multipliedBy(0.5).priority(.medium)
             make.width.greaterThanOrEqualTo(30).priority(.high)
             make.height.equalTo(50)
         }
@@ -107,6 +107,18 @@ extension Reactive where Base: OpinionView {
         return base.sideControl.rx.value
     }
 
+    var agree: Binder<UInt> {
+        return Binder(self.base) { opinionView, agree in
+            opinionView.agreeView.text = String(agree)
+        }
+    }
+
+    var disagree: Binder<UInt> {
+        return Binder(self.base) { opinionView, disagree in
+            opinionView.disagreeView.text = String(disagree)
+        }
+    }
+
     var ratio: Binder<Double> {
         return Binder(self.base) { opinionView, ratio in
             opinionView.agreeView.snp.remakeConstraints { make in
@@ -115,6 +127,9 @@ extension Reactive where Base: OpinionView {
                 make.width.equalTo(opinionView.chartView.snp.width).multipliedBy(ratio).priority(.medium)
                 make.width.greaterThanOrEqualTo(30).priority(.high)
                 make.height.equalTo(50)
+            }
+            UIView.animate(withDuration: 0.3) {
+                opinionView.layoutIfNeeded()
             }
         }
     }

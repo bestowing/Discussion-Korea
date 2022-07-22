@@ -166,16 +166,14 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.selectedSide.drive(self.opinionView.rx.side)
             .disposed(by: self.disposeBag)
 
-        output.selectedSide.map { (side: Side?) -> UIColor? in
-            guard let side = side else { return nil }
-            let dictionary: [Side: UIColor?] = [
-                Side.agree: UIColor(named: Side.agree.rawValue),
-                Side.disagree: UIColor(named: Side.disagree.rawValue)
-            ]
-            return dictionary[side] ?? nil
-        }.drive { [unowned self] color in
-            self.view.backgroundColor = color ?? UIColor.systemGray6
-        }.disposed(by: self.disposeBag)
+        output.agreeOpinions.drive(self.opinionView.rx.agree)
+            .disposed(by: self.disposeBag)
+
+        output.disagreeOpinions.drive(self.opinionView.rx.disagree)
+            .disposed(by: self.disposeBag)
+
+        output.ratioOpinions.drive(self.opinionView.rx.ratio)
+            .disposed(by: self.disposeBag)
 
         output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
             let indexPath = IndexPath(item: index, section: 0)
