@@ -49,12 +49,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         return line
     }()
 
-    private let sideControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [
-            "찬성", "반대", "기타"
-        ])
-        return control
-    }()
+    private let opinionView = OpinionView()
 
     private let participantLabel: UILabel = {
         let label = UILabel()
@@ -99,7 +94,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         self.view.addSubview(self.stackView)
         self.stackView.addArrangedSubview(self.calendarButton)
         self.view.addSubview(self.line2)
-        self.view.addSubview(self.sideControl)
+        self.view.addSubview(self.opinionView)
         self.view.addSubview(self.participantLabel)
         self.view.addSubview(self.participantsTableView)
         self.titleLabel.snp.makeConstraints { make in
@@ -129,7 +124,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.top.equalTo(self.stackView.snp.bottom).offset(20)
             make.height.equalTo(1)
         }
-        self.sideControl.snp.makeConstraints { make in
+        self.opinionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.top.equalTo(self.line2.snp.bottom).offset(10)
@@ -137,7 +132,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         self.participantLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
-            make.top.equalTo(self.sideControl.snp.bottom).offset(20)
+            make.top.equalTo(self.opinionView.snp.bottom).offset(20)
         }
         self.participantsTableView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
@@ -155,7 +150,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             calendar: self.calendarButton.rx.tap.asDriver(),
-            side: self.sideControl.rx.value.distinctUntilChanged().filter { (0...2) ~= $0 }.map {
+            side: self.opinionView.rx.value.distinctUntilChanged().filter { (0...2) ~= $0 }.map {
                 switch $0 {
                 case 0:
                     return .agree
@@ -168,13 +163,8 @@ final class ChatRoomSideMenuViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.selectedSide.drive { [unowned self] side in
-            guard let side = side else { return }
-            let indexes = [Side.agree, Side.disagree, Side.judge]
-            guard let index = indexes.firstIndex(of: side)
-            else { return }
-            self.sideControl.selectedSegmentIndex = index
-        }.disposed(by: self.disposeBag)
+        output.selectedSide.drive(self.opinionView.rx.side)
+            .disposed(by: self.disposeBag)
 
         output.selectedSide.map { (side: Side?) -> UIColor? in
             guard let side = side else { return nil }
@@ -202,10 +192,10 @@ final class ChatRoomSideMenuViewController: UIViewController {
             self.participantLabel.snp.remakeConstraints { make in
                 make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
                 make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
-                make.top.equalTo(isOngoing ? self.sideControl.snp.bottom : self.line2.snp.bottom).offset(20)
+                make.top.equalTo(isOngoing ? self.opinionView.snp.bottom : self.line2.snp.bottom).offset(20)
             }
         }).map { !$0 }
-            .drive(self.sideControl.rx.isHidden)
+            .drive(self.opinionView.rx.isHidden)
             .disposed(by: self.disposeBag)
 
         output.events.drive()
