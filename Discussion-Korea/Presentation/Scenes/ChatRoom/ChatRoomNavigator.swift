@@ -16,7 +16,7 @@ enum DiscussionResult {
 protocol ChatRoomNavigator {
 
     func toChatRoom(_ uid: String, _ chatRoom: ChatRoom)
-    func toSideMenu(_ chatRoom: ChatRoom)
+    func toSideMenu(_ uid: String, _ chatRoom: ChatRoom)
     func toEnterAlert() -> Observable<Bool>
     func toSideAlert() -> Observable<Side>
     func toVoteAlert() -> Observable<Side>

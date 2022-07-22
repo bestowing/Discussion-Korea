@@ -18,5 +18,7 @@ protocol UserInfoUsecase {
     func userInfo(roomID: String, with userID: String) -> Observable<UserInfo?>
     func connect(roomID: String) -> Observable<UserInfo>
     func userInfo(userID: String) -> Observable<UserInfo?>
+    func support(side: Side, roomID: String, userID: String) -> Observable<Void>
+    func supporter(roomID: String, userID: String) -> Observable<Side>
 
 }

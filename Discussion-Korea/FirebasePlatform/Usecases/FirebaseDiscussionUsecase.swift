@@ -37,4 +37,8 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference.discussionResult(userID: userID, chatRoomID: chatRoomID)
     }
 
+    func opinions(roomID: String) -> Observable<(UInt, UInt)> {
+        self.reference.opinions(of: roomID)
+    }
+
 }

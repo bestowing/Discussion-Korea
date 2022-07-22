@@ -17,6 +17,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
     var statusStream: Observable<Int>
     var remainTimeStream: Observable<Date>
     var discussionResultStream: Observable<DiscussionResult>
+    var opinionsStream: Observable<(UInt, UInt)>
 
     // MARK: - init/deinit
 
@@ -26,6 +27,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
         self.statusStream = PublishSubject<Int>.init()
         self.remainTimeStream = PublishSubject<Date>.init()
         self.discussionResultStream = PublishSubject<DiscussionResult>.init()
+        self.opinionsStream = PublishSubject<(UInt, UInt)>.init()
     }
 
     // MARK: - methods
@@ -48,6 +50,10 @@ final class MockDiscussionUsecase: DiscussionUsecase {
     
     func discussionResult(userID: String, chatRoomID: String) -> Observable<DiscussionResult> {
         return self.discussionResultStream
+    }
+
+    func opinions(roomID: String) -> Observable<(UInt, UInt)> {
+        return self.opinionsStream
     }
 
 }

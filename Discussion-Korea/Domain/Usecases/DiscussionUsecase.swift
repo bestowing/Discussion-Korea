@@ -15,5 +15,6 @@ protocol DiscussionUsecase {
     func status(roomUID: String) -> Observable<Int>
     func remainTime(roomUID: String) -> Observable<Date>
     func discussionResult(userID: String, chatRoomID: String) -> Observable<DiscussionResult>
+    func opinions(roomID: String) -> Observable<(UInt, UInt)>
 
 }
