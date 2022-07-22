@@ -107,6 +107,12 @@ extension Reactive where Base: OpinionView {
         return base.sideControl.rx.value
     }
 
+    var canParticipate: Binder<Bool> {
+        return Binder(self.base) { opinionView, canParticipate in
+            opinionView.sideControl.isEnabled = canParticipate
+        }
+    }
+
     var agree: Binder<UInt> {
         return Binder(self.base) { opinionView, agree in
             opinionView.agreeView.text = String(agree)

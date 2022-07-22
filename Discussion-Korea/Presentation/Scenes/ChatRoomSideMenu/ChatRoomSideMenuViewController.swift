@@ -163,6 +163,9 @@ final class ChatRoomSideMenuViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
+        output.canParticipate.drive(self.opinionView.rx.canParticipate)
+            .disposed(by: self.disposeBag)
+
         output.selectedSide.drive(self.opinionView.rx.side)
             .disposed(by: self.disposeBag)
 

@@ -57,7 +57,21 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             })
 
         let chatRoomTitle = Driver.from([self.chatRoom.title])
-        
+
+        let side = input.viewWillAppear
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.userInfo(roomID: self.chatRoom.uid, with: self.uid)
+                    .asDriverOnErrorJustComplete()
+                    .map { $0?.side }
+            }
+
+        let canParticipate: Driver<Bool> = side
+            .map { side in
+                guard let side = side
+                else { return true }
+                return ![Side.agree, Side.disagree].contains(side)
+            }
+
         let status = input.viewWillAppear
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.status(roomUID: self.chatRoom.uid)
@@ -105,6 +119,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         return Output(
             chatRoomTitle: chatRoomTitle,
+            canParticipate: canParticipate,
             selectedSide: selectedSide,
             agreeOpinions: opinions.map { $0.0 },
             disagreeOpinions: opinions.map { $0.1 },
@@ -127,6 +142,7 @@ extension ChatRoomSideMenuViewModel {
     
     struct Output {
         let chatRoomTitle: Driver<String>
+        let canParticipate: Driver<Bool>
         let selectedSide: Driver<Side?>
         let agreeOpinions: Driver<UInt>
         let disagreeOpinions: Driver<UInt>
