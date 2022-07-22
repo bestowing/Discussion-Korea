@@ -125,9 +125,9 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.height.equalTo(1)
         }
         self.opinionView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.top.equalTo(self.line2.snp.bottom).offset(10)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
+            make.top.equalTo(self.line2.snp.bottom).offset(20)
         }
         self.participantLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
