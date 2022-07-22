@@ -14,10 +14,12 @@ final class ChatRoomSideMenuViewModelTests: XCTestCase {
 
     // MARK: properties
 
+    private let uid = "testUID"
     private let chatRoom = ChatRoom(uid: "uid", title: "test", adminUID: "testUID")
 
     private var mockNavigator: MockChatRoomSideMenuNavigator!
     private var userInfoUsecase: MockUserInfoUsecase!
+    private var discussionUsecase: MockDiscussionUsecase!
     private var viewModel: ChatRoomSideMenuViewModel!
     private var disposeBag: DisposeBag!
     private var scheduler: TestScheduler!
@@ -28,10 +30,13 @@ final class ChatRoomSideMenuViewModelTests: XCTestCase {
         super.setUp()
         self.mockNavigator = MockChatRoomSideMenuNavigator()
         self.userInfoUsecase = MockUserInfoUsecase()
+        self.discussionUsecase = MockDiscussionUsecase()
         self.viewModel = ChatRoomSideMenuViewModel(
+            uid: self.uid,
             chatRoom: self.chatRoom,
+            navigator: self.mockNavigator,
             userInfoUsecase: self.userInfoUsecase,
-            navigator: self.mockNavigator
+            discussionUsecase: self.discussionUsecase
         )
         self.disposeBag = DisposeBag()
         self.scheduler = TestScheduler(initialClock: 0)
@@ -52,7 +57,7 @@ extension ChatRoomSideMenuViewModelTests {
 
     final class MockChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
 
-        func toChatRoomSideMenu(_ chatRoom: ChatRoom) {}
+        func toChatRoomSideMenu(_ uid: String, _ chatRoom: ChatRoom) {}
 
         func toChatRoomSchedule(_ chatRoom: ChatRoom) {}
 

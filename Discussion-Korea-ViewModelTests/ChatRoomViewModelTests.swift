@@ -605,7 +605,7 @@ extension ChatRoomViewModelTests {
 
         func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {}
 
-        func toSideMenu(_ chatRoom: ChatRoom) {}
+        func toSideMenu(_ uid: String, _ chatRoom: ChatRoom) {}
 
         func toEnterAlert() -> Observable<Bool> {
             self.enterAlertStream

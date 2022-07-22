@@ -20,6 +20,8 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     var roomUserInfoStream: Observable<UserInfo?>
     var connectStream: Observable<UserInfo>
     var userInfoStream: Observable<UserInfo?>
+    var supportStream: Observable<Void>
+    var supporterStream: Observable<Side>
 
     // MARK: - init/deinit
 
@@ -33,6 +35,8 @@ final class MockUserInfoUsecase: UserInfoUsecase {
         self.roomUserInfoStream = PublishSubject<UserInfo?>.init()
         self.connectStream = PublishSubject<UserInfo>.init()
         self.userInfoStream = PublishSubject<UserInfo?>.init()
+        self.supportStream = PublishSubject<Void>.init()
+        self.supporterStream = PublishSubject<Side>.init()
     }
 
     // MARK: - methods
@@ -71,6 +75,14 @@ final class MockUserInfoUsecase: UserInfoUsecase {
 
     func userInfo(userID: String) -> Observable<UserInfo?> {
         return self.userInfoStream
+    }
+
+    func support(side: Side, roomID: String, userID: String) -> Observable<Void> {
+        return self.supportStream
+    }
+    
+    func supporter(roomID: String, userID: String) -> Observable<Side> {
+        return self.supporterStream
     }
 
 }
