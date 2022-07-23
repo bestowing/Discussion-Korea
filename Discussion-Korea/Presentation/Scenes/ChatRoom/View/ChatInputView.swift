@@ -16,15 +16,17 @@ final class ChatInputView: UIView {
     fileprivate let messageTextView: UITextView = {
         let messageTextView = UITextView()
         messageTextView.font = UIFont.systemFont(ofSize: 14.0)
+        messageTextView.backgroundColor = .clear
         messageTextView.isScrollEnabled = false
-        messageTextView.layer.borderColor = UIColor.systemGray5.cgColor
-        messageTextView.layer.borderWidth = 1.0
-        messageTextView.backgroundColor = .systemGray6
-        messageTextView.layer.cornerRadius = 15.0
-        messageTextView.layer.masksToBounds = true
         messageTextView.accessibilityLabel = "채팅 내용"
         messageTextView.accessibilityHint = "채팅할 내용 입력"
         return messageTextView
+    }()
+
+    fileprivate let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12.0)
+        return label
     }()
 
     fileprivate let sendButton: UIButton = {
@@ -51,17 +53,38 @@ final class ChatInputView: UIView {
 
     private func setSubviews() {
         self.backgroundColor = .systemBackground
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .systemGray6
+        backgroundView.layer.borderColor = UIColor.systemGray5.cgColor
+        backgroundView.layer.borderWidth = 1.0
+        backgroundView.layer.cornerRadius = 15.0
+        backgroundView.layer.masksToBounds = true
+        self.addSubview(backgroundView)
         self.addSubview(self.messageTextView)
+        self.addSubview(self.timeLabel)
         self.addSubview(self.sendButton)
-        self.messageTextView.snp.makeConstraints { make in
+        backgroundView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
             make.top.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().offset(-10)
         }
-        self.sendButton.snp.makeConstraints { make in
+        self.messageTextView.snp.contentHuggingHorizontalPriority = 1
+        self.messageTextView.snp.makeConstraints { make in
+            make.leading.equalTo(backgroundView).offset(5)
+            make.top.equalTo(backgroundView).offset(5)
+            make.bottom.equalTo(backgroundView).offset(-5)
+        }
+        self.timeLabel.snp.contentHuggingHorizontalPriority = 999
+        self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 999
+        self.timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.messageTextView.snp.trailing).offset(10)
+            make.trailing.equalTo(backgroundView).offset(-10)
+            make.centerY.equalTo(backgroundView)
+        }
+        self.sendButton.snp.makeConstraints { make in
+            make.leading.equalTo(backgroundView.snp.trailing).offset(10)
             make.trailing.equalToSuperview().offset(-10)
-            make.centerY.equalTo(self.messageTextView)
+            make.centerY.equalTo(backgroundView)
             make.size.equalTo(26)
         }
     }
@@ -93,6 +116,12 @@ extension Reactive where Base: ChatInputView {
     var sendEvent: Binder<Void> {
         return Binder(self.base) { chatInputView, _ in
             chatInputView.messageTextView.text = ""
+        }
+    }
+
+    var remainTime: Binder<String> {
+        return Binder(self.base) { chatInputView, timeString in
+            chatInputView.timeLabel.text = timeString
         }
     }
 
