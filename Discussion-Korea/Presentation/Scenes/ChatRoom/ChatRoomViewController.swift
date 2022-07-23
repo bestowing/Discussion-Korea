@@ -19,15 +19,6 @@ final class ChatRoomViewController: UIViewController {
 
     private var itemViewModels: [ChatItemViewModel] = []
 
-    private let time: UIBarButtonItem = {
-        let item = UIBarButtonItem()
-        item.tintColor = .label
-        item.setTitleTextAttributes(
-            [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)], for: .normal
-        )
-        return item
-    }()
-
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.tintColor = .label
@@ -95,7 +86,7 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.chatPreview)
         self.view.addSubview(self.noticeView)
         self.view.addSubview(self.chatInputView)
-        self.navigationItem.rightBarButtonItems = [self.menuButton, self.time]
+        self.navigationItem.rightBarButtonItem = self.menuButton
         self.noticeView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
