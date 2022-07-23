@@ -160,6 +160,9 @@ final class ChatRoomViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
+        output.myRemainTime.drive(self.chatInputView.rx.remainTime)
+            .disposed(by: self.disposeBag)
+
         output.remainTime.drive(self.noticeView.rx.remainTime)
             .disposed(by: self.disposeBag)
 
