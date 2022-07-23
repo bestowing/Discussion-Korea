@@ -2,44 +2,31 @@
 //  NoticeView.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/07/20.
+//  Created by 이청수 on 2022/07/23.
 //
 
-import SnapKit
 import UIKit
+import RxSwift
 
 final class NoticeView: UIView {
 
     // MARK: properties
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
-        imageView.tintColor = UIColor.white
-        imageView.backgroundColor = .accentColor
-        imageView.layer.cornerRadius = 6
-        imageView.layer.masksToBounds = true
+    fileprivate let iconImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "megaphone.fill"))
+        imageView.tintColor = UIColor.label
         return imageView
     }()
 
-    private let descriptionLabel: UILabel = {
+    fileprivate let contentLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
-        label.textColor = .systemGray
-        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16.0)
         return label
     }()
 
-    private let label: UILabel = {
-        let label = PaddingLabel(padding: UIEdgeInsets(
-            top: 12.0, left: 20.0, bottom: 12.0, right: 20.0)
-        )
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = .label
-        label.lineBreakMode = .byTruncatingHead
-        label.layer.shadowOpacity = 0.15
-        label.layer.shadowOffset = CGSize(width: 0, height: 1)
-        label.layer.masksToBounds = false
+    fileprivate let remainTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14.0)
         return label
     }()
 
@@ -56,38 +43,43 @@ final class NoticeView: UIView {
     }
 
     private func setSubviews() {
-        self.isHidden = true
-        self.backgroundColor = .systemBackground
-        self.addSubview(self.profileImageView)
-        self.addSubview(self.descriptionLabel)
-        self.addSubview(self.label)
-        self.profileImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(35)
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(10)
+        self.layer.cornerRadius = 5.0
+        self.backgroundColor = UIColor.systemBackground
+        self.addSubview(self.iconImageView)
+        self.addSubview(self.contentLabel)
+        self.addSubview(self.remainTimeLabel)
+        self.iconImageView.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().offset(10)
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
+            make.size.equalTo(30)
         }
-        self.descriptionLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(self.profileImageView.snp.bottom).offset(10)
+        self.contentLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.iconImageView.snp.trailing).offset(10)
+            make.top.equalTo(self.iconImageView)
+            make.trailing.equalToSuperview()
         }
-        self.label.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(self.descriptionLabel.snp.bottom)
+        self.remainTimeLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
+            make.leading.trailing.equalTo(self.contentLabel)
+            make.bottom.equalToSuperview().offset(-10)
         }
     }
 
-    // MARK: - methods
+}
 
-    func bind(with viewModel: ChatItemViewModel) {
-        self.isHidden = viewModel.content.isEmpty
-        if let image = viewModel.image {
-            self.profileImageView.image = image
-        } else if let url = viewModel.url {
-            self.profileImageView.setImage(url)
+extension Reactive where Base: NoticeView {
+
+    var content: Binder<String> {
+        return Binder(self.base) { noticeView, content in
+            noticeView.isHidden = content.isEmpty
+            noticeView.contentLabel.text = content
         }
-        self.descriptionLabel.text = "\(viewModel.nickname)님이 작성중입니다..."
-        self.label.text = viewModel.content
-        self.backgroundColor = viewModel.backgroundColor
+    }
+
+    var remainTime: Binder<String> {
+        return Binder(self.base) { noticeView, timeString in
+            noticeView.remainTimeLabel.text = timeString
+        }
     }
 
 }
