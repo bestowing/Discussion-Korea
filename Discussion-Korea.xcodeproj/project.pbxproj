@@ -149,6 +149,7 @@
 		3FBDBC452886EAFF00A09BF4 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBDBC442886EAFF00A09BF4 /* RxTest */; };
 		3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */; };
 		3FBDBC4928892F5700A09BF4 /* OpinionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC4828892F5700A09BF4 /* OpinionView.swift */; };
+		3FBDBC66288B301400A09BF4 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC65288B301400A09BF4 /* NoticeView.swift */; };
 		3FF62D9F282D93F1001F343C /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF62D9E282D93F1001F343C /* Side.swift */; };
 /* End PBXBuildFile section */
 
@@ -261,6 +262,7 @@
 		3FBDBC152886E3DF00A09BF4 /* DefaultSettingNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSettingNavigator.swift; sourceTree = "<group>"; };
 		3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveChatView.swift; sourceTree = "<group>"; };
 		3FBDBC4828892F5700A09BF4 /* OpinionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpinionView.swift; sourceTree = "<group>"; };
+		3FBDBC65288B301400A09BF4 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		3FF62D9E282D93F1001F343C /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -447,6 +449,7 @@
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
 				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
+				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				3F37B3C52820773600DB18B7 /* Chat.swift in Sources */,
 				3FB3579D282618A900F27C77 /* ScheduleCell.swift in Sources */,
 				3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */,
+				3FBDBC66288B301400A09BF4 /* NoticeView.swift in Sources */,
 				3FBDBC122886E3A100A09BF4 /* DefaultEnterGuestNavigator.swift in Sources */,
 				3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */,
 				3F6696A42835BFDB0077E5B3 /* ChatRoomListViewModel.swift in Sources */,

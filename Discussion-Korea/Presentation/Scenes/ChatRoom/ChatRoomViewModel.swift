@@ -218,6 +218,38 @@ final class ChatRoomViewModel: ViewModelType {
                 }
             }
 
+        let noticeContent = status.map { status -> String in
+            // TODO: 하드코딩 고치기
+            switch status {
+            case 2:
+                return "찬성측의 입론 시간"
+            case 3:
+                return "반대측의 입론 시간"
+            case 4:
+                return "자유토론 시간"
+            case 5:
+                return "찬성측의 결론 시간"
+            case 6:
+                return "반대측의 결론 시간"
+            case 7:
+                return "쉬는 시간"
+            case 8:
+                return "반대측의 입론 시간"
+            case 9:
+                return "찬성측의 입론 시간"
+            case 10:
+                return "자유토론 시간"
+            case 11:
+                return "반대측의 결론 시간"
+            case 12:
+                return "찬성측의 결론 시간"
+            case 13:
+                return "투표 시간"
+            default:
+                return ""
+            }
+        }
+
         let canSend = Driver.combineLatest(canEditable, input.content) {
             return $0 && !$1.isEmpty
         }
@@ -294,6 +326,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         return Output(
             remainTime: remainTime,
+            noticeContent: noticeContent,
             chatItems: chatItems,
             mask: masking,
             toBottom: input.previewTouched,
@@ -322,6 +355,7 @@ extension ChatRoomViewModel {
 
     struct Output {
         let remainTime: Driver<String>
+        let noticeContent: Driver<String>
         let chatItems: Driver<ChatItemViewModel>
         let mask: Driver<String>
         let toBottom: Driver<Void>

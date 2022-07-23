@@ -36,6 +36,7 @@ final class ChatRoomViewController: UIViewController {
         return button
     }()
 
+    private let noticeView = NoticeView()
     private let liveChatView = LiveChatView()
     private let chatPreview = ChatPreview()
 
@@ -120,11 +121,17 @@ final class ChatRoomViewController: UIViewController {
         self.view.addSubview(self.sendButton)
         self.view.addSubview(self.chatPreview)
         self.view.addSubview(self.messageTextView)
+        self.view.addSubview(self.noticeView)
         self.navigationItem.rightBarButtonItems = [self.menuButton, self.time]
-        self.liveChatView.snp.makeConstraints { make in
+        self.noticeView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        self.liveChatView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
+            make.top.equalTo(self.noticeView.snp.bottom).offset(5)
         }
         self.messageCollectionView.dataSource = self
         self.messageCollectionView.snp.makeConstraints { make in
@@ -202,7 +209,11 @@ final class ChatRoomViewController: UIViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.remainTime.drive(self.time.rx.title).disposed(by: self.disposeBag)
+        output.remainTime.drive(self.noticeView.rx.remainTime)
+            .disposed(by: self.disposeBag)
+
+        output.noticeContent.drive(self.noticeView.rx.content)
+            .disposed(by: self.disposeBag)
 
         output.chatItems
             .withLatestFrom(bottomScrolled) { ($0, $1) }
