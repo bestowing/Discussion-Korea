@@ -231,6 +231,15 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
+        if self.isFirstHalf {
+            self.send(chat: Chat(
+                userID: "bot", content: "먼저 참가자를 소개하겠습니다. 찬성측에는 \(self.sideManager.agreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(
+                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: now, nickName: nil))
+        }
         // FIXME: 찬성 입론 받아오기
         let timeInterval = self.durations[0] * 60
         let end = Date(timeInterval: timeInterval, since: now)
@@ -407,7 +416,7 @@ final class DiscussionManager {
     }
 
     private func phaseOneEnd() {
-        self.goPhaseTwo(content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되어 토론을 시작합니다. 먼저 찬성측 입론부터 듣겠습니다")
+        self.goPhaseTwo(content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되어 토론을 시작합니다.")
     }
 
     @objc func phaseTwoEnd() {

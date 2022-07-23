@@ -49,6 +49,18 @@ final class SideManager {
         self.observers.append(id)
     }
 
+    func agreeNicknames() -> [String] {
+        return self.agrees.compactMap {
+            return UserInfoManager.shared.userInfos[$0]?.nickname
+        }
+    }
+
+    func disagreeNicknames() -> [String] {
+        return self.disagrees.compactMap {
+            return UserInfoManager.shared.userInfos[$0]?.nickname
+        }
+    }
+
     func endDiscussion() {
         self.agrees = []
         self.disagrees = []
@@ -72,15 +84,7 @@ final class SideManager {
     }
 
     func draw() {
-//        #if DEBUG
-//        let reference = Database
-//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .reference()
-//        #elseif RELEASE
-        let reference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
-            .reference()
-//        #endif
+        let reference = ReferenceManager.reference
         var updates = [String: Any]()
         self.agrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = "draw"
