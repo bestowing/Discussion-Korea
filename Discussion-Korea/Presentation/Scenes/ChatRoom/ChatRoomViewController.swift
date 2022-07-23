@@ -67,30 +67,7 @@ final class ChatRoomViewController: UIViewController {
         return messageCollectionView
     }()
 
-    private let messageTextView: UITextView = {
-        let messageTextView = UITextView()
-        messageTextView.font = UIFont.systemFont(ofSize: 14.0)
-        messageTextView.isScrollEnabled = false
-        messageTextView.layer.borderColor = UIColor.systemGray5.cgColor
-        messageTextView.layer.borderWidth = 1.0
-        messageTextView.backgroundColor = .systemGray6
-        messageTextView.layer.cornerRadius = 15.0
-        messageTextView.layer.masksToBounds = true
-        messageTextView.accessibilityLabel = "채팅 내용"
-        messageTextView.accessibilityHint = "채팅할 내용 입력"
-        return messageTextView
-    }()
-
-    private let sendButton: UIButton = {
-        let sendButton = UIButton()
-        sendButton.setBackgroundImage(UIImage(systemName: "paperplane.fill"), for: .normal)
-        sendButton.setBackgroundImage(UIImage(systemName: "paperplane"), for: .disabled)
-        sendButton.tintColor = UIColor.accentColor
-        sendButton.isEnabled = false
-        sendButton.accessibilityLabel = "채팅 보내기"
-        return sendButton
-    }()
-
+    private let chatInputView = ChatInputView()
     private let disposeBag = DisposeBag()
 
     // MARK: - init/deinit
@@ -115,13 +92,9 @@ final class ChatRoomViewController: UIViewController {
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
         self.view.addSubview(self.liveChatView)
-        let inputBackground = UIView()
-        inputBackground.backgroundColor = .systemBackground
-        self.view.addSubview(inputBackground)
-        self.view.addSubview(self.sendButton)
         self.view.addSubview(self.chatPreview)
-        self.view.addSubview(self.messageTextView)
         self.view.addSubview(self.noticeView)
+        self.view.addSubview(self.chatInputView)
         self.navigationItem.rightBarButtonItems = [self.menuButton, self.time]
         self.noticeView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
@@ -138,29 +111,16 @@ final class ChatRoomViewController: UIViewController {
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
             make.top.equalToSuperview()
-            make.bottom.equalTo(self.messageTextView.snp.top).offset(-10)
         }
         self.chatPreview.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.bottom.equalTo(self.messageCollectionView.snp.bottom).offset(-10)
         }
-        inputBackground.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+        self.chatInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(self.messageCollectionView.snp.bottom)
-            make.bottom.equalTo(self.messageTextView.snp.bottom).offset(10)
-        }
-        self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 751
-        self.messageTextView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).offset(10)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
-        }
-        self.sendButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.messageTextView.snp.trailing).offset(10)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.centerY.equalTo(self.messageTextView)
-            make.width.height.equalTo(26)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
@@ -200,9 +160,9 @@ final class ChatRoomViewController: UIViewController {
             bottomScrolled: bottomScrolled,
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
-            send: self.sendButton.rx.tap.asDriver(),
+            send: self.chatInputView.rx.send.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
-            content: self.messageTextView.rx.text.orEmpty.asDriver(),
+            content: self.chatInputView.rx.chatContent.asDriver(),
             disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete()
@@ -250,17 +210,13 @@ final class ChatRoomViewController: UIViewController {
         output.realTimeChat.drive(self.liveChatView.rx.chatViewModel)
             .disposed(by: self.disposeBag)
 
-        output.sendEnable.drive(self.sendButton.rx.isEnabled)
+        output.sendEnable.drive(self.chatInputView.rx.sendEnable)
             .disposed(by: self.disposeBag)
 
-        output.editableEnable
-            .drive(self.messageTextView.rx.isEditable)
+        output.editableEnable.drive(self.chatInputView.rx.isEditable)
             .disposed(by: self.disposeBag)
 
-        output.sendEvent
-            .drive(onNext: { [unowned self] in
-                self.messageTextView.text = ""
-            })
+        output.sendEvent.drive(self.chatInputView.rx.sendEvent)
             .disposed(by: self.disposeBag)
 
         output.events.drive().disposed(by: self.disposeBag)
