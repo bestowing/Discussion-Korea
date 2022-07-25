@@ -17,8 +17,8 @@ final class SideManager {
         self.chatRoomID = chatRoomID
     }
 
-    @Published private var agrees: [String] = []
-    @Published private var disagrees: [String] = []
+    @Published var agrees: [String] = []
+    @Published var disagrees: [String] = []
     @Published private var judges: [String] = []
     @Published private var observers: [String] = []
 
