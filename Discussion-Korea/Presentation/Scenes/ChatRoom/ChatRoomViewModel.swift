@@ -237,6 +237,7 @@ final class ChatRoomViewModel: ViewModelType {
                 }
                 return date != nil
             }
+            .distinctUntilChanged()
 
         let speakableSide: Driver<Bool> = Driver.combineLatest(status, side)
             .map { status, side -> Bool in
@@ -250,6 +251,7 @@ final class ChatRoomViewModel: ViewModelType {
                     return false
                 }
             }
+            .distinctUntilChanged()
 
         let canEditable: Driver<Bool> = Driver.combineLatest(hasSpeakRight, speakableSide) { $0 && $1 }
 
