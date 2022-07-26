@@ -49,15 +49,19 @@ final class SideManager {
         self.observers.append(id)
     }
 
-    func agreeNicknames() -> [String] {
+    func agreeNicknames() -> [(String, String)] {
         return self.agrees.compactMap {
-            return UserInfoManager.shared.userInfos[$0]?.nickname
+            guard let nickname = UserInfoManager.shared.userInfos[$0]?.nickname
+            else { return nil }
+            return ($0, nickname)
         }
     }
 
-    func disagreeNicknames() -> [String] {
+    func disagreeNicknames() -> [(String, String)] {
         return self.disagrees.compactMap {
-            return UserInfoManager.shared.userInfos[$0]?.nickname
+            guard let nickname = UserInfoManager.shared.userInfos[$0]?.nickname
+            else { return nil }
+            return ($0, nickname)
         }
     }
 

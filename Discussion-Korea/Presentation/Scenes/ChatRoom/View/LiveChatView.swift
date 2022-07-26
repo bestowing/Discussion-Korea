@@ -66,8 +66,13 @@ final class LiveChatView: UIView {
 
 extension Reactive where Base: LiveChatView {
 
-    var chatViewModel: Binder<ChatItemViewModel> {
+    var chatViewModel: Binder<ChatItemViewModel?> {
         return Binder(self.base) { liveChatView, viewModel in
+            guard let viewModel = viewModel
+            else {
+                liveChatView.isHidden = true
+                return
+            }
             liveChatView.isHidden = viewModel.content.isEmpty
             liveChatView.descriptionLabel.text = "\(viewModel.nickname)님이 작성중입니다..."
             liveChatView.label.text = viewModel.content
