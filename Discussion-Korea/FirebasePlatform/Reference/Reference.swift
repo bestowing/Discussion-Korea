@@ -483,7 +483,7 @@ final class Reference {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRoom/\(roomID)/supporters").runTransactionBlock { currentData in
                 if let supporters = currentData.value as? [String: AnyObject] {
-                    var newSupporters: [String: AnyObject] = [:]
+                    var newSupporters: [String: AnyObject] = supporters
                     let sides = [Side.agree, Side.disagree, Side.judge]
                     sides.forEach {
                         if $0 == side {
