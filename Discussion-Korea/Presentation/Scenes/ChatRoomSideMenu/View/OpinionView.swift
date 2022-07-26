@@ -21,6 +21,21 @@ final class OpinionView: UIView {
         return label
     }()
 
+    fileprivate let resultLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
+    private let versusLabel: UILabel = {
+        let label = PaddingLabel(padding: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+        label.text = "VS"
+        label.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        label.backgroundColor = .systemBackground
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        return label
+    }()
+
     fileprivate let chartView: UILabel = {
         let label = UILabel()
         return label
@@ -29,7 +44,7 @@ final class OpinionView: UIView {
     fileprivate let agreeView: UILabel = {
         let label = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
         label.text = "0"
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.font = UIFont.systemFont(ofSize: 13.0, weight: .bold)
         label.textAlignment = .left
         label.layer.cornerRadius = 10.0
         label.layer.masksToBounds = true
@@ -40,7 +55,7 @@ final class OpinionView: UIView {
     fileprivate let disagreeView: UILabel = {
         let label = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10))
         label.text = "0"
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.font = UIFont.systemFont(ofSize: 13.0, weight: .bold)
         label.textAlignment = .right
         label.layer.cornerRadius = 10.0
         label.layer.masksToBounds = true
@@ -69,28 +84,38 @@ final class OpinionView: UIView {
 
     private func setSubviews() {
         self.addSubview(self.supportLabel)
+        self.addSubview(self.resultLabel)
         self.addSubview(self.chartView)
         self.addSubview(self.agreeView)
         self.addSubview(self.disagreeView)
+        self.addSubview(self.versusLabel)
         self.addSubview(self.sideControl)
         self.supportLabel.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
+            make.leading.top.equalToSuperview()
+        }
+        self.resultLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.supportLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(self.supportLabel)
         }
         self.chartView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
+        self.versusLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(self.chartView)
+            make.centerY.equalTo(self.agreeView)
+        }
         self.agreeView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(self.supportLabel.snp.bottom).offset(10)
-            make.width.equalTo(self.chartView.snp.width).multipliedBy(0.5).priority(.medium)
-            make.width.greaterThanOrEqualTo(30).priority(.high)
+            make.width.equalTo(self.chartView.snp.width).multipliedBy(0.48)
+//            make.width.greaterThanOrEqualTo(30).priority(.high)
             make.height.equalTo(50)
         }
         self.disagreeView.snp.makeConstraints { make in
-            make.leading.equalTo(self.agreeView.snp.trailing).priority(.medium)
             make.trailing.equalToSuperview()
             make.top.equalTo(self.agreeView.snp.top)
-            make.width.greaterThanOrEqualTo(30).priority(.high)
+            make.width.equalTo(self.chartView.snp.width).multipliedBy(0.48)
             make.height.equalTo(self.agreeView.snp.height)
         }
         self.sideControl.snp.makeConstraints { make in
@@ -113,33 +138,6 @@ extension Reactive where Base: OpinionView {
         }
     }
 
-    var agree: Binder<UInt> {
-        return Binder(self.base) { opinionView, agree in
-            opinionView.agreeView.text = String(agree)
-        }
-    }
-
-    var disagree: Binder<UInt> {
-        return Binder(self.base) { opinionView, disagree in
-            opinionView.disagreeView.text = String(disagree)
-        }
-    }
-
-    var ratio: Binder<Double> {
-        return Binder(self.base) { opinionView, ratio in
-            opinionView.agreeView.snp.remakeConstraints { make in
-                make.leading.equalToSuperview()
-                make.top.equalTo(opinionView.supportLabel.snp.bottom).offset(10)
-                make.width.equalTo(opinionView.chartView.snp.width).multipliedBy(ratio).priority(.medium)
-                make.width.greaterThanOrEqualTo(30).priority(.high)
-                make.height.equalTo(50)
-            }
-            UIView.animate(withDuration: 0.3) {
-                opinionView.layoutIfNeeded()
-            }
-        }
-    }
-
     var side: Binder<Side?> {
         return Binder(self.base) { opinionView, side in
             guard let side = side else { return }
@@ -147,6 +145,18 @@ extension Reactive where Base: OpinionView {
             guard let index = indexes.firstIndex(of: side)
             else { return }
             opinionView.sideControl.selectedSegmentIndex = index
+        }
+    }
+
+    var agreeAndDisagree: Binder<(UInt, UInt)> {
+        return Binder(self.base) { opinionView, result in
+            let agree = result.0
+            let disagree = result.1
+            opinionView.agreeView.text = (agree < disagree ? "" : "🔥") + String(agree)
+            opinionView.agreeView.textColor = agree > disagree ? .accentColor : .label
+            opinionView.disagreeView.text = String(disagree) + (agree > disagree ? "" : "🔥")
+            opinionView.disagreeView.textColor = disagree > agree ? .accentColor : .label
+            opinionView.resultLabel.text = disagree == agree ? "무승부!" : agree > disagree ? "찬성측 우세!" : "반대측 우세!"
         }
     }
 

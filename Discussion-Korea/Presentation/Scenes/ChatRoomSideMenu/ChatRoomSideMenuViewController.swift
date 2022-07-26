@@ -169,13 +169,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.selectedSide.drive(self.opinionView.rx.side)
             .disposed(by: self.disposeBag)
 
-        output.agreeOpinions.drive(self.opinionView.rx.agree)
-            .disposed(by: self.disposeBag)
-
-        output.disagreeOpinions.drive(self.opinionView.rx.disagree)
-            .disposed(by: self.disposeBag)
-
-        output.ratioOpinions.drive(self.opinionView.rx.ratio)
+        output.opinions.drive(self.opinionView.rx.agreeAndDisagree)
             .disposed(by: self.disposeBag)
 
         output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
