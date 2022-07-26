@@ -49,6 +49,26 @@ final class ChatRoomViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
+        let myRemainTime: Driver<String> = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.discussionUsecase.remainTime(userID: self.uid, roomID: self.chatRoom.uid)
+                    .asDriverOnErrorJustComplete()
+            }
+            .map { date -> Int in
+                let timeInterval = Date().timeIntervalSince(date)
+                return abs(Int(timeInterval))
+            }
+            .flatMapLatest { remainSeconds in
+                Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
+                    .map { remainSeconds - $0 }
+                    .take(until: { $0 == -2 })
+                    .asDriverOnErrorJustComplete()
+            }
+            .map {
+                if $0 == -1 { return "" }
+                return "\(String(format: "%02d", $0 / 60)):\(String(format: "%02d", $0 % 60))"
+            }
+
         let remainTime: Driver<String> = input.trigger
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.remainTime(roomUID: self.chatRoom.uid)
@@ -325,6 +345,7 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
+            myRemainTime: myRemainTime,
             remainTime: remainTime,
             noticeContent: noticeContent,
             chatItems: chatItems,
@@ -354,6 +375,7 @@ extension ChatRoomViewModel {
     }
 
     struct Output {
+        let myRemainTime: Driver<String>
         let remainTime: Driver<String>
         let noticeContent: Driver<String>
         let chatItems: Driver<ChatItemViewModel>

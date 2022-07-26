@@ -150,6 +150,7 @@
 		3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */; };
 		3FBDBC4928892F5700A09BF4 /* OpinionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC4828892F5700A09BF4 /* OpinionView.swift */; };
 		3FBDBC66288B301400A09BF4 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC65288B301400A09BF4 /* NoticeView.swift */; };
+		3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */; };
 		3FF62D9F282D93F1001F343C /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF62D9E282D93F1001F343C /* Side.swift */; };
 /* End PBXBuildFile section */
 
@@ -263,6 +264,7 @@
 		3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveChatView.swift; sourceTree = "<group>"; };
 		3FBDBC4828892F5700A09BF4 /* OpinionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpinionView.swift; sourceTree = "<group>"; };
 		3FBDBC65288B301400A09BF4 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
+		3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		3FF62D9E282D93F1001F343C /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -450,6 +452,7 @@
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
 				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
 				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
+				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				3F910435283FB29200446239 /* EnterGuestNavigator.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
 				3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */,
+				3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,

@@ -231,13 +231,31 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
+        let agrees = self.sideManager.agrees
+        let disagrees = self.sideManager.disagrees
+        if self.isFirstHalf {
+            self.send(chat: Chat(
+                userID: "bot", content: "먼저 참가자를 소개하겠습니다. 찬성측에는 \(self.sideManager.agreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(
+                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: now, nickName: nil))
+        }
         // FIXME: 찬성 입론 받아오기
-        let timeInterval = self.durations[0] * 60
-        let end = Date(timeInterval: timeInterval, since: now)
+        let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? agrees.count : disagrees.count))
+        let end = Date(timeInterval: totaltimeInterval, since: now)
         let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseTwoEnd), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)
         if self.isFirstHalf {
             self.send(phase: 2, until: end)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            zip(stride(from: now, through: end, by: (self.durations[0] * 60)), [""] + (self.isFirstHalf ? agrees : disagrees)).forEach { [unowned self] in
+                print($0)
+                guard $0.0 != now else { return }
+                self.roomReference.child("endDate/\($0.1)").setValue(["value": dateFormatter.string(from: $0.0)])
+            }
         } else {
             self.send(phase: 8, until: end)
         }
@@ -407,7 +425,7 @@ final class DiscussionManager {
     }
 
     private func phaseOneEnd() {
-        self.goPhaseTwo(content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되어 토론을 시작합니다. 먼저 찬성측 입론부터 듣겠습니다")
+        self.goPhaseTwo(content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되어 토론을 시작합니다.")
     }
 
     @objc func phaseTwoEnd() {
@@ -500,3 +518,5 @@ final class DiscussionManager {
     }
 
 }
+
+extension Date: Strideable {}

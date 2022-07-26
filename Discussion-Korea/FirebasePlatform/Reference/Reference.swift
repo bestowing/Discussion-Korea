@@ -592,6 +592,26 @@ final class Reference {
         }
     }
 
+    func date(of userID: String, in roomID: String) -> Observable<Date> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(roomID)/endDate/\(userID)").observe(.childAdded) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
+            self.reference.child("chatRoom/\(roomID)/endDate/\(userID)").observe(.childChanged) { snapshot in
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
+            return Disposables.create()
+        }
+    }
+
     func getDiscussionTime(of roomID: String) -> Observable<Date> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
