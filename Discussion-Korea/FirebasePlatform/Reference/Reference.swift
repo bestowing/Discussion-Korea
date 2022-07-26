@@ -39,7 +39,7 @@ final class Reference {
         }
     }
 
-    func addChatRoom(chatRoom: ChatRoom) -> Observable<Void> {
+    func add(chatRoom: ChatRoom) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             guard let key = self.reference
                 .child("chatRooms")
@@ -149,7 +149,6 @@ final class Reference {
                     guard let dictionary = snapshot.value as? NSDictionary,
                           let resultString = dictionary["result"] as? String
                     else { return }
-                    print(resultString)
                     switch resultString {
                     case "win":
                         subscribe.onNext(.win)
@@ -175,10 +174,10 @@ final class Reference {
 
     // MARK: - chats
 
-    func getChats(uid: String) -> Observable<[Chat]> {
+    func chats(roomID: String) -> Observable<[Chat]> {
         return Observable.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(uid)/messages")
+                .child("chatRoom/\(roomID)/messages")
                 .queryLimited(toLast: 30)
                 .observeSingleEvent(of: .value) { snapshot in
                     let chats = snapshot.children.compactMap { child -> Chat? in
@@ -193,11 +192,11 @@ final class Reference {
         }
     }
 
-    func receiveNewChats(uid: String, afterUID: String?) -> Observable<Chat> {
+    func chats(roomID: String, after chatID: String?) -> Observable<Chat> {
         return Observable.create { [unowned self] subscribe in
-            if let afterUID = afterUID {
+            if let afterUID = chatID {
                 self.reference
-                    .child("chatRoom/\(uid)/messages")
+                    .child("chatRoom/\(roomID)/messages")
                     .queryOrderedByKey()
                     .queryStarting(afterValue: afterUID)
                     .observe(.childAdded) { snapshot in
@@ -207,7 +206,7 @@ final class Reference {
                     }
             } else {
                 self.reference
-                    .child("chatRoom/\(uid)/messages")
+                    .child("chatRoom/\(roomID)/messages")
                     .observe(.childAdded) { snapshot in
                         guard let chat = Chat.toChat(from: snapshot)
                         else { return }
@@ -218,10 +217,10 @@ final class Reference {
         }
     }
 
-    func observeChatMasked(uid: String) -> Observable<String> {
+    func observeChatMasked(roomID: String) -> Observable<String> {
         return Observable.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(uid)/messages")
+                .child("chatRoom/\(roomID)/messages")
                 .observe(.childChanged) { snapshot in
                     guard let dic = snapshot.value as? [String: Any],
                           let toxic = dic["toxic"] as? Bool,
@@ -233,11 +232,11 @@ final class Reference {
         }
     }
 
-    func save(uid: String, chat: Chat) -> Observable<Void> {
+    func add(in roomID: String, chat: Chat) -> Observable<Void> {
         // chatRoomViewModel에서 방 번호 혹은 아이디값을 가지고 있어야함
         // 여기서 번호를 부여하는게 아니라 걍 고유 아이디값으로 추가하면 안되나?
         guard let key = self.reference
-            .child("chatRoom/\(uid)/messages")
+            .child("chatRoom/\(roomID)/messages")
             .childByAutoId().key,
               let date = chat.date
         else {
@@ -251,12 +250,12 @@ final class Reference {
         if let side = chat.side {
             value["side"] = side.rawValue
         }
-        let childUpdates = ["/chatRoom/\(uid)/messages/\(key)": value]
+        let childUpdates = ["/chatRoom/\(roomID)/messages/\(key)": value]
         self.reference.updateChildValues(childUpdates)
         return Observable<Void>.just(Void())
     }
 
-    func edit(roomID: String, chat: Chat) -> Observable<Void> {
+    func write(in roomID: String, chat: Chat) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             guard let date = chat.date
             else { return Disposables.create() }
@@ -275,8 +274,9 @@ final class Reference {
         }
     }
 
-    func getEdit(roomID: String) -> Observable<Chat> {
+    func read(in roomID: String) -> Observable<Chat?> {
         return Observable.create { [unowned self] subscribe in
+            subscribe.onNext(nil)
             self.reference
                 .child("chatRoom/\(roomID)/editing")
                 .observe(.childAdded) { snapshot in
@@ -291,13 +291,18 @@ final class Reference {
                     else { return }
                     subscribe.onNext(chat)
                 }
+            self.reference
+                .child("chatRoom/\(roomID)/editing")
+                .observe(.childRemoved) { _ in
+                    subscribe.onNext(nil)
+                }
             return Disposables.create()
         }
     }
 
     // MARK: - userInfos
 
-    func getUserInfo(userID: String) -> Observable<UserInfo?> {
+    func userInfo(with userID: String) -> Observable<UserInfo?> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("users/\(userID)")
                 .observe(.value) { snapshot in
@@ -327,7 +332,7 @@ final class Reference {
         }
     }
 
-    func getUserInfo(in roomID: String, with userID: String) -> Observable<UserInfo?> {
+    func userInfo(in roomID: String, with userID: String) -> Observable<UserInfo?> {
         return Observable<UserInfo?>.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/users/\(userID)")
@@ -347,7 +352,7 @@ final class Reference {
         }
     }
 
-    func getUserInfo(from roomID: String) -> Observable<UserInfo> {
+    func userInfos(in roomID: String) -> Observable<UserInfo> {
         return Observable<UserInfo>.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom").child("\(roomID)").child("users")
@@ -362,11 +367,11 @@ final class Reference {
                 }
             return Disposables.create()
         }.flatMap { [unowned self] userInfo in
-            return self.observeUserInfo(userInfo: userInfo)
+            return self.userInfoDetail(userInfo: userInfo)
         }
     }
 
-    private func observeUserInfo(userInfo: UserInfo) -> Observable<UserInfo> {
+    private func userInfoDetail(userInfo: UserInfo) -> Observable<UserInfo> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("users/\(userInfo.uid)")
                 .observe(.value) { snapshot in
@@ -396,14 +401,14 @@ final class Reference {
         }
     }
 
-    func add(_ userID: String, to roomID: String) -> Observable<Void> {
+    func add(userID: String, in roomID: String) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             let values: [String: Any] = ["position": "participant"]
             self.reference
                 .child("chatRoom/\(roomID)/users")
                 .child(userID)
                 .setValue(values)
-            subscribe.onNext(Void())
+            subscribe.onNext(())
             subscribe.onCompleted()
             return Disposables.create()
         }
@@ -437,21 +442,21 @@ final class Reference {
                         values["profile"] = url.absoluteString
                         self.reference.child("users/\(userInfo.uid)")
                             .setValue(values)
-                        subscribe.onNext(Void())
+                        subscribe.onNext(())
                         subscribe.onCompleted()
                     }
                 }
             } else {
                 self.reference.child("users/\(userInfo.uid)")
                     .setValue(values)
-                subscribe.onNext(Void())
+                subscribe.onNext(())
                 subscribe.onCompleted()
             }
             return Disposables.create()
         }
     }
 
-    func setSide(roomID: String, userID: String, side: Side) -> Observable<Void> {
+    func add(side: Side, in roomID: String, with userID: String) -> Observable<Void> {
         return Observable<Void>.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/sides/\(side.rawValue)")
@@ -464,12 +469,58 @@ final class Reference {
         }
     }
 
-    func clearSide(from roomID: String, of userID: String) -> Observable<Void> {
+    func update(side: Side?, in roomID: String, with userID: String) -> Observable<Void> {
         return Observable<Void>.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/users/\(userID)/side")
-                .setValue(nil)
+                .setValue(side)
             subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func support(side: Side, in roomID: String, with userID: String) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(roomID)/supporters").runTransactionBlock { currentData in
+                if let supporters = currentData.value as? [String: AnyObject] {
+                    var newSupporters: [String: AnyObject] = supporters
+                    let sides = [Side.agree, Side.disagree, Side.judge]
+                    sides.forEach {
+                        if $0 == side {
+                            if var supporter = supporters[$0.rawValue] as? [String] {
+                                guard !supporter.contains(userID) else { return }
+                                supporter.append(userID)
+                                newSupporters[$0.rawValue] = supporter as AnyObject
+                            } else {
+                                newSupporters[$0.rawValue] = [userID] as AnyObject
+                            }
+                        } else {
+                            guard var supporter = supporters[$0.rawValue] as? [String],
+                                  let index = supporter.firstIndex(of: userID) else { return }
+                            supporter.remove(at: index)
+                            newSupporters[$0.rawValue] = supporter as AnyObject
+                        }
+                    }
+                    currentData.value = newSupporters
+                } else {
+                    currentData.value = [side.rawValue: [userID]]
+                }
+                subscribe.onCompleted()
+                return TransactionResult.success(withValue: currentData)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func supporters(in roomID: String) -> Observable<(String, Side)> {
+        return Observable.create { [unowned self] subscribe in
+            let sides = [Side.agree, .disagree, .judge]
+            sides.forEach { side in
+                self.reference.child("chatRoom/\(roomID)/supporters/\(side.rawValue)").observe(.childAdded) { snapshot in
+                    guard let userID = snapshot.value as? String else { return }
+                    subscribe.onNext((userID, side))
+                }
+            }
             return Disposables.create()
         }
     }
@@ -547,6 +598,26 @@ final class Reference {
         }
     }
 
+    func date(of userID: String, in roomID: String) -> Observable<Date?> {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return Observable.create { [unowned self] subscribe in
+            subscribe.onNext(nil)
+            self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childAdded) { snapshot in
+                print("내꺼 추가됨")
+                guard let endDateString = snapshot.value as? String,
+                      let endDate = dateFormatter.date(from: endDateString)
+                else { return }
+                subscribe.onNext(endDate)
+            }
+            self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childRemoved) { snapshot in
+                print("내꺼 삭제됨")
+                subscribe.onNext(nil)
+            }
+            return Disposables.create()
+        }
+    }
+
     func getDiscussionTime(of roomID: String) -> Observable<Date> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -562,6 +633,29 @@ final class Reference {
                       let endDate = dateFormatter.date(from: endDateString)
                 else { return }
                 subscribe.onNext(endDate)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func opinions(of roomID: String) -> Observable<(UInt, UInt)> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(roomID)/supporters").observe(.value) { snapshot in
+                guard let dictionary = snapshot.value as? NSDictionary
+                else { return }
+                let agree: UInt
+                if let agrees = dictionary[Side.agree.rawValue] as? [String] {
+                    agree = UInt(agrees.count)
+                } else {
+                    agree = 0
+                }
+                let disagree: UInt
+                if let disagrees = dictionary[Side.disagree.rawValue] as? [String] {
+                    disagree = UInt(disagrees.count)
+                } else {
+                    disagree = 0
+                }
+                subscribe.onNext((agree, disagree))
             }
             return Disposables.create()
         }

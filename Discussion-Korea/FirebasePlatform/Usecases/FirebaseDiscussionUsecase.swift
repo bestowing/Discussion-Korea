@@ -28,6 +28,10 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference.getPhase(of: roomUID)
     }
 
+    func remainTime(userID: String, roomID: String) -> Observable<Date?> {
+        self.reference.date(of: userID, in: roomID)
+    }
+
     func remainTime(roomUID: String) -> Observable<Date> {
         self.reference.getDiscussionTime(of: roomUID)
     }
@@ -35,6 +39,10 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
     func discussionResult(userID: String, chatRoomID: String) -> Observable<DiscussionResult> {
         // FIXME: 이게 채팅방 유즈케이스에 있는게 맞을까? 고민해보기
         self.reference.discussionResult(userID: userID, chatRoomID: chatRoomID)
+    }
+
+    func opinions(roomID: String) -> Observable<(UInt, UInt)> {
+        self.reference.opinions(of: roomID)
     }
 
 }

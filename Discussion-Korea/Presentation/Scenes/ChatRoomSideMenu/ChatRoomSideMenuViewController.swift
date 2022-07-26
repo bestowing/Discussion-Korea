@@ -49,6 +49,8 @@ final class ChatRoomSideMenuViewController: UIViewController {
         return line
     }()
 
+    private let opinionView = OpinionView()
+
     private let participantLabel: UILabel = {
         let label = UILabel()
         label.text = "참가자"
@@ -92,6 +94,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
         self.view.addSubview(self.stackView)
         self.stackView.addArrangedSubview(self.calendarButton)
         self.view.addSubview(self.line2)
+        self.view.addSubview(self.opinionView)
         self.view.addSubview(self.participantLabel)
         self.view.addSubview(self.participantsTableView)
         self.titleLabel.snp.makeConstraints { make in
@@ -121,10 +124,15 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.top.equalTo(self.stackView.snp.bottom).offset(20)
             make.height.equalTo(1)
         }
-        self.participantLabel.snp.makeConstraints { make in
+        self.opinionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
             make.top.equalTo(self.line2.snp.bottom).offset(20)
+        }
+        self.participantLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
+            make.top.equalTo(self.opinionView.snp.bottom).offset(20)
         }
         self.participantsTableView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
@@ -141,9 +149,28 @@ final class ChatRoomSideMenuViewController: UIViewController {
             viewWillAppear: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            calendar: self.calendarButton.rx.tap.asDriver()
+            calendar: self.calendarButton.rx.tap.asDriver(),
+            side: self.opinionView.rx.value.distinctUntilChanged().filter { (0...2) ~= $0 }.map {
+                switch $0 {
+                case 0:
+                    return .agree
+                case 1:
+                    return .disagree
+                default:
+                    return .judge
+                }
+            }.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.canParticipate.drive(self.opinionView.rx.canParticipate)
+            .disposed(by: self.disposeBag)
+
+        output.selectedSide.drive(self.opinionView.rx.side)
+            .disposed(by: self.disposeBag)
+
+        output.opinions.drive(self.opinionView.rx.agreeAndDisagree)
+            .disposed(by: self.disposeBag)
 
         output.participants.drive(self.participantsTableView.rx.items) { tableView, index, model in
             let indexPath = IndexPath(item: index, section: 0)
@@ -156,7 +183,17 @@ final class ChatRoomSideMenuViewController: UIViewController {
         output.chatRoomTitle.drive(self.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
 
-        output.calendarEvent.drive()
+        output.discussionOngoing.do(onNext: { [unowned self] isOngoing in
+            self.participantLabel.snp.remakeConstraints { make in
+                make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+                make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
+                make.top.equalTo(isOngoing ? self.opinionView.snp.bottom : self.line2.snp.bottom).offset(20)
+            }
+        }).map { !$0 }
+            .drive(self.opinionView.rx.isHidden)
+            .disposed(by: self.disposeBag)
+
+        output.events.drive()
             .disposed(by: self.disposeBag)
 
     }

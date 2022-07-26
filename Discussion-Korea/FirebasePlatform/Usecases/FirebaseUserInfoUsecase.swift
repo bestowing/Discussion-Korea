@@ -17,11 +17,11 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func add(roomID: String, userID: String) -> Observable<Void> {
-        self.reference.add(userID, to: roomID)
+        self.reference.add(userID: userID, in: roomID)
     }
 
     func add(roomID: String, userID: String, side: Side) -> Observable<Void> {
-        self.reference.setSide(roomID: roomID, userID: userID, side: side)
+        self.reference.add(side: side, in: roomID, with: userID)
     }
 
     func add(userInfo: UserInfo) -> Observable<Void> {
@@ -29,7 +29,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func clearSide(roomID: String, userID: String) -> Observable<Void> {
-        self.reference.clearSide(from: roomID, of: userID)
+        self.reference.update(side: nil, in: roomID, with: userID)
     }
 
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
@@ -45,15 +45,25 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func userInfo(roomID: String, with userID: String) -> Observable<UserInfo?> {
-        return self.reference.getUserInfo(in: roomID, with: userID)
+        return self.reference.userInfo(in: roomID, with: userID)
     }
 
     func connect(roomID: String) -> Observable<UserInfo> {
-        self.reference.getUserInfo(from: roomID)
+        self.reference.userInfos(in: roomID)
     }
 
     func userInfo(userID: String) -> Observable<UserInfo?> {
-        self.reference.getUserInfo(userID: userID)
+        self.reference.userInfo(with: userID)
+    }
+
+    func support(side: Side, roomID: String, userID: String) -> Observable<Void> {
+        return self.reference.support(side: side, in: roomID, with: userID)
+    }
+
+    func supporter(roomID: String, userID: String) -> Observable<Side> {
+        return self.reference.supporters(in: roomID)
+            .filter { $0.0 == userID }
+            .map { $0.1 }
     }
 
     private func getUID() -> String {

@@ -17,8 +17,8 @@ final class SideManager {
         self.chatRoomID = chatRoomID
     }
 
-    @Published private var agrees: [String] = []
-    @Published private var disagrees: [String] = []
+    @Published var agrees: [String] = []
+    @Published var disagrees: [String] = []
     @Published private var judges: [String] = []
     @Published private var observers: [String] = []
 
@@ -49,6 +49,22 @@ final class SideManager {
         self.observers.append(id)
     }
 
+    func agreeNicknames() -> [(String, String)] {
+        return self.agrees.compactMap {
+            guard let nickname = UserInfoManager.shared.userInfos[$0]?.nickname
+            else { return nil }
+            return ($0, nickname)
+        }
+    }
+
+    func disagreeNicknames() -> [(String, String)] {
+        return self.disagrees.compactMap {
+            guard let nickname = UserInfoManager.shared.userInfos[$0]?.nickname
+            else { return nil }
+            return ($0, nickname)
+        }
+    }
+
     func endDiscussion() {
         self.agrees = []
         self.disagrees = []
@@ -72,15 +88,7 @@ final class SideManager {
     }
 
     func draw() {
-//        #if DEBUG
-//        let reference = Database
-//            .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//            .reference()
-//        #elseif RELEASE
-        let reference = Database
-            .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
-            .reference()
-//        #endif
+        let reference = ReferenceManager.reference
         var updates = [String: Any]()
         self.agrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = "draw"

@@ -65,6 +65,10 @@ final class ChatRoomViewModelTests: XCTestCase {
             .completed(237)
         ]).asObservable()
 
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
+        ]).asObservable()
+
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
             .next(240, 0)
         ]).asObservable()
@@ -97,12 +101,16 @@ final class ChatRoomViewModelTests: XCTestCase {
         ])
     }
 
-    func test_토론이_진행중이지_않고_내용이_있다면_채팅을_보낼수_있다() {
+    func test_토론이_진행중이지_않더라도_내용이_있다면_채팅을_보낼수_있다() {
         let testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -137,13 +145,17 @@ final class ChatRoomViewModelTests: XCTestCase {
         ])
     }
 
-    func test_찬성측인_경우_내용이_있어도_발언권이_없다면_채팅을_보낼수_없다() {
+    func test_찬성측인_경우_내용이_있어도_반대측_발언시간에는_채팅을_보낼수_없다() {
         var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
         testUserInfo.side = .agree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -180,22 +192,21 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false),
-            .next(300, false)
+            .next(250, false)
         ])
     }
 
-    func test_반대측인_경우_내용이_있어도_발언권이_없다면_채팅을_보낼수_없다() {
+    func test_반대측인_경우_내용이_있어도_찬성측_발언시간에는_채팅을_보낼수_없다() {
         var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
         testUserInfo.side = .disagree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -232,22 +243,21 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false),
-            .next(300, false)
+            .next(250, false)
         ])
     }
 
-    func test_찬성측인_경우_발언권이_없을때_편집이_불가능하다() {
+    func test_찬성측인_경우_내용이_있고_찬성측_발언시간이라도_발언권이_없으면_채팅을_보낼수_없다() {
         var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
         testUserInfo.side = .agree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -263,57 +273,8 @@ final class ChatRoomViewModelTests: XCTestCase {
             .next(210, ())
         ]).asDriverOnErrorJustComplete()
 
-        let testableObserver = self.scheduler.createObserver(Bool.self)
-
-        let input = ChatRoomViewModel.Input(
-            trigger: triggerTestableDriver,
-            bottomScrolled: Driver.just(false),
-            previewTouched: Driver.just(()),
-            send: Driver.just(()),
-            menu: Driver.just(()),
-            content: Driver.just(""),
-            disappear: Driver.just(())
-        )
-        let output = self.viewModel.transform(input: input)
-
-        output.editableEnable
-            .drive(testableObserver)
-            .disposed(by: self.disposeBag)
-
-        self.scheduler.start()
-
-        XCTAssertEqual(testableObserver.events, [
-            .next(240, false),
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false)
-        ])
-    }
-
-    func test_찬성측인_경우_발언권이_있을때_편집이_가능하다() {
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .agree
-
-        self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
-            .completed(237)
-        ]).asObservable()
-
-        self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
-            .next(240, 0),
-            .next(250, 1),
-            .next(260, 2),
-            .next(270, 4),
-            .next(280, 5),
-            .next(290, 9),
-            .next(300, 10),
-            .next(310, 12)
-        ]).asObservable()
-
-        let triggerTestableDriver: Driver<Void> = self.scheduler.createHotObservable([
-            .next(210, ())
+        let contentTestableDriver: Driver<String> = self.scheduler.createHotObservable([
+            .next(250, "내용")
         ]).asDriverOnErrorJustComplete()
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
@@ -324,7 +285,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             previewTouched: Driver.just(()),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
+            content: contentTestableDriver,
             disappear: Driver.just(())
         )
         let output = self.viewModel.transform(input: input)
@@ -336,29 +297,21 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(240, true),
-            .next(250, true),
-            .next(260, true),
-            .next(270, true),
-            .next(280, true),
-            .next(290, true),
-            .next(300, true),
-            .next(310, true)
+            .next(240, false)
         ])
     }
 
-    func test_반대측인_경우_발언권이_없을때_편집이_불가능하다() {
+    func test_반대측인_경우_내용이_있고_반대측_발언시간이라도_발언권이_없으면_채팅을_보낼수_없다() {
         var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
         testUserInfo.side = .disagree
-
-        self.userInfoUsecase.uidStream = self.scheduler.createHotObservable([
-            .next(230, "testUID"),
-            .completed(232)
-        ]).asObservable()
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -374,6 +327,10 @@ final class ChatRoomViewModelTests: XCTestCase {
             .next(210, ())
         ]).asDriverOnErrorJustComplete()
 
+        let contentTestableDriver: Driver<String> = self.scheduler.createHotObservable([
+            .next(250, "내용")
+        ]).asDriverOnErrorJustComplete()
+
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
         let input = ChatRoomViewModel.Input(
@@ -382,7 +339,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             previewTouched: Driver.just(()),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
+            content: contentTestableDriver,
             disappear: Driver.just(())
         )
         let output = self.viewModel.transform(input: input)
@@ -394,23 +351,22 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(240, false),
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false)
+            .next(240, false)
         ])
     }
 
-    func test_반대측인_경우_발언권이_있을때_편집이_가능하다() {
-
+    func test_찬성측인_경우_내용이_있고_찬성측_발언시간이고_발언권이_있으면_채팅을_보낼수_있다() {
+        
         var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
         testUserInfo.side = .disagree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
             .next(235, testUserInfo),
             .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, Date(timeInterval: 60, since: Date()))
         ]).asObservable()
 
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
@@ -448,14 +404,60 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(240, true),
-            .next(250, true),
-            .next(260, true),
-            .next(270, true),
-            .next(280, true),
-            .next(290, true),
-            .next(300, true),
-            .next(310, true)
+            .next(240, true)
+        ])
+    }
+
+    func test_반대측인_경우_내용이_있고_반대측_발언시간이고_발언권이_있으면_채팅을_보낼수_있다() {
+
+        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
+        testUserInfo.side = .disagree
+
+        self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
+            .next(235, testUserInfo),
+            .completed(237)
+        ]).asObservable()
+
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, Date(timeInterval: 60, since: Date()))
+        ]).asObservable()
+
+        self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
+            .next(240, 0),
+            .next(250, 1),
+            .next(260, 3),
+            .next(270, 4),
+            .next(280, 6),
+            .next(290, 8),
+            .next(300, 10),
+            .next(310, 11)
+        ]).asObservable()
+
+        let triggerTestableDriver: Driver<Void> = self.scheduler.createHotObservable([
+            .next(210, ())
+        ]).asDriverOnErrorJustComplete()
+
+        let testableObserver = self.scheduler.createObserver(Bool.self)
+
+        let input = ChatRoomViewModel.Input(
+            trigger: triggerTestableDriver,
+            bottomScrolled: Driver.just(false),
+            previewTouched: Driver.just(()),
+            send: Driver.just(()),
+            menu: Driver.just(()),
+            content: Driver.just(""),
+            disappear: Driver.just(())
+        )
+        let output = self.viewModel.transform(input: input)
+
+        output.editableEnable
+            .drive(testableObserver)
+            .disposed(by: self.disposeBag)
+
+        self.scheduler.start()
+
+        XCTAssertEqual(testableObserver.events, [
+            .next(240, true)
         ])
     }
 
@@ -469,6 +471,10 @@ final class ChatRoomViewModelTests: XCTestCase {
             .completed(237)
         ]).asObservable()
 
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
+        ]).asObservable()
+
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
             .next(240, 2),
             .next(250, 3),
@@ -508,18 +514,7 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(240, false),
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false),
-            .next(300, false),
-            .next(310, false),
-            .next(320, false),
-            .next(330, false),
-            .next(340, false),
-            .next(350, false)
+            .next(240, false)
         ])
     }
 
@@ -533,6 +528,10 @@ final class ChatRoomViewModelTests: XCTestCase {
             .completed(237)
         ]).asObservable()
 
+        self.discussionUsecase.myRemainTimeStream = self.scheduler.createHotObservable([
+            .next(240, nil)
+        ]).asObservable()
+
         self.discussionUsecase.statusStream = self.scheduler.createHotObservable([
             .next(240, 2),
             .next(250, 3),
@@ -572,18 +571,7 @@ final class ChatRoomViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(240, false),
-            .next(250, false),
-            .next(260, false),
-            .next(270, false),
-            .next(280, false),
-            .next(290, false),
-            .next(300, false),
-            .next(310, false),
-            .next(320, false),
-            .next(330, false),
-            .next(340, false),
-            .next(350, false)
+            .next(240, false)
         ])
     }
 
@@ -605,7 +593,7 @@ extension ChatRoomViewModelTests {
 
         func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {}
 
-        func toSideMenu(_ chatRoom: ChatRoom) {}
+        func toSideMenu(_ uid: String, _ chatRoom: ChatRoom) {}
 
         func toEnterAlert() -> Observable<Bool> {
             self.enterAlertStream
