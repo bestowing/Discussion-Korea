@@ -36,7 +36,7 @@ final class FirebaseChatsUsecase: ChatsUsecase {
         self.reference.write(in: roomUID, chat: chat)
     }
 
-    func getEditing(roomUID: String) -> Observable<Chat> {
+    func getEditing(roomUID: String) -> Observable<Chat?> {
         self.reference.read(in: roomUID)
     }
 

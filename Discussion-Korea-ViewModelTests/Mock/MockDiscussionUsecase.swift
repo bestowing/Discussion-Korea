@@ -15,7 +15,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
     var discussionStream: Observable<Discussion>
     var addRoomEventStream: Observable<Void>
     var statusStream: Observable<Int>
-    var myRemainTimeStream: Observable<Date>
+    var myRemainTimeStream: Observable<Date?>
     var remainTimeStream: Observable<Date>
     var discussionResultStream: Observable<DiscussionResult>
     var opinionsStream: Observable<(UInt, UInt)>
@@ -26,7 +26,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
         self.discussionStream = PublishSubject<Discussion>.init()
         self.addRoomEventStream = PublishSubject<Void>.init()
         self.statusStream = PublishSubject<Int>.init()
-        self.myRemainTimeStream = PublishSubject<Date>.init()
+        self.myRemainTimeStream = PublishSubject<Date?>.init()
         self.remainTimeStream = PublishSubject<Date>.init()
         self.discussionResultStream = PublishSubject<DiscussionResult>.init()
         self.opinionsStream = PublishSubject<(UInt, UInt)>.init()
@@ -46,7 +46,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
         return self.statusStream
     }
 
-    func remainTime(userID: String, roomID: String) -> Observable<Date> {
+    func remainTime(userID: String, roomID: String) -> Observable<Date?> {
         return self.myRemainTimeStream
     }
 

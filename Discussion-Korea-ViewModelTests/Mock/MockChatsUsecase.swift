@@ -16,7 +16,7 @@ final class MockChatsUsecase: ChatsUsecase {
     var sendEventStream: Observable<Void>
     var maskingStream: Observable<String>
     var editStream: Observable<Void>
-    var getEditStream: Observable<Chat>
+    var getEditStream: Observable<Chat?>
 
     // MARK: - init/deinit
 
@@ -26,7 +26,7 @@ final class MockChatsUsecase: ChatsUsecase {
         self.sendEventStream = PublishSubject<Void>.init()
         self.maskingStream = PublishSubject<String>.init()
         self.editStream = PublishSubject<Void>.init()
-        self.getEditStream = PublishSubject<Chat>.init()
+        self.getEditStream = PublishSubject<Chat?>.init()
     }
 
     // MARK: - methods
@@ -51,7 +51,7 @@ final class MockChatsUsecase: ChatsUsecase {
         return self.editStream
     }
     
-    func getEditing(roomUID: String) -> Observable<Chat> {
+    func getEditing(roomUID: String) -> Observable<Chat?> {
         return self.getEditStream
     }
 

@@ -49,13 +49,17 @@ final class ChatRoomViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let myRemainTime: Driver<String> = input.trigger
+        let myRemainTime = input.trigger
             .flatMapFirst { [unowned self] in
                 self.discussionUsecase.remainTime(userID: self.uid, roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .map { date -> Int in
-                let timeInterval = Date().timeIntervalSince(date)
+            .debug()
+
+        let myRemainTimeString: Driver<String> = myRemainTime
+            .compactMap { date -> Int? in
+                guard let date = date else { return nil }
+                let timeInterval = date.timeIntervalSince(Date())
                 return abs(Int(timeInterval))
             }
             .flatMapLatest { remainSeconds in
@@ -196,6 +200,8 @@ final class ChatRoomViewModel: ViewModelType {
 
         let selectSideEvent = status
             .filter { return $0 == 1 }
+            .withLatestFrom(side) { $1 }
+            .filter { $0 == nil }
             .flatMap { [unowned self] _ in
                 self.navigator.toSideAlert()
                     .asDriverOnErrorJustComplete()
@@ -224,10 +230,18 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let canEditable = Driver.combineLatest(status, side)
-            .map { (status, side) -> Bool in
-                guard status >= 2
-                else { return true }
+        let hasSpeakRight: Driver<Bool> = Driver.combineLatest(status, myRemainTime)
+            .map { status, date in
+                if status < 2 {
+                    return true
+                }
+                return date != nil
+            }
+            .distinctUntilChanged()
+
+        let speakableSide: Driver<Bool> = Driver.combineLatest(status, side)
+            .map { status, side -> Bool in
+                guard status >= 2 else { return true }
                 switch side {
                 case .agree:
                     return [2, 4, 5, 9, 10, 12].contains(status)
@@ -237,10 +251,15 @@ final class ChatRoomViewModel: ViewModelType {
                     return false
                 }
             }
+            .distinctUntilChanged()
+
+        let canEditable: Driver<Bool> = Driver.combineLatest(hasSpeakRight, speakableSide) { $0 && $1 }
 
         let noticeContent = status.map { status -> String in
             // TODO: 하드코딩 고치기
             switch status {
+            case 1:
+                return "토론 시작 대기"
             case 2:
                 return "찬성측의 입론 시간"
             case 3:
@@ -285,25 +304,28 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
             .withLatestFrom(userInfos) { ($0, $1) }
-            .map { chat, userInfos -> ChatItemViewModel in
-                var chat = chat
+            .map { chat, userInfos -> ChatItemViewModel? in
+                guard var chat = chat else { return nil }
                 chat.nickName = userInfos[chat.userID]?.nickname
                 chat.profileURL = userInfos[chat.userID]?.profileURL
                 return WritingChatItemViewModel(with: chat)
             }
 
-        let writingEvent = input.content
+        let writingEvent: Driver<Void> = input.content
             .throttle(.milliseconds(1500))
             .distinctUntilChanged()
             .map { [unowned self] content -> Chat in
                 Chat(userID: self.uid, content: content, date: Date())
             }
-            .withLatestFrom(side) {
-                var chat: Chat = $0
-                chat.side = $1
+            .withLatestFrom(side) { (chat, side) -> Chat in
+                var chat = chat
+                chat.side = side
                 return chat
             }
-            .flatMap { [unowned self] chat -> Driver<Void> in
+            .filter { $0.side != nil }
+            .withLatestFrom(status) { ($0, $1) }
+            .filter { $1 != 1 && $1 != 4 && $1 != 10 }
+            .flatMap { [unowned self] (chat, status) -> Driver<Void> in
                 return self.chatsUsecase.edit(roomUID: self.chatRoom.uid, chat: chat)
                     .asDriverOnErrorJustComplete()
             }
@@ -345,7 +367,7 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
-            myRemainTime: myRemainTime,
+            myRemainTime: myRemainTimeString,
             remainTime: remainTime,
             noticeContent: noticeContent,
             chatItems: chatItems,
@@ -383,7 +405,7 @@ extension ChatRoomViewModel {
         let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
         let isPreviewHidden: Driver<Bool>
-        let realTimeChat: Driver<ChatItemViewModel>
+        let realTimeChat: Driver<ChatItemViewModel?>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>

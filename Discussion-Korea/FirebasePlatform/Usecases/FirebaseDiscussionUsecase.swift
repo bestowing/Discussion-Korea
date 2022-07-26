@@ -28,7 +28,7 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference.getPhase(of: roomUID)
     }
 
-    func remainTime(userID: String, roomID: String) -> Observable<Date> {
+    func remainTime(userID: String, roomID: String) -> Observable<Date?> {
         self.reference.date(of: userID, in: roomID)
     }
 

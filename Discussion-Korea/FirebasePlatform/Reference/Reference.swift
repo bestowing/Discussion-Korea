@@ -274,8 +274,9 @@ final class Reference {
         }
     }
 
-    func read(in roomID: String) -> Observable<Chat> {
+    func read(in roomID: String) -> Observable<Chat?> {
         return Observable.create { [unowned self] subscribe in
+            subscribe.onNext(nil)
             self.reference
                 .child("chatRoom/\(roomID)/editing")
                 .observe(.childAdded) { snapshot in
@@ -289,6 +290,11 @@ final class Reference {
                     guard let chat = Chat.toChat(from: snapshot)
                     else { return }
                     subscribe.onNext(chat)
+                }
+            self.reference
+                .child("chatRoom/\(roomID)/editing")
+                .observe(.childRemoved) { _ in
+                    subscribe.onNext(nil)
                 }
             return Disposables.create()
         }
@@ -592,21 +598,21 @@ final class Reference {
         }
     }
 
-    func date(of userID: String, in roomID: String) -> Observable<Date> {
+    func date(of userID: String, in roomID: String) -> Observable<Date?> {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRoom/\(roomID)/endDate/\(userID)").observe(.childAdded) { snapshot in
+            subscribe.onNext(nil)
+            self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childAdded) { snapshot in
+                print("내꺼 추가됨")
                 guard let endDateString = snapshot.value as? String,
                       let endDate = dateFormatter.date(from: endDateString)
                 else { return }
                 subscribe.onNext(endDate)
             }
-            self.reference.child("chatRoom/\(roomID)/endDate/\(userID)").observe(.childChanged) { snapshot in
-                guard let endDateString = snapshot.value as? String,
-                      let endDate = dateFormatter.date(from: endDateString)
-                else { return }
-                subscribe.onNext(endDate)
+            self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childRemoved) { snapshot in
+                print("내꺼 삭제됨")
+                subscribe.onNext(nil)
             }
             return Disposables.create()
         }

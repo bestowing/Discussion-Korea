@@ -48,7 +48,6 @@ final class DiscussionManager {
          sideManager: SideManager,
          dateFormatter: DateFormatter) {
         self.chatRoomID = chatRoomID
-//        #if DEBUG
         self.reference = ReferenceManager.reference
         self.roomReference = self.reference.child("chatRoom/\(chatRoomID)")
         self.sideManager = sideManager
@@ -71,17 +70,22 @@ final class DiscussionManager {
         let phaseTwoEvent = self.sideManager.isDone()
             .dropFirst()
             .handleEvents(receiveOutput: { [unowned self] ready in
-                if ready { self.phaseOneEnd() }
+                if ready {
+                    let now = Date()
+                    self.send(chat: Chat(
+                        userID: "bot",
+                        content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되었습니다. 1분후 토론을 시작합니다. 토론에 참여하려면 빠르게 선택해주세요!",
+                        date: now,
+                        nickName: nil)
+                    )
+                    let end = Date(timeInterval: 60, since: now)
+                    let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseFourEnd), userInfo: nil, repeats: false)
+                    RunLoop.main.add(timer, forMode: .common)
+                    self.send(phase: 1, until: end)
+                }
             })
             .map { _ in Void() }
             .eraseToAnyPublisher()
-
-//        let summaryEvent = self.summaryManager.summaries()
-//            .dropFirst()
-//            .handleEvents(receiveOutput: { contents in
-//                print(contents[0], contents[1])
-//            })
-//            .map { _ -> Void in return Void() }
 
         let events = phaseTwoEvent
             .merge(with: maskingMessage)
@@ -164,7 +168,8 @@ final class DiscussionManager {
         }
         let userInfo: [String: Any] = [
             "uid": "bot",
-            "content": "예정된 토론 시간이 되었습니다. 찬성측, 반대측, 판정단이 최소 1명씩 배정되면 토론이 시작됩니다",
+            "content":
+                "토론 주제는 \"\(discussion.topic)\"입니다. 찬성/반대/판정단을 선택해서 토론에 참여해주세요",
             "date": now
         ]
         let timer = Timer(
@@ -231,33 +236,27 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
-        let agrees = self.sideManager.agrees
-        let disagrees = self.sideManager.disagrees
-        if self.isFirstHalf {
-            self.send(chat: Chat(
-                userID: "bot", content: "먼저 참가자를 소개하겠습니다. 찬성측에는 \(self.sideManager.agreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: now, nickName: nil)
-            )
-            self.send(chat: Chat(
-                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: now, nickName: nil)
-            )
-            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: now, nickName: nil))
-        }
-        // FIXME: 찬성 입론 받아오기
+        let agrees: [(String, String)] = self.sideManager.agreeNicknames()
+        let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
         let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? agrees.count : disagrees.count))
         let end = Date(timeInterval: totaltimeInterval, since: now)
-        let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseTwoEnd), userInfo: nil, repeats: false)
-        RunLoop.main.add(timer, forMode: .common)
         if self.isFirstHalf {
+            self.send(chat: Chat(
+                userID: "bot", content: "먼저 참가자를 소개하겠습니다. 찬성측에는 \(agrees.map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(
+                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: now, nickName: nil)
+            )
+            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: now, nickName: nil))
             self.send(phase: 2, until: end)
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            zip(stride(from: now, through: end, by: (self.durations[0] * 60)), [""] + (self.isFirstHalf ? agrees : disagrees)).forEach { [unowned self] in
-                print($0)
-                guard $0.0 != now else { return }
-                self.roomReference.child("endDate/\($0.1)").setValue(["value": dateFormatter.string(from: $0.0)])
-            }
+            self.giveRightSpeaking(start: now, end: end, userIDs: agrees, after: { [unowned self] in
+                self.phaseTwoEnd()
+            })
         } else {
             self.send(phase: 8, until: end)
+            self.giveRightSpeaking(start: now, end: end, userIDs: disagrees) { [unowned self] in
+                self.phaseTwoEnd()
+            }
         }
     }
 
@@ -267,14 +266,20 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
-        let timeInterval = self.durations[0] * 60
-        let end = Date(timeInterval: timeInterval, since: now)
-        let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseThreeEnd), userInfo: nil, repeats: false)
-        RunLoop.main.add(timer, forMode: .common)
+        let agrees: [(String, String)] = self.sideManager.agreeNicknames()
+        let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
+        let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? disagrees.count : agrees.count))
+        let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 3, until: end)
+            self.giveRightSpeaking(start: now, end: end, userIDs: disagrees) { [unowned self] in
+                self.phaseThreeEnd()
+            }
         } else {
             self.send(phase: 9, until: end)
+            self.giveRightSpeaking(start: now, end: end, userIDs: agrees) { [unowned self] in
+                self.phaseThreeEnd()
+            }
         }
     }
 
@@ -293,6 +298,15 @@ final class DiscussionManager {
         } else {
             self.send(phase: 10, until: end)
         }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormatter.string(from: end)
+        self.sideManager.agrees.forEach { [unowned self] in
+            self.roomReference.child("speaker/\($0)").setValue(["value": dateString])
+        }
+        self.sideManager.disagrees.forEach { [unowned self] in
+            self.roomReference.child("speaker/\($0)").setValue(["value": dateString])
+        }
     }
 
     private func goPhaseFive(content: String) {
@@ -301,14 +315,20 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
-        let timeInterval = self.durations[2] * 60
-        let end = Date(timeInterval: timeInterval, since: now)
-        let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseFiveEnd), userInfo: nil, repeats: false)
-        RunLoop.main.add(timer, forMode: .common)
+        let agrees: [(String, String)] = self.sideManager.agreeNicknames()
+        let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
+        let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? agrees.count : disagrees.count))
+        let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 5, until: end)
+            self.giveRightSpeaking(start: now, end: end, userIDs: agrees, after: { [unowned self] in
+                self.phaseFiveEnd()
+            })
         } else {
             self.send(phase: 11, until: end)
+            self.giveRightSpeaking(start: now, end: end, userIDs: disagrees) { [unowned self] in
+                self.phaseFiveEnd()
+            }
         }
     }
 
@@ -318,14 +338,22 @@ final class DiscussionManager {
                              content: content,
                              date: now,
                              nickName: nil))
-        let timeInterval = self.durations[2] * 60
-        let end = Date(timeInterval: timeInterval, since: now)
-        let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseSixEnd), userInfo: nil, repeats: false)
-        RunLoop.main.add(timer, forMode: .common)
+        let agrees: [(String, String)] = self.sideManager.agreeNicknames()
+        let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
+        let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? disagrees.count : agrees.count))
+        let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 6, until: end)
+            let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
+            self.giveRightSpeaking(start: now, end: end, userIDs: disagrees) { [unowned self] in
+                self.phaseSixEnd()
+            }
         } else {
             self.send(phase: 12, until: end)
+            let agrees: [(String, String)] = self.sideManager.agreeNicknames()
+            self.giveRightSpeaking(start: now, end: end, userIDs: agrees, after: { [unowned self] in
+                self.phaseSixEnd()
+            })
         }
     }
 
@@ -342,6 +370,7 @@ final class DiscussionManager {
         let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseSevenEnd), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)
         self.send(phase: 7, until: end)
+        self.roomReference.child("speaker").setValue(nil)
     }
 
     private func goPhaseEight() {
@@ -354,6 +383,7 @@ final class DiscussionManager {
         let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(votePhaseEnd), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)
         self.send(phase: 13, until: date)
+        self.roomReference.child("speaker").setValue(nil)
     }
 
     private func endDiscussion() {
@@ -366,6 +396,7 @@ final class DiscussionManager {
                 self.send(phase: 0)
                 self.sideManager.endDiscussion()
                 self.isFirstHalf = true
+                self.roomReference.child("supporters").setValue(nil)
                 self.clean()
             }
             guard error == nil,
@@ -424,11 +455,39 @@ final class DiscussionManager {
         self.reference.updateChildValues(childUpdates)
     }
 
-    private func phaseOneEnd() {
+    /// userIDs 배열에 있는 사용자들에게 start부터 end까지 발언권을 준다. 다 끝나면 phase로 이동
+    func giveRightSpeaking(start: Date, end: Date, userIDs: [(String, String)], after excute: @escaping () -> Void) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        zip(stride(from: start, to: end, by: (self.durations[0] * 60)), userIDs).forEach { [unowned self] in
+            let fireTime = $0.0
+            let untilDate = $0.0 + self.durations[0] * 60
+            let userID = $0.1.0
+            let nickname = $0.1.1
+            // $0.0까지 $0.1만 발언 가능함
+            // 타이머를 예약해둠
+            let timer = Timer(fire: fireTime, interval: 0, repeats: false, block: { [unowned self] _ in
+                self.roomReference.child("editing").setValue(nil)
+                self.roomReference.child("speaker").setValue(nil)
+                self.send(chat: Chat(userID: "bot", content: "\(nickname)님의 말을 들어보겠습니다", date: fireTime, nickName: nil))
+                self.roomReference.child("speaker/\(userID)")
+                    .setValue(["value": dateFormatter.string(from: untilDate)])
+            })
+            RunLoop.main.add(timer, forMode: .common)
+        }
+        let timer = Timer(fire: end, interval: 0, repeats: false, block: { _ in
+            excute()
+        })
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
+    @objc private func phaseOneEnd() {
         self.goPhaseTwo(content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되어 토론을 시작합니다.")
     }
 
     @objc func phaseTwoEnd() {
+        self.roomReference.child("editing").setValue(nil)
         if self.isFirstHalf {
             self.goPhaseThree(content: "이어서 반대측 입론을 듣겠습니다")
         } else {
@@ -437,10 +496,12 @@ final class DiscussionManager {
     }
 
     @objc func phaseThreeEnd() {
+        self.roomReference.child("editing").setValue(nil)
         self.goPhaseFour()
     }
 
     @objc func phaseFourEnd() {
+        self.roomReference.child("editing").setValue(nil)
         if self.isFirstHalf {
             self.goPhaseFive(content: "자유토론이 끝났습니다. 찬성측부터 결론을 말씀해주세요")
         } else {
@@ -449,6 +510,7 @@ final class DiscussionManager {
     }
 
     @objc func phaseFiveEnd() {
+        self.roomReference.child("editing").setValue(nil)
         if self.isFirstHalf {
             self.goPhaseSix(content: "반대측 결론 말씀해주세요")
         } else {
@@ -457,6 +519,8 @@ final class DiscussionManager {
     }
 
     @objc func phaseSixEnd() {
+        self.roomReference.child("editing").setValue(nil)
+        self.send(phase: 7)
         if self.isFirstHalf {
             self.isFirstHalf = false
             let group = DispatchGroup()
@@ -510,6 +574,7 @@ final class DiscussionManager {
     }
 
     @objc func phaseSevenEnd() {
+        self.roomReference.child("editing").setValue(nil)
         self.goPhaseTwo(content: "쉬는 시간이 종료되었습니다. 이번에는 반대측 입론부터 듣겠습니다.")
     }
 
