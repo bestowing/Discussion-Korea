@@ -487,18 +487,18 @@ final class Reference {
                     let sides = [Side.agree, Side.disagree, Side.judge]
                     sides.forEach {
                         if $0 == side {
-                            if var supporter = supporters[side.rawValue] as? [String] {
+                            if var supporter = supporters[$0.rawValue] as? [String] {
                                 guard !supporter.contains(userID) else { return }
                                 supporter.append(userID)
-                                newSupporters[side.rawValue] = supporter as AnyObject
+                                newSupporters[$0.rawValue] = supporter as AnyObject
                             } else {
-                                newSupporters[side.rawValue] = [userID] as AnyObject
+                                newSupporters[$0.rawValue] = [userID] as AnyObject
                             }
                         } else {
-                            guard var supporter = supporters[side.rawValue] as? [String],
+                            guard var supporter = supporters[$0.rawValue] as? [String],
                                   let index = supporter.firstIndex(of: userID) else { return }
                             supporter.remove(at: index)
-                            newSupporters[side.rawValue] = supporter as AnyObject
+                            newSupporters[$0.rawValue] = supporter as AnyObject
                         }
                     }
                     currentData.value = newSupporters
