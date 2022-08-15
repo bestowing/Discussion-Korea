@@ -64,8 +64,8 @@ final class SummaryManager {
         var vote = 0
         var toxic: Chat.Toxic? = nil
         let urlStrings = ["http://119.194.17.59:8080/predictions/classification1",
-                          "https://zw5k7gzpb5.execute-api.ap-northeast-2.amazonaws.com/dev/classification",
-//                          "http://119.194.17.59:8888/predictions/classification2",
+//                          "https://zw5k7gzpb5.execute-api.ap-northeast-2.amazonaws.com/dev/classification",
+                          "http://119.194.17.59:8888/predictions/classification2",
                           "http://119.194.17.59:8080/predictions/classification3"]
         urlStrings.enumerated().forEach { [unowned self] (index, urlString) in
             print("enter")
@@ -185,7 +185,7 @@ final class SummaryManager {
             agreeResults.enumerated().forEach { (index, result) in
                 group.enter()
                 print("찬성측의 ", result.1, "를 요약하려고 함")
-                let urlString = "http://119.194.17.59:8080/predictions/summarization"
+                let urlString = "http://115.145.172.80:8080/predictions/summarization"
                 var request = URLRequest(url: URL(string: urlString)!)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -233,7 +233,7 @@ final class SummaryManager {
             disagreeResults.enumerated().forEach { (index, result) in
                 group.enter()
                 print("반대측의 ", result.1, "를 요약하려고 함")
-                let urlString = "http://119.194.17.59:8080/predictions/summarization"
+                let urlString = "http://115.145.172.80:8080/predictions/summarization"
                 var request = URLRequest(url: URL(string: urlString)!)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")

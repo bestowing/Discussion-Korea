@@ -79,7 +79,7 @@ final class DiscussionManager {
                         nickName: nil)
                     )
                     let end = Date(timeInterval: 60, since: now)
-                    let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseFourEnd), userInfo: nil, repeats: false)
+                    let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseOneEnd), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
                     self.send(phase: 1, until: end)
                 }
