@@ -57,6 +57,8 @@ final class AddChatRoomViewController: UIViewController {
         let textField = UITextField()
         textField.borderStyle = .none
         textField.placeholder = "채팅방 제목을 입력해주세요"
+        textField.font = .preferredFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
@@ -86,10 +88,12 @@ final class AddChatRoomViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = self.exitButton
         self.navigationItem.rightBarButtonItem = self.submitButton
 
-        let descriptionLabel = UILabel()
+        let descriptionLabel = ResizableLabel()
         descriptionLabel.text = "채팅방 제목과\n사진을 설정해주세요"
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.font = UIFont.systemFont(ofSize: 27.0, weight: .semibold)
+        descriptionLabel.font = UIFont.boldSystemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize
+        )
         self.view.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
