@@ -13,19 +13,19 @@ final class ScheduleCell: UITableViewCell {
 
     private let topicLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
         return label
     }()
 
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         return label
     }()
 
     private let durationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14.0)
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
         return label
     }()
 
