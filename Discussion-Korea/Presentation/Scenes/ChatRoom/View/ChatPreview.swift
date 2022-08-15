@@ -24,7 +24,7 @@ final class ChatPreview: UIView {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .systemGray
-        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
         return label
     }()
 
@@ -32,7 +32,7 @@ final class ChatPreview: UIView {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .label
-        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
         return label
     }()
 

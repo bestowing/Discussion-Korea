@@ -16,7 +16,7 @@ final class SerialBotChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = .systemBackground
         contentLabel.textColor = .label
-        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
+        contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         contentLabel.layer.cornerRadius = 8
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
@@ -26,7 +26,7 @@ final class SerialBotChatCell: ChatCell {
 
     private let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 10.0)
+        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
         return timeLabel
     }()
 

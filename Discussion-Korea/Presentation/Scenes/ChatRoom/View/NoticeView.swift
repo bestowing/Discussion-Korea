@@ -20,13 +20,13 @@ final class NoticeView: UIView {
 
     fileprivate let contentLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0)
+        label.font = UIFont.preferredFont(forTextStyle: .callout)
         return label
     }()
 
     fileprivate let remainTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14.0)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         return label
     }()
 

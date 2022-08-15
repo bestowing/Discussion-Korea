@@ -15,7 +15,7 @@ final class ChatInputView: UIView {
 
     fileprivate let messageTextView: UITextView = {
         let messageTextView = UITextView()
-        messageTextView.font = UIFont.systemFont(ofSize: 14.0)
+        messageTextView.font = UIFont.preferredFont(forTextStyle: .subheadline)
         messageTextView.backgroundColor = .clear
         messageTextView.isScrollEnabled = false
         messageTextView.accessibilityLabel = "채팅 내용"
@@ -25,7 +25,7 @@ final class ChatInputView: UIView {
 
     fileprivate let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
         return label
     }()
 
@@ -85,7 +85,7 @@ final class ChatInputView: UIView {
             make.leading.equalTo(backgroundView.snp.trailing).offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.centerY.equalTo(backgroundView)
-            make.size.equalTo(26)
+            make.size.equalTo(backgroundView.snp.width).multipliedBy(0.1)
         }
     }
 

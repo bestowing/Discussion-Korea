@@ -13,42 +13,53 @@ final class SelfChatCell: ChatCell {
     // MARK: properties
 
     private let contentLabel: UILabel = {
-        let contentLabel = PaddingLabel()
-        contentLabel.backgroundColor = UIColor.accentColor
+        let contentLabel = ResizableLabel()
         contentLabel.textColor = .white
-        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
-        contentLabel.layer.cornerRadius = 8
-        contentLabel.layer.masksToBounds = true
+        contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
         return contentLabel
     }()
 
     private let timeLabel: UILabel = {
-        let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 10.0)
+        let timeLabel = ResizableLabel()
+        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
         return timeLabel
     }()
 
     // MARK: - init/deinit
 
     required init?(coder: NSCoder) {
-        fatalError("not implemented")
+        super.init(coder: coder)
+        self.setSubviews()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.setSubviews()
+    }
+
+    private func setSubviews() {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.accentColor
+        backgroundView.layer.cornerRadius = 8
+        backgroundView.layer.masksToBounds = true
+        self.contentView.addSubview(backgroundView)
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
-        self.contentLabel.snp.makeConstraints { make in
+        backgroundView.snp.makeConstraints { make in
             make.leading.greaterThanOrEqualToSuperview().offset(80)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        self.contentLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(backgroundView).offset(8)
+            make.bottom.trailing.equalTo(backgroundView).inset(8)
+        }
         self.timeLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(self.contentLabel.snp.leading).offset(-8)
-            make.bottom.equalTo(self.contentLabel.snp.bottom)
+            make.trailing.equalTo(backgroundView.snp.leading).offset(-8)
+            make.bottom.equalTo(backgroundView.snp.bottom)
         }
     }
 

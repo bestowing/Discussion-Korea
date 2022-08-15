@@ -23,7 +23,7 @@ class OtherChatCell: ChatCell {
 
     private let nicknameLabel: UILabel = {
         let nicknameLabel = UILabel()
-        nicknameLabel.font = UIFont.systemFont(ofSize: 12.0)
+        nicknameLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         return nicknameLabel
     }()
 
@@ -31,7 +31,7 @@ class OtherChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = .systemBackground
         contentLabel.textColor = .label
-        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
+        contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         contentLabel.layer.cornerRadius = 8
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
@@ -41,7 +41,7 @@ class OtherChatCell: ChatCell {
 
     fileprivate let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 10.0)
+        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
         return timeLabel
     }()
 
