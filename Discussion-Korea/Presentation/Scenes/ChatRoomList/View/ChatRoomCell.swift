@@ -23,20 +23,25 @@ final class ChatRoomCell: UICollectionViewCell {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        label.font = UIFont.boldSystemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize
+        )
         label.numberOfLines = 1
         return label
     }()
 
     private let numberOfUsersLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        label.font = UIFont.systemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .caption1).pointSize,
+            weight: .light
+        )
         return label
     }()
 
     private let latestChatLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
+        let label = ResizableLabel()
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
         label.numberOfLines = 2
         label.lineBreakMode = .byCharWrapping
         label.textColor = .systemGray
@@ -45,11 +50,9 @@ final class ChatRoomCell: UICollectionViewCell {
 
     private let latestChatDateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 9.0)
+        label.font = UIFont.preferredFont(forTextStyle: .caption2)
         return label
     }()
-
-    // TODO: 실시간으로 채팅방에 몇명 있는지 보여주는 Label이 있으면 좋을듯
 
     // MARK: - init/deinit
 
