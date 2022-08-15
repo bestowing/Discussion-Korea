@@ -27,15 +27,16 @@ final class HomeViewController: UIViewController {
     }()
 
     private let nicknameLabel: UILabel = {
-        let label = UILabel()
+        let label = ResizableLabel()
         label.text = "guest"
-        label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
         return label
     }()
 
     private let scoreLabel: UILabel = {
-        let label = UILabel()
+        let label = ResizableLabel()
         label.text = "0승 0무 0패"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         return label
     }()
 
