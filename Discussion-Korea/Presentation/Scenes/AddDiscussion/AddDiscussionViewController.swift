@@ -34,12 +34,14 @@ final class AddDiscussionViewController: UIViewController {
     private let topicTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
+        textField.font = UIFont.preferredFont(forTextStyle: .body)
         return textField
     }()
 
     private let introTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -56,6 +58,7 @@ final class AddDiscussionViewController: UIViewController {
     private let mainTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -72,6 +75,7 @@ final class AddDiscussionViewController: UIViewController {
     private let conclusionTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -140,6 +144,7 @@ final class AddDiscussionViewController: UIViewController {
 
         let topicLabel = UILabel()
         topicLabel.text = "주제"
+        topicLabel.font = UIFont.preferredFont(forTextStyle: .body)
         topicStackView.addArrangedSubview(topicLabel)
         topicStackView.addArrangedSubview(self.topicTextfield)
 
@@ -152,8 +157,10 @@ final class AddDiscussionViewController: UIViewController {
 
         let introLabel = UILabel()
         introLabel.text = "입론 시간"
+        introLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel = UILabel()
         minuteLabel.text = "분"
+        minuteLabel.font = UIFont.preferredFont(forTextStyle: .body)
 
         introStackView.addArrangedSubview(introLabel)
         introStackView.addArrangedSubview(self.introTimeLabel)
@@ -169,8 +176,10 @@ final class AddDiscussionViewController: UIViewController {
 
         let mainLabel = UILabel()
         mainLabel.text = "본론 시간"
+        mainLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel2 = UILabel()
         minuteLabel2.text = "분"
+        minuteLabel2.font = UIFont.preferredFont(forTextStyle: .body)
 
         mainStackView.addArrangedSubview(mainLabel)
         mainStackView.addArrangedSubview(self.mainTimeLabel)
@@ -179,8 +188,10 @@ final class AddDiscussionViewController: UIViewController {
 
         let conclusionLabel = UILabel()
         conclusionLabel.text = "결론 시간"
+        conclusionLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel3 = UILabel()
         minuteLabel3.text = "분"
+        minuteLabel3.font = UIFont.preferredFont(forTextStyle: .body)
 
         let conclusionStackView = UIStackView(
             arrangedSubviews: [conclusionLabel,
@@ -203,6 +214,7 @@ final class AddDiscussionViewController: UIViewController {
 
         let dateLabel = UILabel()
         dateLabel.text = "시작 날짜"
+        dateLabel.font = UIFont.preferredFont(forTextStyle: .body)
         dateStackView.addArrangedSubview(dateLabel)
         dateStackView.addArrangedSubview(self.datePicker)
 
