@@ -20,9 +20,7 @@ final class ChatRoomListViewController: UIViewController {
         label.title = "채팅"
         label.isEnabled = false
         label.setTitleTextAttributes(
-            [.font: UIFont.boldSystemFont(
-                ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize
-            ),
+            [.font: UIFont.boldSystemFont(ofSize: 25.0),
              NSAttributedString.Key.foregroundColor: UIColor.label],
             for: .disabled
         )
