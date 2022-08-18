@@ -81,13 +81,10 @@ final class ChatRoomListViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = self.addButton
         self.view.addSubview(self.chatRoomsCollectionView)
         self.chatRoomsCollectionView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: self.view.frame.width, height: 75)
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 75)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
 
