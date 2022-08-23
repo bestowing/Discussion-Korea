@@ -26,7 +26,7 @@ final class SerialBotChatCell: ChatCell {
 
     private let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
@@ -55,7 +55,6 @@ final class SerialBotChatCell: ChatCell {
             make.bottom.equalToSuperview()
         }
         self.timeLabel.snp.makeConstraints { make in
-//            make.trailing.equalTo(self.contentLabel.snp.trailing)
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
             make.bottom.equalToSuperview()
         }

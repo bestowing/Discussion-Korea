@@ -41,7 +41,7 @@ final class BotChatCell: ChatCell {
 
     private let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
@@ -60,8 +60,6 @@ final class BotChatCell: ChatCell {
     // MARK: - methods
 
     private func layoutViews() {
-//        self.contentView.addSubview(self.profileImageView)
-//        self.contentView.addSubview(self.nicknameLabel)
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
 
@@ -78,12 +76,7 @@ final class BotChatCell: ChatCell {
         }
         self.profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(35)
-//            make.centerX.equalToSuperview()
-//            make.top.equalToSuperview().offset(8)
         }
-//        self.nicknameLabel.snp.makeConstraints { make in
-//            make.top.equalTo(self.profileImageView.snp.bottom).offset(5)
-//        }
         self.contentLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.leading.greaterThanOrEqualToSuperview().offset(60)
@@ -95,7 +88,6 @@ final class BotChatCell: ChatCell {
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
-//        self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
     }
 
     override func bind(_ viewModel: ChatItemViewModel) {

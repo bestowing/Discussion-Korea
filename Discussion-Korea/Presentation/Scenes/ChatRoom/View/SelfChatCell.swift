@@ -13,17 +13,20 @@ final class SelfChatCell: ChatCell {
     // MARK: properties
 
     private let contentLabel: UILabel = {
-        let contentLabel = ResizableLabel()
+        let contentLabel = PaddingLabel()
+        contentLabel.backgroundColor = UIColor.accentColor
         contentLabel.textColor = .white
         contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        contentLabel.layer.cornerRadius = 8
+        contentLabel.layer.masksToBounds = true
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
         return contentLabel
     }()
 
     private let timeLabel: UILabel = {
-        let timeLabel = ResizableLabel()
-        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
+        let timeLabel = UILabel()
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
@@ -40,26 +43,17 @@ final class SelfChatCell: ChatCell {
     }
 
     private func setSubviews() {
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.accentColor
-        backgroundView.layer.cornerRadius = 8
-        backgroundView.layer.masksToBounds = true
-        self.contentView.addSubview(backgroundView)
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
-        backgroundView.snp.makeConstraints { make in
+        self.contentLabel.snp.makeConstraints { make in
             make.leading.greaterThanOrEqualToSuperview().offset(80)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-        self.contentLabel.snp.makeConstraints { make in
-            make.top.leading.equalTo(backgroundView).offset(8)
-            make.bottom.trailing.equalTo(backgroundView).inset(8)
-        }
         self.timeLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(backgroundView.snp.leading).offset(-8)
-            make.bottom.equalTo(backgroundView.snp.bottom)
+            make.trailing.equalTo(self.contentLabel.snp.leading).offset(-8)
+            make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
     }
 

@@ -41,7 +41,7 @@ class OtherChatCell: ChatCell {
 
     fileprivate let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
