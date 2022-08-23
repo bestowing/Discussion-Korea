@@ -75,9 +75,9 @@ class ChatItemViewModel {
 
     var contentFont: UIFont {
         if self.toxic {
-            return UIFont.systemFont(ofSize: 14.0)
+            return UIFont.preferredFont(forTextStyle: .footnote)
         }
-        return UIFont.systemFont(ofSize: 15.0)
+        return UIFont.preferredFont(forTextStyle: .subheadline)
     }
 
     var nickname: String {

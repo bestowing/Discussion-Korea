@@ -23,7 +23,7 @@ final class ParticipantCell: UITableViewCell {
 
     private let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
         return label
     }()
 

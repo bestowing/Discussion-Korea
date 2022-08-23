@@ -31,9 +31,15 @@ final class ChatRoomViewController: UIViewController {
     private let liveChatView = LiveChatView()
     private let chatPreview = ChatPreview()
 
-    private let messageCollectionView: UICollectionView = {
+    private lazy var messageCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 7
+
         let messageCollectionView = UICollectionView(
-            frame: .zero, collectionViewLayout: UICollectionViewLayout.init()
+            frame: .zero, collectionViewLayout: flowLayout
         )
         messageCollectionView.backgroundColor = UIColor.systemGray6
         messageCollectionView.register(
@@ -113,12 +119,6 @@ final class ChatRoomViewController: UIViewController {
             make.top.equalTo(self.messageCollectionView.snp.bottom)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 7
-        self.messageCollectionView.collectionViewLayout = flowLayout
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)

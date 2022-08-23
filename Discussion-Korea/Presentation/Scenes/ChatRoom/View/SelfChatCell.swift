@@ -16,7 +16,7 @@ final class SelfChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = UIColor.accentColor
         contentLabel.textColor = .white
-        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
+        contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         contentLabel.layer.cornerRadius = 8
         contentLabel.layer.masksToBounds = true
         contentLabel.numberOfLines = 0
@@ -26,18 +26,23 @@ final class SelfChatCell: ChatCell {
 
     private let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 10.0)
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
     // MARK: - init/deinit
 
     required init?(coder: NSCoder) {
-        fatalError("not implemented")
+        super.init(coder: coder)
+        self.setSubviews()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.setSubviews()
+    }
+
+    private func setSubviews() {
         self.contentView.addSubview(self.contentLabel)
         self.contentView.addSubview(self.timeLabel)
         self.contentLabel.snp.makeConstraints { make in
