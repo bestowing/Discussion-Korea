@@ -35,9 +35,14 @@ final class ChatRoomListViewController: UIViewController {
         return button
     }()
 
-    private let chatRoomsCollectionView: UICollectionView = {
+    private lazy var chatRoomsCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 75)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+
         let collectionView = UICollectionView(
-            frame: .zero ,collectionViewLayout: UICollectionViewLayout()
+            frame: .zero, collectionViewLayout: flowLayout
         )
         collectionView.register(
             ChatRoomCell.self, forCellWithReuseIdentifier: ChatRoomCell.identifier
@@ -83,12 +88,6 @@ final class ChatRoomListViewController: UIViewController {
         self.chatRoomsCollectionView.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 75)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
-
-        self.chatRoomsCollectionView.collectionViewLayout = flowLayout
     }
 
     private func bindViewModel() {
