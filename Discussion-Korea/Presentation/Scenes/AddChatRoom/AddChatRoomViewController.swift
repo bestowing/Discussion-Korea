@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SnapKit
 
-final class AddChatRoomViewController: UIViewController {
+final class AddChatRoomViewController: BaseViewController {
 
     // MARK: properties
 
@@ -64,18 +64,11 @@ final class AddChatRoomViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
 
     override func loadView() {
         super.loadView()
         self.title = "채팅방 추가"
-        self.view.backgroundColor = .systemBackground
     }
 
     override func viewDidLoad() {

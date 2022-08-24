@@ -11,7 +11,7 @@ import RxSwift
 import RxKeyboard
 import RxGesture
 
-final class ChatRoomViewController: UIViewController {
+final class ChatRoomViewController: BaseViewController {
 
     // MARK: properties
 
@@ -67,18 +67,7 @@ final class ChatRoomViewController: UIViewController {
     private let chatInputView = ChatInputView()
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

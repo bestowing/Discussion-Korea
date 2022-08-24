@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-final class SettingViewController: UIViewController {
+final class SettingViewController: BaseViewController {
 
     // MARK: - properties
 
@@ -29,18 +29,7 @@ final class SettingViewController: UIViewController {
         return tableView
     }()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

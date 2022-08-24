@@ -56,6 +56,7 @@
 		3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696B128362D300077E5B3 /* ChatRoomItemViewModel.swift */; };
 		3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */; };
 		3F6696BD28390ADE0077E5B3 /* OpenSourceNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */; };
+		3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E7C28B6795D00C1D072 /* BaseViewController.swift */; };
 		3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */; };
 		3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */; };
 		3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910431283F6F5600446239 /* AddChatRoomViewController.swift */; };
@@ -212,6 +213,7 @@
 		3F6696B128362D300077E5B3 /* ChatRoomItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomItemViewModel.swift; sourceTree = "<group>"; };
 		3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCell.swift; sourceTree = "<group>"; };
 		3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceNavigator.swift; sourceTree = "<group>"; };
+		3F689E7C28B6795D00C1D072 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomNavigator.swift; sourceTree = "<group>"; };
 		3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewModel.swift; sourceTree = "<group>"; };
 		3F910431283F6F5600446239 /* AddChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 		3F37B393282075DB00DB18B7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3F689E7C28B6795D00C1D072 /* BaseViewController.swift */,
 				3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */,
 				3F37B394282075E400DB18B7 /* ViewModelType.swift */,
 			);
@@ -859,6 +862,7 @@
 				3FB357A82826279200F27C77 /* AddDiscussionNavigator.swift in Sources */,
 				3F37B3CC2820773C00DB18B7 /* ChatsUsecase.swift in Sources */,
 				3F37B3B42820766400DB18B7 /* HomeViewController.swift in Sources */,
+				3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */,
 				3F37B3AF2820765900DB18B7 /* SerialOtherChatCell.swift in Sources */,
 				3F37B3B02820765900DB18B7 /* OtherChatCell.swift in Sources */,
 				3FB3579328250B5000F27C77 /* ChatRoomScheduleViewModel.swift in Sources */,

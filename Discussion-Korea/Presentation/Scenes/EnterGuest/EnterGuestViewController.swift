@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 
-final class EnterGuestViewController: UIViewController {
+final class EnterGuestViewController: BaseViewController {
 
     // MARK: - properties
 
@@ -63,18 +63,11 @@ final class EnterGuestViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
 
     override func loadView() {
         super.loadView()
         self.title = "처음 설정하기"
-        self.view.backgroundColor = .systemBackground
     }
 
     override func viewDidLoad() {

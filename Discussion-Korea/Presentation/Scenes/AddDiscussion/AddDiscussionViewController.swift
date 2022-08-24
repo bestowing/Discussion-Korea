@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SnapKit
 
-final class AddDiscussionViewController: UIViewController {
+final class AddDiscussionViewController: BaseViewController {
 
     // MARK: properties
 
@@ -99,18 +99,7 @@ final class AddDiscussionViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

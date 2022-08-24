@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
 
     // MARK: - properties
 
@@ -42,18 +42,7 @@ final class HomeViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
