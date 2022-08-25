@@ -11,6 +11,7 @@ import RxSwift
 
 enum RefereceError: Error {
 
+    case keyError
     case profileError
 
 }
@@ -49,7 +50,7 @@ final class Reference {
                 .child("chatRooms")
                 .childByAutoId().key
             else {
-                subscribe.onCompleted()
+                subscribe.onError(RefereceError.keyError)
                 return Disposables.create()
             }
             var values: [String: Any] = ["title": chatRoom.title, "adminUID": chatRoom.adminUID]
@@ -655,52 +656,6 @@ final class Reference {
             }
             return Disposables.create()
         }
-    }
-
-}
-
-// 포지션 값도 키값으로 해야 할듯
-
-fileprivate extension ChatRoom {
-
-    static func toChatRoom(from snapshot: DataSnapshot) -> ChatRoom? {
-        guard let dic = snapshot.value as? NSDictionary,
-              let title = dic["title"] as? String,
-              let adminUID = dic["adminUID"] as? String
-        else { return nil }
-        var chatRoom = ChatRoom(
-            uid: snapshot.key, title: title, adminUID: adminUID
-        )
-        if let profile = dic["profile"] as? String,
-           let url = URL(string: profile) {
-            chatRoom.profileURL = url
-        }
-        return chatRoom
-    }
-
-}
-
-fileprivate extension Chat {
-
-    static func toChat(from snapshot: DataSnapshot) -> Chat? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let dic = snapshot.value as? NSDictionary,
-              let userID = dic["user"] as? String,
-              let content = dic["content"] as? String,
-              let dateString = dic["date"] as? String,
-              let date = dateFormatter.date(from: dateString)
-        else { return nil }
-        var chat = Chat(userID: userID, content: content, date: date)
-        chat.uid = snapshot.key
-        if let sideString = dic["side"] as? String {
-            let side = Side.toSide(from: sideString)
-            chat.side = side
-        }
-        if let toxic = dic["toxic"] as? Bool {
-            chat.toxic = toxic
-        }
-        return chat
     }
 
 }
