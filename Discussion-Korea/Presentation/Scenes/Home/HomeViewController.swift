@@ -32,6 +32,7 @@ final class HomeViewController: BaseViewController {
 
     private let chartButton: HomeMenuButton = {
         let button = HomeMenuButton()
+        button.isEnabled = false
         button.titleLabel.text = "방구석 조직도"
         button.imageView.image = UIImage(systemName: "rectangle.fill.badge.person.crop")
         return button

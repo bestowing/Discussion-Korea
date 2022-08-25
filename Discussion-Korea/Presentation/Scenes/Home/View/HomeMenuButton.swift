@@ -5,9 +5,17 @@
 //  Created by 이청수 on 2022/08/25.
 //
 
+import RxSwift
 import UIKit
 
 final class HomeMenuButton: UIView {
+
+    var isEnabled: Bool = true {
+        willSet {
+            self.titleLabel.textColor = newValue ? .label : .systemGray3
+            self.imageView.tintColor = newValue ? .accentColor : .systemGray3
+        }
+    }
 
     let titleLabel: UILabel = {
         let title = UILabel()
