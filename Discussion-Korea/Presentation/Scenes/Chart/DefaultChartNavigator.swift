@@ -27,6 +27,8 @@ final class DefaultChartNavigator: ChartNavigator {
 
     func toChart() {
         let viewController = ChartViewController()
+        let viewModel = ChartViewModel(navigator: self)
+        viewController.viewModel = viewModel
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.presentedViewController.present(navigationController, animated: true)

@@ -7,4 +7,5 @@
 
 protocol ChartNavigator {
     func toChart()
+    func toHome()
 }

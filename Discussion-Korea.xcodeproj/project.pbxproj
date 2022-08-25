@@ -60,6 +60,7 @@
 		3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8528B735AB00C1D072 /* ChartViewController.swift */; };
 		3F689E8828B7380600C1D072 /* DefaultChartNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */; };
 		3F689E8A28B7381800C1D072 /* ChartNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8928B7381800C1D072 /* ChartNavigator.swift */; };
+		3F689E8C28B7397B00C1D072 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8B28B7397B00C1D072 /* ChartViewModel.swift */; };
 		3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */; };
 		3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */; };
 		3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910431283F6F5600446239 /* AddChatRoomViewController.swift */; };
@@ -220,6 +221,7 @@
 		3F689E8528B735AB00C1D072 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChartNavigator.swift; sourceTree = "<group>"; };
 		3F689E8928B7381800C1D072 /* ChartNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartNavigator.swift; sourceTree = "<group>"; };
+		3F689E8B28B7397B00C1D072 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomNavigator.swift; sourceTree = "<group>"; };
 		3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewModel.swift; sourceTree = "<group>"; };
 		3F910431283F6F5600446239 /* AddChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewController.swift; sourceTree = "<group>"; };
@@ -561,6 +563,7 @@
 			children = (
 				3F689E8928B7381800C1D072 /* ChartNavigator.swift */,
 				3F689E8528B735AB00C1D072 /* ChartViewController.swift */,
+				3F689E8B28B7397B00C1D072 /* ChartViewModel.swift */,
 				3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */,
 			);
 			path = Chart;
@@ -877,6 +880,7 @@
 				3FBDBC4928892F5700A09BF4 /* OpinionView.swift in Sources */,
 				3FBDBC0C2886E36400A09BF4 /* DefaultChatRoomListNavigator.swift in Sources */,
 				3F6696A82835C15F0077E5B3 /* SettingViewModel.swift in Sources */,
+				3F689E8C28B7397B00C1D072 /* ChartViewModel.swift in Sources */,
 				3FB357A12826192A00F27C77 /* Discussion.swift in Sources */,
 				3FB357A82826279200F27C77 /* AddDiscussionNavigator.swift in Sources */,
 				3F37B3CC2820773C00DB18B7 /* ChatsUsecase.swift in Sources */,

@@ -5,10 +5,10 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
+import RxGesture
+import RxSwift
 import SnapKit
 import UIKit
-import RxSwift
-import RxGesture
 
 final class HomeViewController: BaseViewController {
 
