@@ -34,6 +34,14 @@ final class HomeViewModel: ViewModelType {
         let userID = self.userInfoUsecase.uid()
             .asDriverOnErrorJustComplete()
 
+        //        let profileURL = myInfo.compactMap { $0?.profileURL }
+
+        //        let score = myInfo.compactMap { myInfo -> String? in
+        //            guard let myInfo = myInfo
+        //            else { return nil }
+        //            return "\(myInfo.win)승 \(myInfo.draw)무 \(myInfo.lose)패"
+        //        }
+
         let myInfo = userID
             .flatMap { [unowned self] userID in
                 self.userInfoUsecase
@@ -42,14 +50,10 @@ final class HomeViewModel: ViewModelType {
             }
 
         let nickname = myInfo.compactMap { $0?.nickname }
+            .map { $0 + "님, 안녕하세요 🇰🇷" }
 
-        let profileURL = myInfo.compactMap { $0?.profileURL }
-
-        let score = myInfo.compactMap { myInfo -> String? in
-            guard let myInfo = myInfo
-            else { return nil }
-            return "\(myInfo.win)승 \(myInfo.draw)무 \(myInfo.lose)패"
-        }
+        let chartEvent = input.chartTrigger
+            .do(onNext: self.navigator.toChart)
 
         let enterEvent = myInfo
             .filter { return $0 == nil }
@@ -57,11 +61,11 @@ final class HomeViewModel: ViewModelType {
             .do(onNext: self.navigator.toEnterGame)
             .mapToVoid()
 
+        let events = Driver.of(enterEvent, chartEvent).merge()
+
         return Output(
             nickname: nickname,
-            score: score,
-            profileURL: profileURL,
-            events: enterEvent
+            events: events
         )
     }
 
@@ -69,12 +73,14 @@ final class HomeViewModel: ViewModelType {
 
 extension HomeViewModel {
 
-    struct Input {}
+    struct Input {
+        let chartTrigger: Driver<Void>
+        let lawTrigger: Driver<Void>
+        let guideTrigger: Driver<Void>
+    }
     
     struct Output {
         let nickname: Driver<String>
-        let score: Driver<String>
-        let profileURL: Driver<URL>
         let events: Driver<Void>
     }
 

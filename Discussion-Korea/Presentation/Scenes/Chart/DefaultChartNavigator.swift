@@ -1,0 +1,39 @@
+//
+//  DefaultChartNavigator.swift
+//  Discussion-Korea
+//
+//  Created by 이청수 on 2022/08/25.
+//
+
+import UIKit
+
+final class DefaultChartNavigator: ChartNavigator {
+
+    // MARK: properties
+
+    private let presentedViewController: UIViewController
+
+    // MARK: - init/deinit
+
+    init(presentedViewController: UIViewController) {
+        self.presentedViewController = presentedViewController
+    }
+
+    deinit {
+        print("🗑", self)
+    }
+
+    // MARK: - methods
+
+    func toChart() {
+        let viewController = ChartViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.presentedViewController.present(navigationController, animated: true)
+    }
+
+    func toHome() {
+        self.presentedViewController.dismiss(animated: true)
+    }
+
+}

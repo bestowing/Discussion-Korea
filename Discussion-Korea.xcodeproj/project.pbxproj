@@ -57,6 +57,9 @@
 		3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */; };
 		3F6696BD28390ADE0077E5B3 /* OpenSourceNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */; };
 		3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E7C28B6795D00C1D072 /* BaseViewController.swift */; };
+		3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8528B735AB00C1D072 /* ChartViewController.swift */; };
+		3F689E8828B7380600C1D072 /* DefaultChartNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */; };
+		3F689E8A28B7381800C1D072 /* ChartNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8928B7381800C1D072 /* ChartNavigator.swift */; };
 		3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */; };
 		3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */; };
 		3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910431283F6F5600446239 /* AddChatRoomViewController.swift */; };
@@ -214,6 +217,9 @@
 		3F6696B42836301C0077E5B3 /* ChatRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCell.swift; sourceTree = "<group>"; };
 		3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceNavigator.swift; sourceTree = "<group>"; };
 		3F689E7C28B6795D00C1D072 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		3F689E8528B735AB00C1D072 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChartNavigator.swift; sourceTree = "<group>"; };
+		3F689E8928B7381800C1D072 /* ChartNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartNavigator.swift; sourceTree = "<group>"; };
 		3F91042D283F6B2900446239 /* AddChatRoomNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomNavigator.swift; sourceTree = "<group>"; };
 		3F91042F283F6BAC00446239 /* AddChatRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewModel.swift; sourceTree = "<group>"; };
 		3F910431283F6F5600446239 /* AddChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChatRoomViewController.swift; sourceTree = "<group>"; };
@@ -405,6 +411,7 @@
 				3FB3578D282509E600F27C77 /* ChatRoomSchedule */,
 				3FB35784282406AB00F27C77 /* ChatRoomSideMenu */,
 				3F910433283FB27400446239 /* EnterGuest */,
+				3F689E8028B7355700C1D072 /* Chart */,
 				3F37B39D2820763F00DB18B7 /* Home */,
 				3F66969D2835BF0E0077E5B3 /* Setting */,
 			);
@@ -547,6 +554,16 @@
 				3F6696BC28390ADE0077E5B3 /* OpenSourceNavigator.swift */,
 			);
 			path = OpenSource;
+			sourceTree = "<group>";
+		};
+		3F689E8028B7355700C1D072 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				3F689E8928B7381800C1D072 /* ChartNavigator.swift */,
+				3F689E8528B735AB00C1D072 /* ChartViewController.swift */,
+				3F689E8728B7380600C1D072 /* DefaultChartNavigator.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		3F91042C283F6B1500446239 /* AddChatRoom */ = {
@@ -801,12 +818,14 @@
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,
 				3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */,
+				3F689E8A28B7381800C1D072 /* ChartNavigator.swift in Sources */,
 				3F37B3AE2820765900DB18B7 /* SelfChatCell.swift in Sources */,
 				3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */,
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */,
 				3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */,
 				3F37B3E628207CCA00DB18B7 /* AppDelegate.swift in Sources */,
+				3F689E8828B7380600C1D072 /* DefaultChartNavigator.swift in Sources */,
 				3FB3579A2826063C00F27C77 /* ParticipantItemViewModel.swift in Sources */,
 				3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */,
 				3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */,
@@ -870,6 +889,7 @@
 				3FB3578A28240D6600F27C77 /* ChatRoomSideMenuViewModel.swift in Sources */,
 				3F910439283FB34300446239 /* EnterGuestViewController.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
+				3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */,
 				3FBDBC162886E3DF00A09BF4 /* DefaultSettingNavigator.swift in Sources */,
 				3F37B3AC2820765900DB18B7 /* PaddingLabel.swift in Sources */,
 			);

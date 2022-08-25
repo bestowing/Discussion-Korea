@@ -32,8 +32,9 @@ final class DefaultHomeNavigator: HomeNavigator {
 
     func toHome() {
         let homeViewController = HomeViewController()
-        homeViewController.title = "홈"
-        self.navigationController.navigationBar.prefersLargeTitles = true
+//        homeViewController.title = "홈"
+//        self.navigationController.navigationBar.prefersLargeTitles = true
+        self.navigationController.setNavigationBarHidden(true, animated: false)
         let homeViewModel = HomeViewModel(
             navigator: self, userInfoUsecase: self.services.makeUserInfoUsecase()
         )
@@ -49,6 +50,23 @@ final class DefaultHomeNavigator: HomeNavigator {
             services: self.services, presentedViewController: presentingViewController
         )
         navigator.toEnterGuest(userID)
+    }
+
+    func toChart() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultChartNavigator(
+            presentedViewController: presentingViewController
+        )
+        navigator.toChart()
+    }
+
+    func toLaw() {
+        
+    }
+
+    func toGuide() {
+        
     }
 
 }
