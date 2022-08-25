@@ -24,7 +24,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference.add(side: side, in: roomID, with: userID)
     }
 
-    func add(userInfo: UserInfo) -> Observable<Void> {
+    func add(userInfo: (String, String, URL?)) -> Observable<Void> {
         self.reference.add(userInfo: userInfo)
     }
 
@@ -44,7 +44,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
-    func userInfo(roomID: String, with userID: String) -> Observable<UserInfo?> {
+    func userInfo(roomID: String, with userID: String) -> Observable<Side?> {
         return self.reference.userInfo(in: roomID, with: userID)
     }
 

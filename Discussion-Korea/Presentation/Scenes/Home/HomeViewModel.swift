@@ -52,6 +52,7 @@ final class HomeViewModel: ViewModelType {
         let nickname = myInfo.compactMap { $0?.nickname }
             .map { $0 + "님, 안녕하세요 🇰🇷" }
 
+        let day = myInfo.compactMap { $0?.registerAt }
         let chartEvent = input.chartTrigger
             .do(onNext: self.navigator.toChart)
 
@@ -65,6 +66,7 @@ final class HomeViewModel: ViewModelType {
 
         return Output(
             nickname: nickname,
+            day: day,
             events: events
         )
     }
@@ -81,6 +83,7 @@ extension HomeViewModel {
     
     struct Output {
         let nickname: Driver<String>
+        let day: Driver<Date>
         let events: Driver<Void>
     }
 
