@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Custom View에서 반복되는 코드를 줄이기 위한 클래스
 class CustomView: UIView {
 
     required init?(coder: NSCoder) {
@@ -19,6 +20,7 @@ class CustomView: UIView {
         self.setSubviews()
     }
 
+    /// init을 매번 작성할 필요 없이 이 메서드만 오버라이딩해도 되게 만들었음
     func setSubviews() {}
 
 }

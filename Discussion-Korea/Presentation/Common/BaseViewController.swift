@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// View Controller에서 반복되는 코드를 줄이기 위한 클래스
 class BaseViewController: UIViewController {
 
     deinit {
