@@ -63,7 +63,6 @@
 		3F689E8C28B7397B00C1D072 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8B28B7397B00C1D072 /* ChartViewModel.swift */; };
 		3F689E8F28B7466300C1D072 /* HomeMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E8E28B7466300C1D072 /* HomeMenuButton.swift */; };
 		3F689E9128B7476800C1D072 /* UserInfoPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E9028B7476800C1D072 /* UserInfoPanel.swift */; };
-		3F689E9328B76F2D00C1D072 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E9228B76F2D00C1D072 /* CustomView.swift */; };
 		3F689E9628B771DF00C1D072 /* Chat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E9528B771DF00C1D072 /* Chat+.swift */; };
 		3F689E9828B7721100C1D072 /* ChatRoom+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E9728B7721100C1D072 /* ChatRoom+.swift */; };
 		3F689E9B28B7789A00C1D072 /* LawNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F689E9A28B7789A00C1D072 /* LawNavigator.swift */; };
@@ -248,7 +247,6 @@
 		3F689E8B28B7397B00C1D072 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		3F689E8E28B7466300C1D072 /* HomeMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuButton.swift; sourceTree = "<group>"; };
 		3F689E9028B7476800C1D072 /* UserInfoPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoPanel.swift; sourceTree = "<group>"; };
-		3F689E9228B76F2D00C1D072 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		3F689E9528B771DF00C1D072 /* Chat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chat+.swift"; sourceTree = "<group>"; };
 		3F689E9728B7721100C1D072 /* ChatRoom+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatRoom+.swift"; sourceTree = "<group>"; };
 		3F689E9A28B7789A00C1D072 /* LawNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawNavigator.swift; sourceTree = "<group>"; };
@@ -480,7 +478,6 @@
 				3F689E7C28B6795D00C1D072 /* BaseViewController.swift */,
 				3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */,
 				3F37B394282075E400DB18B7 /* ViewModelType.swift */,
-				3F689E9228B76F2D00C1D072 /* CustomView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1021,7 +1018,6 @@
 				3F6696A82835C15F0077E5B3 /* SettingViewModel.swift in Sources */,
 				3F689E8C28B7397B00C1D072 /* ChartViewModel.swift in Sources */,
 				3FB357A12826192A00F27C77 /* Discussion.swift in Sources */,
-				3F689E9328B76F2D00C1D072 /* CustomView.swift in Sources */,
 				3FB357A82826279200F27C77 /* AddDiscussionNavigator.swift in Sources */,
 				3F37B3CC2820773C00DB18B7 /* ChatsUsecase.swift in Sources */,
 				3F37B3B42820766400DB18B7 /* HomeViewController.swift in Sources */,

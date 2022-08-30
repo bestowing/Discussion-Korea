@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class UserInfoPanel: CustomView {
+final class UserInfoPanel: UIView {
 
     var formatter: ((Int) -> String)?
 
@@ -19,7 +19,19 @@ final class UserInfoPanel: CustomView {
         return label
     }()
 
-    override func setSubviews() {
+    // MARK: - init/deinit
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.setSubviews()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setSubviews()
+    }
+
+    private func setSubviews() {
         self.layer.cornerRadius = 5.0
         self.layer.borderWidth = 0.7
         self.layer.borderColor = UIColor.systemGray3.cgColor
