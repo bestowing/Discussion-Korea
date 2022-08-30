@@ -43,6 +43,10 @@ final class ReferenceProvider {
         self.reference
     }
 
+    func makeLawUsecase() -> Reference {
+        self.reference
+    }
+
     func makeDiscussionReference() -> Reference {
         self.reference
     }

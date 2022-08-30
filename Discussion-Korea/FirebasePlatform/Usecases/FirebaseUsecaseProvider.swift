@@ -34,6 +34,12 @@ final class FirebaseUsecaseProvider: UsecaseProvider {
         )
     }
 
+    func makeLawUsecase() -> LawUsecase {
+        return FirebaseLawUsecase(
+            reference: self.referenceProvider.makeLawUsecase()
+        )
+    }
+
     func makeUserInfoUsecase() -> UserInfoUsecase {
         return FirebaseUserInfoUsecase(
             reference: self.referenceProvider.makeUserInfoReference()

@@ -59,7 +59,7 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
         guard let presentingViewController = presentingViewController
         else { return }
         let navigator = DefaultLawNavigator(
-            presentedViewController: presentingViewController
+            services: self.services, presentedViewController: presentingViewController
         )
         navigator.toLaw()
     }

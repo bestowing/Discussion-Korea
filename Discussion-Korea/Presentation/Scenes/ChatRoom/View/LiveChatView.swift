@@ -11,7 +11,7 @@ import RxSwift
 
 final class LiveChatView: UIView {
 
-    // MARK: properties
+    // MARK: - properties
 
     fileprivate let descriptionLabel: UILabel = {
         let label = UILabel()

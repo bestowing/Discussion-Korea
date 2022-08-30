@@ -89,6 +89,10 @@
 		3F99EA3F287BD651000ACDA6 /* ChatPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */; };
 		3F9B69D3287AA34A00DA72B6 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3F9B69D2287AA34A00DA72B6 /* RxGesture */; };
 		3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB68B28BE9BC400AA32ED /* ImagePickerDelegate.swift */; };
+		3FAAB68F28BEA8AE00AA32ED /* LawCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB68E28BEA8AE00AA32ED /* LawCell.swift */; };
+		3FAAB69128BEA9ED00AA32ED /* LawItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB69028BEA9ED00AA32ED /* LawItemViewModel.swift */; };
+		3FAAB69328BEAB8200AA32ED /* LawUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB69228BEAB8200AA32ED /* LawUsecase.swift */; };
+		3FAAB69528BEAC7F00AA32ED /* FirebaseLawUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB69428BEAC7F00AA32ED /* FirebaseLawUsecase.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -260,6 +264,10 @@
 		3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialBotChatCell.swift; sourceTree = "<group>"; };
 		3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPreview.swift; sourceTree = "<group>"; };
 		3FAAB68B28BE9BC400AA32ED /* ImagePickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerDelegate.swift; sourceTree = "<group>"; };
+		3FAAB68E28BEA8AE00AA32ED /* LawCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawCell.swift; sourceTree = "<group>"; };
+		3FAAB69028BEA9ED00AA32ED /* LawItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawItemViewModel.swift; sourceTree = "<group>"; };
+		3FAAB69228BEAB8200AA32ED /* LawUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawUsecase.swift; sourceTree = "<group>"; };
+		3FAAB69428BEAC7F00AA32ED /* FirebaseLawUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLawUsecase.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -523,6 +531,7 @@
 				3F6696AB283623810077E5B3 /* ChatRoomsUsecase.swift */,
 				3F37B3C92820773C00DB18B7 /* ChatsUsecase.swift */,
 				3FB357A228261A7400F27C77 /* DiscussionUsecase.swift */,
+				3FAAB69228BEAB8200AA32ED /* LawUsecase.swift */,
 				3F37B3C72820773C00DB18B7 /* UsecaseProvider.swift */,
 				3F37B3C82820773C00DB18B7 /* UserInfoUsecase.swift */,
 			);
@@ -537,6 +546,7 @@
 				3FB357A428261D4100F27C77 /* FirebaseDiscussionUsecase.swift */,
 				3F37B3C02820772A00DB18B7 /* FirebaseUsecaseProvider.swift */,
 				3F37B3DE28207A9000DB18B7 /* FirebaseUserInfoUsecase.swift */,
+				3FAAB69428BEAC7F00AA32ED /* FirebaseLawUsecase.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -623,7 +633,9 @@
 		3F689E9928B7786000C1D072 /* Law */ = {
 			isa = PBXGroup;
 			children = (
+				3FAAB68D28BEA8A200AA32ED /* View */,
 				3F689EA128B7792B00C1D072 /* DefaultLawNavigator.swift */,
+				3FAAB69028BEA9ED00AA32ED /* LawItemViewModel.swift */,
 				3F689E9A28B7789A00C1D072 /* LawNavigator.swift */,
 				3F689EA328B779FA00C1D072 /* LawViewController.swift */,
 				3F689EA528B77A3F00C1D072 /* LawViewModel.swift */,
@@ -660,6 +672,14 @@
 				3F910436283FB33C00446239 /* EnterGuestViewModel.swift */,
 			);
 			path = EnterGuest;
+			sourceTree = "<group>";
+		};
+		3FAAB68D28BEA8A200AA32ED /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3FAAB68E28BEA8AE00AA32ED /* LawCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		3FB357812821115A00F27C77 /* Frameworks */ = {
@@ -885,6 +905,7 @@
 				3FBDBC0A2886E29D00A09BF4 /* DefaultChatRoomNavigator.swift in Sources */,
 				3FBDBC082886E28300A09BF4 /* DefaultAddDiscussionNavigator.swift in Sources */,
 				3F910435283FB29200446239 /* EnterGuestNavigator.swift in Sources */,
+				3FAAB68F28BEA8AE00AA32ED /* LawCell.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
 				3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */,
 				3F689EA028B778FF00C1D072 /* DefaultGuideNavigator.swift in Sources */,
@@ -935,8 +956,10 @@
 				3FB3579D282618A900F27C77 /* ScheduleCell.swift in Sources */,
 				3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */,
 				3FBDBC66288B301400A09BF4 /* NoticeView.swift in Sources */,
+				3FAAB69328BEAB8200AA32ED /* LawUsecase.swift in Sources */,
 				3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */,
 				3FBDBC122886E3A100A09BF4 /* DefaultEnterGuestNavigator.swift in Sources */,
+				3FAAB69528BEAC7F00AA32ED /* FirebaseLawUsecase.swift in Sources */,
 				3F95BC972843658D008DF2D2 /* SerialBotChatCell.swift in Sources */,
 				3F6696A42835BFDB0077E5B3 /* ChatRoomListViewModel.swift in Sources */,
 				3F91043B283FBA1F00446239 /* UIImageView+.swift in Sources */,
@@ -949,6 +972,7 @@
 				3F6696AE283623A80077E5B3 /* ChatRoom.swift in Sources */,
 				3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */,
 				3F6696A62835C12B0077E5B3 /* SettingViewController.swift in Sources */,
+				3FAAB69128BEA9ED00AA32ED /* LawItemViewModel.swift in Sources */,
 				3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */,
 				3FB357A528261D4100F27C77 /* FirebaseDiscussionUsecase.swift in Sources */,
 				3F9104422840D94C00446239 /* ErrorTracker.swift in Sources */,
