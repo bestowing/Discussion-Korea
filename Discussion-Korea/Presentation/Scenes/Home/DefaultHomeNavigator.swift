@@ -65,7 +65,12 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
     }
 
     func toGuide() {
-        
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultGuideNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toGuide()
     }
 
 }

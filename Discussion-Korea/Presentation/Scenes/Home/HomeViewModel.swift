@@ -60,13 +60,16 @@ final class HomeViewModel: ViewModelType {
         let lawEvent = input.lawTrigger
             .do(onNext: self.navigator.toLaw)
 
+        let guideEvent = input.guideTrigger
+            .do(onNext: self.navigator.toGuide)
+
         let enterEvent = myInfo
             .filter { return $0 == nil }
             .withLatestFrom(userID)
             .do(onNext: self.navigator.toEnterGame)
             .mapToVoid()
 
-        let events = Driver.of(enterEvent, chartEvent, lawEvent).merge()
+        let events = Driver.of(enterEvent, chartEvent, lawEvent, guideEvent).merge()
 
         return Output(
             nickname: nickname,

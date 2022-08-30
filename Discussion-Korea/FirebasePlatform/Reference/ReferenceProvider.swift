@@ -39,15 +39,19 @@ final class ReferenceProvider {
         self.reference
     }
 
+    func makeDiscussionReference() -> Reference {
+        self.reference
+    }
+
+    func makeGuideReference() -> Reference {
+        self.reference
+    }
+
     func makeUserInfoReference() -> Reference {
         self.reference
     }
 
     func makeLawUsecase() -> Reference {
-        self.reference
-    }
-
-    func makeDiscussionReference() -> Reference {
         self.reference
     }
 

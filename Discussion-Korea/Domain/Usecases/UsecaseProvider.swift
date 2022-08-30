@@ -10,6 +10,7 @@ protocol UsecaseProvider {
     func makeChatRoomsUsecase() -> ChatRoomsUsecase
     func makeChatsUsecase() -> ChatsUsecase
     func makeDiscussionUsecase() -> DiscussionUsecase
+    func makeGuideUsecase() -> GuideUsecase
     func makeLawUsecase() -> LawUsecase
     func makeUserInfoUsecase() -> UserInfoUsecase
 
