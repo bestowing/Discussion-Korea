@@ -13,7 +13,7 @@ final class LawCell: UICollectionViewCell {
 
     private let lawLabel: UILabel = {
         let label = ResizableLabel()
-        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
         label.textColor = .label
         return label
