@@ -27,7 +27,7 @@ final class LawViewController: BaseViewController {
         flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
         flowLayout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 20
+        flowLayout.minimumLineSpacing = 30
 
         let collectionView = UICollectionView(
             frame: .zero, collectionViewLayout: flowLayout
