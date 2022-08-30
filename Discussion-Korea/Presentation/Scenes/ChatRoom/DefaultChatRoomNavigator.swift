@@ -9,7 +9,7 @@ import SideMenu
 import RxSwift
 import UIKit
 
-final class DefaultChatRoomNavigator: ChatRoomNavigator {
+final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
 
     // MARK: properties
 
@@ -24,10 +24,6 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
          navigationController: UINavigationController) {
         self.services = services
         self.navigationController = navigationController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods

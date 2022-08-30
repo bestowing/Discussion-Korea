@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultHomeNavigator: HomeNavigator {
+final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
 
     // MARK: properties
 
@@ -22,10 +22,6 @@ final class DefaultHomeNavigator: HomeNavigator {
          navigationController: UINavigationController) {
         self.services = services
         self.navigationController = navigationController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods

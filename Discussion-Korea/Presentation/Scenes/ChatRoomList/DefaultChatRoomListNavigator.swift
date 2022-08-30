@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
+final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
 
     // MARK: properties
 
@@ -22,10 +22,6 @@ final class DefaultChatRoomListNavigator: ChatRoomListNavigator {
          navigationController: UINavigationController) {
         self.services = services
         self.navigationController = navigationController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods

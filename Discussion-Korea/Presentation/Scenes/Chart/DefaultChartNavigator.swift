@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultChartNavigator: ChartNavigator {
+final class DefaultChartNavigator: BaseNavigator, ChartNavigator {
 
     // MARK: properties
 
@@ -17,10 +17,6 @@ final class DefaultChartNavigator: ChartNavigator {
 
     init(presentedViewController: UIViewController) {
         self.presentedViewController = presentedViewController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods
