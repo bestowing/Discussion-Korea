@@ -49,10 +49,12 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
     func toChart() {
         guard let presentingViewController = presentingViewController
         else { return }
-        let navigator = DefaultChartNavigator(
-            presentedViewController: presentingViewController
-        )
-        navigator.toChart()
+        let alert = UIAlertController(title: "준비중",
+                                      message: "준비중인 기능이에요🥲",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let exitAction = UIAlertAction(title: "나가기", style: .cancel)
+        alert.addAction(exitAction)
+        presentingViewController.present(alert, animated: true)
     }
 
     func toLaw() {
