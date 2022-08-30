@@ -53,8 +53,12 @@ final class HomeViewModel: ViewModelType {
             .map { $0 + "님, 안녕하세요 🇰🇷" }
 
         let day = myInfo.compactMap { $0?.registerAt }
+
         let chartEvent = input.chartTrigger
             .do(onNext: self.navigator.toChart)
+
+        let lawEvent = input.lawTrigger
+            .do(onNext: self.navigator.toLaw)
 
         let enterEvent = myInfo
             .filter { return $0 == nil }
@@ -62,7 +66,7 @@ final class HomeViewModel: ViewModelType {
             .do(onNext: self.navigator.toEnterGame)
             .mapToVoid()
 
-        let events = Driver.of(enterEvent, chartEvent).merge()
+        let events = Driver.of(enterEvent, chartEvent, lawEvent).merge()
 
         return Output(
             nickname: nickname,
