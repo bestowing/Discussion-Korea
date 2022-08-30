@@ -58,10 +58,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     // TODO: userInfos 다 없애고 mask도 없애고 chatItems만 남기기
 
     func test_토론이_진행중이지_않더라도_내용이_없다면_채팅을_보낼수_없다() {
-        let testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, nil),
             .completed(237)
         ]).asObservable()
 
@@ -102,10 +101,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_토론이_진행중이지_않더라도_내용이_있다면_채팅을_보낼수_있다() {
-        let testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, nil),
             .completed(237)
         ]).asObservable()
 
@@ -146,11 +144,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_찬성측인_경우_내용이_있어도_반대측_발언시간에는_채팅을_보낼수_없다() {
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .agree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .agree),
             .completed(237)
         ]).asObservable()
 
@@ -197,11 +193,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_반대측인_경우_내용이_있어도_찬성측_발언시간에는_채팅을_보낼수_없다() {
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .disagree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .disagree),
             .completed(237)
         ]).asObservable()
 
@@ -248,11 +242,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_찬성측인_경우_내용이_있고_찬성측_발언시간이라도_발언권이_없으면_채팅을_보낼수_없다() {
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .agree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .agree),
             .completed(237)
         ]).asObservable()
 
@@ -302,11 +294,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_반대측인_경우_내용이_있고_반대측_발언시간이라도_발언권이_없으면_채팅을_보낼수_없다() {
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .disagree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .disagree),
             .completed(237)
         ]).asObservable()
 
@@ -356,12 +346,9 @@ final class ChatRoomViewModelTests: XCTestCase {
     }
 
     func test_찬성측인_경우_내용이_있고_찬성측_발언시간이고_발언권이_있으면_채팅을_보낼수_있다() {
-        
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .disagree
 
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .disagree),
             .completed(237)
         ]).asObservable()
 
@@ -410,11 +397,8 @@ final class ChatRoomViewModelTests: XCTestCase {
 
     func test_반대측인_경우_내용이_있고_반대측_발언시간이고_발언권이_있으면_채팅을_보낼수_있다() {
 
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .disagree
-
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .disagree),
             .completed(237)
         ]).asObservable()
 
@@ -463,11 +447,8 @@ final class ChatRoomViewModelTests: XCTestCase {
 
     func test_판정단은_토론중에_편집이_불가능하다() {
 
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .judge
-
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .judge),
             .completed(237)
         ]).asObservable()
 
@@ -520,11 +501,8 @@ final class ChatRoomViewModelTests: XCTestCase {
 
     func test_관람객은_토론중에_편집이_불가능하다() {
 
-        var testUserInfo = UserInfo(uid: "testUID", nickname: "testNickname")
-        testUserInfo.side = .observer
-
         self.userInfoUsecase.roomUserInfoStream = self.scheduler.createHotObservable([
-            .next(235, testUserInfo),
+            .next(235, .observer),
             .completed(237)
         ]).asObservable()
 
