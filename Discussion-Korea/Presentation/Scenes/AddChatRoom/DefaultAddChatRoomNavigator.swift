@@ -8,14 +8,14 @@
 import RxSwift
 import UIKit
 
-final class DefaultAddChatRoomNavigator: NSObject, AddChatRoomNavigator {
+final class DefaultAddChatRoomNavigator: BaseNavigator, AddChatRoomNavigator {
 
     // MARK: properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
-    private var completion: ((URL?) -> Void)?
+    private lazy var imagePickerDelegate = ImagePickerDelegate()
 
     private weak var presentingViewController: UIViewController?
 
@@ -24,10 +24,6 @@ final class DefaultAddChatRoomNavigator: NSObject, AddChatRoomNavigator {
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
         self.services = services
         self.presentedViewController = presentedViewController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods
@@ -70,17 +66,14 @@ final class DefaultAddChatRoomNavigator: NSObject, AddChatRoomNavigator {
     }
 
     func toImagePicker() -> Observable<URL?> {
-        return PublishSubject.create { [unowned self] subscribe in
-            let imagePicker = UIImagePickerController()
-            imagePicker.sourceType = .photoLibrary
-            imagePicker.delegate = self
-            self.completion = { url in
-                subscribe.onNext(url)
-                subscribe.onCompleted()
-            }
-            self.presentingViewController?.present(imagePicker, animated: true)
-            return Disposables.create()
-        }.asObservable()
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self.imagePickerDelegate
+        self.presentingViewController?.present(imagePicker, animated: true)
+        return self.imagePickerDelegate.imageURLSubject
+            .do(onNext: { [unowned self] _ in
+                self.presentingViewController?.dismiss(animated: true)
+            })
     }
 
     func toErrorAlert(_ error: Error) {
@@ -92,17 +85,6 @@ final class DefaultAddChatRoomNavigator: NSObject, AddChatRoomNavigator {
         let confirm = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirm)
         self.presentingViewController?.present(alert, animated: true)
-    }
-
-}
-
-extension DefaultAddChatRoomNavigator: UIImagePickerControllerDelegate,
-                                       UINavigationControllerDelegate {
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let url = info[UIImagePickerController.InfoKey.imageURL] as? URL
-        self.completion?(url)
-        self.presentingViewController?.dismiss(animated: true)
     }
 
 }
