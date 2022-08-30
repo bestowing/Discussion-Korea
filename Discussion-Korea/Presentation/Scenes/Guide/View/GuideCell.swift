@@ -13,7 +13,7 @@ final class GuideCell: UICollectionViewCell {
 
     private let titleLabel: UILabel = {
         let label = ResizableLabel()
-        label.font = UIFont.preferredFont(forTextStyle: .title3)
+        label.font = UIFont.preferredBoldFont(forTextStyle: .title3)
         label.numberOfLines = 0
         label.textColor = .label
         return label
