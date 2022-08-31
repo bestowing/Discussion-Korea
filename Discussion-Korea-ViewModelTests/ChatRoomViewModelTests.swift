@@ -18,6 +18,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
     private var mockNavigator: MockChatRoomNavigator!
     private var chatsUsecase: MockChatsUsecase!
+    private var chatRoomsUsecase: MockChatRoomUsecase!
     private var userInfoUsecase: MockUserInfoUsecase!
     private var discussionUsecase: MockDiscussionUsecase!
     private var viewModel: ChatRoomViewModel!
@@ -30,6 +31,7 @@ final class ChatRoomViewModelTests: XCTestCase {
         super.setUp()
         self.mockNavigator = MockChatRoomNavigator()
         self.chatsUsecase = MockChatsUsecase()
+        self.chatRoomsUsecase = MockChatRoomUsecase()
         self.userInfoUsecase = MockUserInfoUsecase()
         self.discussionUsecase = MockDiscussionUsecase()
         self.viewModel = ChatRoomViewModel(
@@ -37,6 +39,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             chatRoom: self.chatRoom,
             navigator: self.mockNavigator,
             chatsUsecase: self.chatsUsecase,
+            chatRoomsUsecase: self.chatRoomsUsecase,
             userInfoUsecase: self.userInfoUsecase,
             discussionUsecase: self.discussionUsecase
         )
