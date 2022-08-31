@@ -42,7 +42,7 @@ final class FirebaseUsecaseProvider: UsecaseProvider {
 
     func makeLawUsecase() -> LawUsecase {
         return FirebaseLawUsecase(
-            reference: self.referenceProvider.makeLawUsecase()
+            reference: self.referenceProvider.makeLawReference()
         )
     }
 

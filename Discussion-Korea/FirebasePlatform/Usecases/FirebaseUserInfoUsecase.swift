@@ -10,9 +10,9 @@ import RxSwift
 
 final class FirebaseUserInfoUsecase: UserInfoUsecase {
 
-    private let reference: Reference
+    private let reference: UserInfoReference
 
-    init(reference: Reference) {
+    init(reference: UserInfoReference) {
         self.reference = reference
     }
 

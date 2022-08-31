@@ -10,7 +10,9 @@ import FirebaseStorage
 
 final class ReferenceProvider {
 
-    private let reference: Reference
+    private let databaseReference: DatabaseReference
+    private let storageReference: StorageReference
+    private let dateFormatter: DateFormatter
 
     init() {
         let storage = Storage.storage()
@@ -22,37 +24,50 @@ final class ReferenceProvider {
         let database = Database.database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
         #endif
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.reference = Reference(
-            reference: database.reference(),
-            storageReference: storage.reference(),
-            dateFormatter: dateFormatter
+        self.databaseReference = database.reference()
+        self.storageReference = storage.reference()
+        self.dateFormatter = {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            return dateFormatter
+        }()
+    }
+
+    func makeChatRoomsReference() -> ChatRoomsReference {
+        return ChatRoomsReference(
+            reference: self.databaseReference,
+            storageReference: self.storageReference
         )
     }
 
-    func makeChatRoomsReference() -> Reference {
-        self.reference
+    func makeChatsRefence() -> ChatsReference {
+        return ChatsReference(
+            reference: self.databaseReference,
+            dateFormatter: self.dateFormatter
+        )
     }
 
-    func makeChatsRefence() -> Reference {
-        self.reference
+    func makeDiscussionReference() -> DiscussionReference {
+        return DiscussionReference(
+            reference: self.databaseReference,
+            dateFormatter: self.dateFormatter
+        )
     }
 
-    func makeDiscussionReference() -> Reference {
-        self.reference
+    func makeGuideReference() -> GuideReference {
+        return GuideReference()
     }
 
-    func makeGuideReference() -> Reference {
-        self.reference
+    func makeUserInfoReference() -> UserInfoReference {
+        return UserInfoReference(
+            reference: self.databaseReference,
+            storageReference: self.storageReference,
+            dateFormatter: self.dateFormatter
+        )
     }
 
-    func makeUserInfoReference() -> Reference {
-        self.reference
-    }
-
-    func makeLawUsecase() -> Reference {
-        self.reference
+    func makeLawReference() -> LawReference {
+        return LawReference()
     }
 
 }

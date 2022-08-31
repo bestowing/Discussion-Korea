@@ -10,9 +10,9 @@ import RxSwift
 
 final class FirebaseGuideUsecase: GuideUsecase {
 
-    private let reference: Reference
+    private let reference: GuideReference
 
-    init(reference: Reference) {
+    init(reference: GuideReference) {
         self.reference = reference
     }
 

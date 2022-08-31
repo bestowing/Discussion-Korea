@@ -37,6 +37,7 @@ final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
             chatRoom: chatRoom,
             navigator: self,
             chatsUsecase: self.services.makeChatsUsecase(),
+            chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             discussionUsecase: self.services.makeDiscussionUsecase()
         )

@@ -10,9 +10,9 @@ import RxSwift
 
 final class FirebaseLawUsecase: LawUsecase {
 
-    private let reference: Reference
+    private let reference: LawReference
 
-    init(reference: Reference) {
+    init(reference: LawReference) {
         self.reference = reference
     }
 

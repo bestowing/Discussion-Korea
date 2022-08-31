@@ -22,6 +22,7 @@ final class ChatRoomViewModel: ViewModelType {
     private let navigator: ChatRoomNavigator
 
     private let chatsUsecase: ChatsUsecase
+    private let chatRoomsUsecase: ChatRoomsUsecase
     private let userInfoUsecase: UserInfoUsecase
     private let discussionUsecase: DiscussionUsecase
 
@@ -31,12 +32,14 @@ final class ChatRoomViewModel: ViewModelType {
          chatRoom: ChatRoom,
          navigator: ChatRoomNavigator,
          chatsUsecase: ChatsUsecase,
+         chatRoomsUsecase: ChatRoomsUsecase,
          userInfoUsecase: UserInfoUsecase,
          discussionUsecase: DiscussionUsecase) {
         self.uid = uid
         self.chatRoom = chatRoom
         self.navigator = navigator
         self.chatsUsecase = chatsUsecase
+        self.chatRoomsUsecase = chatRoomsUsecase
         self.userInfoUsecase = userInfoUsecase
         self.discussionUsecase = discussionUsecase
     }
@@ -95,9 +98,9 @@ final class ChatRoomViewModel: ViewModelType {
 
         let enterEvent: Driver<Void> = input.trigger
             .flatMapFirst { [unowned self] in
-                self.userInfoUsecase.userInfo(roomID: self.chatRoom.uid, with: self.uid)
+                self.chatRoomsUsecase.isFirstEntering(userID: self.uid, chatRoomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .filter { return $0 == nil }
+                    .filter { $0 }
             }
             .flatMap { [unowned self] _ in
                 self.navigator.toEnterAlert()
