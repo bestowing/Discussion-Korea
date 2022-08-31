@@ -10,7 +10,7 @@ import SideMenu
 import SnapKit
 import RxSwift
 
-final class ChatRoomSideMenuViewController: UIViewController {
+final class ChatRoomSideMenuViewController: BaseViewController {
 
     // MARK: properties
 
@@ -69,12 +69,6 @@ final class ChatRoomSideMenuViewController: UIViewController {
     }()
 
     private let disposeBag = DisposeBag()
-
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
 
     // MARK: - methods
 

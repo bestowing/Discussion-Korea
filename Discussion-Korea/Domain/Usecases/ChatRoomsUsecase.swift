@@ -13,5 +13,6 @@ protocol ChatRoomsUsecase {
     func create(chatRoom: ChatRoom) -> Observable<Void>
     func latestChat(chatRoomID: String) -> Observable<Chat>
     func numberOfUsers(chatRoomID: String) -> Observable<UInt>
+    func isFirstEntering(userID: String, chatRoomID: String) -> Observable<Bool>
 
 }

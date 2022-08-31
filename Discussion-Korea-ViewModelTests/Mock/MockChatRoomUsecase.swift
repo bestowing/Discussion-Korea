@@ -15,6 +15,7 @@ final class MockChatRoomUsecase: ChatRoomsUsecase {
     var createChatRoomStream: Observable<Void>
     var latestChatStream: Observable<Chat>
     var userNumberStream: Observable<UInt>
+    var firstEnteringStream: Observable<Bool>
 
     // MARK: - init/deinit
 
@@ -23,6 +24,7 @@ final class MockChatRoomUsecase: ChatRoomsUsecase {
         self.createChatRoomStream = PublishSubject<Void>.init()
         self.latestChatStream = PublishSubject<Chat>.init()
         self.userNumberStream = PublishSubject<UInt>.init()
+        self.firstEnteringStream = PublishSubject<Bool>.init()
     }
 
     // MARK: - methods
@@ -41,6 +43,10 @@ final class MockChatRoomUsecase: ChatRoomsUsecase {
     
     func numberOfUsers(chatRoomID: String) -> Observable<UInt> {
         return self.userNumberStream
+    }
+
+    func isFirstEntering(userID: String, chatRoomID: String) -> Observable<Bool> {
+        return self.firstEnteringStream
     }
 
 }

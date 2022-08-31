@@ -8,7 +8,7 @@
 import SideMenu
 import UIKit
 
-final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
+final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNavigator {
 
     final class DefaultSideMenuNavigation: SideMenuNavigationController {
 
@@ -44,10 +44,6 @@ final class DefaultChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
          presentedViewController: UIViewController) {
         self.services = services
         self.presentedViewController = presentedViewController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods

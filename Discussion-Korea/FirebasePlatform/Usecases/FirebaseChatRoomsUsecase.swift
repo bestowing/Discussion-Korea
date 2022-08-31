@@ -10,9 +10,9 @@ import Foundation
 
 final class FirebaseChatRoomsUsecase: ChatRoomsUsecase {
 
-    private let reference: Reference
+    private let reference: ChatRoomsReference
 
-    init(reference: Reference) {
+    init(reference: ChatRoomsReference) {
         self.reference = reference
     }
 
@@ -30,6 +30,10 @@ final class FirebaseChatRoomsUsecase: ChatRoomsUsecase {
 
     func numberOfUsers(chatRoomID: String) -> Observable<UInt> {
         self.reference.numberOfUsers(chatRoomID: chatRoomID)
+    }
+
+    func isFirstEntering(userID: String, chatRoomID: String) -> Observable<Bool> {
+        self.reference.isFirstEntering(userID: userID, chatRoomID: chatRoomID)
     }
 
 }

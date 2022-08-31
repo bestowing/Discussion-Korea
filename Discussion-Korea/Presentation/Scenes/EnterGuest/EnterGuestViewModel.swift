@@ -79,13 +79,8 @@ final class EnterGuestViewModel: ViewModelType {
 
         let submitEvent = input.submitTrigger
             .withLatestFrom(nicknameAndProfile)
-            .map { [unowned self] (nickname, profileURL) in
-                var userInfo = UserInfo(uid: self.userID, nickname: nickname)
-                userInfo.profileURL = profileURL
-                return userInfo
-            }
-            .flatMapLatest { [unowned self] userInfo in
-                self.userInfoUsecase.add(userInfo: userInfo)
+            .flatMapLatest { [unowned self] (nickname, profileURL) in
+                self.userInfoUsecase.add(userInfo: (self.userID, nickname, profileURL))
                     .trackActivity(activityTracker)
                     .trackError(errorTracker)
                     .asDriverOnErrorJustComplete()

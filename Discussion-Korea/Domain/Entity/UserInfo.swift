@@ -11,6 +11,7 @@ struct UserInfo {
 
     let uid: String
     let nickname: String
+    let registerAt: Date
     var position: String?
     var profileURL: URL?
     var side: Side?
@@ -18,9 +19,10 @@ struct UserInfo {
     var draw: Int
     var lose: Int
 
-    public init(uid: String, nickname: String) {
+    init(uid: String, nickname: String, registerAt: Date) {
         self.uid = uid
         self.nickname = nickname
+        self.registerAt = registerAt
         self.position = nil
         self.profileURL = nil
         self.win = 0

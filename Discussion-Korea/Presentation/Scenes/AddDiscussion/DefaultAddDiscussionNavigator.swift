@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultAddDiscussionNavigator: AddDiscussionNavigator {
+final class DefaultAddDiscussionNavigator: BaseNavigator, AddDiscussionNavigator {
 
     // MARK: properties
 
@@ -19,10 +19,6 @@ final class DefaultAddDiscussionNavigator: AddDiscussionNavigator {
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
         self.services = services
         self.presentedViewController = presentedViewController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods

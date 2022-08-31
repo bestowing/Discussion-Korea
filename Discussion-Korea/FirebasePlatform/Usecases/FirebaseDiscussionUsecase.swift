@@ -10,16 +10,16 @@ import RxSwift
 
 final class FirebaseDiscussionUsecase: DiscussionUsecase {
 
-    private let reference: Reference
+    private let reference: DiscussionReference
 
-    init(reference: Reference) {
+    init(reference: DiscussionReference) {
         self.reference = reference
     }
 
     func discussions(roomUID: String) -> Observable<Discussion> {
         self.reference.getDiscussions(from: roomUID)
     }
-    
+
     func add(roomUID: String, discussion: Discussion) -> Observable<Void> {
         self.reference.add(discussion, to: roomUID)
     }

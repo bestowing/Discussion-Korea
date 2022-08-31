@@ -5,55 +5,56 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
+import RxGesture
+import RxSwift
 import SnapKit
 import UIKit
-import RxSwift
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
 
     // MARK: - properties
 
     var viewModel: HomeViewModel!
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.setDefaultProfileImage()
-        imageView.tintColor = UIColor.white
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .accentColor
-        imageView.layer.cornerRadius = 30
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-
     private let nicknameLabel: UILabel = {
         let label = ResizableLabel()
         label.text = "guest"
+        label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         return label
     }()
 
-    private let scoreLabel: UILabel = {
-        let label = ResizableLabel()
-        label.text = "0승 0무 0패"
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        return label
+    private let userInfoPanel: UserInfoPanel = {
+        let panel = UserInfoPanel()
+        panel.formatter = { day in "함께한지 \(day + 1)일째" }
+        return panel
+    }()
+
+    private let chartButton: HomeMenuButton = {
+        let button = HomeMenuButton()
+        button.isEnabled = false
+        button.titleLabel.text = "방구석 조직도"
+        button.imageView.image = UIImage(systemName: "rectangle.fill.badge.person.crop")
+        return button
+    }()
+
+    private let lawButton: HomeMenuButton = {
+        let button = HomeMenuButton()
+        button.titleLabel.text = "방구석 헌법"
+        button.imageView.image = UIImage(systemName: "book.closed.fill")
+        return button
+    }()
+
+    private let guideButton: HomeMenuButton = {
+        let button = HomeMenuButton()
+        button.titleLabel.text = "방구석 가이드"
+        button.imageView.image = UIImage(systemName: "questionmark.circle")
+        return button
     }()
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,42 +63,43 @@ final class HomeViewController: UIViewController {
     }
 
     private func setSubViews() {
-        self.view.addSubview(self.profileImageView)
-        let stackView = UIStackView(
-            arrangedSubviews: [self.nicknameLabel, self.scoreLabel]
-        )
+        let buttonStackView = UIStackView(arrangedSubviews: [
+            self.chartButton, self.lawButton, self.guideButton
+        ])
+        buttonStackView.alignment = .fill
+        buttonStackView.axis = .horizontal
+        buttonStackView.spacing = 10.0
+        buttonStackView.distribution = .fillEqually
+        let stackView = UIStackView(arrangedSubviews: [
+            self.nicknameLabel, self.userInfoPanel, buttonStackView
+        ])
         stackView.axis = .vertical
-        stackView.spacing = 10.0
+        stackView.spacing = 20.0
         self.view.addSubview(stackView)
-        self.profileImageView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(25)
-            make.width.equalTo(60)
-            make.height.equalTo(64)
-        }
         stackView.snp.makeConstraints { make in
-            make.leading.equalTo(self.profileImageView.snp.trailing).offset(15)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
-            make.centerY.equalTo(self.profileImageView)
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(20)
         }
     }
 
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(
+            chartTrigger: self.chartButton.rx.tapGesture().when(.recognized).map { _ in }
+                .asDriverOnErrorJustComplete(),
+            lawTrigger: self.lawButton.rx.tapGesture().when(.recognized).map { _ in }
+                .asDriverOnErrorJustComplete(),
+            guideTrigger: self.guideButton.rx.tapGesture().when(.recognized).map { _ in }
+                .asDriverOnErrorJustComplete()
+        )
         let output = self.viewModel.transform(input: input)
 
         output.nickname.drive(self.nicknameLabel.rx.text)
             .disposed(by: self.disposeBag)
 
-        output.score.drive(self.scoreLabel.rx.text)
+        output.day.drive(self.userInfoPanel.rx.day)
             .disposed(by: self.disposeBag)
-
-        output.profileURL.drive(onNext: {
-            self.profileImageView.setImage($0)
-        })
-        .disposed(by: self.disposeBag)
 
         output.events.drive()
             .disposed(by: self.disposeBag)

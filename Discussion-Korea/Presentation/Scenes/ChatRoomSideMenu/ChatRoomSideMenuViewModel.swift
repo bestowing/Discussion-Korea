@@ -62,7 +62,6 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.userInfo(roomID: self.chatRoom.uid, with: self.uid)
                     .asDriverOnErrorJustComplete()
-                    .map { $0?.side }
             }
 
         let canParticipate: Driver<Bool> = side

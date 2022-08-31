@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
+final class DefaultChatRoomScheduleNavigator: BaseNavigator, ChatRoomScheduleNavigator {
 
     // MARK: properties
 
@@ -21,10 +21,6 @@ final class DefaultChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
         self.services = services
         self.presentedViewController = presentedViewController
-    }
-
-    deinit {
-        print("🗑", self)
     }
 
     // MARK: - methods
