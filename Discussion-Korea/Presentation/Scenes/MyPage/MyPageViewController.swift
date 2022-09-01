@@ -71,6 +71,11 @@ final class MyPageViewController: BaseViewController {
         return button
     }()
 
+    private let debateScoreView: DebateScoreView = {
+        let view = DebateScoreView()
+        return view
+    }()
+
     private let disposeBag = DisposeBag()
 
     // MARK: - methods
@@ -89,6 +94,7 @@ final class MyPageViewController: BaseViewController {
         self.view.addSubview(self.profileImageView)
         self.view.addSubview(self.nicknameLabel)
         self.view.addSubview(self.editButton)
+        self.view.addSubview(self.debateScoreView)
         self.profileImageView.snp.contentHuggingHorizontalPriority = 999
         self.profileImageView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
@@ -105,6 +111,10 @@ final class MyPageViewController: BaseViewController {
             make.top.equalTo(self.profileImageView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
+        self.debateScoreView.snp.makeConstraints { make in
+            make.top.equalTo(self.editButton.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+        }
     }
 
     private func bindViewModel() {
@@ -115,6 +125,9 @@ final class MyPageViewController: BaseViewController {
             profileEditTrigger: self.editButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.score.drive(self.debateScoreView.rx.score)
+            .disposed(by: self.disposeBag)
 
         output.profileURL.drive(self.profileImageView.rx.url)
             .disposed(by: self.disposeBag)

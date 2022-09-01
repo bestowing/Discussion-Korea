@@ -44,10 +44,10 @@ final class MyPageViewModel: ViewModelType {
 
         let profileURL = myInfo.compactMap { $0?.profileURL }
 
-        let score = myInfo.compactMap { myInfo -> String? in
+        let score = myInfo.compactMap { myInfo -> (win: Int, draw: Int, lose: Int)? in
             guard let myInfo = myInfo
             else { return nil }
-            return "\(myInfo.win)승 \(myInfo.draw)무 \(myInfo.lose)패"
+            return (myInfo.win, myInfo.draw, myInfo.lose)
         }
 
         let nickname = myInfo.compactMap { $0?.nickname }
@@ -86,7 +86,7 @@ extension MyPageViewModel {
 
     struct Output {
         let profileURL: Driver<URL>
-        let score: Driver<String>
+        let score: Driver<(win: Int, draw: Int, lose: Int)>
         let nickname: Driver<String>
         let events: Driver<Void>
     }
