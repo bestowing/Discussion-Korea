@@ -10,21 +10,27 @@ import Photos
 import RxSwift
 import RxCocoa
 
-final class EnterGuestViewModel: ViewModelType {
+final class EditProfileViewModel: ViewModelType {
 
     // MARK: properties
 
     private let userID: String
+    private let nickname: String?
+    private let profileURL: URL?
 
-    private let navigator: EnterGuestNavigator
+    private let navigator: EditProfileNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
     init(userID: String,
-         navigator: EnterGuestNavigator,
+         nickname: String?,
+         profileURL: URL?,
+         navigator: EditProfileNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.userID = userID
+        self.nickname = nickname
+        self.profileURL = profileURL
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
     }
@@ -65,13 +71,18 @@ final class EnterGuestViewModel: ViewModelType {
             .mapToVoid()
             .do(onNext: self.navigator.toSettingAppAlert)
 
+        let oldNickname = Driver.of(self.nickname)
+        let oldProfileURL = Driver.of(self.profileURL)
+
         let profileImage = albumAuthorized.filter { $0 }
             .flatMapLatest { [unowned self] _ -> Driver<URL?> in
                 self.navigator.toImagePicker()
                     .asDriverOnErrorJustComplete()
             }
 
-        let nicknameAndProfile = Driver.combineLatest(input.nickname, profileImage.startWith(nil))
+        let profileURL = Driver.concat([oldProfileURL, profileImage])
+
+        let nicknameAndProfile = Driver.combineLatest(input.nickname, profileURL)
 
         let canSubmit = nicknameAndProfile.map { (title, _) in
             return !title.isEmpty
@@ -86,9 +97,9 @@ final class EnterGuestViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let dismissEvent = Driver.of(submitEvent, input.guestTrigger)
+        let dismissEvent = Driver.of(submitEvent, input.exitTrigger)
             .merge()
-            .do(onNext: self.navigator.toHome)
+            .do(onNext: self.navigator.toMyPage)
 
         let loading = activityTracker.asDriver()
         let errorEvent = errorTracker.asDriver()
@@ -100,7 +111,8 @@ final class EnterGuestViewModel: ViewModelType {
 
         return Output(
             loading: loading,
-            profileImage: profileImage,
+            oldNickname: oldNickname,
+            profileURL: profileURL.compactMap { $0 },
             submitEnable: canSubmit,
             events: events
         )
@@ -108,18 +120,19 @@ final class EnterGuestViewModel: ViewModelType {
 
 }
 
-extension EnterGuestViewModel {
+extension EditProfileViewModel {
 
     struct Input {
         let nickname: Driver<String>
+        let exitTrigger: Driver<Void>
         let imageTrigger: Driver<Void>
-        let guestTrigger: Driver<Void>
         let submitTrigger: Driver<Void>
     }
     
     struct Output {
         let loading: Driver<Bool>
-        let profileImage: Driver<URL?>
+        let oldNickname: Driver<String?>
+        let profileURL: Driver<URL>
         let submitEnable: Driver<Bool>
         let events: Driver<Void>
     }

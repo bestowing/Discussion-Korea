@@ -10,6 +10,8 @@ import RxSwift
 
 final class UserInfoPanel: UIView {
 
+    // MARK: - properties
+
     var formatter: ((Int) -> String)?
 
     fileprivate let dayLabel: UILabel = {

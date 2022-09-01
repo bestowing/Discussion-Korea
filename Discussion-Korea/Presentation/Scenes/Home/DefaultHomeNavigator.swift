@@ -37,15 +37,6 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
         self.presentingViewController = homeViewController
     }
 
-    func toEnterGame(_ userID: String) {
-        guard let presentingViewController = presentingViewController
-        else { return }
-        let navigator = DefaultEnterGuestNavigator(
-            services: self.services, presentedViewController: presentingViewController
-        )
-        navigator.toEnterGuest(userID)
-    }
-
     func toChart() {
         guard let presentingViewController = presentingViewController
         else { return }

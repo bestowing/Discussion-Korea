@@ -9,7 +9,7 @@ import Photos
 import RxSwift
 import UIKit
 
-final class DefaultEnterGuestNavigator: BaseNavigator, EnterGuestNavigator {
+final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
 
     // MARK: properties
 
@@ -29,10 +29,12 @@ final class DefaultEnterGuestNavigator: BaseNavigator, EnterGuestNavigator {
 
     // MARK: - methods
 
-    func toEnterGuest(_ userID: String) {
-        let viewController = EnterGuestViewController()
-        let viewModel = EnterGuestViewModel(
+    func toEditProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {
+        let viewController = EditProfileViewController()
+        let viewModel = EditProfileViewModel(
             userID: userID,
+            nickname: nickname,
+            profileURL: profileURL,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
@@ -43,7 +45,7 @@ final class DefaultEnterGuestNavigator: BaseNavigator, EnterGuestNavigator {
         self.presentingViewController = viewController
     }
 
-    func toHome() {
+    func toMyPage() {
         self.presentedViewController.dismiss(animated: true)
     }
 

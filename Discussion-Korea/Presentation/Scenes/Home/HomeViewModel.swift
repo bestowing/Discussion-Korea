@@ -34,14 +34,6 @@ final class HomeViewModel: ViewModelType {
         let userID = self.userInfoUsecase.uid()
             .asDriverOnErrorJustComplete()
 
-        //        let profileURL = myInfo.compactMap { $0?.profileURL }
-
-        //        let score = myInfo.compactMap { myInfo -> String? in
-        //            guard let myInfo = myInfo
-        //            else { return nil }
-        //            return "\(myInfo.win)승 \(myInfo.draw)무 \(myInfo.lose)패"
-        //        }
-
         let myInfo = userID
             .flatMap { [unowned self] userID in
                 self.userInfoUsecase
@@ -63,13 +55,7 @@ final class HomeViewModel: ViewModelType {
         let guideEvent = input.guideTrigger
             .do(onNext: self.navigator.toGuide)
 
-        let enterEvent = myInfo
-            .filter { return $0 == nil }
-            .withLatestFrom(userID)
-            .do(onNext: self.navigator.toEnterGame)
-            .mapToVoid()
-
-        let events = Driver.of(enterEvent, chartEvent, lawEvent, guideEvent).merge()
+        let events = Driver.of(chartEvent, lawEvent, guideEvent).merge()
 
         return Output(
             nickname: nickname,
