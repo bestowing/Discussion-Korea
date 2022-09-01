@@ -108,7 +108,7 @@ final class AddChatRoomViewController: BaseViewController {
         profileBadge.tintColor = .label
         profileBadge.layer.cornerRadius = 20
         profileBadge.layer.masksToBounds = true
-        profileBadge.backgroundColor = .white
+        profileBadge.backgroundColor = .systemBackground
         self.view.addSubview(profileBadge)
         profileBadge.snp.makeConstraints { make in
             make.trailing.equalTo(self.chatRoomProfileImageView.snp.trailing)
