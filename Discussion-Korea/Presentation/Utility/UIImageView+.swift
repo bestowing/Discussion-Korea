@@ -5,8 +5,9 @@
 //  Created by 이청수 on 2022/05/26.
 //
 
-import UIKit
 import Kingfisher
+import RxSwift
+import UIKit
 
 extension UIImageView {
 
@@ -20,6 +21,16 @@ extension UIImageView {
 
     func setDefaultChatRoomProfileImage() {
         self.image = UIImage(systemName: "bubble.left.and.bubble.right.fill")
+    }
+
+}
+
+extension Reactive where Base: UIImageView {
+
+    var url: Binder<URL> {
+        return Binder(self.base) { imageView, url in
+            imageView.setImage(url)
+        }
     }
 
 }

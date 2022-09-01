@@ -9,7 +9,7 @@ import RxCocoa
 
 final class LawViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigator: LawNavigator
 
