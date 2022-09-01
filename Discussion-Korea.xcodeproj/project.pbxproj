@@ -137,7 +137,7 @@
 		3FBDBBFB2886E08600A09BF4 /* ChatRoomSideMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEF2886E08500A09BF4 /* ChatRoomSideMenuViewModelTests.swift */; };
 		3FBDBBFC2886E08600A09BF4 /* ChatRoomScheduleViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF02886E08500A09BF4 /* ChatRoomScheduleViewModelTests.swift */; };
 		3FBDBBFD2886E08600A09BF4 /* ChatRoomListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF12886E08600A09BF4 /* ChatRoomListViewModelTests.swift */; };
-		3FBDBBFE2886E08600A09BF4 /* EnterGuestViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF22886E08600A09BF4 /* EnterGuestViewModelTests.swift */; };
+		3FBDBBFE2886E08600A09BF4 /* EditProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF22886E08600A09BF4 /* EditProfileViewModelTests.swift */; };
 		3FBDBBFF2886E08600A09BF4 /* AddDiscussionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF32886E08600A09BF4 /* AddDiscussionViewModelTests.swift */; };
 		3FBDBC002886E08600A09BF4 /* ChatRoomViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF42886E08600A09BF4 /* ChatRoomViewModelTests.swift */; };
 		3FBDBC012886E08600A09BF4 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBF52886E08600A09BF4 /* HomeViewModelTests.swift */; };
@@ -330,7 +330,7 @@
 		3FBDBBEF2886E08500A09BF4 /* ChatRoomSideMenuViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewModelTests.swift; sourceTree = "<group>"; };
 		3FBDBBF02886E08500A09BF4 /* ChatRoomScheduleViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomScheduleViewModelTests.swift; sourceTree = "<group>"; };
 		3FBDBBF12886E08600A09BF4 /* ChatRoomListViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomListViewModelTests.swift; sourceTree = "<group>"; };
-		3FBDBBF22886E08600A09BF4 /* EnterGuestViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterGuestViewModelTests.swift; sourceTree = "<group>"; };
+		3FBDBBF22886E08600A09BF4 /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
 		3FBDBBF32886E08600A09BF4 /* AddDiscussionViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDiscussionViewModelTests.swift; sourceTree = "<group>"; };
 		3FBDBBF42886E08600A09BF4 /* ChatRoomViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomViewModelTests.swift; sourceTree = "<group>"; };
 		3FBDBBF52886E08600A09BF4 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
@@ -831,7 +831,7 @@
 				3FBDBBF02886E08500A09BF4 /* ChatRoomScheduleViewModelTests.swift */,
 				3FBDBBEF2886E08500A09BF4 /* ChatRoomSideMenuViewModelTests.swift */,
 				3FBDBBF42886E08600A09BF4 /* ChatRoomViewModelTests.swift */,
-				3FBDBBF22886E08600A09BF4 /* EnterGuestViewModelTests.swift */,
+				3FBDBBF22886E08600A09BF4 /* EditProfileViewModelTests.swift */,
 				3FBDBBF52886E08600A09BF4 /* HomeViewModelTests.swift */,
 			);
 			path = "Discussion-Korea-ViewModelTests";
@@ -1148,7 +1148,7 @@
 				3FBDBBFB2886E08600A09BF4 /* ChatRoomSideMenuViewModelTests.swift in Sources */,
 				3FBDBBF82886E08600A09BF4 /* MockDiscussionUsecase.swift in Sources */,
 				3FBDBBF62886E08600A09BF4 /* MockChatRoomUsecase.swift in Sources */,
-				3FBDBBFE2886E08600A09BF4 /* EnterGuestViewModelTests.swift in Sources */,
+				3FBDBBFE2886E08600A09BF4 /* EditProfileViewModelTests.swift in Sources */,
 				3FBDBBFA2886E08600A09BF4 /* AddChatRoomViewModelTests.swift in Sources */,
 				3FBDBBFC2886E08600A09BF4 /* ChatRoomScheduleViewModelTests.swift in Sources */,
 				3FBDBBFD2886E08600A09BF4 /* ChatRoomListViewModelTests.swift in Sources */,

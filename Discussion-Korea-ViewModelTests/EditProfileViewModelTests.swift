@@ -10,15 +10,16 @@ import RxSwift
 import RxTest
 import XCTest
 
-final class EnterGuestViewModelTests: XCTestCase {
+final class EditProfileViewModelTests: XCTestCase {
 
     // MARK: properties
 
     private let userId = "test"
+    private let nickname = "testNickname"
 
-    private var mockNavigator: MockEnterGuestNavigator!
+    private var mockNavigator: MockEditProfileNavigator!
     private var userInfoUsecase: MockUserInfoUsecase!
-    private var viewModel: EnterGuestViewModel!
+    private var viewModel: EditProfileViewModel!
     private var disposeBag: DisposeBag!
     private var scheduler: TestScheduler!
 
@@ -26,10 +27,12 @@ final class EnterGuestViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        self.mockNavigator = MockEnterGuestNavigator()
+        self.mockNavigator = MockEditProfileNavigator()
         self.userInfoUsecase = MockUserInfoUsecase()
-        self.viewModel = EnterGuestViewModel(
+        self.viewModel = EditProfileViewModel(
             userID: self.userId,
+            nickname: self.nickname,
+            profileURL: nil,
             navigator: self.mockNavigator,
             userInfoUsecase: self.userInfoUsecase
         )
@@ -53,10 +56,10 @@ final class EnterGuestViewModelTests: XCTestCase {
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
-        let input = EnterGuestViewModel.Input(
+        let input = EditProfileViewModel.Input(
             nickname: nicknameTestableDriver,
+            exitTrigger: Driver.just(()),
             imageTrigger: Driver.just(()),
-            guestTrigger: Driver.just(()),
             submitTrigger: Driver.just(())
         )
         let output = self.viewModel.transform(input: input)
@@ -78,10 +81,10 @@ final class EnterGuestViewModelTests: XCTestCase {
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
-        let input = EnterGuestViewModel.Input(
+        let input = EditProfileViewModel.Input(
             nickname: nicknameTestableDriver,
+            exitTrigger: Driver.just(()),
             imageTrigger: Driver.just(()),
-            guestTrigger: Driver.just(()),
             submitTrigger: Driver.just(())
         )
         let output = self.viewModel.transform(input: input)
@@ -100,14 +103,12 @@ final class EnterGuestViewModelTests: XCTestCase {
 
 }
 
-extension EnterGuestViewModelTests {
+extension EditProfileViewModelTests {
 
-    final class MockEnterGuestNavigator: EnterGuestNavigator {
+    final class MockEditProfileNavigator: EditProfileNavigator {
 
-        func toEnterGuest(_ userID: String) {}
-
-        func toHome() {}
-
+        func toEditProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {}
+        func toMyPage() {}
         func toSettingAppAlert() {}
 
         func toImagePicker() -> Observable<URL?> {
