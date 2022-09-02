@@ -24,6 +24,7 @@
 		3F97B3C72815735B004F30A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F97B3C52815735B004F30A5 /* LaunchScreen.storyboard */; };
 		3F97B3CF2815739D004F30A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F97B3CE2815739D004F30A5 /* GoogleService-Info.plist */; };
 		3F97B3D22815743D004F30A5 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3F97B3D12815743D004F30A5 /* FirebaseDatabase */; };
+		3FAAB6C428C1676000AA32ED /* LawAndGuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6C328C1676000AA32ED /* LawAndGuideManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3F97B3C62815735B004F30A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F97B3C82815735B004F30A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F97B3CE2815739D004F30A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3FAAB6C328C1676000AA32ED /* LawAndGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawAndGuideManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		3F66969A2834D6F20077E5B3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3FAAB6C328C1676000AA32ED /* LawAndGuideManager.swift */,
 				3F66969428326A4F0077E5B3 /* DiscussionManager.swift */,
 				3F66968D283185140077E5B3 /* SideManager.swift */,
 				3F66969B2834D7020077E5B3 /* SummaryManager.swift */,
@@ -205,6 +208,7 @@
 				3F669690283185310077E5B3 /* Chat.swift in Sources */,
 				3F95BC9B28438606008DF2D2 /* UserInfo.swift in Sources */,
 				3F97B3BD2815735A004F30A5 /* SceneDelegate.swift in Sources */,
+				3FAAB6C428C1676000AA32ED /* LawAndGuideManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

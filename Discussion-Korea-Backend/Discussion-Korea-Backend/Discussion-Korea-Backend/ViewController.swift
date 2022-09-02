@@ -12,12 +12,12 @@ import FirebaseDatabase
 
 enum ReferenceManager {
 
-//    static let reference = Database
-//        .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-//        .reference()
     static let reference = Database
-        .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+        .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
         .reference()
+//    static let reference = Database
+//        .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+//        .reference()
 
 }
 
@@ -33,6 +33,8 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UserInfoManager.shared.observe()
+        LawManager.shared.observe()
+        GuideManager.shared.observe()
         let reference = ReferenceManager.reference
 
         let dateFormatter = DateFormatter()

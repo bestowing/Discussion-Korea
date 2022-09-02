@@ -111,6 +111,7 @@
 		3FAAB6BB28C0868700AA32ED /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BA28C0868700AA32ED /* MyPageViewModel.swift */; };
 		3FAAB6BE28C0A2E700AA32ED /* DebateScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BD28C0A2E700AA32ED /* DebateScoreView.swift */; };
 		3FAAB6C028C0AF7E00AA32ED /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BF28C0AF7E00AA32ED /* Int+.swift */; };
+		3FAAB6C228C0B7B700AA32ED /* Law.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6C128C0B7B700AA32ED /* Law.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -304,6 +305,7 @@
 		3FAAB6BA28C0868700AA32ED /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		3FAAB6BD28C0A2E700AA32ED /* DebateScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebateScoreView.swift; sourceTree = "<group>"; };
 		3FAAB6BF28C0AF7E00AA32ED /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		3FAAB6C128C0B7B700AA32ED /* Law.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Law.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 				3F6696AD283623A80077E5B3 /* ChatRoom.swift */,
 				3FB357A02826192A00F27C77 /* Discussion.swift */,
 				3FAAB6A028BEB72700AA32ED /* Guide.swift */,
+				3FAAB6C128C0B7B700AA32ED /* Law.swift */,
 				3FF62D9E282D93F1001F343C /* Side.swift */,
 				3F37B3C42820773600DB18B7 /* UserInfo.swift */,
 			);
@@ -1004,6 +1007,7 @@
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FAAB6BE28C0A2E700AA32ED /* DebateScoreView.swift in Sources */,
 				3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */,
+				3FAAB6C228C0B7B700AA32ED /* Law.swift in Sources */,
 				3F95BC95284361CF008DF2D2 /* BotChatCell.swift in Sources */,
 				3FAAB6AA28BF1E0D00AA32ED /* ChatsReference.swift in Sources */,
 				3F689EA828B7849700C1D072 /* BaseNavigator.swift in Sources */,
