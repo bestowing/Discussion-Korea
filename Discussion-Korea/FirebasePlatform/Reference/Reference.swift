@@ -14,5 +14,6 @@ enum RefereceError: Error {
     case keyError
     case profileError
     case lawError
+    case userInfoError
 
 }

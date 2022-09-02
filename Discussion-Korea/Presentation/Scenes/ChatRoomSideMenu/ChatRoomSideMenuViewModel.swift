@@ -44,10 +44,12 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         let participants = input.viewWillAppear
             .flatMapFirst { [unowned self] in
-                self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
+                self.userInfoUsecase.userInfos(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .scan([ParticipantItemViewModel]()) { viewModels, userInfo in
-                        return viewModels + [ParticipantItemViewModel(with: userInfo, isSelf: self.uid == userInfo.uid)]
+                    .map {
+                        $0.map { (_, value) in
+                            ParticipantItemViewModel(with: value, isSelf: self.uid == value.uid )
+                        }
                     }
             }
 

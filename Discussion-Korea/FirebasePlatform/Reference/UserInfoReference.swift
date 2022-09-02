@@ -23,6 +23,7 @@ final class UserInfoReference {
         self.dateFormatter = dateFormatter
     }
 
+    /// userID로 UserInfo 요청
     func userInfo(with userID: String) -> Observable<UserInfo?> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("users/\(userID)")
@@ -55,72 +56,72 @@ final class UserInfoReference {
         }
     }
 
-    /// roomID 방에서 userID 사용자의 Optional side를 반환함
-    func userInfo(in roomID: String, with userID: String) -> Observable<Side?> {
+    /// roomID 방에 참가한 모든 사용자의 UserInfo를 반환함
+    func userInfos(in roomID: String) -> Observable<[String: UserInfo]> {
         return Observable.create { [unowned self] subscribe in
             self.reference
-                .child("chatRoom/\(roomID)/users/\(userID)")
+                .child("chatRoom/\(roomID)/users")
                 .observe(.value) { snapshot in
-                    guard let dictionary = snapshot.value as? NSDictionary,
-                          let sideString = dictionary["side"] as? String
-                    else {
-                        subscribe.onNext(nil)
-                        return
-                    }
-                    subscribe.onNext(Side.toSide(from: sideString))
-                }
-            return Disposables.create()
-        }
-    }
-
-    /// roomID 방에 참가한 모든 사용자의 UserInfo를 반환함
-    func userInfos(in roomID: String) -> Observable<UserInfo> {
-        return Observable<(uid: String, position: String?)>.create { [unowned self] subscribe in
-            self.reference
-                .child("chatRoom").child("\(roomID)").child("users")
-                .observe(.childAdded) { snapshot in
                     guard let dic = snapshot.value as? NSDictionary
                     else { return }
-                    subscribe.onNext((snapshot.key, dic["position"] as? String))
+                    subscribe.onNext(dic.compactMap { (key, value) in
+                        guard let uid = key as? String
+                        else { return nil }
+                        let position: String? = (value as? NSDictionary)?["position"] as? String
+                        return (uid: uid, position: position)
+                    })
                 }
             return Disposables.create()
-        }.flatMap { [unowned self] userInfo in
-            return self.userInfoDetail(userInfo: userInfo)
+        }.flatMap { [unowned self] userInfos in
+            self.details(userInfos: userInfos)
         }
     }
 
-    private func userInfoDetail(userInfo: (uid: String, position: String?)) -> Observable<UserInfo> {
+    private func details(userInfos: [(uid: String, position: String?)]) -> Observable<[String: UserInfo]> {
         return Observable.create { [unowned self] subscribe in
-            self.reference.child("users/\(userInfo.uid)")
-                .observe(.value) { snapshot in
-                    guard let dic = snapshot.value as? NSDictionary,
-                          let nickname = dic["nickname"] as? String,
-                          let registerString = dic["registerAt"] as? String,
-                          let registerAt = self.dateFormatter.date(from: registerString)
-                    else { return }
-                    let position = userInfo.position
-                    var userInfo = UserInfo(uid: userInfo.uid, nickname: nickname, registerAt: registerAt)
-                    userInfo.position = position
-                    if let profile = dic["profile"] as? String,
-                       let url = URL(string: profile) {
-                        userInfo.profileURL = url
+            self.reference.child("users")
+                .observeSingleEvent(of: .value) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary
+                    else {
+                        subscribe.onError(RefereceError.userInfoError)
+                        return
                     }
-                    if let win = dic["win"] as? Int {
-                        userInfo.win = win
+                    var userInfoDictionary = [String: UserInfo]()
+                    for userInfo in userInfos {
+                        guard let dic = dictionary[userInfo.uid] as? NSDictionary,
+                              let nickname = dic["nickname"] as? String,
+                              let registerString = dic["registerAt"] as? String,
+                              let registerAt = self.dateFormatter.date(from: registerString)
+                        else {
+                            subscribe.onError(RefereceError.userInfoError)
+                            return
+                        }
+                        let position = userInfo.position
+                        var userInfo = UserInfo(uid: userInfo.uid, nickname: nickname, registerAt: registerAt)
+                        userInfo.position = position
+                        if let profile = dic["profile"] as? String,
+                           let url = URL(string: profile) {
+                            userInfo.profileURL = url
+                        }
+                        if let win = dic["win"] as? Int {
+                            userInfo.win = win
+                        }
+                        if let draw = dic["draw"] as? Int {
+                            userInfo.draw = draw
+                        }
+                        if let lose = dic["lose"] as? Int {
+                            userInfo.lose = lose
+                        }
+                        userInfoDictionary[userInfo.uid] = userInfo
                     }
-                    if let draw = dic["draw"] as? Int {
-                        userInfo.draw = draw
-                    }
-                    if let lose = dic["lose"] as? Int {
-                        userInfo.lose = lose
-                    }
-                    subscribe.onNext(userInfo)
+                    subscribe.onNext(userInfoDictionary)
                     subscribe.onCompleted()
                 }
             return Disposables.create()
         }
     }
 
+    /// roomID 방에 userID 사용자를 추가함
     func add(userID: String, in roomID: String) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             let values: [String: Any] = ["position": "participant"]
@@ -134,6 +135,7 @@ final class UserInfoReference {
         }
     }
 
+    /// uid 사용자의 닉네임과 프로필 사진을 등록함
     func add(userInfo: (uid: String, nickname: String, profileURL: URL?)) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
             var values: [String: Any] = [
@@ -177,6 +179,13 @@ final class UserInfoReference {
         }
     }
 
+}
+
+// MARK: - side
+
+extension UserInfoReference {
+
+    /// roomID 방에 userID 사용자의 side를 설정함
     func add(side: Side, in roomID: String, with userID: String) -> Observable<Void> {
         return Observable<Void>.create { [unowned self] subscribe in
             self.reference
@@ -190,6 +199,7 @@ final class UserInfoReference {
         }
     }
 
+    /// roomID 방에 userID 사용자의 side를 업데이트함
     func update(side: Side?, in roomID: String, with userID: String) -> Observable<Void> {
         return Observable<Void>.create { [unowned self] subscribe in
             self.reference
@@ -199,6 +209,47 @@ final class UserInfoReference {
             return Disposables.create()
         }
     }
+
+    /// roomID 방에서 userID 사용자의 Optional side를 반환함
+    func userInfo(in roomID: String, with userID: String) -> Observable<Side?> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(roomID)/users/\(userID)")
+                .observe(.value) { snapshot in
+                    guard let dictionary = snapshot.value as? NSDictionary,
+                          let sideString = dictionary["side"] as? String
+                    else {
+                        subscribe.onNext(nil)
+                        return
+                    }
+                    subscribe.onNext(Side.toSide(from: sideString))
+                }
+            return Disposables.create()
+        }
+    }
+
+    /// roomID 방에서 userID 사용자가 side로 투표함
+    func vote(side: Side, in roomID: String, with userID: String) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("chatRoom/\(roomID)/votes/\(side.rawValue)").runTransactionBlock { currentData in
+                if var votes = currentData.value as? [AnyObject] {
+                    votes.append(userID as AnyObject)
+                    currentData.value = votes
+                } else {
+                    currentData.value = [userID]
+                }
+                return TransactionResult.success(withValue: currentData)
+            }
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+}
+
+// MARK: - 지지 표명
+
+extension UserInfoReference {
 
     func support(side: Side, in roomID: String, with userID: String) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
@@ -242,22 +293,6 @@ final class UserInfoReference {
                     subscribe.onNext((userID, side))
                 }
             }
-            return Disposables.create()
-        }
-    }
-
-    func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
-        return Observable.create { [unowned self] subscribe in
-            self.reference.child("chatRoom/\(roomID)/votes/\(side.rawValue)").runTransactionBlock { currentData in
-                if var votes = currentData.value as? [AnyObject] {
-                    votes.append(userID as AnyObject)
-                    currentData.value = votes
-                } else {
-                    currentData.value = [userID]
-                }
-                return TransactionResult.success(withValue: currentData)
-            }
-            subscribe.onCompleted()
             return Disposables.create()
         }
     }
