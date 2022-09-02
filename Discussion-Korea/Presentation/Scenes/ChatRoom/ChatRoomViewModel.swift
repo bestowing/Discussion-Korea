@@ -57,7 +57,6 @@ final class ChatRoomViewModel: ViewModelType {
                 self.discussionUsecase.remainTime(userID: self.uid, roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .debug()
 
         let myRemainTimeString: Driver<String> = myRemainTime
             .compactMap { date -> Int? in
@@ -120,20 +119,14 @@ final class ChatRoomViewModel: ViewModelType {
             .do(onNext: self.navigator.toDiscussionResultAlert)
             .mapToVoid()
 
-        // TODO: 한번 딱 가져오고 그다음부터 추가되는거 감지하는걸로 바꾸기
         let userInfos = input.trigger
             .flatMapFirst { [unowned self] in
-                self.userInfoUsecase.connect(roomID: self.chatRoom.uid)
+                self.userInfoUsecase.userInfos(roomID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
-                    .scan([String: UserInfo]()) { userInfos, userInfo in
-                        var userInfos = userInfos
-                        userInfos[userInfo.uid] = userInfo
-                        return userInfos
-                    }
             }
 
-        let remainChats = input.trigger
-            .flatMapFirst { [unowned self] in
+        let remainChats = userInfos
+            .flatMapFirst { [unowned self] _ in
                 self.chatsUsecase.chats(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }

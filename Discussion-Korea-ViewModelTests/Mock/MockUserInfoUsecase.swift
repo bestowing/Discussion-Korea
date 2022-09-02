@@ -19,7 +19,7 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     var voteStream: Observable<Void>
     var uidStream: Observable<String>
     var roomUserInfoStream: Observable<Side?>
-    var connectStream: Observable<UserInfo>
+    var userInfosStream: Observable<[String : UserInfo]>
     var userInfoStream: Observable<UserInfo?>
     var supportStream: Observable<Void>
     var supporterStream: Observable<Side>
@@ -34,7 +34,7 @@ final class MockUserInfoUsecase: UserInfoUsecase {
         self.voteStream = PublishSubject<Void>.init()
         self.uidStream = PublishSubject<String>.init()
         self.roomUserInfoStream = PublishSubject<Side?>.init()
-        self.connectStream = PublishSubject<UserInfo>.init()
+        self.userInfosStream = PublishSubject<[String : UserInfo]>.init()
         self.userInfoStream = PublishSubject<UserInfo?>.init()
         self.supportStream = PublishSubject<Void>.init()
         self.supporterStream = PublishSubject<Side>.init()
@@ -70,8 +70,8 @@ final class MockUserInfoUsecase: UserInfoUsecase {
         return self.roomUserInfoStream
     }
 
-    func connect(roomID: String) -> Observable<UserInfo> {
-        return self.connectStream
+    func userInfos(roomID: String) -> Observable<[String : UserInfo]> {
+        return self.userInfosStream
     }
 
     func userInfo(userID: String) -> Observable<UserInfo?> {
