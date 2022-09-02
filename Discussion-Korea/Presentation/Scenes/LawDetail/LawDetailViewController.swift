@@ -31,6 +31,7 @@ final class LawDetailViewController: BaseViewController {
     private let contentsLabel: UILabel = {
         let label = ResizableLabel()
         label.font = UIFont.preferredBoldFont(forTextStyle: .body)
+        label.textColor = .label
         label.numberOfLines = 0
         return label
     }()
@@ -48,12 +49,18 @@ final class LawDetailViewController: BaseViewController {
     private func setSubViews() {
         self.view.addSubview(self.articleLabel)
         self.view.addSubview(self.titleLabel)
+        self.view.addSubview(self.contentsLabel)
         self.articleLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.articleLabel.snp.bottom).offset(10)
             make.leading.trailing.equalTo(self.articleLabel)
+        }
+        self.contentsLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
     }
 
