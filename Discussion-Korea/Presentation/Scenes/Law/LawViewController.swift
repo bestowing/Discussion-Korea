@@ -32,6 +32,7 @@ final class LawViewController: BaseViewController {
         let collectionView = UICollectionView(
             frame: .zero, collectionViewLayout: flowLayout
         )
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.register(
             LawCell.self, forCellWithReuseIdentifier: LawCell.identifier
         )
@@ -53,7 +54,7 @@ final class LawViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = self.exitButton
         self.view.addSubview(self.lawContentCollectionView)
         self.lawContentCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
 
@@ -61,15 +62,16 @@ final class LawViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = LawViewModel.Input(
-            exitTrigger: self.exitButton.rx.tap.asDriver()
+            exitTrigger: self.exitButton.rx.tap.asDriver(),
+            selection: self.lawContentCollectionView.rx.itemSelected.asDriver()
         )
         let output = self.viewModel.transform(input: input)
 
-        output.laws.drive(self.lawContentCollectionView.rx.items) { collectionView, index, viewModel in
+        output.laws.drive(self.lawContentCollectionView.rx.items) { collectionView, index, law in
             let indexPath = IndexPath(item: index, section: 0)
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LawCell.identifier, for: indexPath) as? LawCell
             else { return UICollectionViewCell() }
-            cell.bind(viewModel)
+            cell.bind(law)
             return cell
         }
             .disposed(by: self.disposeBag)

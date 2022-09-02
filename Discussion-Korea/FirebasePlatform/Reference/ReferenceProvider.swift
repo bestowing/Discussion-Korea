@@ -12,7 +12,18 @@ final class ReferenceProvider {
 
     private let databaseReference: DatabaseReference
     private let storageReference: StorageReference
-    private let dateFormatter: DateFormatter
+
+    private lazy var fullDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter
+    }()
+
+    private lazy var shortDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter
+    }()
 
     init() {
         let storage = Storage.storage()
@@ -26,11 +37,6 @@ final class ReferenceProvider {
 
         self.databaseReference = database.reference()
         self.storageReference = storage.reference()
-        self.dateFormatter = {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            return dateFormatter
-        }()
     }
 
     func makeChatRoomsReference() -> ChatRoomsReference {
@@ -43,14 +49,14 @@ final class ReferenceProvider {
     func makeChatsRefence() -> ChatsReference {
         return ChatsReference(
             reference: self.databaseReference,
-            dateFormatter: self.dateFormatter
+            dateFormatter: self.fullDateFormatter
         )
     }
 
     func makeDiscussionReference() -> DiscussionReference {
         return DiscussionReference(
             reference: self.databaseReference,
-            dateFormatter: self.dateFormatter
+            dateFormatter: self.fullDateFormatter
         )
     }
 
@@ -62,12 +68,15 @@ final class ReferenceProvider {
         return UserInfoReference(
             reference: self.databaseReference,
             storageReference: self.storageReference,
-            dateFormatter: self.dateFormatter
+            dateFormatter: self.fullDateFormatter
         )
     }
 
     func makeLawReference() -> LawReference {
-        return LawReference()
+        return LawReference(
+            reference: self.databaseReference,
+            dateFormatter: self.shortDateFormatter
+        )
     }
 
 }
