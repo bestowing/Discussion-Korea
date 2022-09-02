@@ -9,6 +9,6 @@ import RxSwift
 
 protocol LawUsecase {
 
-    func laws() -> Observable<[String]>
+    func laws() -> Observable<Laws>
 
 }

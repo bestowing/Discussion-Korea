@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/08/25.
 //
 
+import Foundation
 import RxCocoa
 
 final class LawViewModel: ViewModelType {
@@ -31,13 +32,27 @@ final class LawViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let laws = self.lawUsecase.laws().asDriverOnErrorJustComplete()
-            .map { $0.map { LawItemViewModel(content: $0) } }
+        let laws = self.lawUsecase.laws()
+            .asDriverOnErrorJustComplete()
 
-        let events = input.exitTrigger
+        let selectionEvent = input.selection
+            .withLatestFrom(laws) { (indexPath, laws) -> Law in
+                return laws.laws[indexPath.item]
+            }
+            .do(onNext: self.navigator.toLawDetail)
+            .mapToVoid()
+
+        let exitEvent = input.exitTrigger
             .do(onNext: self.navigator.toHome)
 
-        return Output(laws: laws, events: events)
+        let events = Driver.of(selectionEvent, exitEvent)
+            .merge()
+
+        return Output(
+            lastUpdated: laws.map { $0.lastUpdated },
+            laws: laws.map { $0.laws },
+            events: events
+        )
     }
 
 }
@@ -46,10 +61,12 @@ extension LawViewModel {
 
     struct Input {
         let exitTrigger: Driver<Void>
+        let selection: Driver<IndexPath>
     }
 
     struct Output {
-        let laws: Driver<[LawItemViewModel]>
+        let lastUpdated: Driver<Date>
+        let laws: Driver<[Law]>
         let events: Driver<Void>
     }
 

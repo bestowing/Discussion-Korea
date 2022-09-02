@@ -11,12 +11,25 @@ final class LawCell: UICollectionViewCell {
 
     // MARK: - properties
 
-    private let lawLabel: UILabel = {
+    private let articleLabel: UILabel = {
         let label = ResizableLabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.textColor = .systemGray
+        return label
+    }()
+
+    private let topicLabel: UILabel = {
+        let label = ResizableLabel()
+        label.font = UIFont.preferredBoldFont(forTextStyle: .title3)
         label.numberOfLines = 0
         label.textColor = .label
         return label
+    }()
+
+    private let gotoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        imageView.tintColor = .label
+        return imageView
     }()
 
     // MARK: - init/deinit
@@ -34,15 +47,31 @@ final class LawCell: UICollectionViewCell {
     // MARK: - methods
 
     private func layoutViews() {
-        self.contentView.addSubview(self.lawLabel)
-        self.lawLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(0)
+        self.contentView.addSubview(self.articleLabel)
+        self.contentView.addSubview(self.topicLabel)
+        self.contentView.addSubview(self.gotoImageView)
+        self.articleLabel.snp.contentHuggingVerticalPriority = 999
+        self.articleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(20)
+        }
+        self.topicLabel.snp.contentHuggingVerticalPriority = 999
+        self.topicLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.articleLabel.snp.bottom).offset(10)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(20)
+        }
+        self.gotoImageView.snp.makeConstraints { make in
+            make.leading.equalTo(self.topicLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().inset(20)
+            make.centerY.equalTo(self.topicLabel)
+            make.width.height.equalTo(25)
         }
     }
 
-    func bind(_ viewModel: LawItemViewModel) {
-        self.lawLabel.text = viewModel.content
+    func bind(_ law: Law) {
+        self.articleLabel.text = "제\(law.article)조"
+        self.topicLabel.text = law.topic
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

@@ -9,5 +9,6 @@ protocol LawNavigator {
 
     func toLaw()
     func toHome()
+    func toLawDetail(_ law: Law)
 
 }
