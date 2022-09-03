@@ -556,16 +556,16 @@
 			children = (
 				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
+				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
+				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
+				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
+				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
+				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
 				3F37B3AB2820765900DB18B7 /* OtherChatCell.swift */,
 				3F37B3A72820765900DB18B7 /* PaddingLabel.swift */,
 				3F37B3A92820765900DB18B7 /* SelfChatCell.swift */,
 				3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */,
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
-				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
-				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
-				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
-				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
-				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
