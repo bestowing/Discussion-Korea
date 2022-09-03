@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Chat {
+struct Chat: Equatable {
 
     var uid: String?
     var userID: String

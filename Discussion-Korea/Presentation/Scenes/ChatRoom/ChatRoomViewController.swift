@@ -7,17 +7,31 @@
 
 import SnapKit
 import UIKit
+import RxDataSources
 import RxSwift
 import RxKeyboard
 import RxGesture
 
 final class ChatRoomViewController: BaseViewController {
 
+    fileprivate typealias ChatRoomDataSource = RxCollectionViewSectionedNonAnimatedDataSource<ChatSectionModel>
+
     // MARK: properties
 
     var viewModel: ChatRoomViewModel!
 
-    private var itemViewModels: [ChatItemViewModel] = []
+    private var dataSource = ChatRoomDataSource(
+        configureCell: { _, collectionView, indexPath, model in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: model.identifier, for: indexPath
+            ) as? ChatCell
+            else { return UICollectionViewCell() }
+            cell.bind(model)
+            cell.isAccessibilityElement = true
+            cell.accessibilityLabel = cell.getAccessibilityLabel(model)
+            return cell
+        }
+    )
 
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -32,8 +46,8 @@ final class ChatRoomViewController: BaseViewController {
     private let chatPreview = ChatPreview()
 
     private lazy var messageCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 80)
+        let flowLayout = ChatCollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 40)
         flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
@@ -92,7 +106,6 @@ final class ChatRoomViewController: BaseViewController {
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
             make.top.equalTo(self.noticeView.snp.bottom).offset(5)
         }
-        self.messageCollectionView.dataSource = self
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
@@ -137,6 +150,9 @@ final class ChatRoomViewController: BaseViewController {
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
+            loadMoreTrigger: self.messageCollectionView.loadMore()
+                .asDriverOnErrorJustComplete()
+                .debug(),
             bottomScrolled: bottomScrolled,
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
@@ -159,31 +175,34 @@ final class ChatRoomViewController: BaseViewController {
             .disposed(by: self.disposeBag)
 
         output.chatItems
-            .withLatestFrom(bottomScrolled) { ($0, $1) }
-            .drive { [unowned self] model, scrolled in
-            let indexPath = IndexPath(item: self.itemViewModels.count, section: 0)
-            self.itemViewModels.append(model)
-            self.messageCollectionView.insertItems(at: [indexPath])
-            if scrolled {
-                self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-            } else {
-                self.chatPreview.bind(model)
-            }
-        }.disposed(by: self.disposeBag)
+            .drive(self.messageCollectionView.rx.items(
+                dataSource: self.dataSource)
+            )
+//            .withLatestFrom(bottomScrolled) { ($0, $1) }
+//            .drive { [unowned self] models, scrolled in
+//            let indexPath = IndexPath(item: self.itemViewModels.count, section: 0)
+//            self.itemViewModels += models
+//            self.messageCollectionView.insertItems(at: [indexPath])
+//            if scrolled {
+//                self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+//            } else {
+//                self.chatPreview.bind(model)
+//            }
+            .disposed(by: self.disposeBag)
 
-        output.mask.drive { [unowned self] uid in
-            if let item = self.itemViewModels.firstIndex(where: { $0.chat.uid! == uid }) {
-                let itemPath = IndexPath(item: item, section: 0)
-                self.itemViewModels[item].chat.toxic = true
-                self.messageCollectionView.reloadItems(at: [itemPath])
-            }
-        }.disposed(by: self.disposeBag)
+//        output.mask.drive { [unowned self] uid in
+//            if let item = self.itemViewModels.firstIndex(where: { $0.chat.uid! == uid }) {
+//                let itemPath = IndexPath(item: item, section: 0)
+//                self.itemViewModels[item].chat.toxic = true
+//                self.messageCollectionView.reloadItems(at: [itemPath])
+//            }
+//        }.disposed(by: self.disposeBag)
 
-        output.toBottom.drive { [unowned self] _ in
-            let indexPath = IndexPath(item: self.itemViewModels.count - 1, section: 0)
-            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
-        }
-        .disposed(by: self.disposeBag)
+//        output.toBottom.drive { [unowned self] _ in
+//            let indexPath = IndexPath(item: self.itemViewModels.count - 1, section: 0)
+//            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+//        }
+//        .disposed(by: self.disposeBag)
 
         output.isPreviewHidden.distinctUntilChanged()
             .filter { $0 }
@@ -207,20 +226,34 @@ final class ChatRoomViewController: BaseViewController {
 
 }
 
-extension ChatRoomViewController: UICollectionViewDataSource {
+fileprivate extension UICollectionView {
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.itemViewModels.count
+    func loadMore() -> Observable<Void> {
+        return self.rx.willDisplayCell
+            .filter { _, indexPath in return indexPath.item == 0 }
+            .mapToVoid()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = self.itemViewModels[indexPath.item]
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath) as? ChatCell
-        else { return UICollectionViewCell() }
-        cell.bind(model)
-        cell.isAccessibilityElement = true
-        cell.accessibilityLabel = cell.getAccessibilityLabel(model)
-        return cell
+
+}
+
+fileprivate class RxCollectionViewSectionedNonAnimatedDataSource<Section: AnimatableSectionModelType>: RxCollectionViewSectionedAnimatedDataSource<Section> {
+
+    override func collectionView(_ collectionView: UICollectionView, observedEvent: Event<RxCollectionViewSectionedAnimatedDataSource<Section>.Element>) {
+        UIView.performWithoutAnimation {
+            super.collectionView(collectionView, observedEvent: observedEvent)
+        }
+    }
+
+}
+
+extension ChatItemViewModel: IdentifiableType, Equatable {
+
+    typealias Identity = String
+
+    var identity: String { self.chat.uid! }
+
+    static func == (lhs: ChatItemViewModel, rhs: ChatItemViewModel) -> Bool {
+        lhs.chat == rhs.chat
     }
 
 }
