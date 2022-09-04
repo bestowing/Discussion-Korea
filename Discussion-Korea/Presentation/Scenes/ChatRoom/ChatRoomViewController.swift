@@ -153,8 +153,7 @@ final class ChatRoomViewController: BaseViewController {
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
             send: self.chatInputView.rx.send.asDriver(),
-            menu: self.menuButton.rx.tap.asDriver()
-                .do(onNext: { [unowned self] in print(self.messageCollectionView.contentSize.height) }),
+            menu: self.menuButton.rx.tap.asDriver(),
             content: self.chatInputView.rx.chatContent.asDriver(),
             disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
                 .mapToVoid()
