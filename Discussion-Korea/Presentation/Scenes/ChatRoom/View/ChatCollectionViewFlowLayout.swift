@@ -14,6 +14,7 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     private var visibleAttributes: [UICollectionViewLayoutAttributes]?
 
     private var isInsertingItemsToBottom = false
+    private var isInsertingItemsFirstTime = false
 
     override func layoutAttributesForElements(
         in rect: CGRect
@@ -50,11 +51,14 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
             switch $1.updateAction {
             case .insert:
                 if let updateItemIndexPath = $1.indexPathAfterUpdate,
-                   self.bottomMostVisibleItem <= updateItemIndexPath.item,
-                   collectionView.numberOfItems(inSection: updateItemIndexPath.section) > updateItemIndexPath.item,
-                   let newAttributes = self.layoutAttributesForItem(at: updateItemIndexPath) {
-                    self.offset += (newAttributes.size.height + self.minimumLineSpacing)
-                    result = true
+                   self.bottomMostVisibleItem <= updateItemIndexPath.item {
+                    if collectionView.numberOfItems(inSection: updateItemIndexPath.section) > updateItemIndexPath.item,
+                       let newAttributes = self.layoutAttributesForItem(at: updateItemIndexPath) {
+                        self.offset += (newAttributes.size.height + self.minimumLineSpacing)
+                        result = true
+                    } else if updateItemIndexPath.item == Int.max {
+                        self.isInsertingItemsFirstTime = true
+                    }
                 }
             default:
                 break
@@ -85,7 +89,16 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
             return lastItemIndexPath.item + 2 >= items
         }()
 
-        if self.isInsertingItemsToBottom && didAnchored {
+        if self.isInsertingItemsFirstTime {
+            self.isInsertingItemsFirstTime = false
+            // TODO: 이 값이 항상 옳은지 고민해보기
+            collectionView.setContentOffset(
+                CGPoint(
+                    x: collectionView.contentOffset.x,
+                    y: collectionView.contentSize.height + super.sectionInset.bottom
+                ), animated: false
+            )
+        } else if self.isInsertingItemsToBottom && didAnchored {
             self.isInsertingItemsToBottom = false
             // TODO: 이 값이 항상 옳은지 고민해보기
             let newContentOffset = CGPoint(

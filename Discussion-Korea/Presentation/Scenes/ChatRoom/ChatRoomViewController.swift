@@ -178,16 +178,6 @@ final class ChatRoomViewController: BaseViewController {
             .drive(self.messageCollectionView.rx.items(
                 dataSource: self.dataSource)
             )
-//            .withLatestFrom(bottomScrolled) { ($0, $1) }
-//            .drive { [unowned self] models, scrolled in
-//            let indexPath = IndexPath(item: self.itemViewModels.count, section: 0)
-//            self.itemViewModels += models
-//            self.messageCollectionView.insertItems(at: [indexPath])
-//            if scrolled {
-//                self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-//            } else {
-//                self.chatPreview.bind(model)
-//            }
             .disposed(by: self.disposeBag)
 
 //        output.mask.drive { [unowned self] uid in
