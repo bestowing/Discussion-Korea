@@ -47,7 +47,8 @@ final class ChatRoomViewController: BaseViewController {
 
     private lazy var messageCollectionView: UICollectionView = {
         let flowLayout = ChatCollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 40)
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        //CGSize(width: self.view.frame.width, height: 40)
         flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
@@ -136,28 +137,24 @@ final class ChatRoomViewController: BaseViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
-        let bottomScrolled = self.messageCollectionView.rx.contentOffset
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .map { [unowned self] offset -> Bool in
-                let contentHeight = self.messageCollectionView.contentSize.height
-                let frameHeight = self.messageCollectionView.frame.size.height
-                let margin: CGFloat = 40
-                return offset.y + margin >= (contentHeight - frameHeight)
-            }
-            .asDriverOnErrorJustComplete()
-
         let input = ChatRoomViewModel.Input(
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            loadMoreTrigger: self.messageCollectionView.loadMore()
-                .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            loadMoreTrigger: self.messageCollectionView.position()
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .filter { $0 == .top }
+                .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            bottomScrolled: bottomScrolled,
+            bottomScrolled: self.messageCollectionView.position()
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .map { $0 == .bottom }
+                .asDriverOnErrorJustComplete(),
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
             send: self.chatInputView.rx.send.asDriver(),
-            menu: self.menuButton.rx.tap.asDriver(),
+            menu: self.menuButton.rx.tap.asDriver()
+                .do(onNext: { [unowned self] in print(self.messageCollectionView.contentSize.height) }),
             content: self.chatInputView.rx.chatContent.asDriver(),
             disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
                 .mapToVoid()
@@ -216,12 +213,33 @@ final class ChatRoomViewController: BaseViewController {
 
 }
 
-fileprivate extension UICollectionView {
+extension UICollectionView {
 
-    func loadMore() -> Observable<Void> {
-        return self.rx.willDisplayCell
-            .filter { _, indexPath in return indexPath.item == 0 }
-            .mapToVoid()
+    enum Position {
+        case top
+        case bottom
+        case none
+    }
+
+    func bottom() -> Bool {
+        guard let lastItemIndexPath = self.indexPathsForVisibleItems.sorted(by: <).last
+        else { return false }
+        let items = self.numberOfItems(inSection: lastItemIndexPath.section)
+        return lastItemIndexPath.item + 2 >= items
+    }
+
+    func position() -> Observable<Position> {
+        return self.rx.contentOffset
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map { [unowned self] contentOffset in
+                if contentOffset.y <= 20.0 {
+                    return .top
+                }
+                if contentOffset.y + self.frame.height + 20.0 > self.contentSize.height {
+                    return .bottom
+                }
+                return .none
+            }
     }
 
 }
