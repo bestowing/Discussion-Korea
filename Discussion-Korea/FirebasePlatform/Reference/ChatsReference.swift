@@ -40,6 +40,7 @@ final class ChatsReference {
         return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/messages")
+                .queryOrderedByKey()
                 .queryEnding(beforeValue: chatUID)
                 .queryLimited(toLast: 30)
                 .observeSingleEvent(of: .value) { snapshot in

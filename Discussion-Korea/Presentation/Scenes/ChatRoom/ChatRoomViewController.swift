@@ -151,8 +151,8 @@ final class ChatRoomViewController: BaseViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             loadMoreTrigger: self.messageCollectionView.loadMore()
-                .asDriverOnErrorJustComplete()
-                .debug(),
+                .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+                .asDriverOnErrorJustComplete(),
             bottomScrolled: bottomScrolled,
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
