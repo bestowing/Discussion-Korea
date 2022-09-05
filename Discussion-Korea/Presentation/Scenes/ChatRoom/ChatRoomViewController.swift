@@ -179,11 +179,13 @@ final class ChatRoomViewController: BaseViewController {
             )
             .disposed(by: self.disposeBag)
 
-//        output.toBottom.drive { [unowned self] _ in
-//            let indexPath = IndexPath(item: self.itemViewModels.count - 1, section: 0)
-//            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
-//        }
-//        .disposed(by: self.disposeBag)
+        output.toBottom.drive { [unowned self] _ in
+            let section = 0
+            let items = self.messageCollectionView.numberOfItems(inSection: section)
+            let indexPath = IndexPath(item: items - 1, section: section)
+            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        }
+        .disposed(by: self.disposeBag)
 
         output.preview
             .drive(self.chatPreview.rx.latest)

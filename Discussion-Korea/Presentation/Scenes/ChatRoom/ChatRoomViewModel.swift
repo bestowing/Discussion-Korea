@@ -422,6 +422,12 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
+        let previewCheckEvent = input.bottomScrolled
+            .do(onNext: {
+                if $0 { previewItem.onNext(nil) }
+            })
+            .mapToVoid()
+
         let preview = previewItem
             .withLatestFrom(input.bottomScrolled) { ($0, $1) }
             .map { (model, scrolled) -> ChatItemViewModel? in
@@ -447,6 +453,7 @@ final class ChatRoomViewModel: ViewModelType {
             enterEvent,
             clearSideEvent,
             resultEvent,
+            previewCheckEvent,
             appear,
             disappear,
             writingEvent
@@ -463,10 +470,7 @@ final class ChatRoomViewModel: ViewModelType {
                 .startWith([]),
             toBottom: input.previewTouched,
             sendEnable: canSend,
-            preview: Driver.combineLatest(preview, input.bottomScrolled) {
-                if $1 { return nil }
-                return $0
-            }
+            preview: preview
                 .startWith(nil),
             realTimeChat: writingChat,
             editableEnable: canEditable,
