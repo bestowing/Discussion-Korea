@@ -27,6 +27,7 @@ final class SignInViewController: BaseViewController {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "비밀번호"
+        textField.isSecureTextEntry = true
         textField.font = .preferredFont(forTextStyle: .body)
         textField.adjustsFontForContentSizeCategory = true
         return textField
