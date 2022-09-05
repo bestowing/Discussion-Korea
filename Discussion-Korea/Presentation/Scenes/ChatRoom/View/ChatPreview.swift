@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 
 final class ChatPreview: UIView {
 
     // MARK: properties
 
-    private let profileImageView: UIImageView = {
+    fileprivate let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
         imageView.tintColor = UIColor.white
         imageView.backgroundColor = .accentColor
@@ -20,7 +21,7 @@ final class ChatPreview: UIView {
         return imageView
     }()
 
-    private let nicknameLabel: UILabel = {
+    fileprivate let nicknameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .systemGray
@@ -28,7 +29,7 @@ final class ChatPreview: UIView {
         return label
     }()
 
-    private let contentLabel: UILabel = {
+    fileprivate let contentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .label
@@ -36,7 +37,7 @@ final class ChatPreview: UIView {
         return label
     }()
 
-    private let downButton: UIImageView = {
+    fileprivate let downButton: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
         imageView.tintColor = .systemGray
         return imageView
@@ -100,6 +101,28 @@ final class ChatPreview: UIView {
         }
         self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
         self.contentLabel.text = viewModel.content
+    }
+
+}
+
+extension Reactive where Base: ChatPreview {
+
+    var latest: Binder<ChatItemViewModel?> {
+        return Binder(self.base) { chatPreview, model in
+            guard let model = model
+            else {
+                chatPreview.isHidden = true
+                return
+            }
+            chatPreview.isHidden = false
+            if let image = model.image {
+                chatPreview.profileImageView.image = image
+            } else if let url = model.url {
+                chatPreview.profileImageView.setImage(url)
+            }
+            chatPreview.nicknameLabel.text = model.nickname + model.sideString
+            chatPreview.contentLabel.text = model.content
+        }
     }
 
 }

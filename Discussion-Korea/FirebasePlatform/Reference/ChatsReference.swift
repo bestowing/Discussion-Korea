@@ -36,6 +36,26 @@ final class ChatsReference {
         }
     }
 
+    func chats(roomID: String, before chatUID: String) -> Observable<[Chat]> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference
+                .child("chatRoom/\(roomID)/messages")
+                .queryOrderedByKey()
+                .queryEnding(beforeValue: chatUID)
+                .queryLimited(toLast: 30)
+                .observeSingleEvent(of: .value) { snapshot in
+                    let chats = snapshot.children.compactMap { child -> Chat? in
+                        guard let snapshot = child as? DataSnapshot
+                        else { return nil }
+                        return Chat.toChat(from: snapshot)
+                    }
+                    subscribe.onNext(chats)
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
+    }
+
     func chats(roomID: String, after chatID: String?) -> Observable<Chat> {
         return Observable.create { [unowned self] subscribe in
             if let afterUID = chatID {

@@ -96,7 +96,7 @@ class OtherChatCell: ChatCell {
         }
         self.nicknameLabel.text = viewModel.nickname + viewModel.sideString
         self.contentLabel.text = viewModel.content
-        self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.textColor = super.textColor(viewModel)
         self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .systemBackground
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString

@@ -116,6 +116,11 @@
 		3FAAB6CD28C1F7E300AA32ED /* DefaultLawDetailNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6CC28C1F7E300AA32ED /* DefaultLawDetailNavigator.swift */; };
 		3FAAB6CF28C1F8F600AA32ED /* LawDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */; };
 		3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */; };
+		3FAAB6D428C2DBF500AA32ED /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3FAAB6D328C2DBF500AA32ED /* RxDataSources */; };
+		3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */; };
+		3FAAB6DA28C6033400AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
+		3FAAB6DC28C6034500AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
+		3FAAB6DE28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -314,6 +319,9 @@
 		3FAAB6CC28C1F7E300AA32ED /* DefaultLawDetailNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLawDetailNavigator.swift; sourceTree = "<group>"; };
 		3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewController.swift; sourceTree = "<group>"; };
 		3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewModel.swift; sourceTree = "<group>"; };
+		3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemViewModelFactory.swift; sourceTree = "<group>"; };
+		3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatItemViewModelFactory.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -368,6 +376,7 @@
 				3F37B3DA2820782600DB18B7 /* FirebaseDatabase in Frameworks */,
 				3F9B69D3287AA34A00DA72B6 /* RxGesture in Frameworks */,
 				3F37B3D1282077B700DB18B7 /* RxSwift in Frameworks */,
+				3FAAB6D428C2DBF500AA32ED /* RxDataSources in Frameworks */,
 				3F91043E283FBA7900446239 /* Kingfisher in Frameworks */,
 				3F37B3D7282077D400DB18B7 /* SnapKit in Frameworks */,
 				3F37B3D4282077C700DB18B7 /* RxKeyboard in Frameworks */,
@@ -522,8 +531,8 @@
 		3F37B39C2820763B00DB18B7 /* ChatRoom */ = {
 			isa = PBXGroup;
 			children = (
+				3FAAB6DB28C6033800AA32ED /* ItemViewModel */,
 				3F37B3A62820765300DB18B7 /* View */,
-				3F37B3A02820765100DB18B7 /* ChatItemViewModel.swift */,
 				3F37B39E2820765100DB18B7 /* ChatRoomNavigator.swift */,
 				3F37B3A12820765100DB18B7 /* ChatRoomViewController.swift */,
 				3F37B39F2820765100DB18B7 /* ChatRoomViewModel.swift */,
@@ -549,15 +558,16 @@
 			children = (
 				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
+				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
+				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
+				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
+				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
+				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
 				3F37B3AB2820765900DB18B7 /* OtherChatCell.swift */,
 				3F37B3A72820765900DB18B7 /* PaddingLabel.swift */,
 				3F37B3A92820765900DB18B7 /* SelfChatCell.swift */,
 				3F95BC962843658D008DF2D2 /* SerialBotChatCell.swift */,
 				3F37B3AA2820765900DB18B7 /* SerialOtherChatCell.swift */,
-				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
-				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
-				3FBDBC65288B301400A09BF4 /* NoticeView.swift */,
-				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -783,6 +793,16 @@
 			path = LawDetail;
 			sourceTree = "<group>";
 		};
+		3FAAB6DB28C6033800AA32ED /* ItemViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3F37B3A02820765100DB18B7 /* ChatItemViewModel.swift */,
+				3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */,
+				3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */,
+			);
+			path = ItemViewModel;
+			sourceTree = "<group>";
+		};
 		3FB357812821115A00F27C77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -897,6 +917,7 @@
 				3F91043D283FBA7900446239 /* Kingfisher */,
 				3F91043F283FE5C500446239 /* FirebaseStorage */,
 				3F9B69D2287AA34A00DA72B6 /* RxGesture */,
+				3FAAB6D328C2DBF500AA32ED /* RxDataSources */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F37B3692820747500DB18B7 /* Discussion-Korea.app */;
@@ -963,6 +984,7 @@
 				3F37B3DB2820784E00DB18B7 /* XCRemoteSwiftPackageReference "SideMenu" */,
 				3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				3F9B69D1287AA34A00DA72B6 /* XCRemoteSwiftPackageReference "RxGesture" */,
+				3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 3F37B36A2820747500DB18B7 /* Products */;
 			projectDirPath = "";
@@ -1041,6 +1063,7 @@
 				3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */,
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
+				3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */,
 				3F689E8F28B7466300C1D072 /* HomeMenuButton.swift in Sources */,
 				3FBDBC0E2886E37800A09BF4 /* DefaultChatRoomScheduleNavigator.swift in Sources */,
 				3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */,
@@ -1050,6 +1073,7 @@
 				3F37B3A32820765100DB18B7 /* ChatRoomViewModel.swift in Sources */,
 				3F6696A02835BFB20077E5B3 /* ChatRoomListViewController.swift in Sources */,
 				3F6696AA2835C16C0077E5B3 /* SettingNavigator.swift in Sources */,
+				3FAAB6DA28C6033400AA32ED /* ChatItemViewModelFactory.swift in Sources */,
 				3FAAB6B228BF200E00AA32ED /* LawReference.swift in Sources */,
 				3F66968C283103280077E5B3 /* UIColor+.swift in Sources */,
 				3F37B3E528207CCA00DB18B7 /* SceneDelegate.swift in Sources */,
@@ -1089,6 +1113,7 @@
 				3FAAB6AC28BF1E6F00AA32ED /* DiscussionReference.swift in Sources */,
 				3FAAB6C028C0AF7E00AA32ED /* Int+.swift in Sources */,
 				3F910437283FB33C00446239 /* EditProfileViewModel.swift in Sources */,
+				3FAAB6DE28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift in Sources */,
 				3F6696AE283623A80077E5B3 /* ChatRoom.swift in Sources */,
 				3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */,
 				3F6696A62835C12B0077E5B3 /* SettingViewController.swift in Sources */,
@@ -1163,6 +1188,7 @@
 				3FBDBC262886E50D00A09BF4 /* AddChatRoomViewModel.swift in Sources */,
 				3FBDBC1D2886E44F00A09BF4 /* ChatRoomsUsecase.swift in Sources */,
 				3FBDBC1E2886E44F00A09BF4 /* ChatsUsecase.swift in Sources */,
+				3FAAB6DC28C6034500AA32ED /* ChatItemViewModelFactory.swift in Sources */,
 				3FBDBC1F2886E44F00A09BF4 /* DiscussionUsecase.swift in Sources */,
 				3FBDBC212886E44F00A09BF4 /* UserInfoUsecase.swift in Sources */,
 				3FBDBC182886E44C00A09BF4 /* Chat.swift in Sources */,
@@ -1536,6 +1562,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1583,6 +1617,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F9B69D1287AA34A00DA72B6 /* XCRemoteSwiftPackageReference "RxGesture" */;
 			productName = RxGesture;
+		};
+		3FAAB6D328C2DBF500AA32ED /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		3FBDBC402886EAFF00A09BF4 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;

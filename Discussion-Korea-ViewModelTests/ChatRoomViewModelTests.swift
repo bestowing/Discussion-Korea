@@ -17,6 +17,7 @@ final class ChatRoomViewModelTests: XCTestCase {
     private let chatRoom = ChatRoom(uid: "uid", title: "test", adminUID: "testUID")
 
     private var mockNavigator: MockChatRoomNavigator!
+    private var mockFactory: MockFactory!
     private var chatsUsecase: MockChatsUsecase!
     private var chatRoomsUsecase: MockChatRoomUsecase!
     private var userInfoUsecase: MockUserInfoUsecase!
@@ -30,6 +31,7 @@ final class ChatRoomViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         self.mockNavigator = MockChatRoomNavigator()
+        self.mockFactory = MockFactory()
         self.chatsUsecase = MockChatsUsecase()
         self.chatRoomsUsecase = MockChatRoomUsecase()
         self.userInfoUsecase = MockUserInfoUsecase()
@@ -38,6 +40,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             uid: "testUID",
             chatRoom: self.chatRoom,
             navigator: self.mockNavigator,
+            factory: self.mockFactory,
             chatsUsecase: self.chatsUsecase,
             chatRoomsUsecase: self.chatRoomsUsecase,
             userInfoUsecase: self.userInfoUsecase,
@@ -83,6 +86,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: Driver.just(()),
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -126,6 +130,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: Driver.just(()),
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -174,6 +179,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: Driver.just(()),
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -223,6 +229,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: Driver.just(()),
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -276,6 +283,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -328,6 +336,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -378,6 +387,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -428,6 +438,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -482,6 +493,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -536,6 +548,7 @@ final class ChatRoomViewModelTests: XCTestCase {
 
         let input = ChatRoomViewModel.Input(
             trigger: triggerTestableDriver,
+            loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
             send: Driver.just(()),
@@ -594,6 +607,12 @@ extension ChatRoomViewModelTests {
 
         func disappear() {}
 
+    }
+
+    final class MockFactory: ChatItemViewModelFactory {
+        func create(prevChat: Chat?, chat: Chat, isEditing: Bool) -> ChatItemViewModel {
+            return ChatItemViewModel(with: chat, cellIdentifier: "test")
+        }
     }
 
 }

@@ -61,10 +61,19 @@ final class SelfChatCell: ChatCell {
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.contentLabel.text = viewModel.content
-        self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.textColor = self.textColor(viewModel)
         self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .accentColor
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString
+    }
+
+    override func textColor(_ viewModel: ChatItemViewModel) -> UIColor {
+        if let textColor = super.textColor(viewModel) {
+            return textColor
+        } else if viewModel.chat.side == nil {
+            return .white
+        }
+        return .label
     }
 
 }

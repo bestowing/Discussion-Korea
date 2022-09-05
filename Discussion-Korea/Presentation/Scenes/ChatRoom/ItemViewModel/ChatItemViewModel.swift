@@ -5,14 +5,15 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
-import Foundation
+import Differentiator
 import UIKit
 
-class ChatItemViewModel {
+struct ChatItemViewModel {
 
     // MARK: properties
 
     var chat: Chat
+    let cellIdentifier: String
 
     private let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -41,13 +42,6 @@ class ChatItemViewModel {
             default:
                 break
             }
-        }
-        return nil
-    }
-
-    var textColor: UIColor? {
-        if self.toxic {
-            return .lightGray
         }
         return nil
     }
@@ -104,86 +98,21 @@ class ChatItemViewModel {
 
     // MARK: - init/deinit
 
-    init(with chat: Chat) {
+    init(with chat: Chat, cellIdentifier: String) {
         self.chat = chat
+        self.cellIdentifier = cellIdentifier
     }
 
 }
 
-final class SelfChatItemViewModel: ChatItemViewModel {
+extension ChatItemViewModel: IdentifiableType, Equatable {
 
-    override var identifier: String {
-        return "SelfChatCell"
-    }
+    typealias Identity = String
 
-    override var textColor: UIColor? {
-        if let textColor = super.textColor {
-            return textColor
-        }
-        if self.chat.side == nil {
-            return .white
-        }
-        return .label
-    }
+    var identity: Identity { self.chat.uid! }
 
-}
-
-final class OtherChatItemViewModel: ChatItemViewModel {
-
-    override var identifier: String {
-        return "OtherChatCell"
-    }
-
-    override var textColor: UIColor? {
-        return super.textColor ?? UIColor.label
-    }
-
-}
-
-final class WritingChatItemViewModel: ChatItemViewModel {
-
-    override var identifier: String {
-        return "WritingChatCell"
-    }
-
-    override var textColor: UIColor? {
-        return super.textColor ?? UIColor.label
-    }
-
-}
-
-final class SerialOtherChatItemViewModel: ChatItemViewModel {
-
-    override var identifier: String {
-        return "SerialOtherChatCell"
-    }
-
-    override var textColor: UIColor? {
-        return super.textColor ?? UIColor.label
-    }
-
-}
-
-final class BotChatItemViewModel: ChatItemViewModel {
-
-    override var identifier: String {
-        return "BotChatCell"
-    }
-
-    override var textColor: UIColor? {
-        return super.textColor ?? UIColor.label
-    }
-
-}
-
-final class SerialBotChatItemViewModel: ChatItemViewModel {
-
-    override var identifier: String {
-        return "SerialBotChatCell"
-    }
-
-    override var textColor: UIColor? {
-        return super.textColor ?? UIColor.label
+    static func == (lhs: ChatItemViewModel, rhs: ChatItemViewModel) -> Bool {
+        lhs.chat == rhs.chat
     }
 
 }

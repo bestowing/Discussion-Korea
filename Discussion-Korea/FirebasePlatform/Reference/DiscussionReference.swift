@@ -73,14 +73,12 @@ final class DiscussionReference {
         return Observable.create { [unowned self] subscribe in
             subscribe.onNext(nil)
             self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childAdded) { snapshot in
-                print("내꺼 추가됨")
                 guard let endDateString = snapshot.value as? String,
                       let endDate = self.dateFormatter.date(from: endDateString)
                 else { return }
                 subscribe.onNext(endDate)
             }
             self.reference.child("chatRoom/\(roomID)/speaker/\(userID)").observe(.childRemoved) { snapshot in
-                print("내꺼 삭제됨")
                 subscribe.onNext(nil)
             }
             return Disposables.create()

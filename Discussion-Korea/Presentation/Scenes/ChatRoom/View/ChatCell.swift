@@ -10,17 +10,19 @@ import UIKit
 class ChatCell: UICollectionViewCell {
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        super.preferredLayoutAttributesFitting(layoutAttributes)
-        self.layoutIfNeeded()
-        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-        var frame = layoutAttributes.frame
-        frame.size.height = ceil(size.height)
-        layoutAttributes.frame = frame
+        let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
+        layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
         return layoutAttributes
     }
 
-    func bind(_ viewModel: ChatItemViewModel) {
-        fatalError("not implemented")
+    func bind(_ viewModel: ChatItemViewModel) {}
+
+    func textColor(_ viewModel: ChatItemViewModel) -> UIColor? {
+        return viewModel.chat.toxic ?? false ? .lightGray : nil
     }
 
     func getAccessibilityLabel(_ viewModel: ChatItemViewModel) -> String {

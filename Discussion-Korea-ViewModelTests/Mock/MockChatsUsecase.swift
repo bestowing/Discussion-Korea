@@ -12,7 +12,8 @@ final class MockChatsUsecase: ChatsUsecase {
     // MARK: properties
 
     var chatsStream: Observable<[Chat]>
-    var connectStream: Observable<Chat>
+    var loadMoreChatsStream: Observable<[Chat]>
+    var receiveNewChatsStream: Observable<Chat>
     var sendEventStream: Observable<Void>
     var maskingStream: Observable<String>
     var editStream: Observable<Void>
@@ -22,7 +23,8 @@ final class MockChatsUsecase: ChatsUsecase {
 
     init() {
         self.chatsStream = PublishSubject<[Chat]>.init()
-        self.connectStream = PublishSubject<Chat>.init()
+        self.loadMoreChatsStream = PublishSubject<[Chat]>.init()
+        self.receiveNewChatsStream = PublishSubject<Chat>.init()
         self.sendEventStream = PublishSubject<Void>.init()
         self.maskingStream = PublishSubject<String>.init()
         self.editStream = PublishSubject<Void>.init()
@@ -34,9 +36,13 @@ final class MockChatsUsecase: ChatsUsecase {
     func chats(roomUID: String) -> Observable<[Chat]> {
         return self.chatsStream
     }
+
+    func loadMoreChats(roomUID: String, before chatUID: String) -> Observable<[Chat]> {
+        return self.loadMoreChatsStream
+    }
     
-    func connect(roomUID: String, after chatUID: String?) -> Observable<Chat> {
-        return self.connectStream
+    func receiveNewChats(roomUID: String, after chatUID: String?) -> Observable<Chat> {
+        return self.receiveNewChatsStream
     }
     
     func send(roomUID: String, chat: Chat) -> Observable<Void> {
