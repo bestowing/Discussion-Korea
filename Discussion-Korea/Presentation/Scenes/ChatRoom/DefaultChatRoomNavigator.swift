@@ -36,7 +36,7 @@ final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
             uid: uid,
             chatRoom: chatRoom,
             navigator: self,
-            factory: ChatItemViewModelFactory(userID: uid),
+            factory: DefaultChatItemViewModelFactory(userID: uid),
             chatsUsecase: self.services.makeChatsUsecase(),
             chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),

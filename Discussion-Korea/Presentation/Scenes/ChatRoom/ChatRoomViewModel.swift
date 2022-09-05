@@ -157,7 +157,9 @@ final class ChatRoomViewModel: ViewModelType {
                         viewModels[index - 1].chat.date = nil
                     }
                     viewModels.append(
-                        self.factory.create(prevChat: chats[safe: index - 1], chat: chat)
+                        self.factory.create(
+                            prevChat: chats[safe: index - 1], chat: chat, isEditing: false
+                        )
                     )
                 }
                 return viewModels
@@ -193,7 +195,9 @@ final class ChatRoomViewModel: ViewModelType {
                     last.chat.date = nil
                     viewModels[viewModels.endIndex - 1] = last
                 }
-                let newViewModel = self.factory.create(prevChat: viewModels.last?.chat, chat: chat)
+                let newViewModel = self.factory.create(
+                    prevChat: viewModels.last?.chat, chat: chat, isEditing: false
+                )
                 viewModels.append(newViewModel)
                 chatItems.onNext(viewModels)
                 previewItem.onNext(newViewModel)
@@ -231,7 +235,9 @@ final class ChatRoomViewModel: ViewModelType {
                         newViewModels[index - 1].chat.date = nil
                     }
                     newViewModels.append(
-                        self.factory.create(prevChat: chats[safe: index - 1], chat: chat)
+                        self.factory.create(
+                            prevChat: chats[safe: index - 1], chat: chat, isEditing: false
+                        )
                     )
                 }
                 if let firstChat = viewModels.first?.chat,
