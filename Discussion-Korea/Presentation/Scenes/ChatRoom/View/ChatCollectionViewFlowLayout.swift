@@ -48,43 +48,24 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
-        guard let collectionView = self.collectionView,
-              let visibleAttributes = self.visibleAttributes
+        guard let collectionView = self.collectionView
         else { return }
-        self.bottomMostVisibleItem = -Int.max
-        let container = CGRect(
-            x: collectionView.contentOffset.x,
-            y: collectionView.contentOffset.y,
-            width: collectionView.frame.size.width,
-            height: (
-                collectionView.frame.size.height - (
-                    collectionView.contentInset.top + collectionView.contentInset.bottom
-                )
-            )
-        )
-        visibleAttributes.forEach { attributes in
-            if attributes.frame.intersects(container) {
-                let item = attributes.indexPath.item
-                if item > self.bottomMostVisibleItem { self.bottomMostVisibleItem = item }
-            }
-        }
         super.prepare(forCollectionViewUpdates: updateItems)
-
         var willInsertItemsToTop = false
         var willInsertItemsToBottom = false
         var offsetItems: [IndexPath] = []
         for updateItem in updateItems {
             guard updateItem.updateAction == .insert,
-                  let updateItemIndexPath = updateItem.indexPathAfterUpdate
+                  let indexPath = updateItem.indexPathAfterUpdate
             else { continue }
-            if self.bottomMostVisibleItem <= updateItemIndexPath.item {
-                if collectionView.numberOfItems(inSection: updateItemIndexPath.section) > updateItemIndexPath.item {
-                    willInsertItemsToBottom = true
-                } else if updateItemIndexPath.item == Int.max {
-                    self.isInsertingItemsFirstTime = true
-                }
+            let numberOfItems = collectionView.numberOfItems(inSection: indexPath.section)
+            if indexPath.item == Int.max {
+                self.isInsertingItemsFirstTime = true
+            } else if indexPath.item + 1 == numberOfItems {
+                offsetItems.append(indexPath)
+                willInsertItemsToBottom = true
             } else {
-                offsetItems.append(updateItemIndexPath)
+                offsetItems.append(indexPath)
                 willInsertItemsToTop = true
             }
         }
@@ -101,12 +82,25 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func finalizeCollectionViewUpdates() {
         super.finalizeCollectionViewUpdates()
         guard let collectionView = self.collectionView else { return }
-        if self.isInsertingItemsToBottom && collectionView.bottom() {
+        if self.isInsertingItemsToBottom {
             self.isInsertingItemsToBottom = false
+            defer {
+                self.offsetItems = nil
+            }
+            guard let offsetItems = self.offsetItems,
+                  collectionView.bottom(margin: offsetItems.reduce(0.0) { [unowned self] in
+                      guard let newAttributes = self.layoutAttributesForItem(at: $1)
+                      else { return $0 }
+                      return $0 + newAttributes.size.height + self.minimumLineSpacing
+                  })
+            else { return }
             self.scrollToLastItem(collectionView)
         } else if isInsertingItemsToTop {
+            defer {
+                self.offsetItems = nil
+            }
             self.isInsertingItemsToTop = false
-            guard let offsetItems = offsetItems
+            guard let offsetItems = self.offsetItems
             else { return }
             let offset: CGFloat = offsetItems.reduce(0.0) { [unowned self] in
                 guard let newAttributes = self.layoutAttributesForItem(at: $1)
@@ -117,7 +111,6 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 x: collectionView.contentOffset.x,
                 y: collectionView.contentOffset.y + offset
             )
-            self.offsetItems = nil
             collectionView.contentOffset = newContentOffset
             CATransaction.commit()
         } else if self.isInsertingItemsFirstTime {

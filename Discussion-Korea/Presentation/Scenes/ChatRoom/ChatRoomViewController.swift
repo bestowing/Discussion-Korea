@@ -12,9 +12,9 @@ import RxSwift
 import RxKeyboard
 import RxGesture
 
-final class ChatRoomViewController: BaseViewController {
+typealias ChatSectionModel = AnimatableSectionModel<String, ChatItemViewModel>
 
-    typealias ChatSectionModel = AnimatableSectionModel<String, ChatItemViewModel>
+final class ChatRoomViewController: BaseViewController {
 
     fileprivate typealias ChatRoomDataSource = RxCollectionViewSectionedNonAnimatedDataSource<ChatSectionModel>
 
@@ -148,8 +148,10 @@ final class ChatRoomViewController: BaseViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             bottomScrolled: self.messageCollectionView.position()
-                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .startWith(.bottom)
+                .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
                 .map { $0 == .bottom }
+                .debug()
                 .asDriverOnErrorJustComplete(),
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),
@@ -183,9 +185,8 @@ final class ChatRoomViewController: BaseViewController {
 //        }
 //        .disposed(by: self.disposeBag)
 
-        output.isPreviewHidden.distinctUntilChanged()
-            .filter { $0 }
-            .drive(self.chatPreview.rx.isHidden)
+        output.preview
+            .drive(self.chatPreview.rx.latest)
             .disposed(by: self.disposeBag)
 
         output.realTimeChat.drive(self.liveChatView.rx.chatViewModel)
@@ -213,11 +214,9 @@ extension UICollectionView {
         case none
     }
 
-    func bottom() -> Bool {
-        guard let lastItemIndexPath = self.indexPathsForVisibleItems.sorted(by: <).last
-        else { return false }
-        let items = self.numberOfItems(inSection: lastItemIndexPath.section)
-        return lastItemIndexPath.item + 2 >= items
+    func bottom(margin: CGFloat = 20.0) -> Bool {
+        let result = self.contentOffset.y + self.frame.height + margin + 10.0 > self.contentSize.height
+        return result
     }
 
     func position() -> Observable<Position> {
@@ -227,7 +226,7 @@ extension UICollectionView {
                 if contentOffset.y <= 20.0 {
                     return .top
                 }
-                if contentOffset.y + self.frame.height + 20.0 > self.contentSize.height {
+                if self.bottom() {
                     return .bottom
                 }
                 return .none

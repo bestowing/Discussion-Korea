@@ -57,6 +57,7 @@ final class ChatRoomViewModel: ViewModelType {
 
         let isFetchingLimited = PublishSubject<Bool>()
         let chatItems = PublishSubject<[ChatItemViewModel]>()
+        let previewItem = PublishSubject<ChatItemViewModel?>()
 
         let myRemainTime = input.trigger
             .flatMapFirst { [unowned self] in
@@ -192,8 +193,10 @@ final class ChatRoomViewModel: ViewModelType {
                     last.chat.date = nil
                     viewModels[viewModels.endIndex - 1] = last
                 }
-                viewModels.append(self.factory.create(prevChat: nil, chat: chat))
+                let newViewModel = self.factory.create(prevChat: viewModels.last?.chat, chat: chat)
+                viewModels.append(newViewModel)
                 chatItems.onNext(viewModels)
+                previewItem.onNext(newViewModel)
             })
             .mapToVoid()
 
@@ -419,6 +422,13 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
+        let preview = previewItem
+            .withLatestFrom(input.bottomScrolled) { ($0, $1) }
+            .map { (model, scrolled) -> ChatItemViewModel? in
+                return scrolled ? nil : model
+            }
+            .asDriverOnErrorJustComplete()
+
         let appear = input.trigger
             .do(onNext: self.navigator.appear)
 
@@ -453,7 +463,11 @@ final class ChatRoomViewModel: ViewModelType {
                 .startWith([]),
             toBottom: input.previewTouched,
             sendEnable: canSend,
-            isPreviewHidden: input.bottomScrolled,
+            preview: Driver.combineLatest(preview, input.bottomScrolled) {
+                if $1 { return nil }
+                return $0
+            }
+                .startWith(nil),
             realTimeChat: writingChat,
             editableEnable: canEditable,
             sendEvent: sendEvent,
@@ -483,7 +497,7 @@ extension ChatRoomViewModel {
         let chatItems: Driver<[ChatSectionModel]>
         let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
-        let isPreviewHidden: Driver<Bool>
+        let preview: Driver<ChatItemViewModel?>
         let realTimeChat: Driver<ChatItemViewModel?>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
