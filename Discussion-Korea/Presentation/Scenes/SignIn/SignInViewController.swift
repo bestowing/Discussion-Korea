@@ -13,6 +13,52 @@ final class SignInViewController: BaseViewController {
 
     var viewModel: SignInViewModel!
 
+    private let idField: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .roundedRect
+        textField.placeholder = "이메일"
+        textField.font = .preferredFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
+        return textField
+    }()
+
+    private let passwordField: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .roundedRect
+        textField.placeholder = "비밀번호"
+        textField.font = .preferredFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
+        return textField
+    }()
+
+    private let loginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("로그인", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = UIColor.accentColor
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        return button
+    }()
+
+    private let signUpButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("회원가입", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        button.backgroundColor = UIColor.clear
+        return button
+    }()
+
+    private let resetPasswordButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("비밀번호 재설정", for: .normal)
+        button.setTitleColor(UIColor.secondaryLabel, for: .normal)
+        button.backgroundColor = UIColor.clear
+        return button
+    }()
+
+    // MARK: - methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setSubViews()
@@ -20,6 +66,72 @@ final class SignInViewController: BaseViewController {
     }
 
     private func setSubViews() {
+        let logoImageView: UIImageView = {
+            let imageView = UIImageView(image: UIImage(named: "round_logo.png"))
+            return imageView
+        }()
+        self.view.addSubview(logoImageView)
+        logoImageView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide)
+            make.size.equalTo(70)
+        }
+
+        let descriptionLabel: UILabel = {
+            let label = UILabel()
+            label.text = "신개념 토론 플랫폼"
+            label.font = UIFont.preferredFont(forTextStyle: .caption1)
+            label.textColor = .secondaryLabel
+            label.textAlignment = .center
+            return label
+        }()
+        self.view.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(15)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(15)
+        }
+
+        let titleLabel: UILabel = {
+            let label = UILabel()
+            label.text = "방구석대한민국"
+            label.font = UIFont.preferredBoldFont(forTextStyle: .title3)
+            label.textColor = .label
+            label.textAlignment = .center
+            return label
+        }()
+        self.view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(3)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(15)
+        }
+
+        let stackView: UIStackView = {
+            let stackView = UIStackView(
+                arrangedSubviews: [
+                    self.idField, self.passwordField, self.loginButton
+                ]
+            )
+            stackView.axis = .vertical
+            stackView.spacing = 5
+            return stackView
+        }()
+
+        self.view.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
+        }
+
+        self.view.addSubview(self.signUpButton)
+        self.signUpButton.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
+        }
+        self.view.addSubview(self.resetPasswordButton)
+        self.resetPasswordButton.snp.makeConstraints { make in
+            make.top.equalTo(self.signUpButton.snp.bottom).offset(5)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
+        }
     }
 
     private func bindViewModel() {
