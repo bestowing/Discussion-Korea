@@ -12,8 +12,6 @@ import RxSwift
 import RxKeyboard
 import RxGesture
 
-typealias ChatSectionModel = AnimatableSectionModel<String, ChatItemViewModel>
-
 final class ChatRoomViewController: BaseViewController {
 
     fileprivate typealias ChatRoomDataSource = RxCollectionViewSectionedNonAnimatedDataSource<ChatSectionModel>
@@ -151,7 +149,7 @@ final class ChatRoomViewController: BaseViewController {
                 .startWith(.bottom)
                 .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
                 .map { $0 == .bottom }
-                .debug()
+                .distinctUntilChanged()
                 .asDriverOnErrorJustComplete(),
             previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
                 .asDriverOnErrorJustComplete(),

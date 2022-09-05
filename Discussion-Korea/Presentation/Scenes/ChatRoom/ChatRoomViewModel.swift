@@ -7,7 +7,10 @@
 
 import Foundation
 import RxCocoa
+import RxDataSources
 import RxSwift
+
+typealias ChatSectionModel = AnimatableSectionModel<String, ChatItemViewModel>
 
 enum NicknameError: Error {
     case unknownUID
@@ -428,11 +431,15 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .mapToVoid()
 
-        let previewCheckEvent = input.bottomScrolled
+        let previewCheckEvent = Driver.of(
+            input.bottomScrolled
+                .filter { $0 }
+                .mapToVoid(),
+            input.previewTouched
+        ).merge()
             .do(onNext: {
-                if $0 { previewItem.onNext(nil) }
+                previewItem.onNext(nil)
             })
-            .mapToVoid()
 
         let preview = previewItem
             .withLatestFrom(input.bottomScrolled) { ($0, $1) }
