@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class SignInViewController: BaseViewController {
 
@@ -56,6 +57,8 @@ final class SignInViewController: BaseViewController {
         button.backgroundColor = UIColor.clear
         return button
     }()
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - methods
 
@@ -137,8 +140,13 @@ final class SignInViewController: BaseViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
-        let input = SignInViewModel.Input()
-        let _ = self.viewModel.transform(input: input)
+        let input = SignInViewModel.Input(
+            signUpTrigger: self.signUpButton.rx.tap.asDriverOnErrorJustComplete()
+        )
+        let output = self.viewModel.transform(input: input)
+
+        output.events.drive()
+            .disposed(by: self.disposeBag)
     }
 
 }

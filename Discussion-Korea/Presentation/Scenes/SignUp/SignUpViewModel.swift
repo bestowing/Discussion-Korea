@@ -1,5 +1,5 @@
 //
-//  SignInViewModel.swift
+//  SignUpViewModel.swift
 //  Discussion-Korea
 //
 //  Created by 이청수 on 2022/09/06.
@@ -7,17 +7,17 @@
 
 import RxCocoa
 
-final class SignInViewModel: ViewModelType {
+final class SignUpViewModel: ViewModelType {
 
     // MARK: - properties
 
-    private let navigator: SignInNavigator
+    private let navigator: SignUpNavigator
 
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: SignInNavigator,
+    init(navigator: SignUpNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
@@ -31,18 +31,18 @@ final class SignInViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let signUpEvent = input.signUpTrigger
-            .do(onNext: self.navigator.toSignUp)
+        let exitEvent = input.exitTrigger
+            .do(onNext: self.navigator.toSignIn)
 
-        return Output(events: signUpEvent)
+        return Output(events: exitEvent)
     }
 
 }
 
-extension SignInViewModel {
+extension SignUpViewModel {
 
     struct Input {
-        let signUpTrigger: Driver<Void>
+        let exitTrigger: Driver<Void>
     }
 
     struct Output {

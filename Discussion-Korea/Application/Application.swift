@@ -5,6 +5,9 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
+import Firebase
+import FirebaseAuth
+import FirebaseCore
 import UIKit
 
 final class Application {
@@ -13,11 +16,14 @@ final class Application {
 
     static let shared = Application()
 
+    private var handle: AuthStateDidChangeListenerHandle?
+
     private let firebaseUseCaseProvider: UsecaseProvider
 
     // MARK: - init/deinit
 
     private init() {
+        FirebaseApp.configure()
         self.firebaseUseCaseProvider = FirebaseUsecaseProvider()
     }
 
@@ -28,6 +34,16 @@ final class Application {
         appearance.configureWithTransparentBackground()
         UINavigationBar.appearance().standardAppearance = appearance
 
+        self.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+            if let _ = user {
+                self?.toMain(in: window)
+            } else {
+                self?.toSignIn(in: window)
+            }
+        }
+    }
+
+    private func toMain(in window: UIWindow) {
         let homeNavigationController = UINavigationController()
         let homeButton = UITabBarItem(
             title: "홈",
@@ -75,6 +91,17 @@ final class Application {
         chatRoomListNavigator.toChatRoomList()
         myPageNavigator.toMyPage()
         window.rootViewController = tapBarController
+        window.makeKeyAndVisible()
+    }
+
+    private func toSignIn(in window: UIWindow) {
+        let navigationController = UINavigationController()
+        let signInNavigator = DefaultSignInNavigator(
+            services: self.firebaseUseCaseProvider,
+            navigationController: navigationController
+        )
+        signInNavigator.toSignIn()
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
 

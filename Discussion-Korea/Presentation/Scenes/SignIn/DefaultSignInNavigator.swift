@@ -14,6 +14,8 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
 
+    private weak var presentingViewController: UIViewController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
@@ -29,10 +31,17 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
         self.navigationController.pushViewController(viewController, animated: false)
+        self.presentingViewController = viewController
     }
 
-    // TODO: 구현 필요
-    func toSignUp() {}
+    func toSignUp() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultSignUpNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toSignUp()
+    }
 
     // TODO: 구현 필요
     func toResetPassword() {}

@@ -125,6 +125,11 @@
 		3FAAB6E328C653D900AA32ED /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6E228C653D900AA32ED /* SignInViewModel.swift */; };
 		3FAAB6E528C6541500AA32ED /* SignInNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6E428C6541500AA32ED /* SignInNavigator.swift */; };
 		3FAAB6E728C6542C00AA32ED /* DefaultSignInNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6E628C6542C00AA32ED /* DefaultSignInNavigator.swift */; };
+		3FAAB6E928C66BDB00AA32ED /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3FAAB6E828C66BDB00AA32ED /* FirebaseAuth */; };
+		3FAAB6EC28C6874E00AA32ED /* SignUpNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6EB28C6874E00AA32ED /* SignUpNavigator.swift */; };
+		3FAAB6EE28C6877000AA32ED /* DefaultSignUpNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6ED28C6877000AA32ED /* DefaultSignUpNavigator.swift */; };
+		3FAAB6F028C6879900AA32ED /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6EF28C6879900AA32ED /* SignUpViewController.swift */; };
+		3FAAB6F228C687B300AA32ED /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6F128C687B300AA32ED /* SignUpViewModel.swift */; };
 		3FB357802821102500F27C77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FB3577F2821102500F27C77 /* GoogleService-Info.plist */; };
 		3FB35786282406D200F27C77 /* ChatRoomSideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */; };
 		3FB357882824083200F27C77 /* ChatRoomSideMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */; };
@@ -330,6 +335,10 @@
 		3FAAB6E228C653D900AA32ED /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		3FAAB6E428C6541500AA32ED /* SignInNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNavigator.swift; sourceTree = "<group>"; };
 		3FAAB6E628C6542C00AA32ED /* DefaultSignInNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSignInNavigator.swift; sourceTree = "<group>"; };
+		3FAAB6EB28C6874E00AA32ED /* SignUpNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNavigator.swift; sourceTree = "<group>"; };
+		3FAAB6ED28C6877000AA32ED /* DefaultSignUpNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSignUpNavigator.swift; sourceTree = "<group>"; };
+		3FAAB6EF28C6879900AA32ED /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		3FAAB6F128C687B300AA32ED /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		3FB3577F2821102500F27C77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB35785282406D200F27C77 /* ChatRoomSideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewController.swift; sourceTree = "<group>"; };
 		3FB357872824083200F27C77 /* ChatRoomSideMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuNavigator.swift; sourceTree = "<group>"; };
@@ -388,6 +397,7 @@
 				3F91043E283FBA7900446239 /* Kingfisher in Frameworks */,
 				3F37B3D7282077D400DB18B7 /* SnapKit in Frameworks */,
 				3F37B3D4282077C700DB18B7 /* RxKeyboard in Frameworks */,
+				3FAAB6E928C66BDB00AA32ED /* FirebaseAuth in Frameworks */,
 				3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */,
 				3F37B3DD2820784E00DB18B7 /* SideMenu in Frameworks */,
 				3F37B3CF282077B700DB18B7 /* RxCocoa in Frameworks */,
@@ -520,6 +530,7 @@
 				3F689E9928B7786000C1D072 /* Law */,
 				3FAAB6C928C1F76100AA32ED /* LawDetail */,
 				3FAAB6DF28C6538A00AA32ED /* SignIn */,
+				3FAAB6EA28C6873600AA32ED /* SignUp */,
 				3FAAB6B328C07F6B00AA32ED /* MyPage */,
 				3F66969D2835BF0E0077E5B3 /* Setting */,
 			);
@@ -823,6 +834,17 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
+		3FAAB6EA28C6873600AA32ED /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				3FAAB6ED28C6877000AA32ED /* DefaultSignUpNavigator.swift */,
+				3FAAB6EB28C6874E00AA32ED /* SignUpNavigator.swift */,
+				3FAAB6EF28C6879900AA32ED /* SignUpViewController.swift */,
+				3FAAB6F128C687B300AA32ED /* SignUpViewModel.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
 		3FB357812821115A00F27C77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -938,6 +960,7 @@
 				3F91043F283FE5C500446239 /* FirebaseStorage */,
 				3F9B69D2287AA34A00DA72B6 /* RxGesture */,
 				3FAAB6D328C2DBF500AA32ED /* RxDataSources */,
+				3FAAB6E828C66BDB00AA32ED /* FirebaseAuth */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F37B3692820747500DB18B7 /* Discussion-Korea.app */;
@@ -1052,6 +1075,7 @@
 				3FAAB6AE28BF1FFD00AA32ED /* GuideReference.swift in Sources */,
 				3F910435283FB29200446239 /* EditProfileNavigator.swift in Sources */,
 				3FAAB68F28BEA8AE00AA32ED /* LawCell.swift in Sources */,
+				3FAAB6EC28C6874E00AA32ED /* SignUpNavigator.swift in Sources */,
 				3F37B3CB2820773C00DB18B7 /* UserInfoUsecase.swift in Sources */,
 				3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */,
 				3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */,
@@ -1089,6 +1113,7 @@
 				3F689E8F28B7466300C1D072 /* HomeMenuButton.swift in Sources */,
 				3FBDBC0E2886E37800A09BF4 /* DefaultChatRoomScheduleNavigator.swift in Sources */,
 				3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */,
+				3FAAB6EE28C6877000AA32ED /* DefaultSignUpNavigator.swift in Sources */,
 				3FBDBC102886E38D00A09BF4 /* DefaultChatRoomSideMenuNavigator.swift in Sources */,
 				3F37B3B62820766400DB18B7 /* HomeNavigator.swift in Sources */,
 				3FAAB6CF28C1F8F600AA32ED /* LawDetailViewController.swift in Sources */,
@@ -1101,7 +1126,9 @@
 				3F37B3E528207CCA00DB18B7 /* SceneDelegate.swift in Sources */,
 				3FB357AD282992CE00F27C77 /* Reference.swift in Sources */,
 				3F37B39B2820762D00DB18B7 /* NSObject+identifier.swift in Sources */,
+				3FAAB6F228C687B300AA32ED /* SignUpViewModel.swift in Sources */,
 				3F689E9E28B778D400C1D072 /* GuideNavigator.swift in Sources */,
+				3FAAB6F028C6879900AA32ED /* SignUpViewController.swift in Sources */,
 				3FB3578F28250A1800F27C77 /* ChatRoomScheduleNavigator.swift in Sources */,
 				3FB3579F282618D500F27C77 /* ScheduleItemViewModel.swift in Sources */,
 				3F37B3AD2820765900DB18B7 /* ChatCell.swift in Sources */,
@@ -1646,6 +1673,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		3FAAB6E828C66BDB00AA32ED /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F37B3D82820782600DB18B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		3FBDBC402886EAFF00A09BF4 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
