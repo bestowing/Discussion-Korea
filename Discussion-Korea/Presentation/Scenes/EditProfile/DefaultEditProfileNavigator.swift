@@ -9,14 +9,14 @@ import Photos
 import RxSwift
 import UIKit
 
-final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
+final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
 
     // MARK: properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
-    private var completion: ((URL?) -> Void)?
+    private lazy var imagePickerDelegate = ImagePickerDelegate()
 
     private weak var presentingViewController: UIViewController?
 
@@ -25,19 +25,16 @@ final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
         self.services = services
         self.presentedViewController = presentedViewController
-        self.completion = nil
-    }
-
-    deinit {
-        print("🗑", Self.description())
     }
 
     // MARK: - methods
 
-    func toEnterGuest(_ userID: String) {
-        let viewController = EnterGuestViewController()
-        let viewModel = EnterGuestViewModel(
+    func toEditProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {
+        let viewController = EditProfileViewController()
+        let viewModel = EditProfileViewModel(
             userID: userID,
+            nickname: nickname,
+            profileURL: profileURL,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
@@ -48,7 +45,7 @@ final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
         self.presentingViewController = viewController
     }
 
-    func toHome() {
+    func toMyPage() {
         self.presentedViewController.dismiss(animated: true)
     }
 
@@ -71,17 +68,15 @@ final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
     }
 
     func toImagePicker() -> Observable<URL?> {
-        return PublishSubject.create { [unowned self] subscribe in
-            let imagePicker = UIImagePickerController()
-            imagePicker.sourceType = .photoLibrary
-            imagePicker.delegate = self
-            self.completion = { url in
-                subscribe.onNext(url)
-                subscribe.onCompleted()
-            }
-            self.presentingViewController?.present(imagePicker, animated: true)
-            return Disposables.create()
-        }.asObservable()
+        // TODO: DefaultAddChatRoomNavigator의 코드와 중복됨
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self.imagePickerDelegate
+        self.presentingViewController?.present(imagePicker, animated: true)
+        return self.imagePickerDelegate.imageURLSubject
+            .do(onNext: { [unowned self] _ in
+                self.presentingViewController?.dismiss(animated: true)
+            })
     }
 
     func toErrorAlert(_ error: Error) {
@@ -93,17 +88,6 @@ final class DefaultEnterGuestNavigator: NSObject, EnterGuestNavigator {
         let confirm = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirm)
         self.presentingViewController?.present(alert, animated: true)
-    }
-
-}
-
-extension DefaultEnterGuestNavigator: UIImagePickerControllerDelegate,
-                                      UINavigationControllerDelegate {
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let url = info[UIImagePickerController.InfoKey.imageURL] as? URL
-        self.completion?(url)
-        self.presentingViewController?.dismiss(animated: true)
     }
 
 }

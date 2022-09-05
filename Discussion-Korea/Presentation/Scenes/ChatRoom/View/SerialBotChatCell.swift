@@ -16,7 +16,7 @@ final class SerialBotChatCell: ChatCell {
         let contentLabel = PaddingLabel()
         contentLabel.backgroundColor = .systemBackground
         contentLabel.textColor = .label
-        contentLabel.font = UIFont.systemFont(ofSize: 15.0)
+        contentLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         contentLabel.layer.cornerRadius = 8
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byCharWrapping
@@ -26,7 +26,7 @@ final class SerialBotChatCell: ChatCell {
 
     private let timeLabel: UILabel = {
         let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 10.0)
+        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
         return timeLabel
     }()
 
@@ -55,7 +55,6 @@ final class SerialBotChatCell: ChatCell {
             make.bottom.equalToSuperview()
         }
         self.timeLabel.snp.makeConstraints { make in
-//            make.trailing.equalTo(self.contentLabel.snp.trailing)
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
             make.bottom.equalToSuperview()
         }
@@ -63,7 +62,7 @@ final class SerialBotChatCell: ChatCell {
 
     override func bind(_ viewModel: ChatItemViewModel) {
         self.contentLabel.text = viewModel.content
-        self.contentLabel.textColor = viewModel.textColor ?? .label
+        self.contentLabel.textColor = super.textColor(viewModel)
         self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .systemBackground
         self.contentLabel.font = viewModel.contentFont
         self.timeLabel.text = viewModel.timeString

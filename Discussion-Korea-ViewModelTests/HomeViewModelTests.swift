@@ -48,11 +48,11 @@ final class HomeViewModelTests: XCTestCase {
 extension HomeViewModelTests {
 
     final class MockHomeNavigator: HomeNavigator {
-
         func toHome() {}
-
         func toEnterGame(_ userID: String) {}
-
+        func toChart() {}
+        func toLaw() {}
+        func toGuide() {}
     }
 
 }

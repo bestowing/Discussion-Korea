@@ -10,7 +10,7 @@ import SideMenu
 import SnapKit
 import RxSwift
 
-final class ChatRoomSideMenuViewController: UIViewController {
+final class ChatRoomSideMenuViewController: BaseViewController {
 
     // MARK: properties
 
@@ -18,6 +18,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .body)
         return titleLabel
     }()
 
@@ -29,7 +30,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
 
     private let calendarButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "calendar"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "calendar"), for: .normal)
         button.tintColor = .label
         return button
     }()
@@ -54,7 +55,7 @@ final class ChatRoomSideMenuViewController: UIViewController {
     private let participantLabel: UILabel = {
         let label = UILabel()
         label.text = "참가자"
-        label.font = UIFont.systemFont(ofSize: 16.0)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         return label
     }()
 
@@ -68,12 +69,6 @@ final class ChatRoomSideMenuViewController: UIViewController {
     }()
 
     private let disposeBag = DisposeBag()
-
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
 
     // MARK: - methods
 
@@ -109,19 +104,17 @@ final class ChatRoomSideMenuViewController: UIViewController {
             make.height.equalTo(1)
         }
         self.stackView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.top.equalTo(self.line.snp.bottom).offset(20)
-            make.height.equalTo(50)
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
+            make.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-15)
+            make.top.equalTo(self.line.snp.bottom).offset(30)
         }
         self.calendarButton.snp.makeConstraints { make in
-            make.width.equalTo(50)
-            make.height.equalTo(50)
+            make.size.equalTo(self.line.snp.width).multipliedBy(0.1)
         }
         self.line2.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
-            make.top.equalTo(self.stackView.snp.bottom).offset(20)
+            make.top.equalTo(self.stackView.snp.bottom).offset(30)
             make.height.equalTo(1)
         }
         self.opinionView.snp.makeConstraints { make in

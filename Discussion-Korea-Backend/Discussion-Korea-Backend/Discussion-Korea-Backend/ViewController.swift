@@ -33,6 +33,8 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UserInfoManager.shared.observe()
+        LawManager.shared.observe()
+        GuideManager.shared.observe()
         let reference = ReferenceManager.reference
 
         let dateFormatter = DateFormatter()

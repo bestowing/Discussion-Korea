@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SnapKit
 
-final class AddDiscussionViewController: UIViewController {
+final class AddDiscussionViewController: BaseViewController {
 
     // MARK: properties
 
@@ -34,12 +34,14 @@ final class AddDiscussionViewController: UIViewController {
     private let topicTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
+        textField.font = UIFont.preferredFont(forTextStyle: .body)
         return textField
     }()
 
     private let introTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -56,6 +58,7 @@ final class AddDiscussionViewController: UIViewController {
     private let mainTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -72,6 +75,7 @@ final class AddDiscussionViewController: UIViewController {
     private let conclusionTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "1"
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textAlignment = .right
         return label
     }()
@@ -95,18 +99,7 @@ final class AddDiscussionViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,6 +133,7 @@ final class AddDiscussionViewController: UIViewController {
 
         let topicLabel = UILabel()
         topicLabel.text = "주제"
+        topicLabel.font = UIFont.preferredFont(forTextStyle: .body)
         topicStackView.addArrangedSubview(topicLabel)
         topicStackView.addArrangedSubview(self.topicTextfield)
 
@@ -147,13 +141,15 @@ final class AddDiscussionViewController: UIViewController {
         stackView.addArrangedSubview(introStackView)
         introStackView.axis = .horizontal
         introStackView.alignment = .center
-        introStackView.distribution = .fillEqually
+        introStackView.distribution = .fillProportionally
         introStackView.spacing = 0
 
         let introLabel = UILabel()
-        introLabel.text = "입론 시간"
+        introLabel.text = "입론"
+        introLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel = UILabel()
         minuteLabel.text = "분"
+        minuteLabel.font = UIFont.preferredFont(forTextStyle: .body)
 
         introStackView.addArrangedSubview(introLabel)
         introStackView.addArrangedSubview(self.introTimeLabel)
@@ -164,13 +160,15 @@ final class AddDiscussionViewController: UIViewController {
         stackView.addArrangedSubview(mainStackView)
         mainStackView.axis = .horizontal
         mainStackView.alignment = .center
-        mainStackView.distribution = .fillEqually
+        mainStackView.distribution = .fillProportionally
         mainStackView.spacing = 0
 
         let mainLabel = UILabel()
-        mainLabel.text = "본론 시간"
+        mainLabel.text = "본론"
+        mainLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel2 = UILabel()
         minuteLabel2.text = "분"
+        minuteLabel2.font = UIFont.preferredFont(forTextStyle: .body)
 
         mainStackView.addArrangedSubview(mainLabel)
         mainStackView.addArrangedSubview(self.mainTimeLabel)
@@ -178,9 +176,11 @@ final class AddDiscussionViewController: UIViewController {
         mainStackView.addArrangedSubview(self.mainStepper)
 
         let conclusionLabel = UILabel()
-        conclusionLabel.text = "결론 시간"
+        conclusionLabel.text = "결론"
+        conclusionLabel.font = UIFont.preferredFont(forTextStyle: .body)
         let minuteLabel3 = UILabel()
         minuteLabel3.text = "분"
+        minuteLabel3.font = UIFont.preferredFont(forTextStyle: .body)
 
         let conclusionStackView = UIStackView(
             arrangedSubviews: [conclusionLabel,
@@ -191,18 +191,19 @@ final class AddDiscussionViewController: UIViewController {
         stackView.addArrangedSubview(conclusionStackView)
         conclusionStackView.axis = .horizontal
         conclusionStackView.alignment = .center
-        conclusionStackView.distribution = .fillEqually
+        conclusionStackView.distribution = .fillProportionally
         conclusionStackView.spacing = 0
 
         let dateStackView = UIStackView()
         stackView.addArrangedSubview(dateStackView)
-        dateStackView.axis = .horizontal
+        dateStackView.axis = .vertical
         dateStackView.alignment = .fill
-        dateStackView.distribution = .fill
-        dateStackView.spacing = 0
+        dateStackView.distribution = .fillProportionally
+        dateStackView.spacing = 5
 
         let dateLabel = UILabel()
         dateLabel.text = "시작 날짜"
+        dateLabel.font = UIFont.preferredFont(forTextStyle: .body)
         dateStackView.addArrangedSubview(dateLabel)
         dateStackView.addArrangedSubview(self.datePicker)
 

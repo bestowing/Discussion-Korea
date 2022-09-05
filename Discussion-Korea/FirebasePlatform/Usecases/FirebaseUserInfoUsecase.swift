@@ -10,9 +10,9 @@ import RxSwift
 
 final class FirebaseUserInfoUsecase: UserInfoUsecase {
 
-    private let reference: Reference
+    private let reference: UserInfoReference
 
-    init(reference: Reference) {
+    init(reference: UserInfoReference) {
         self.reference = reference
     }
 
@@ -24,7 +24,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         self.reference.add(side: side, in: roomID, with: userID)
     }
 
-    func add(userInfo: UserInfo) -> Observable<Void> {
+    func add(userInfo: (String, String, URL?)) -> Observable<Void> {
         self.reference.add(userInfo: userInfo)
     }
 
@@ -33,7 +33,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
-        self.reference.vote(roomID: roomID, userID: userID, side: side)
+        self.reference.vote(side: side, in: roomID, with: userID)
     }
 
     func uid() -> Observable<String> {
@@ -44,11 +44,11 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
-    func userInfo(roomID: String, with userID: String) -> Observable<UserInfo?> {
+    func userInfo(roomID: String, with userID: String) -> Observable<Side?> {
         return self.reference.userInfo(in: roomID, with: userID)
     }
 
-    func connect(roomID: String) -> Observable<UserInfo> {
+    func userInfos(roomID: String) -> Observable<[String: UserInfo]> {
         self.reference.userInfos(in: roomID)
     }
 

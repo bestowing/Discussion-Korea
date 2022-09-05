@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SnapKit
 
-final class AddChatRoomViewController: UIViewController {
+final class AddChatRoomViewController: BaseViewController {
 
     // MARK: properties
 
@@ -57,23 +57,18 @@ final class AddChatRoomViewController: UIViewController {
         let textField = UITextField()
         textField.borderStyle = .none
         textField.placeholder = "채팅방 제목을 입력해주세요"
+        textField.font = .preferredFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
     private let disposeBag = DisposeBag()
-
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
 
     // MARK: - methods
 
     override func loadView() {
         super.loadView()
         self.title = "채팅방 추가"
-        self.view.backgroundColor = .systemBackground
     }
 
     override func viewDidLoad() {
@@ -86,10 +81,12 @@ final class AddChatRoomViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = self.exitButton
         self.navigationItem.rightBarButtonItem = self.submitButton
 
-        let descriptionLabel = UILabel()
+        let descriptionLabel = ResizableLabel()
         descriptionLabel.text = "채팅방 제목과\n사진을 설정해주세요"
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.font = UIFont.systemFont(ofSize: 27.0, weight: .semibold)
+        descriptionLabel.font = UIFont.boldSystemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize
+        )
         self.view.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
@@ -111,7 +108,7 @@ final class AddChatRoomViewController: UIViewController {
         profileBadge.tintColor = .label
         profileBadge.layer.cornerRadius = 20
         profileBadge.layer.masksToBounds = true
-        profileBadge.backgroundColor = .white
+        profileBadge.backgroundColor = .systemBackground
         self.view.addSubview(profileBadge)
         profileBadge.snp.makeConstraints { make in
             make.trailing.equalTo(self.chatRoomProfileImageView.snp.trailing)

@@ -22,34 +22,37 @@ final class ChatRoomCell: UICollectionViewCell {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        let label = ResizableLabel()
+        label.font = UIFont.boldSystemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize
+        )
         label.numberOfLines = 1
         return label
     }()
 
     private let numberOfUsersLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0, weight: .light)
+        let label = ResizableLabel()
+        label.font = UIFont.systemFont(
+            ofSize: UIFont.preferredFont(forTextStyle: .caption1).pointSize,
+            weight: .light
+        )
         return label
     }()
 
     private let latestChatLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
-        label.numberOfLines = 2
-        label.lineBreakMode = .byCharWrapping
+        let label = ResizableLabel()
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.numberOfLines = 1
         label.textColor = .systemGray
         return label
     }()
 
     private let latestChatDateLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 9.0)
+        let label = ResizableLabel()
+        label.font = UIFont.preferredFont(forTextStyle: .caption2)
+        label.textColor = .systemGray
         return label
     }()
-
-    // TODO: 실시간으로 채팅방에 몇명 있는지 보여주는 Label이 있으면 좋을듯
 
     // MARK: - init/deinit
 
@@ -72,10 +75,10 @@ final class ChatRoomCell: UICollectionViewCell {
         self.contentView.addSubview(self.latestChatLabel)
         self.contentView.addSubview(self.latestChatDateLabel)
         self.profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+            make.leading.top.equalToSuperview().offset(20)
             make.size.equalTo(50)
         }
+        self.titleLabel.snp.contentCompressionResistanceHorizontalPriority = 1
         self.titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.profileImageView.snp.trailing).offset(12)
             make.top.equalTo(self.profileImageView.snp.top).offset(3)
@@ -83,18 +86,22 @@ final class ChatRoomCell: UICollectionViewCell {
         self.numberOfUsersLabel.snp.contentCompressionResistanceHorizontalPriority = 999
         self.numberOfUsersLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.titleLabel.snp.trailing).offset(5)
-            make.trailing.lessThanOrEqualToSuperview().offset(-80)
+            make.trailing.lessThanOrEqualToSuperview().offset(-20)
             make.centerY.equalTo(self.titleLabel)
         }
-//        self.titleLabel.snp.contentHuggingHorizontalPriority = 252
+        self.latestChatLabel.snp.contentHuggingHorizontalPriority = 1
+        self.latestChatLabel.snp.contentCompressionResistanceHorizontalPriority = 1
         self.latestChatLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.titleLabel.snp.leading)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(3)
+            make.leading.equalTo(self.titleLabel)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
+            make.bottom.lessThanOrEqualToSuperview().offset(-20)
         }
+        self.latestChatDateLabel.snp.contentHuggingHorizontalPriority = 999
+        self.latestChatDateLabel.snp.contentCompressionResistanceHorizontalPriority = 999
         self.latestChatDateLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.latestChatLabel.snp.trailing)
             make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalTo(self.titleLabel)
+            make.centerY.equalTo(self.latestChatLabel)
         }
     }
 

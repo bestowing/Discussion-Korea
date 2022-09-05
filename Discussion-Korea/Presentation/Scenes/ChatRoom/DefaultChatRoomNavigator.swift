@@ -9,7 +9,7 @@ import SideMenu
 import RxSwift
 import UIKit
 
-final class DefaultChatRoomNavigator: ChatRoomNavigator {
+final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
 
     // MARK: properties
 
@@ -26,10 +26,6 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
         self.navigationController = navigationController
     }
 
-    deinit {
-        print("🗑", self)
-    }
-
     // MARK: - methods
 
     func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {
@@ -40,7 +36,9 @@ final class DefaultChatRoomNavigator: ChatRoomNavigator {
             uid: uid,
             chatRoom: chatRoom,
             navigator: self,
+            factory: DefaultChatItemViewModelFactory(userID: uid),
             chatsUsecase: self.services.makeChatsUsecase(),
+            chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase(),
             discussionUsecase: self.services.makeDiscussionUsecase()
         )

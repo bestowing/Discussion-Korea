@@ -25,3 +25,9 @@ struct Chat {
     }
 
 }
+
+extension Chat: Equatable {
+    static func ==(lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.uid == rhs.uid && lhs.date == rhs.date && lhs.toxic == rhs.toxic
+    }
+}

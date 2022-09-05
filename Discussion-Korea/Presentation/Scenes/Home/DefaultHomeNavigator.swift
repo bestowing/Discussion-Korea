@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultHomeNavigator: HomeNavigator {
+final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
 
     // MARK: properties
 
@@ -24,16 +24,11 @@ final class DefaultHomeNavigator: HomeNavigator {
         self.navigationController = navigationController
     }
 
-    deinit {
-        print("🗑", self)
-    }
-
     // MARK: - methods
 
     func toHome() {
         let homeViewController = HomeViewController()
-        homeViewController.title = "홈"
-        self.navigationController.navigationBar.prefersLargeTitles = true
+        self.navigationController.setNavigationBarHidden(true, animated: false)
         let homeViewModel = HomeViewModel(
             navigator: self, userInfoUsecase: self.services.makeUserInfoUsecase()
         )
@@ -42,13 +37,33 @@ final class DefaultHomeNavigator: HomeNavigator {
         self.presentingViewController = homeViewController
     }
 
-    func toEnterGame(_ userID: String) {
+    func toChart() {
         guard let presentingViewController = presentingViewController
         else { return }
-        let navigator = DefaultEnterGuestNavigator(
+        let alert = UIAlertController(title: "준비중",
+                                      message: "준비중인 기능이에요🥲",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let exitAction = UIAlertAction(title: "나가기", style: .cancel)
+        alert.addAction(exitAction)
+        presentingViewController.present(alert, animated: true)
+    }
+
+    func toLaw() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultLawNavigator(
             services: self.services, presentedViewController: presentingViewController
         )
-        navigator.toEnterGuest(userID)
+        navigator.toLaw()
+    }
+
+    func toGuide() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultGuideNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toGuide()
     }
 
 }

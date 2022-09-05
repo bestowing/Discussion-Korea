@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 
-final class ChatRoomListViewController: UIViewController {
+final class ChatRoomListViewController: BaseViewController {
 
     // MARK: properties
 
@@ -20,7 +20,8 @@ final class ChatRoomListViewController: UIViewController {
         label.title = "채팅"
         label.isEnabled = false
         label.setTitleTextAttributes(
-            [.font: UIFont.boldSystemFont(ofSize: 25.0), NSAttributedString.Key.foregroundColor: UIColor.label],
+            [.font: UIFont.boldSystemFont(ofSize: 25.0),
+             NSAttributedString.Key.foregroundColor: UIColor.label],
             for: .disabled
         )
         return label
@@ -34,9 +35,14 @@ final class ChatRoomListViewController: UIViewController {
         return button
     }()
 
-    private let chatRoomsCollectionView: UICollectionView = {
+    private lazy var chatRoomsCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = CGSize(width: self.view.frame.width, height: 75)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+
         let collectionView = UICollectionView(
-            frame: .zero ,collectionViewLayout: UICollectionViewLayout()
+            frame: .zero, collectionViewLayout: flowLayout
         )
         collectionView.register(
             ChatRoomCell.self, forCellWithReuseIdentifier: ChatRoomCell.identifier
@@ -54,18 +60,7 @@ final class ChatRoomListViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
-
-    override func loadView() {
-        super.loadView()
-        self.view.backgroundColor = .systemBackground
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,17 +75,8 @@ final class ChatRoomListViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = self.addButton
         self.view.addSubview(self.chatRoomsCollectionView)
         self.chatRoomsCollectionView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: self.view.frame.width, height: 75)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
-
-        self.chatRoomsCollectionView.collectionViewLayout = flowLayout
     }
 
     private func bindViewModel() {

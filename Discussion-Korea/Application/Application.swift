@@ -9,13 +9,19 @@ import UIKit
 
 final class Application {
 
+    // MARK: - properties
+
     static let shared = Application()
 
     private let firebaseUseCaseProvider: UsecaseProvider
 
+    // MARK: - init/deinit
+
     private init() {
         self.firebaseUseCaseProvider = FirebaseUsecaseProvider()
     }
+
+    // MARK: - methods
 
     func configureMainInterface(in window: UIWindow) {
         let appearance = UINavigationBarAppearance()
@@ -46,28 +52,28 @@ final class Application {
             navigationController: chatRoomListNavigationController
         )
 
-        let settingNavigationController = UINavigationController()
-        let settingButton = UITabBarItem(
-            title: "설정",
-            image: UIImage(systemName: "gearshape"),
-            selectedImage: UIImage(systemName: "gearshape.fill")
+        let myPageNavigationController = UINavigationController()
+        let myPageButton = UITabBarItem(
+            title: "마이페이지",
+            image: UIImage(systemName: "person"),
+            selectedImage: UIImage(systemName: "person.fill")
         )
-        settingNavigationController.tabBarItem = settingButton
-        let settingNavigator = DefaultSettingNavigator(
+        myPageNavigationController.tabBarItem = myPageButton
+        let myPageNavigator = DefaultMyPageNavigator(
             services: self.firebaseUseCaseProvider,
-            navigationController: settingNavigationController
+            navigationController: myPageNavigationController
         )
 
         let tapBarController = UITabBarController()
         tapBarController.viewControllers = [
             homeNavigationController,
             chatRoomListNavigationController,
-            settingNavigationController
+            myPageNavigationController
         ]
         tapBarController.tabBar.tintColor = .accentColor
         homeNavigator.toHome()
         chatRoomListNavigator.toChatRoomList()
-        settingNavigator.toSetting()
+        myPageNavigator.toMyPage()
         window.rootViewController = tapBarController
         window.makeKeyAndVisible()
     }

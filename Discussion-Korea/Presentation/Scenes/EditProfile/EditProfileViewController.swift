@@ -9,11 +9,11 @@ import SnapKit
 import UIKit
 import RxSwift
 
-final class EnterGuestViewController: UIViewController {
+final class EditProfileViewController: BaseViewController {
 
     // MARK: - properties
 
-    var viewModel: EnterGuestViewModel!
+    var viewModel: EditProfileViewModel!
 
     private let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -25,19 +25,16 @@ final class EnterGuestViewController: UIViewController {
         return indicator
     }()
 
-    private let guestButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("일단 둘러볼게요", for: .normal)
-        button.backgroundColor = .accentColor
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
-        button.setTitleColor(UIColor.white, for: .normal)
-        return button
-    }()
-
     private let submitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.title = "완료"
+        button.tintColor = .label
+        return button
+    }()
+
+    private let exitButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = "취소"
         button.tintColor = .label
         return button
     }()
@@ -63,18 +60,11 @@ final class EnterGuestViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    // MARK: - init/deinit
-
-    deinit {
-        print("🗑", Self.description())
-    }
-
     // MARK: - methods
 
     override func loadView() {
         super.loadView()
-        self.title = "처음 설정하기"
-        self.view.backgroundColor = .systemBackground
+        self.title = "프로필 수정"
     }
 
     override func viewDidLoad() {
@@ -84,26 +74,20 @@ final class EnterGuestViewController: UIViewController {
     }
 
     private func setSubViews() {
+        self.navigationItem.leftBarButtonItem = self.exitButton
         self.navigationItem.rightBarButtonItem = self.submitButton
-
-        let descriptionLabel = UILabel()
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.text = "안녕하세요, 처음 오신 것 같군요!\n시작하기 전에 프로필 사진과 닉네임을 설정해주세요."
-        descriptionLabel.font = UIFont.systemFont(ofSize: 20.0)
 
         let profileBadge = UIImageView()
         profileBadge.image = UIImage(systemName: "camera.circle.fill")
         profileBadge.tintColor = .label
         profileBadge.layer.cornerRadius = 20
         profileBadge.layer.masksToBounds = true
-        profileBadge.backgroundColor = .white
+        profileBadge.backgroundColor = .systemBackground
 
         let divisor = UILabel()
         divisor.backgroundColor = .label
 
-        self.view.addSubview(descriptionLabel)
         self.view.addSubview(divisor)
-        self.view.addSubview(self.guestButton)
         self.view.addSubview(self.profileImageView)
         self.view.addSubview(profileBadge)
         self.view.addSubview(self.nicknameTextfield)
@@ -111,20 +95,9 @@ final class EnterGuestViewController: UIViewController {
         self.view.addSubview(self.activityIndicator)
         self.activityIndicator.center = self.view.center
 
-        descriptionLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(25)
-        }
-        self.guestButton.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(25)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
-            make.height.equalTo(50)
-        }
         self.profileImageView.snp.makeConstraints { make in
             make.centerX.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(30)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(25)
             make.width.equalTo(140)
             make.height.equalTo(142)
         }
@@ -155,11 +128,11 @@ final class EnterGuestViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer()
         self.profileImageView.addGestureRecognizer(tapGesture)
 
-        let input = EnterGuestViewModel.Input(
+        let input = EditProfileViewModel.Input(
             nickname: self.nicknameTextfield.rx.text.orEmpty
                 .asDriverOnErrorJustComplete(),
+            exitTrigger: self.exitButton.rx.tap.asDriver(),
             imageTrigger: tapGesture.rx.event.asDriver().mapToVoid(),
-            guestTrigger: self.guestButton.rx.tap.asDriverOnErrorJustComplete(),
             submitTrigger: self.submitButton.rx.tap.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
@@ -167,11 +140,11 @@ final class EnterGuestViewController: UIViewController {
         output.loading.drive(self.activityIndicator.rx.isAnimating)
             .disposed(by: self.disposeBag)
 
-        output.profileImage.drive { [unowned self] url in
-            guard let url = url
-            else { return }
-            self.profileImageView.setImage(url)
-        }.disposed(by: self.disposeBag)
+        output.oldNickname.drive(self.nicknameTextfield.rx.text)
+            .disposed(by: self.disposeBag)
+
+        output.profileURL.drive(self.profileImageView.rx.url)
+            .disposed(by: self.disposeBag)
 
         output.submitEnable.drive(self.submitButton.rx.isEnabled)
             .disposed(by: self.disposeBag)

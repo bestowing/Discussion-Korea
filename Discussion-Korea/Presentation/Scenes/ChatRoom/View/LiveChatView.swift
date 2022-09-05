@@ -11,11 +11,11 @@ import RxSwift
 
 final class LiveChatView: UIView {
 
-    // MARK: properties
+    // MARK: - properties
 
     fileprivate let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
         label.textColor = .systemGray
         label.textAlignment = .center
         return label
@@ -26,7 +26,7 @@ final class LiveChatView: UIView {
             top: 12.0, left: 20.0, bottom: 12.0, right: 20.0)
         )
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.textColor = .label
         label.lineBreakMode = .byTruncatingHead
         label.layer.shadowOpacity = 0.15
