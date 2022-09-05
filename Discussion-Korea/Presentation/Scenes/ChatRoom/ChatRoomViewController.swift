@@ -16,7 +16,7 @@ final class ChatRoomViewController: BaseViewController {
 
     fileprivate typealias ChatRoomDataSource = RxCollectionViewSectionedNonAnimatedDataSource<ChatSectionModel>
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: ChatRoomViewModel!
 

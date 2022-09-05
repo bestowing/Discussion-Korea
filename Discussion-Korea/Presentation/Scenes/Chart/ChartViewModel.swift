@@ -9,7 +9,7 @@ import RxCocoa
 
 final class ChartViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigator: ChartNavigator
 

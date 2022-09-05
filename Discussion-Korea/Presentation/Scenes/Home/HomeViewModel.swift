@@ -10,7 +10,7 @@ import RxCocoa
 
 final class HomeViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigator: HomeNavigator
     private let userInfoUsecase: UserInfoUsecase

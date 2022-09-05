@@ -10,7 +10,7 @@ import UIKit
 
 final class SerialOtherChatCell: ChatCell {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let contentLabel: UILabel = {
         let contentLabel = PaddingLabel()

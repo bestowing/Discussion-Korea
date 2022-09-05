@@ -12,7 +12,7 @@ import XCTest
 
 final class ChatRoomListViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
 
     private var mockNavigator: MockChatRoomListNavigator!
     private var chatRoomUsecase: MockChatRoomUsecase!

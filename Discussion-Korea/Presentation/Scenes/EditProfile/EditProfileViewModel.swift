@@ -12,7 +12,7 @@ import RxCocoa
 
 final class EditProfileViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let userID: String
     private let nickname: String?

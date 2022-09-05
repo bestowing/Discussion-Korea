@@ -10,7 +10,7 @@ import UIKit
 
 final class SelfChatCell: ChatCell {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let contentLabel: UILabel = {
         let contentLabel = PaddingLabel()

@@ -12,7 +12,7 @@ import XCTest
 
 final class EditProfileViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let userId = "test"
     private let nickname = "testNickname"

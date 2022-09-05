@@ -12,7 +12,7 @@ import XCTest
 
 final class HomeViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
 
     private var mockNavigator: MockHomeNavigator!
     private var userInfoUsecase: MockUserInfoUsecase!

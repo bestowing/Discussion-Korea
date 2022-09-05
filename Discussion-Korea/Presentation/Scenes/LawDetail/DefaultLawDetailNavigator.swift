@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultLawDetailNavigator: BaseNavigator, LawDetailNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigationController: UINavigationController
 

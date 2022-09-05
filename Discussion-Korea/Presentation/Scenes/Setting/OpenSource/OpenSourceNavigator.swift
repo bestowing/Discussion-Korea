@@ -15,7 +15,7 @@ protocol OpenSourceNavigator {
 
 final class DefaultOpenSourceNavigator: OpenSourceNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigationController: UINavigationController
 

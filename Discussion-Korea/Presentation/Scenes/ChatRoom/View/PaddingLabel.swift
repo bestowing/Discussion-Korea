@@ -9,7 +9,7 @@ import UIKit
 
 final class PaddingLabel: UILabel {
 
-    // MARK: properties
+    // MARK: - properties
 
     var padding = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0) {
         didSet {

@@ -10,7 +10,7 @@ import UIKit
 
 final class BotChatCell: ChatCell {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))

@@ -11,7 +11,7 @@ import RxSwift
 
 final class ChatRoomListViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: ChatRoomListViewModel!
 

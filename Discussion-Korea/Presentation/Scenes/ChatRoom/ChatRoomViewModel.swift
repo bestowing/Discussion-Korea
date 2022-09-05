@@ -18,7 +18,7 @@ enum NicknameError: Error {
 
 final class ChatRoomViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let uid: String
     private let chatRoom: ChatRoom

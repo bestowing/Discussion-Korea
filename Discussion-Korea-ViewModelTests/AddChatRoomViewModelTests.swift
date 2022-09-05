@@ -12,7 +12,7 @@ import XCTest
 
 final class AddChatRoomViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let userId = "test"
 

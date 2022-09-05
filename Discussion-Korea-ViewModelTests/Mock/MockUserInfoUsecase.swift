@@ -10,7 +10,7 @@ import RxSwift
 
 final class MockUserInfoUsecase: UserInfoUsecase {
 
-    // MARK: properties
+    // MARK: - properties
 
     var addEventStream: Observable<Void>
     var addSideEventStream: Observable<Void>

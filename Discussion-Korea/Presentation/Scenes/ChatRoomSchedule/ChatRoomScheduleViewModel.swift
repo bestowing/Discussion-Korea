@@ -10,7 +10,7 @@ import Foundation
 
 final class ChatRoomScheduleViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let chatRoom: ChatRoom
 

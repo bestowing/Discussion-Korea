@@ -10,7 +10,7 @@ import UIKit
 
 final class ParticipantCell: UITableViewCell {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()

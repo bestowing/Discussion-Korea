@@ -10,7 +10,7 @@ import UIKit
 
 struct ChatItemViewModel {
 
-    // MARK: properties
+    // MARK: - properties
 
     var chat: Chat
     let cellIdentifier: String

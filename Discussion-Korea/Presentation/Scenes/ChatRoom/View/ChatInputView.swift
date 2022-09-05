@@ -11,7 +11,7 @@ import RxSwift
 
 final class ChatInputView: UIView {
 
-    // MARK: properties
+    // MARK: - properties
 
     fileprivate let messageTextView: UITextView = {
         let messageTextView = UITextView()

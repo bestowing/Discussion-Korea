@@ -11,7 +11,7 @@ import RxCocoa
 
 final class ChatRoomSideMenuViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let uid: String
     private let chatRoom: ChatRoom

@@ -11,7 +11,7 @@ import UIKit
 
 final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController

@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController

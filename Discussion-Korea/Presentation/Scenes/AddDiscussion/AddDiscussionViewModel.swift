@@ -10,7 +10,7 @@ import RxCocoa
 
 final class AddDiscussionViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let chatRoom: ChatRoom
 

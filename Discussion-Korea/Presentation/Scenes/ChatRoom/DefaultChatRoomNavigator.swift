@@ -11,7 +11,7 @@ import UIKit
 
 final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController

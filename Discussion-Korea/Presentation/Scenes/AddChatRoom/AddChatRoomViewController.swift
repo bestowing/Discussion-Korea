@@ -11,7 +11,7 @@ import SnapKit
 
 final class AddChatRoomViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: AddChatRoomViewModel!
 

@@ -9,7 +9,7 @@ import Foundation
 
 final class ScheduleItemViewModel {
 
-    // MARK: properties
+    // MARK: - properties
 
     var discussion: Discussion
 

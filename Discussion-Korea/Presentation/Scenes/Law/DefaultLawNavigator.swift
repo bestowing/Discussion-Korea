@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultLawNavigator: BaseNavigator, LawNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController

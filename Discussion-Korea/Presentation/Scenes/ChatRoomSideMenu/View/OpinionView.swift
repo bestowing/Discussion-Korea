@@ -12,7 +12,7 @@ import RxCocoa
 
 final class OpinionView: UIView {
 
-    // MARK: properties
+    // MARK: - properties
 
     fileprivate let supportLabel: UILabel = {
         let label = UILabel()

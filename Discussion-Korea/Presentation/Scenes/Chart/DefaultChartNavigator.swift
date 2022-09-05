@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultChartNavigator: BaseNavigator, ChartNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let presentedViewController: UIViewController
 

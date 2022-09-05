@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let navigationController: UINavigationController

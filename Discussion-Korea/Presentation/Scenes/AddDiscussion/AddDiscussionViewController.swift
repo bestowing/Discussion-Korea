@@ -11,7 +11,7 @@ import SnapKit
 
 final class AddDiscussionViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: AddDiscussionViewModel!
 

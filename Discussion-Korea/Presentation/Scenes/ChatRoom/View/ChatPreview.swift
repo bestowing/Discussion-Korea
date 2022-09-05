@@ -10,7 +10,7 @@ import RxSwift
 
 final class ChatPreview: UIView {
 
-    // MARK: properties
+    // MARK: - properties
 
     fileprivate let profileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))

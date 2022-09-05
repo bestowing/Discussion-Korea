@@ -11,7 +11,7 @@ import SnapKit
 
 final class ChatRoomScheduleViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: ChatRoomScheduleViewModel!
 

@@ -9,7 +9,7 @@ import UIKit
 
 final class DefaultAddDiscussionNavigator: BaseNavigator, AddDiscussionNavigator {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController

@@ -12,7 +12,7 @@ import RxSwift
 
 final class ChatRoomSideMenuViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: ChatRoomSideMenuViewModel!
 

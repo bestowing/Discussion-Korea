@@ -9,7 +9,7 @@ import RxCocoa
 
 final class GuideViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigator: GuideNavigator
 

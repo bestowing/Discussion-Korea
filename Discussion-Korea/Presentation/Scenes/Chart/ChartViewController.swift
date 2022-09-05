@@ -10,7 +10,7 @@ import UIKit
 
 final class ChartViewController: BaseViewController {
 
-    // MARK: properties
+    // MARK: - properties
 
     var viewModel: ChartViewModel!
 

@@ -9,7 +9,7 @@ import UIKit
 
 final class ScheduleCell: UITableViewCell {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let topicLabel: UILabel = {
         let label = UILabel()

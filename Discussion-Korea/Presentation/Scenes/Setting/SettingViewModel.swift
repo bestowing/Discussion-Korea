@@ -9,7 +9,7 @@ import Foundation
 
 final class SettingViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let navigator: SettingNavigator
 

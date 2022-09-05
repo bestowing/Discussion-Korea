@@ -12,7 +12,7 @@ import RxCocoa
 
 final class AddChatRoomViewModel: ViewModelType {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let userID: String
 

@@ -10,7 +10,7 @@ import RxSwift
 
 final class MockDiscussionUsecase: DiscussionUsecase {
 
-    // MARK: properties
+    // MARK: - properties
 
     var discussionStream: Observable<Discussion>
     var addRoomEventStream: Observable<Void>
