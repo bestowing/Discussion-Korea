@@ -32,7 +32,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="2f6-Oe-PlK" secondAttribute="bottom" constant="5" id="Jpg-na-zcR"/>
                             <constraint firstItem="Ftg-k3-apu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="KVq-Ts-1Gn"/>
@@ -49,6 +49,9 @@
     </scenes>
     <resources>
         <image name="round_logo" width="1024" height="1024"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemGray2Color">
             <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
