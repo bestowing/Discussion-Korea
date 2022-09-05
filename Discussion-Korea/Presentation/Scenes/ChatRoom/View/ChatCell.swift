@@ -19,8 +19,10 @@ class ChatCell: UICollectionViewCell {
         return layoutAttributes
     }
 
-    func bind(_ viewModel: ChatItemViewModel) {
-        fatalError("not implemented")
+    func bind(_ viewModel: ChatItemViewModel) {}
+
+    func textColor(_ viewModel: ChatItemViewModel) -> UIColor? {
+        return viewModel.chat.toxic ?? false ? .lightGray : nil
     }
 
     func getAccessibilityLabel(_ viewModel: ChatItemViewModel) -> String {

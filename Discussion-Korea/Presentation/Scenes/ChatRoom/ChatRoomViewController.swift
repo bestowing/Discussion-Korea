@@ -14,6 +14,8 @@ import RxGesture
 
 final class ChatRoomViewController: BaseViewController {
 
+    typealias ChatSectionModel = AnimatableSectionModel<String, ChatItemViewModel>
+
     fileprivate typealias ChatRoomDataSource = RxCollectionViewSectionedNonAnimatedDataSource<ChatSectionModel>
 
     // MARK: properties
@@ -23,7 +25,7 @@ final class ChatRoomViewController: BaseViewController {
     private var dataSource = ChatRoomDataSource(
         configureCell: { _, collectionView, indexPath, model in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: model.identifier, for: indexPath
+                withReuseIdentifier: model.cellIdentifier, for: indexPath
             ) as? ChatCell
             else { return UICollectionViewCell() }
             cell.bind(model)
@@ -48,7 +50,6 @@ final class ChatRoomViewController: BaseViewController {
     private lazy var messageCollectionView: UICollectionView = {
         let flowLayout = ChatCollectionViewFlowLayout()
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        //CGSize(width: self.view.frame.width, height: 40)
         flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
@@ -176,14 +177,6 @@ final class ChatRoomViewController: BaseViewController {
             )
             .disposed(by: self.disposeBag)
 
-//        output.mask.drive { [unowned self] uid in
-//            if let item = self.itemViewModels.firstIndex(where: { $0.chat.uid! == uid }) {
-//                let itemPath = IndexPath(item: item, section: 0)
-//                self.itemViewModels[item].chat.toxic = true
-//                self.messageCollectionView.reloadItems(at: [itemPath])
-//            }
-//        }.disposed(by: self.disposeBag)
-
 //        output.toBottom.drive { [unowned self] _ in
 //            let indexPath = IndexPath(item: self.itemViewModels.count - 1, section: 0)
 //            self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
@@ -249,18 +242,6 @@ fileprivate class RxCollectionViewSectionedNonAnimatedDataSource<Section: Animat
         UIView.performWithoutAnimation {
             super.collectionView(collectionView, observedEvent: observedEvent)
         }
-    }
-
-}
-
-extension ChatItemViewModel: IdentifiableType, Equatable {
-
-    typealias Identity = String
-
-    var identity: String { self.chat.uid! }
-
-    static func == (lhs: ChatItemViewModel, rhs: ChatItemViewModel) -> Bool {
-        lhs.chat == rhs.chat
     }
 
 }

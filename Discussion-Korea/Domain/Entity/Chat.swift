@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Chat: Equatable {
+struct Chat {
 
     var uid: String?
     var userID: String
@@ -24,4 +24,10 @@ struct Chat: Equatable {
         self.date = date
     }
 
+}
+
+extension Chat: Equatable {
+    static func ==(lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.uid == rhs.uid && lhs.date == rhs.date && lhs.toxic == rhs.toxic
+    }
 }

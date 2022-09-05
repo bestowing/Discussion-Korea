@@ -20,6 +20,7 @@ final class ChatRoomViewModel: ViewModelType {
     private let uid: String
     private let chatRoom: ChatRoom
     private let navigator: ChatRoomNavigator
+    private let factory: ChatItemViewModelFactory
 
     private let chatsUsecase: ChatsUsecase
     private let chatRoomsUsecase: ChatRoomsUsecase
@@ -31,6 +32,7 @@ final class ChatRoomViewModel: ViewModelType {
     init(uid: String,
          chatRoom: ChatRoom,
          navigator: ChatRoomNavigator,
+         factory: ChatItemViewModelFactory,
          chatsUsecase: ChatsUsecase,
          chatRoomsUsecase: ChatRoomsUsecase,
          userInfoUsecase: UserInfoUsecase,
@@ -38,6 +40,7 @@ final class ChatRoomViewModel: ViewModelType {
         self.uid = uid
         self.chatRoom = chatRoom
         self.navigator = navigator
+        self.factory = factory
         self.chatsUsecase = chatsUsecase
         self.chatRoomsUsecase = chatRoomsUsecase
         self.userInfoUsecase = userInfoUsecase
@@ -145,29 +148,16 @@ final class ChatRoomViewModel: ViewModelType {
             .map { chats -> [ChatItemViewModel] in
                 var viewModels = [ChatItemViewModel]()
                 for (index, chat) in chats.enumerated() {
-                    if index != 0,
-                       chats[index - 1].userID == chat.userID,
-                       let lastDate = chats[index - 1].date,
+                    if let prevChat = chats[safe: index - 1],
+                       prevChat.userID == chat.userID,
+                       let lastDate = prevChat.date,
                        let currentDate = chat.date,
                        Int(currentDate.timeIntervalSince(lastDate)) < 60 {
                         viewModels[index - 1].chat.date = nil
                     }
-                    if chat.userID == self.uid {
-                        viewModels.append(SelfChatItemViewModel(with: chat))
-                    } else if chat.userID == "bot" {
-                        if chats[index - 1].userID == chat.userID {
-                            viewModels.append(SerialBotChatItemViewModel(with: chat))
-                        } else {
-                            viewModels.append(BotChatItemViewModel(with: chat))
-                        }
-                    } else {
-                        if index != 0,
-                           chats[index - 1].userID == chat.userID {
-                            viewModels.append(SerialOtherChatItemViewModel(with: chat))
-                        } else {
-                            viewModels.append(OtherChatItemViewModel(with: chat))
-                        }
-                    }
+                    viewModels.append(
+                        self.factory.create(prevChat: chats[safe: index - 1], chat: chat)
+                    )
                 }
                 return viewModels
             }
@@ -193,32 +183,17 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
             .do(onNext: { [unowned self] chat, viewModels in
-                let newItemViewModel: ChatItemViewModel
-                if let last = viewModels.last,
+                var viewModels = viewModels
+                if var last = viewModels.last,
                    last.chat.userID == chat.userID,
                    let lastDate = last.chat.date,
                    let currentDate = chat.date,
                    Int(currentDate.timeIntervalSince(lastDate)) < 60 {
-                    viewModels.last?.chat.date = nil
+                    last.chat.date = nil
+                    viewModels[viewModels.endIndex - 1] = last
                 }
-                if chat.userID == uid {
-                    newItemViewModel = SelfChatItemViewModel(with: chat)
-                } else if chat.userID == "bot" {
-                    if let last = viewModels.last,
-                       last.chat.userID == chat.userID {
-                        newItemViewModel = SerialBotChatItemViewModel(with: chat)
-                    } else {
-                        newItemViewModel = BotChatItemViewModel(with: chat)
-                    }
-                } else {
-                    if let last = viewModels.last,
-                       last.chat.userID == chat.userID {
-                        newItemViewModel = SerialOtherChatItemViewModel(with: chat)
-                    } else {
-                        newItemViewModel = OtherChatItemViewModel(with: chat)
-                    }
-                }
-                chatItems.onNext(viewModels + [newItemViewModel])
+                viewModels.append(self.factory.create(prevChat: nil, chat: chat))
+                chatItems.onNext(viewModels)
             })
             .mapToVoid()
 
@@ -242,31 +217,19 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
             .do(onNext: { [unowned self] chats, viewModels in
+                var viewModels = viewModels
                 var newViewModels = [ChatItemViewModel]()
                 for (index, chat) in chats.enumerated() {
-                    if index != 0,
-                       chats[index - 1].userID == chat.userID,
-                       let lastDate = chats[index - 1].date,
+                    if let prevChat = chats[safe: index - 1],
+                       prevChat.userID == chat.userID,
+                       let lastDate = prevChat.date,
                        let currentDate = chat.date,
                        Int(currentDate.timeIntervalSince(lastDate)) < 60 {
                         newViewModels[index - 1].chat.date = nil
                     }
-                    if chat.userID == self.uid {
-                        newViewModels.append(SelfChatItemViewModel(with: chat))
-                    } else if chat.userID == "bot" {
-                        if chats[index - 1].userID == chat.userID {
-                            newViewModels.append(SerialBotChatItemViewModel(with: chat))
-                        } else {
-                            newViewModels.append(BotChatItemViewModel(with: chat))
-                        }
-                    } else {
-                        if index != 0,
-                           chats[index - 1].userID == chat.userID {
-                            newViewModels.append(SerialOtherChatItemViewModel(with: chat))
-                        } else {
-                            newViewModels.append(OtherChatItemViewModel(with: chat))
-                        }
-                    }
+                    newViewModels.append(
+                        self.factory.create(prevChat: chats[safe: index - 1], chat: chat)
+                    )
                 }
                 if let firstChat = viewModels.first?.chat,
                    let lastChat = chats.last,
@@ -274,18 +237,27 @@ final class ChatRoomViewModel: ViewModelType {
                    let firstDate = firstChat.date,
                    let lastDate = lastChat.date,
                    Int(lastDate.timeIntervalSince(firstDate)) < 60 {
-                    viewModels.first?.chat.date = nil
+                    viewModels[viewModels.endIndex - 1].chat.date = nil
                 }
                 isFetchingLimited.onNext(newViewModels.isEmpty)
                 chatItems.onNext(newViewModels + viewModels)
             })
             .mapToVoid()
 
-        let masking = input.trigger
+        let maskingEvent = input.trigger
             .flatMapFirst { [unowned self] in
                 self.chatsUsecase.masking(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
+            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
+            .do(onNext: { uid, viewModels in
+                if let item = viewModels.firstIndex(where: { $0.chat.uid! == uid }) {
+                    var viewModels = viewModels
+                    viewModels[item].chat.toxic = true
+                    chatItems.onNext(viewModels)
+                }
+            })
+            .mapToVoid()
 
         let status = input.trigger
             .flatMapFirst { [unowned self] in
@@ -409,7 +381,7 @@ final class ChatRoomViewModel: ViewModelType {
                 guard var chat = chat else { return nil }
                 chat.nickName = userInfos[chat.userID]?.nickname
                 chat.profileURL = userInfos[chat.userID]?.profileURL
-                return WritingChatItemViewModel(with: chat)
+                return self.factory.create(prevChat: nil, chat: chat, isEditing: true)
             }
 
         let writingEvent: Driver<Void> = input.content
@@ -456,6 +428,7 @@ final class ChatRoomViewModel: ViewModelType {
         let events = Driver.of(
             initializationEvent,
             newChatsEvent,
+            maskingEvent,
             loadMoreEvent,
             voteEvent,
             selectSideEvent,
@@ -475,10 +448,9 @@ final class ChatRoomViewModel: ViewModelType {
             remainTime: remainTime,
             noticeContent: noticeContent,
             chatItems: chatItems
-                .map { [ChatSectionModel(header: "", items: $0)] }
+                .map { [ChatSectionModel(model: "", items: $0)] }
                 .asDriverOnErrorJustComplete()
                 .startWith([]),
-            mask: masking,
             toBottom: input.previewTouched,
             sendEnable: canSend,
             isPreviewHidden: input.bottomScrolled,
@@ -509,7 +481,6 @@ extension ChatRoomViewModel {
         let remainTime: Driver<String>
         let noticeContent: Driver<String>
         let chatItems: Driver<[ChatSectionModel]>
-        let mask: Driver<String>
         let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
         let isPreviewHidden: Driver<Bool>
@@ -517,6 +488,14 @@ extension ChatRoomViewModel {
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>
+    }
+
+}
+
+extension Array {
+
+    subscript (safe index: Int) -> Element? {
+        return self.indices ~= index ? self[index] : nil
     }
 
 }
