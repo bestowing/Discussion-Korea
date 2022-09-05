@@ -141,7 +141,10 @@ final class SignInViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = SignInViewModel.Input(
-            signUpTrigger: self.signUpButton.rx.tap.asDriverOnErrorJustComplete()
+            signUpTrigger: self.signUpButton.rx.tap
+                .asDriverOnErrorJustComplete(),
+            resetPasswordTrigger: self.resetPasswordButton.rx.tap
+                .asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
 

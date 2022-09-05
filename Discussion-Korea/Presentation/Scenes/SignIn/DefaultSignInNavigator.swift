@@ -43,7 +43,13 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
         navigator.toSignUp()
     }
 
-    // TODO: 구현 필요
-    func toResetPassword() {}
+    func toResetPassword() {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultResetPasswordNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toResetPassword()
+    }
 
 }

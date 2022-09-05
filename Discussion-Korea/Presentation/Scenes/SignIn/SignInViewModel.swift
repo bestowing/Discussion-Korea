@@ -34,7 +34,12 @@ final class SignInViewModel: ViewModelType {
         let signUpEvent = input.signUpTrigger
             .do(onNext: self.navigator.toSignUp)
 
-        return Output(events: signUpEvent)
+        let resetPasswordEvent = input.resetPasswordTrigger
+            .do(onNext: self.navigator.toResetPassword)
+
+        let events = Driver.of(signUpEvent, resetPasswordEvent).merge()
+
+        return Output(events: events)
     }
 
 }
@@ -43,6 +48,7 @@ extension SignInViewModel {
 
     struct Input {
         let signUpTrigger: Driver<Void>
+        let resetPasswordTrigger: Driver<Void>
     }
 
     struct Output {
