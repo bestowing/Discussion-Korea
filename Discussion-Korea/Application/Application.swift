@@ -34,6 +34,8 @@ final class Application {
         appearance.configureWithTransparentBackground()
         UINavigationBar.appearance().standardAppearance = appearance
 
+        window.rootViewController = BaseViewController()
+        window.makeKeyAndVisible()
         self.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
             if let _ = auth.currentUser {
                 self?.toMain(in: window)
@@ -91,7 +93,6 @@ final class Application {
         chatRoomListNavigator.toChatRoomList()
         myPageNavigator.toMyPage()
         window.rootViewController = tapBarController
-        window.makeKeyAndVisible()
     }
 
     private func toSignIn(in window: UIWindow) {
@@ -102,7 +103,6 @@ final class Application {
         )
         signInNavigator.toSignIn()
         window.rootViewController = navigationController
-        window.makeKeyAndVisible()
     }
 
 }

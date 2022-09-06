@@ -30,6 +30,19 @@ final class SignInViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
+        let activityTracker = ActivityTracker()
+        let errorTracker = ErrorTracker()
+
+        let userInfo = Driver.combineLatest(input.email, input.password)
+
+        let registerEvent = input.signInTrigger
+            .withLatestFrom(userInfo) { $1 }
+            .flatMapLatest { [unowned self] userInfo in
+                self.userInfoUsecase.signIn(userInfo: userInfo)
+                    .trackActivity(activityTracker)
+                    .trackError(errorTracker)
+                    .asDriverOnErrorJustComplete()
+            }
 
         let signUpEvent = input.signUpTrigger
             .do(onNext: self.navigator.toSignUp)
@@ -37,9 +50,13 @@ final class SignInViewModel: ViewModelType {
         let resetPasswordEvent = input.resetPasswordTrigger
             .do(onNext: self.navigator.toResetPassword)
 
-        let events = Driver.of(signUpEvent, resetPasswordEvent).merge()
+        let errorEvent = errorTracker.asDriver()
+            .do(onNext: self.navigator.toErrorAlert)
+            .mapToVoid()
 
-        return Output(events: events)
+        let events = Driver.of(signUpEvent, resetPasswordEvent, registerEvent, errorEvent).merge()
+
+        return Output(loading: activityTracker.asDriver(), events: events)
     }
 
 }
@@ -47,11 +64,15 @@ final class SignInViewModel: ViewModelType {
 extension SignInViewModel {
 
     struct Input {
+        let email: Driver<String>
+        let password: Driver<String>
+        let signInTrigger: Driver<Void>
         let signUpTrigger: Driver<Void>
         let resetPasswordTrigger: Driver<Void>
     }
 
     struct Output {
+        let loading: Driver<Bool>
         let events: Driver<Void>
     }
 

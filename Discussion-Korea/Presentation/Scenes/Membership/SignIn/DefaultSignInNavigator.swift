@@ -52,4 +52,15 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
         navigator.toResetPassword()
     }
 
+    func toErrorAlert(_ error: Error) {
+        let alert = UIAlertController(
+            title: "로그인 실패",
+            message: "이메일과 비밀번호를 확인해주세요",
+            preferredStyle: .alert
+        )
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        self.presentingViewController?.present(alert, animated: true)
+    }
+
 }

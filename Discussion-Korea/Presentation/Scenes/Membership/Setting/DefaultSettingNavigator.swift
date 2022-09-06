@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/07/19.
 //
 
+import FirebaseAuth
 import UIKit
 
 final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
@@ -27,8 +28,8 @@ final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
     func toSetting() {
         self.makeOpaqueNavigationBar()
         let settingViewController = SettingViewController()
-        settingViewController.contents = ["오픈소스 라이선스 이용고지"]
-        settingViewController.selected = [toOpenSource]
+        settingViewController.contents = ["오픈소스 라이선스 이용고지", "로그아웃", "탈퇴하기"]
+        settingViewController.selected = [toOpenSource, toSignOut, toResign]
         settingViewController.title = "설정"
         self.navigationController.pushViewController(settingViewController, animated: true)
     }
@@ -42,6 +43,14 @@ final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
     func toOpenSource() {
         let openSourceNavigator = DefaultOpenSourceNavigator(navigationController: self.navigationController)
         openSourceNavigator.toOpenSource()
+    }
+
+    func toSignOut() {
+        try? Auth.auth().signOut()
+    }
+
+    func toResign() {
+        print("탈퇴")
     }
 
 }

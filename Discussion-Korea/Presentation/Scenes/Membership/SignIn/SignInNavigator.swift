@@ -9,4 +9,5 @@ protocol SignInNavigator {
     func toSignIn()
     func toSignUp()
     func toResetPassword()
+    func toErrorAlert(_ error: Error)
 }

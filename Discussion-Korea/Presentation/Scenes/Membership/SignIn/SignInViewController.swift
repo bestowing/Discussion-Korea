@@ -14,6 +14,16 @@ final class SignInViewController: BaseViewController {
 
     var viewModel: SignInViewModel!
 
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.backgroundColor = .gray
+        indicator.layer.cornerRadius = 10.0
+        return indicator
+    }()
+
     private let idField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
@@ -71,6 +81,9 @@ final class SignInViewController: BaseViewController {
     }
 
     private func setSubViews() {
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
+
         let logoImageView: UIImageView = {
             let imageView = UIImageView(image: UIImage(named: "round_logo.png"))
             return imageView
@@ -146,12 +159,18 @@ final class SignInViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = SignInViewModel.Input(
+            email: self.idField.rx.text.orEmpty.asDriver(),
+            password: self.passwordField.rx.text.orEmpty.asDriver(),
+            signInTrigger: self.loginButton.rx.tap.asDriver(),
             signUpTrigger: self.signUpButton.rx.tap
                 .asDriverOnErrorJustComplete(),
             resetPasswordTrigger: self.resetPasswordButton.rx.tap
                 .asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.loading.drive(self.activityIndicator.rx.isAnimating)
+            .disposed(by: self.disposeBag)
 
         output.events.drive()
             .disposed(by: self.disposeBag)

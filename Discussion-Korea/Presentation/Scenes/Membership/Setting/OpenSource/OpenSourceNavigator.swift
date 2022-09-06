@@ -37,6 +37,7 @@ final class DefaultOpenSourceNavigator: OpenSourceNavigator {
             "Firebase", "Kingfisher", "RxKeyboard", "RxSwift", "SideMenu", "SnapKit"
         ]
         openSourceViewController.selected = [toFirebase, toKingfisher, toRxKeyboard, toRxSwift, toSideMenu, toSnapKit]
+        openSourceViewController.title = "오픈소스 라이선스"
         self.navigationController.pushViewController(openSourceViewController, animated: true)
     }
 
