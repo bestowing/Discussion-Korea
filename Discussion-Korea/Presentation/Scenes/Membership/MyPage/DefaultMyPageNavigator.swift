@@ -48,10 +48,10 @@ final class DefaultMyPageNavigator: BaseNavigator, MyPageNavigator {
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?) {
         guard let presentingViewController = presentingViewController
         else { return }
-        let editProfileNavigator = DefaultEditProfileNavigator(
+        let navigator = EditProfileNavigator(
             services: self.services, presentedViewController: presentingViewController
         )
-        editProfileNavigator.toEditProfile(userID, nickname, profileURL)
+        navigator.toConfigureProfile(userID, nickname, profileURL)
     }
 
 }

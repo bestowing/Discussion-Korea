@@ -86,11 +86,14 @@ final class HomeViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = HomeViewModel.Input(
-            chartTrigger: self.chartButton.rx.tapGesture().when(.recognized).map { _ in }
+            chartTrigger: self.chartButton.rx.tapGesture().when(.recognized)
+                .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            lawTrigger: self.lawButton.rx.tapGesture().when(.recognized).map { _ in }
+            lawTrigger: self.lawButton.rx.tapGesture().when(.recognized)
+                .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            guideTrigger: self.guideButton.rx.tapGesture().when(.recognized).map { _ in }
+            guideTrigger: self.guideButton.rx.tapGesture().when(.recognized)
+                .mapToVoid()
                 .asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)

@@ -7,9 +7,10 @@
 
 protocol HomeNavigator {
 
-    func toHome()
+    func toHome(_ userID: String)
     func toChart()
     func toLaw()
     func toGuide()
+    func toOnboarding(_ userID: String)
 
 }

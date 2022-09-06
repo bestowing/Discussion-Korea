@@ -26,11 +26,13 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
 
     // MARK: - methods
 
-    func toHome() {
+    func toHome(_ userID: String) {
         let homeViewController = HomeViewController()
         self.navigationController.setNavigationBarHidden(true, animated: false)
         let homeViewModel = HomeViewModel(
-            navigator: self, userInfoUsecase: self.services.makeUserInfoUsecase()
+            userID: userID,
+            navigator: self,
+            userInfoUsecase: self.services.makeUserInfoUsecase()
         )
         homeViewController.viewModel = homeViewModel
         self.navigationController.pushViewController(homeViewController, animated: true)
@@ -64,6 +66,15 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
             services: self.services, presentedViewController: presentingViewController
         )
         navigator.toGuide()
+    }
+
+    func toOnboarding(_ userID: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = SetProfileNavigator(
+            services: self.services, presentedViewController: presentingViewController
+        )
+        navigator.toConfigureProfile(userID)
     }
 
 }

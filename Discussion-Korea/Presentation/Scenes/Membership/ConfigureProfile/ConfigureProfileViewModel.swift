@@ -1,5 +1,5 @@
 //
-//  EnterGuestViewModel.swift
+//  ConfigureProfileViewModel.swift
 //  Discussion-Korea
 //
 //  Created by 이청수 on 2022/05/26.
@@ -10,7 +10,7 @@ import Photos
 import RxSwift
 import RxCocoa
 
-final class EditProfileViewModel: ViewModelType {
+final class ConfigureProfileViewModel: ViewModelType {
 
     // MARK: - properties
 
@@ -18,7 +18,7 @@ final class EditProfileViewModel: ViewModelType {
     private let nickname: String?
     private let profileURL: URL?
 
-    private let navigator: EditProfileNavigator
+    private let navigator: ConfigureProfileNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
@@ -26,7 +26,7 @@ final class EditProfileViewModel: ViewModelType {
     init(userID: String,
          nickname: String?,
          profileURL: URL?,
-         navigator: EditProfileNavigator,
+         navigator: ConfigureProfileNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.userID = userID
         self.nickname = nickname
@@ -99,7 +99,7 @@ final class EditProfileViewModel: ViewModelType {
 
         let dismissEvent = Driver.of(submitEvent, input.exitTrigger)
             .merge()
-            .do(onNext: self.navigator.toMyPage)
+            .do(onNext: self.navigator.dismiss)
 
         let loading = activityTracker.asDriver()
         let errorEvent = errorTracker.asDriver()
@@ -120,7 +120,7 @@ final class EditProfileViewModel: ViewModelType {
 
 }
 
-extension EditProfileViewModel {
+extension ConfigureProfileViewModel {
 
     struct Input {
         let nickname: Driver<String>

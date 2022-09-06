@@ -12,13 +12,17 @@ final class HomeViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let userID: String
+
     private let navigator: HomeNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: HomeNavigator,
+    init(userID: String,
+         navigator: HomeNavigator,
          userInfoUsecase: UserInfoUsecase) {
+        self.userID = userID
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
     }
@@ -31,20 +35,20 @@ final class HomeViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let userID = self.userInfoUsecase.uid()
+        let myInfo = self.userInfoUsecase
+            .userInfo(userID: self.userID)
             .asDriverOnErrorJustComplete()
-
-        let myInfo = userID
-            .flatMap { [unowned self] userID in
-                self.userInfoUsecase
-                    .userInfo(userID: userID)
-                    .asDriverOnErrorJustComplete()
-            }
 
         let nickname = myInfo.compactMap { $0?.nickname }
             .map { $0 + "님, 안녕하세요 🇰🇷" }
 
         let day = myInfo.compactMap { $0?.registerAt }
+
+        let onboardingEvent = myInfo
+            .filter { $0 == nil }
+            .map { [unowned self] _ in self.userID }
+            .do(onNext: self.navigator.toOnboarding)
+            .mapToVoid()
 
         let chartEvent = input.chartTrigger
             .do(onNext: self.navigator.toChart)
@@ -55,7 +59,7 @@ final class HomeViewModel: ViewModelType {
         let guideEvent = input.guideTrigger
             .do(onNext: self.navigator.toGuide)
 
-        let events = Driver.of(chartEvent, lawEvent, guideEvent).merge()
+        let events = Driver.of(chartEvent, lawEvent, guideEvent, onboardingEvent).merge()
 
         return Output(
             nickname: nickname,

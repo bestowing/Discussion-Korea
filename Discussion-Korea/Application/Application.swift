@@ -37,15 +37,15 @@ final class Application {
         window.rootViewController = BaseViewController()
         window.makeKeyAndVisible()
         self.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-            if let _ = auth.currentUser {
-                self?.toMain(in: window)
+            if let currentUser = auth.currentUser {
+                self?.toMain(in: window, with: currentUser)
             } else {
                 self?.toSignIn(in: window)
             }
         }
     }
 
-    private func toMain(in window: UIWindow) {
+    private func toMain(in window: UIWindow, with currentUser: User) {
         let homeNavigationController = UINavigationController()
         let homeButton = UITabBarItem(
             title: "홈",
@@ -89,7 +89,7 @@ final class Application {
             myPageNavigationController
         ]
         tapBarController.tabBar.tintColor = .accentColor
-        homeNavigator.toHome()
+        homeNavigator.toHome(currentUser.uid)
         chatRoomListNavigator.toChatRoomList()
         myPageNavigator.toMyPage()
         window.rootViewController = tapBarController

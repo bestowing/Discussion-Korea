@@ -1,15 +1,15 @@
 //
-//  DefaultEnterGuestNavigator.swift
+//  DefaultSetProfileNavigator.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/07/19.
+//  Created by 이청수 on 2022/09/07.
 //
 
 import Photos
 import RxSwift
 import UIKit
 
-final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
+final class SetProfileNavigator: BaseNavigator, ConfigureProfileNavigator {
 
     // MARK: - properties
 
@@ -29,9 +29,9 @@ final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
 
     // MARK: - methods
 
-    func toEditProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {
-        let viewController = EditProfileViewController()
-        let viewModel = EditProfileViewModel(
+    func toConfigureProfile(_ userID: String, _ nickname: String? = nil, _ profileURL: URL? = nil) {
+        let viewController = SetProfileViewController()
+        let viewModel = ConfigureProfileViewModel(
             userID: userID,
             nickname: nickname,
             profileURL: profileURL,
@@ -45,7 +45,7 @@ final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
         self.presentingViewController = viewController
     }
 
-    func toMyPage() {
+    func dismiss() {
         self.presentedViewController.dismiss(animated: true)
     }
 
@@ -68,7 +68,7 @@ final class DefaultEditProfileNavigator: BaseNavigator, EditProfileNavigator {
     }
 
     func toImagePicker() -> Observable<URL?> {
-        // TODO: DefaultAddChatRoomNavigator의 코드와 중복됨
+        // TODO: 코드 중복됨
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self.imagePickerDelegate
