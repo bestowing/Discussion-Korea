@@ -10,7 +10,7 @@ import RxSwift
 import RxTest
 import XCTest
 
-final class EditProfileViewModelTests: XCTestCase {
+final class ConfigureProfileViewModelTests: XCTestCase {
 
     // MARK: - properties
 
@@ -19,7 +19,7 @@ final class EditProfileViewModelTests: XCTestCase {
 
     private var mockNavigator: MockEditProfileNavigator!
     private var userInfoUsecase: MockUserInfoUsecase!
-    private var viewModel: EditProfileViewModel!
+    private var viewModel: ConfigureProfileViewModel!
     private var disposeBag: DisposeBag!
     private var scheduler: TestScheduler!
 
@@ -29,7 +29,7 @@ final class EditProfileViewModelTests: XCTestCase {
         super.setUp()
         self.mockNavigator = MockEditProfileNavigator()
         self.userInfoUsecase = MockUserInfoUsecase()
-        self.viewModel = EditProfileViewModel(
+        self.viewModel = ConfigureProfileViewModel(
             userID: self.userId,
             nickname: self.nickname,
             profileURL: nil,
@@ -56,7 +56,7 @@ final class EditProfileViewModelTests: XCTestCase {
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
-        let input = EditProfileViewModel.Input(
+        let input = ConfigureProfileViewModel.Input(
             nickname: nicknameTestableDriver,
             exitTrigger: Driver.just(()),
             imageTrigger: Driver.just(()),
@@ -81,7 +81,7 @@ final class EditProfileViewModelTests: XCTestCase {
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
-        let input = EditProfileViewModel.Input(
+        let input = ConfigureProfileViewModel.Input(
             nickname: nicknameTestableDriver,
             exitTrigger: Driver.just(()),
             imageTrigger: Driver.just(()),
@@ -103,12 +103,12 @@ final class EditProfileViewModelTests: XCTestCase {
 
 }
 
-extension EditProfileViewModelTests {
+extension ConfigureProfileViewModelTests {
 
-    final class MockEditProfileNavigator: EditProfileNavigator {
+    final class MockEditProfileNavigator: ConfigureProfileNavigator {
 
-        func toEditProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {}
-        func toMyPage() {}
+        func toConfigureProfile(_ userID: String, _ nickname: String?, _ profileURL: URL?) {}
+        func dismiss() {}
         func toSettingAppAlert() {}
 
         func toImagePicker() -> Observable<URL?> {
