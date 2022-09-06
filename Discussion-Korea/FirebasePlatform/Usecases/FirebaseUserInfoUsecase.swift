@@ -57,7 +57,15 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func register(userInfo: (String, String)) -> Observable<Void> {
-        return reference.register(userInfo: userInfo)
+        return self.reference.register(userInfo: userInfo)
+    }
+
+    func signIn(userInfo: (email: String, password: String)) -> Observable<Void> {
+        return self.reference.signIn(userInfo: userInfo)
+    }
+
+    func signOut() -> Observable<Void> {
+        return self.reference.signOut()
     }
 
     func add(userInfo: (String, String, URL?)) -> Observable<Void> {

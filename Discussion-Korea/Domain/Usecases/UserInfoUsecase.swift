@@ -14,6 +14,8 @@ protocol UserInfoUsecase {
     func isValid(password: String) -> Observable<FormResult>
     func isValid(nickname: String) -> Observable<FormResult>
     func register(userInfo: (String, String)) -> Observable<Void>
+    func signIn(userInfo: (email: String, password: String)) -> Observable<Void>
+    func signOut() -> Observable<Void>
 
     func add(roomID: String, userID: String) -> Observable<Void>
     func add(roomID: String, userID: String, side: Side) -> Observable<Void>
