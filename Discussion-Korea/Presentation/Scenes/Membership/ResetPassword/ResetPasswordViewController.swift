@@ -14,6 +14,16 @@ final class ResetPasswordViewController: BaseViewController {
 
     var viewModel: ResetPasswordViewModel!
 
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.backgroundColor = .gray
+        indicator.layer.cornerRadius = 10.0
+        return indicator
+    }()
+
     private let exitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "xmark")
@@ -22,13 +32,12 @@ final class ResetPasswordViewController: BaseViewController {
         return button
     }()
 
-    private let idField: UITextField = {
-        let textField = UITextField()
+    private let idField: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "이메일"
         textField.keyboardType = .emailAddress
         textField.font = .preferredFont(forTextStyle: .body)
-        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
@@ -36,6 +45,7 @@ final class ResetPasswordViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("재설정 메일 보내기", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.red, for: .disabled)
         button.backgroundColor = UIColor.accentColor
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
@@ -54,9 +64,12 @@ final class ResetPasswordViewController: BaseViewController {
     }
 
     private func setSubViews() {
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
+
         let descriptionLabel: UILabel = {
             let label = ResizableLabel()
-            label.text = "비밀번호를 재설정할 수 있는 메일을 보내드려요"
+            label.text = "메일로 비밀번호를 재설정할 수 있는 링크를 보내드려요"
             label.font = UIFont.preferredFont(forTextStyle: .caption1)
             label.textColor = .secondaryLabel
             return label
@@ -88,9 +101,23 @@ final class ResetPasswordViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = ResetPasswordViewModel.Input(
+            email: self.idField.rx.text.orEmpty.asDriver().skip(1),
+            sendTrigger: self.resetButton.rx.tap.asDriver(),
             exitTrigger: self.exitButton.rx.tap.asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.loading.drive(self.activityIndicator.rx.isAnimating)
+            .disposed(by: self.disposeBag)
+
+        output.emailResult.drive(self.idField.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
+
+        output.sendEnabled.drive(self.resetButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
+        output.sendEvent.drive(self.idField.rx.sendEvent)
+            .disposed(by: self.disposeBag)
 
         output.events.drive()
             .disposed(by: self.disposeBag)

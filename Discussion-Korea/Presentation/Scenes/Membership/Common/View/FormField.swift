@@ -51,7 +51,7 @@ final class FormField: UIView {
 
     fileprivate let feedbackMessageLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .preferredFont(forTextStyle: .caption1)
         return label
     }()
 
@@ -117,6 +117,12 @@ extension Reactive where Base: FormField {
                 inputField.feedbackMessageLabel.text = reason
                 inputField.feedbackMessageLabel.textColor = .red
             }
+        }
+    }
+
+    var sendEvent: Binder<Void> {
+        return Binder(self.base) { inputField, _ in
+            inputField.textField.text = ""
         }
     }
 

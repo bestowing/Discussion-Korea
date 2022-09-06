@@ -16,6 +16,7 @@ protocol UserInfoUsecase {
     func register(userInfo: (String, String)) -> Observable<Void>
     func signIn(userInfo: (email: String, password: String)) -> Observable<Void>
     func signOut() -> Observable<Void>
+    func resetPassword(_ email: String) -> Observable<Void>
 
     func add(roomID: String, userID: String) -> Observable<Void>
     func add(roomID: String, userID: String, side: Side) -> Observable<Void>

@@ -172,6 +172,9 @@ final class SignInViewController: BaseViewController {
         output.loading.drive(self.activityIndicator.rx.isAnimating)
             .disposed(by: self.disposeBag)
 
+        output.signInEnabled.drive(self.loginButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
         output.events.drive()
             .disposed(by: self.disposeBag)
     }

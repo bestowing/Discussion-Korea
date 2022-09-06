@@ -5,7 +5,6 @@
 //  Created by 이청수 on 2022/08/31.
 //
 
-import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 import RxSwift
@@ -175,62 +174,6 @@ final class UserInfoReference {
                     .setValue(values)
                 subscribe.onNext(())
                 subscribe.onCompleted()
-            }
-            return Disposables.create()
-        }
-    }
-
-}
-
-// MARK: - membership
-
-extension UserInfoReference {
-
-    /// 회원 등록
-    func register(userInfo: (email: String, password: String)) -> Observable<Void> {
-        return Observable.create { subscribe in
-            Auth.auth()
-                .createUser(withEmail: userInfo.email, password: userInfo.password) { authResult, error in
-                    guard let _ = authResult,
-                          error == nil
-                    else {
-                        subscribe.onError(RefereceError.signUpError)
-                        return
-                    }
-                    subscribe.onNext(())
-                    subscribe.onCompleted()
-                }
-            return Disposables.create()
-        }
-    }
-
-    /// 로그인
-    func signIn(userInfo: (email: String, password: String)) -> Observable<Void> {
-        return Observable.create { subscribe in
-            Auth.auth()
-                .signIn(withEmail: userInfo.email, password: userInfo.password) { authResult, error in
-                    guard let _ = authResult,
-                          error == nil
-                    else {
-                        subscribe.onError(RefereceError.signUpError)
-                        return
-                    }
-                    subscribe.onNext(())
-                    subscribe.onCompleted()
-                }
-            return Disposables.create()
-        }
-    }
-
-    /// 로그아웃
-    func signOut() -> Observable<Void> {
-        return Observable.create { subscribe in
-            do {
-                try Auth.auth().signOut()
-                subscribe.onNext(())
-                subscribe.onCompleted()
-            } catch let error {
-                subscribe.onError(error)
             }
             return Disposables.create()
         }

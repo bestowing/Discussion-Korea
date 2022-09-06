@@ -14,6 +14,8 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
+    private weak var presentingViewController: UIViewController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
@@ -31,6 +33,7 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.presentedViewController.present(navigationController, animated: true)
+        self.presentingViewController = viewController
     }
 
     func toSignIn() {
@@ -38,6 +41,8 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
     }
 
     func toErrorAlert(_ error: Error) {
+        guard let presentingViewController = presentingViewController
+        else { return }
         let alert = UIAlertController(
             title: "오류!",
             message: "오류가 발생했습니다. 재시도해주세요..",
@@ -45,7 +50,7 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
         )
         let confirm = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirm)
-        self.presentedViewController.present(alert, animated: true)
+        presentingViewController.present(alert, animated: true)
     }
 
 }

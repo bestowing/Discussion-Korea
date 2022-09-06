@@ -8,4 +8,6 @@
 protocol ResetPasswordNavigator {
     func toResetPassword()
     func toSignIn()
+    func toErrorAlert(_ error: Error)
+    func toSuccessAlert()
 }

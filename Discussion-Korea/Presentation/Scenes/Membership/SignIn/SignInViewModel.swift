@@ -44,6 +44,10 @@ final class SignInViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let canSignIn = userInfo.map { email, password in
+            return !email.isEmpty && !password.isEmpty
+        }
+
         let signUpEvent = input.signUpTrigger
             .do(onNext: self.navigator.toSignUp)
 
@@ -56,7 +60,11 @@ final class SignInViewModel: ViewModelType {
 
         let events = Driver.of(signUpEvent, resetPasswordEvent, registerEvent, errorEvent).merge()
 
-        return Output(loading: activityTracker.asDriver(), events: events)
+        return Output(
+            loading: activityTracker.asDriver(),
+            signInEnabled: canSignIn,
+            events: events
+        )
     }
 
 }
@@ -73,6 +81,7 @@ extension SignInViewModel {
 
     struct Output {
         let loading: Driver<Bool>
+        let signInEnabled: Driver<Bool>
         let events: Driver<Void>
     }
 

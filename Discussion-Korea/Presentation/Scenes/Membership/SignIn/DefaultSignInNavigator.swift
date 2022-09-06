@@ -53,6 +53,8 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
     }
 
     func toErrorAlert(_ error: Error) {
+        guard let presentingViewController = presentingViewController
+        else { return }
         let alert = UIAlertController(
             title: "로그인 실패",
             message: "이메일과 비밀번호를 확인해주세요",
@@ -60,7 +62,7 @@ final class DefaultSignInNavigator: BaseNavigator, SignInNavigator {
         )
         let confirm = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirm)
-        self.presentingViewController?.present(alert, animated: true)
+        presentingViewController.present(alert, animated: true)
     }
 
 }

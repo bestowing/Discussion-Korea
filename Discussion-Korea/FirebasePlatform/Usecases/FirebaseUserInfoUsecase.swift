@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/05/02.
 //
 
+import FirebaseAuth
 import Foundation
 import RxSwift
 
@@ -56,16 +57,69 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
+    /// 회원 등록
     func register(userInfo: (String, String)) -> Observable<Void> {
-        return self.reference.register(userInfo: userInfo)
+        return Observable.create { subscribe in
+            Auth.auth()
+                .createUser(withEmail: userInfo.0, password: userInfo.1) { authResult, error in
+                    guard let _ = authResult,
+                          error == nil
+                    else {
+                        subscribe.onError(RefereceError.signUpError)
+                        return
+                    }
+                    subscribe.onNext(())
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
     }
 
+    /// 로그인
     func signIn(userInfo: (email: String, password: String)) -> Observable<Void> {
-        return self.reference.signIn(userInfo: userInfo)
+        return Observable.create { subscribe in
+            Auth.auth()
+                .signIn(withEmail: userInfo.email, password: userInfo.password) { authResult, error in
+                    guard let _ = authResult,
+                          error == nil
+                    else {
+                        subscribe.onError(RefereceError.signUpError)
+                        return
+                    }
+                    subscribe.onNext(())
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
     }
 
+    /// 로그아웃
     func signOut() -> Observable<Void> {
-        return self.reference.signOut()
+        return Observable.create { subscribe in
+            do {
+                try Auth.auth().signOut()
+                subscribe.onNext(())
+                subscribe.onCompleted()
+            } catch let error {
+                subscribe.onError(error)
+            }
+            return Disposables.create()
+        }
+    }
+
+    func resetPassword(_ email: String) -> Observable<Void> {
+        return Observable.create { subscribe in
+            Auth.auth().sendPasswordReset(withEmail: email) { error in
+                guard error == nil
+                else {
+                    subscribe.onError(error!)
+                    return
+                }
+                subscribe.onNext(())
+                subscribe.onCompleted()
+            }
+            return Disposables.create()
+        }
     }
 
     func add(userInfo: (String, String, URL?)) -> Observable<Void> {
