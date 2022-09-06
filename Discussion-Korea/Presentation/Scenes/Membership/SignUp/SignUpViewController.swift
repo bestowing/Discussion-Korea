@@ -59,14 +59,6 @@ final class SignUpViewController: BaseViewController {
         return textField
     }()
 
-    private let nicknameField: FormField = {
-        let textField = FormField()
-        textField.borderStyle = .roundedRect
-        textField.placeholder = "닉네임"
-        textField.font = .preferredFont(forTextStyle: .body)
-        return textField
-    }()
-
     private let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("회원가입", for: .normal)
@@ -123,7 +115,6 @@ final class SignUpViewController: BaseViewController {
                     self.idField,
                     self.passwordField,
                     self.passwordCheckField,
-                    self.nicknameField,
                     self.registerButton
                 ]
             )
@@ -152,7 +143,6 @@ final class SignUpViewController: BaseViewController {
             email: self.idField.rx.text.orEmpty.asDriver().skip(1),
             password: self.passwordField.rx.text.orEmpty.asDriver().skip(1),
             passwordCheck: self.passwordCheckField.rx.text.orEmpty.asDriver().skip(1),
-            nickname: self.nicknameField.rx.text.orEmpty.asDriver().skip(1),
             register: self.registerButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
@@ -167,9 +157,6 @@ final class SignUpViewController: BaseViewController {
             .disposed(by: self.disposeBag)
 
         output.passwordCheckResult.drive(self.passwordCheckField.rx.wrongMessage)
-            .disposed(by: self.disposeBag)
-
-        output.nicknameResult.drive(self.nicknameField.rx.wrongMessage)
             .disposed(by: self.disposeBag)
 
         output.registerEnabled.drive(self.registerButton.rx.isEnabled)

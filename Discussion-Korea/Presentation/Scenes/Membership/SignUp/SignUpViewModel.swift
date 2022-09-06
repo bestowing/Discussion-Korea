@@ -53,16 +53,10 @@ final class SignUpViewModel: ViewModelType {
                 $0 == $1 ? FormResult.success : FormResult.failure("비밀번호가 일치하지 않습니다")
             }
 
-        let nicknameResult = input.nickname
-            .flatMapLatest { [unowned self] nickname in
-                self.userInfoUsecase.isValid(nickname: nickname)
-                    .asDriverOnErrorJustComplete()
-            }
-
         let canRegister = Driver.combineLatest(
-            emailResult, passwordResult, passwordCheckResult, nicknameResult
+            emailResult, passwordResult, passwordCheckResult
         ) {
-            return $0 == FormResult.success && $1 == FormResult.success && $2 == FormResult.success && $3 == FormResult.success
+            return $0 == FormResult.success && $1 == FormResult.success && $2 == FormResult.success
         }
 
         let loading = activityTracker.asDriver()
@@ -89,7 +83,6 @@ final class SignUpViewModel: ViewModelType {
             emailResult: emailResult,
             passwordResult: passwordResult,
             passwordCheckResult: passwordCheckResult,
-            nicknameResult: nicknameResult,
             registerEnabled: canRegister.startWith(false),
             events: events
         )
@@ -104,7 +97,6 @@ extension SignUpViewModel {
         let email: Driver<String>
         let password: Driver<String>
         let passwordCheck: Driver<String>
-        let nickname: Driver<String>
         let register: Driver<Void>
     }
 
@@ -113,7 +105,6 @@ extension SignUpViewModel {
         let emailResult: Driver<FormResult>
         let passwordResult: Driver<FormResult>
         let passwordCheckResult: Driver<FormResult>
-        let nicknameResult: Driver<FormResult>
         let registerEnabled: Driver<Bool>
         let events: Driver<Void>
     }
