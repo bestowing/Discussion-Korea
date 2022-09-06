@@ -8,4 +8,5 @@
 protocol SignUpNavigator {
     func toSignUp()
     func toSignIn()
+    func toErrorAlert(_ error: Error)
 }

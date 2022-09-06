@@ -10,6 +10,11 @@ import RxSwift
 
 protocol UserInfoUsecase {
 
+    func isValid(email: String) -> Observable<FormResult>
+    func isValid(password: String) -> Observable<FormResult>
+    func isValid(nickname: String) -> Observable<FormResult>
+    func register(userInfo: (String, String)) -> Observable<Void>
+
     func add(roomID: String, userID: String) -> Observable<Void>
     func add(roomID: String, userID: String, side: Side) -> Observable<Void>
     func add(userInfo: (String, String, URL?)) -> Observable<Void>

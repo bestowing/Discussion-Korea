@@ -5,6 +5,7 @@
 //  Created by 이청수 on 2022/08/31.
 //
 
+import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 import RxSwift
@@ -21,6 +22,26 @@ final class UserInfoReference {
         self.reference = reference
         self.storageReference = storageReference
         self.dateFormatter = dateFormatter
+    }
+
+    /// 회원 등록
+    func register(
+        userInfo: (email: String, password: String)
+    ) -> Observable<Void> {
+        return Observable.create { subscribe in
+            Auth.auth()
+                .createUser(withEmail: userInfo.email, password: userInfo.password) { authResult, error in
+                    guard let _ = authResult,
+                          error == nil
+                    else {
+                        subscribe.onError(RefereceError.signUpError)
+                        return
+                    }
+                    subscribe.onNext(())
+                    subscribe.onCompleted()
+                }
+            return Disposables.create()
+        }
     }
 
     /// userID로 UserInfo 요청

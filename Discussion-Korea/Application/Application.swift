@@ -35,7 +35,7 @@ final class Application {
         UINavigationBar.appearance().standardAppearance = appearance
 
         self.handle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-            if let _ = user {
+            if let _ = auth.currentUser {
                 self?.toMain(in: window)
             } else {
                 self?.toSignIn(in: window)

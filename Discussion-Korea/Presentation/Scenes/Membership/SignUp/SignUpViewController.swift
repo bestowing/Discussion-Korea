@@ -14,6 +14,16 @@ final class SignUpViewController: BaseViewController {
 
     var viewModel: SignUpViewModel!
 
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.backgroundColor = .gray
+        indicator.layer.cornerRadius = 10.0
+        return indicator
+    }()
+
     private let exitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "xmark")
@@ -22,49 +32,46 @@ final class SignUpViewController: BaseViewController {
         return button
     }()
 
-    private let idField: UITextField = {
-        let textField = UITextField()
+    private let idField: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "이메일"
         textField.keyboardType = .emailAddress
         textField.font = .preferredFont(forTextStyle: .body)
-        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
-    private let passwordField: UITextField = {
-        let textField = UITextField()
+    private let passwordField: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "비밀번호"
-        textField.isSecureTextEntry = true
+        textField.isPassword = true
         textField.font = .preferredFont(forTextStyle: .body)
-        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
-    private let passwordCheckField: UITextField = {
-        let textField = UITextField()
+    private let passwordCheckField: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "비밀번호 확인"
-        textField.isSecureTextEntry = true
+        textField.isPassword = true
         textField.font = .preferredFont(forTextStyle: .body)
-        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
-    private let nicknameField: UITextField = {
-        let textField = UITextField()
+    private let nicknameField: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "닉네임"
         textField.font = .preferredFont(forTextStyle: .body)
-        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
-    private let resetButton: UIButton = {
+    private let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("회원가입", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.red, for: .disabled)
         button.backgroundColor = UIColor.accentColor
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
@@ -117,7 +124,7 @@ final class SignUpViewController: BaseViewController {
                     self.passwordField,
                     self.passwordCheckField,
                     self.nicknameField,
-                    self.resetButton
+                    self.registerButton
                 ]
             )
             stackView.axis = .vertical
@@ -138,9 +145,32 @@ final class SignUpViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = SignUpViewModel.Input(
-            exitTrigger: self.exitButton.rx.tap.asDriverOnErrorJustComplete()
+            exitTrigger: self.exitButton.rx.tap.asDriverOnErrorJustComplete(),
+            email: self.idField.rx.text.orEmpty.asDriver(),
+            password: self.passwordField.rx.text.orEmpty.asDriver(),
+            passwordCheck: self.passwordCheckField.rx.text.orEmpty.asDriver(),
+            nickname: self.nicknameField.rx.text.orEmpty.asDriver(),
+            register: self.registerButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.loading.drive(self.activityIndicator.rx.isAnimating)
+            .disposed(by: self.disposeBag)
+
+        output.emailResult.drive(self.idField.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
+
+        output.passwordResult.drive(self.passwordField.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
+
+        output.passwordCheckResult.drive(self.passwordCheckField.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
+
+        output.nicknameResult.drive(self.nicknameField.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
+
+        output.registerEnabled.drive(self.registerButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
 
         output.events.drive()
             .disposed(by: self.disposeBag)

@@ -9,11 +9,17 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class InputField: UIView {
+final class FormField: UIView {
 
     // MARK: - properties
 
-    var placeHolder: String = "" {
+    var isPassword: Bool = false {
+        willSet {
+            self.textField.isSecureTextEntry = newValue
+        }
+    }
+
+    var placeholder: String = "" {
         willSet {
             self.textField.placeholder = newValue
         }
@@ -43,8 +49,9 @@ final class InputField: UIView {
         return textField
     }()
 
-    fileprivate let wrongMessageLabel: UILabel = {
+    fileprivate let feedbackMessageLabel: UILabel = {
         let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
 
@@ -69,26 +76,46 @@ final class InputField: UIView {
 
     private func setSubviews() {
         self.stackView.addArrangedSubview(self.textField)
+        self.stackView.addArrangedSubview(self.feedbackMessageLabel)
         self.addSubview(self.stackView)
         self.stackView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 
 }
 
-extension Reactive where Base: InputField {
+extension Reactive where Base: FormField {
 
     var text: ControlProperty<String?> {
         return base.textField.rx.text
     }
 
-    var wrongMessage: Binder<String?> {
-        return Binder(self.base) { inputField, message in
-            guard let message = message
+    var wrongMessage: Binder<FormResult?> {
+        return Binder(self.base) { inputField, formResult in
+            guard let formResult = formResult
             else {
-//                inputField.stackView.removeArrangedSubview(<#T##view: UIView##UIView#>)
+                if inputField.stackView
+                    .arrangedSubviews
+                    .contains(inputField.feedbackMessageLabel) {
+                    inputField.stackView
+                        .removeArrangedSubview(inputField.feedbackMessageLabel)
+                    inputField.feedbackMessageLabel
+                        .removeFromSuperview()
+                }
                 return
+            }
+            if !inputField.stackView
+                .arrangedSubviews
+                .contains(inputField.feedbackMessageLabel) {
+                inputField.stackView.addArrangedSubview(inputField.feedbackMessageLabel)
+            }
+            switch formResult {
+            case .success:
+                inputField.feedbackMessageLabel.text = ""
+            case .failure(let reason):
+                inputField.feedbackMessageLabel.text = reason
+                inputField.feedbackMessageLabel.textColor = .red
             }
         }
     }

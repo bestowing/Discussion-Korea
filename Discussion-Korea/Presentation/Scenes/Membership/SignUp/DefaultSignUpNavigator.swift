@@ -37,4 +37,15 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
         self.presentedViewController.dismiss(animated: true)
     }
 
+    func toErrorAlert(_ error: Error) {
+        let alert = UIAlertController(
+            title: "오류!",
+            message: "오류가 발생했습니다. 재시도해주세요..",
+            preferredStyle: .alert
+        )
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        self.presentedViewController.present(alert, animated: true)
+    }
+
 }
