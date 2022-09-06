@@ -43,6 +43,10 @@ extension SignUpViewModel {
 
     struct Input {
         let exitTrigger: Driver<Void>
+        let email: Driver<String>
+        let password: Driver<String>
+        let passwordCheck: Driver<String>
+        let nickname: Driver<String>
     }
 
     struct Output {
