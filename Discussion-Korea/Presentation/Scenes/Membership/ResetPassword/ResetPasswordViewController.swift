@@ -45,8 +45,7 @@ final class ResetPasswordViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("재설정 메일 보내기", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColor.red, for: .disabled)
-        button.backgroundColor = UIColor.accentColor
+        button.setTitleColor(UIColor.white, for: .disabled)
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         return button
@@ -113,7 +112,11 @@ final class ResetPasswordViewController: BaseViewController {
         output.emailResult.drive(self.idField.rx.wrongMessage)
             .disposed(by: self.disposeBag)
 
-        output.sendEnabled.drive(self.resetButton.rx.isEnabled)
+        output.sendEnabled
+            .do(onNext: { [unowned self] isEnabled in
+                self.resetButton.backgroundColor = isEnabled ? .accentColor : .systemGray5
+            })
+            .drive(self.resetButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 
         output.sendEvent.drive(self.idField.rx.sendEvent)

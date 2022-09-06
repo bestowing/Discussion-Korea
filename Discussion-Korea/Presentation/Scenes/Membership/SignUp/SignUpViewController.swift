@@ -63,8 +63,8 @@ final class SignUpViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("회원가입", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColor.red, for: .disabled)
-        button.backgroundColor = UIColor.accentColor
+        button.setTitleColor(UIColor.white, for: .disabled)
+        button.backgroundColor = UIColor.systemGray5
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         return button
@@ -159,7 +159,11 @@ final class SignUpViewController: BaseViewController {
         output.passwordCheckResult.drive(self.passwordCheckField.rx.wrongMessage)
             .disposed(by: self.disposeBag)
 
-        output.registerEnabled.drive(self.registerButton.rx.isEnabled)
+        output.registerEnabled
+            .do(onNext: { [unowned self] isEnabled in
+                self.registerButton.backgroundColor = isEnabled ? .accentColor : .systemGray5
+            })
+            .drive(self.registerButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 
         output.events.drive()

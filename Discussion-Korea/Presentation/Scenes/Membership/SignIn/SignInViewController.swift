@@ -48,7 +48,7 @@ final class SignInViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("로그인", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor.accentColor
+        button.setTitleColor(UIColor.white, for: .disabled)
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         return button
@@ -172,7 +172,11 @@ final class SignInViewController: BaseViewController {
         output.loading.drive(self.activityIndicator.rx.isAnimating)
             .disposed(by: self.disposeBag)
 
-        output.signInEnabled.drive(self.loginButton.rx.isEnabled)
+        output.signInEnabled
+            .do(onNext: { [unowned self] isEnabled in
+                self.loginButton.backgroundColor = isEnabled ? .accentColor : .systemGray5
+            })
+            .drive(self.loginButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 
         output.events.drive()
