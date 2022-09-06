@@ -26,9 +26,10 @@ final class DefaultMyPageNavigator: BaseNavigator, MyPageNavigator {
 
     // MARK: - methods
 
-    func toMyPage() {
+    func toMyPage(_ userID: String) {
         let myPageViewController = MyPageViewController()
         let myPageViewModel = MyPageViewModel(
+            userID: userID,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )

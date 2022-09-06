@@ -9,7 +9,7 @@ import Foundation
 
 protocol MyPageNavigator {
 
-    func toMyPage()
+    func toMyPage(_ userID: String)
     func toSetting()
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?)
 

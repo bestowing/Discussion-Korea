@@ -90,8 +90,8 @@ final class Application {
         ]
         tapBarController.tabBar.tintColor = .accentColor
         homeNavigator.toHome(currentUser.uid)
-        chatRoomListNavigator.toChatRoomList()
-        myPageNavigator.toMyPage()
+        chatRoomListNavigator.toChatRoomList(currentUser.uid)
+        myPageNavigator.toMyPage(currentUser.uid)
         window.rootViewController = tapBarController
     }
 

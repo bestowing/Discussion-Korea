@@ -12,13 +12,16 @@ final class MyPageViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let userID: String
     private let navigator: MyPageNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: MyPageNavigator,
+    init(userID: String,
+         navigator: MyPageNavigator,
          userInfoUsecase: UserInfoUsecase) {
+        self.userID = userID
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
     }
@@ -31,16 +34,9 @@ final class MyPageViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let userID = self.userInfoUsecase.uid()
+        let myInfo = self.userInfoUsecase
+            .userInfo(userID: self.userID)
             .asDriverOnErrorJustComplete()
-
-        let myInfo = userID
-            .flatMap { [unowned self] userID in
-                // TODO: 에러처리 필요!
-                self.userInfoUsecase
-                    .userInfo(userID: userID)
-                    .asDriverOnErrorJustComplete()
-            }
 
         let profileURL = myInfo.compactMap { $0?.profileURL }
 

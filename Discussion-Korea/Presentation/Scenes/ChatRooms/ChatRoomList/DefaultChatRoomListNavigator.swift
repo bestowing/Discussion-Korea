@@ -26,9 +26,10 @@ final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
 
     // MARK: - methods
 
-    func toChatRoomList() {
+    func toChatRoomList(_ userID: String) {
         let chatRoomListViewController = ChatRoomListViewController()
         let chatRoomListViewModel = ChatRoomListViewModel(
+            userID: userID,
             navigator: self,
             chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
             userInfoUsecase: self.services.makeUserInfoUsecase()

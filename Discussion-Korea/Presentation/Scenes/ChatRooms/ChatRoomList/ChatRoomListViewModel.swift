@@ -12,15 +12,18 @@ final class ChatRoomListViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let userID: String
     private let navigator: ChatRoomListNavigator
     private let chatRoomsUsecase: ChatRoomsUsecase
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(navigator: ChatRoomListNavigator,
+    init(userID: String,
+         navigator: ChatRoomListNavigator,
          chatRoomsUsecase: ChatRoomsUsecase,
          userInfoUsecase: UserInfoUsecase) {
+        self.userID = userID
         self.navigator = navigator
         self.chatRoomsUsecase = chatRoomsUsecase
         self.userInfoUsecase = userInfoUsecase
@@ -34,21 +37,8 @@ final class ChatRoomListViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let uid = self.userInfoUsecase
-            .uid()
-            .asDriverOnErrorJustComplete()
-
-        let isGuest = uid
-            .flatMapLatest { uid in
-                self.userInfoUsecase.userInfo(userID: uid)
-                    .asDriverOnErrorJustComplete()
-            }
-            .map { $0 == nil }
-
         let addChatRoomEvent = input.createChatRoomTrigger
-            .withLatestFrom(isGuest)
-            .filter { !$0 }
-            .withLatestFrom(uid)
+            .map { [unowned self] _ in self.userID }
             .do(onNext: self.navigator.toAddChatRoom)
 
         let chatRooms = input.trigger
@@ -96,10 +86,10 @@ final class ChatRoomListViewModel: ViewModelType {
             }
 
         let enterEvent = input.selection
-            .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) -> ChatRoom in
+            .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) in
                 return chatRooms[indexPath.item].chatRoom
             }
-            .withLatestFrom(uid) { ($1, $0) }
+            .map { [unowned self] chatRoom in (self.userID, chatRoom) }
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
