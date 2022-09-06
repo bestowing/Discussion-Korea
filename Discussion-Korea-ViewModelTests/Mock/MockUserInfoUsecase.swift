@@ -10,14 +10,21 @@ import RxSwift
 
 final class MockUserInfoUsecase: UserInfoUsecase {
 
-    // MARK: properties
+    // MARK: - properties
+
+    var emailValidStream: Observable<FormResult>
+    var passwordValidStream: Observable<FormResult>
+    var nicknameValidStream: Observable<FormResult>
+    var registerStream: Observable<Void>
+    var signInStream: Observable<Void>
+    var signOutStream: Observable<Void>
+    var resetPasswordStream: Observable<Void>
 
     var addEventStream: Observable<Void>
     var addSideEventStream: Observable<Void>
     var addUserInfoStream: Observable<Void>
     var clearSideStream: Observable<Void>
     var voteStream: Observable<Void>
-    var uidStream: Observable<String>
     var roomUserInfoStream: Observable<Side?>
     var userInfosStream: Observable<[String : UserInfo]>
     var userInfoStream: Observable<UserInfo?>
@@ -27,12 +34,19 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     // MARK: - init/deinit
 
     init() {
+        self.emailValidStream = PublishSubject<FormResult>.init()
+        self.passwordValidStream = PublishSubject<FormResult>.init()
+        self.nicknameValidStream = PublishSubject<FormResult>.init()
+        self.registerStream = PublishSubject<Void>.init()
+        self.signInStream = PublishSubject<Void>.init()
+        self.signOutStream = PublishSubject<Void>.init()
+        self.resetPasswordStream = PublishSubject<Void>.init()
+
         self.addEventStream = PublishSubject<Void>.init()
         self.addSideEventStream = PublishSubject<Void>.init()
         self.addUserInfoStream = PublishSubject<Void>.init()
         self.clearSideStream = PublishSubject<Void>.init()
         self.voteStream = PublishSubject<Void>.init()
-        self.uidStream = PublishSubject<String>.init()
         self.roomUserInfoStream = PublishSubject<Side?>.init()
         self.userInfosStream = PublishSubject<[String : UserInfo]>.init()
         self.userInfoStream = PublishSubject<UserInfo?>.init()
@@ -41,6 +55,34 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     }
 
     // MARK: - methods
+
+    func isValid(email: String) -> Observable<FormResult> {
+        return self.emailValidStream
+    }
+    
+    func isValid(password: String) -> Observable<FormResult> {
+        return self.passwordValidStream
+    }
+    
+    func isValid(nickname: String) -> Observable<FormResult> {
+        return self.nicknameValidStream
+    }
+    
+    func register(userInfo: (String, String)) -> Observable<Void> {
+        return self.registerStream
+    }
+    
+    func signIn(userInfo: (email: String, password: String)) -> Observable<Void> {
+        return self.signInStream
+    }
+    
+    func signOut() -> Observable<Void> {
+        return self.signOutStream
+    }
+    
+    func resetPassword(_ email: String) -> Observable<Void> {
+        return self.resetPasswordStream
+    }
 
     func add(roomID: String, userID: String) -> Observable<Void> {
         return self.addEventStream
@@ -60,10 +102,6 @@ final class MockUserInfoUsecase: UserInfoUsecase {
 
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
         return self.voteStream
-    }
-
-    func uid() -> Observable<String> {
-        return self.uidStream
     }
 
     func userInfo(roomID: String, with userID: String) -> Observable<Side?> {

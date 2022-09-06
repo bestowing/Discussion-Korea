@@ -9,7 +9,7 @@ import RxSwift
 
 final class MockChatRoomUsecase: ChatRoomsUsecase {
 
-    // MARK: properties
+    // MARK: - properties
 
     var chatRoomsStream: Observable<ChatRoom>
     var createChatRoomStream: Observable<Void>

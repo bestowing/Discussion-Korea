@@ -12,7 +12,9 @@ import XCTest
 
 final class HomeViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
+
+    private let userID = "testUID"
 
     private var mockNavigator: MockHomeNavigator!
     private var userInfoUsecase: MockUserInfoUsecase!
@@ -27,6 +29,7 @@ final class HomeViewModelTests: XCTestCase {
         self.mockNavigator = MockHomeNavigator()
         self.userInfoUsecase = MockUserInfoUsecase()
         self.viewModel = HomeViewModel(
+            userID: self.userID,
             navigator: self.mockNavigator,
             userInfoUsecase: self.userInfoUsecase
         )
@@ -48,11 +51,12 @@ final class HomeViewModelTests: XCTestCase {
 extension HomeViewModelTests {
 
     final class MockHomeNavigator: HomeNavigator {
-        func toHome() {}
+        func toHome(_ userID: String) {}
         func toEnterGame(_ userID: String) {}
         func toChart() {}
         func toLaw() {}
         func toGuide() {}
+        func toOnboarding(_ userID: String) {}
     }
 
 }

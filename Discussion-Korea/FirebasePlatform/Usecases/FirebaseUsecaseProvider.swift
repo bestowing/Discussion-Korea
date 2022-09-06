@@ -5,14 +5,11 @@
 //  Created by 이청수 on 2022/04/29.
 //
 
-import Firebase
-
 final class FirebaseUsecaseProvider: UsecaseProvider {
 
     private let referenceProvider: ReferenceProvider
 
     init() {
-        FirebaseApp.configure()
         self.referenceProvider = ReferenceProvider()
     }
 

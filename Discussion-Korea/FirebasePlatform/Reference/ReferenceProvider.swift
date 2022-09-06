@@ -61,7 +61,9 @@ final class ReferenceProvider {
     }
 
     func makeGuideReference() -> GuideReference {
-        return GuideReference()
+        return GuideReference(
+            reference: self.databaseReference
+        )
     }
 
     func makeUserInfoReference() -> UserInfoReference {

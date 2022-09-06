@@ -12,7 +12,7 @@ import XCTest
 
 final class ChatRoomSideMenuViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
 
     private let uid = "testUID"
     private let chatRoom = ChatRoom(uid: "uid", title: "test", adminUID: "testUID")
