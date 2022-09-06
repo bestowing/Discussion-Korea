@@ -146,10 +146,10 @@ final class SignUpViewController: BaseViewController {
 
         let input = SignUpViewModel.Input(
             exitTrigger: self.exitButton.rx.tap.asDriverOnErrorJustComplete(),
-            email: self.idField.rx.text.orEmpty.asDriver(),
-            password: self.passwordField.rx.text.orEmpty.asDriver(),
-            passwordCheck: self.passwordCheckField.rx.text.orEmpty.asDriver(),
-            nickname: self.nicknameField.rx.text.orEmpty.asDriver(),
+            email: self.idField.rx.text.orEmpty.asDriver().skip(1),
+            password: self.passwordField.rx.text.orEmpty.asDriver().skip(1),
+            passwordCheck: self.passwordCheckField.rx.text.orEmpty.asDriver().skip(1),
+            nickname: self.nicknameField.rx.text.orEmpty.asDriver().skip(1),
             register: self.registerButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
