@@ -129,6 +129,9 @@ final class SignUpViewController: BaseViewController {
             make.top.equalTo(nameLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
+
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        self.view.addGestureRecognizer(tap)
     }
 
     private func bindViewModel() {

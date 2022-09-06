@@ -79,6 +79,9 @@ final class ResetPasswordViewController: BaseViewController {
             make.top.equalTo(self.idField.snp.bottom).offset(10)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
+
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        self.view.addGestureRecognizer(tap)
     }
 
     private func bindViewModel() {

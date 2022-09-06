@@ -18,6 +18,7 @@ final class SignInViewController: BaseViewController {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "이메일"
+        textField.keyboardType = .emailAddress
         textField.font = .preferredFont(forTextStyle: .body)
         textField.adjustsFontForContentSizeCategory = true
         return textField
@@ -136,6 +137,9 @@ final class SignInViewController: BaseViewController {
             make.top.equalTo(self.signUpButton.snp.bottom).offset(5)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
+
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        self.view.addGestureRecognizer(tap)
     }
 
     private func bindViewModel() {
