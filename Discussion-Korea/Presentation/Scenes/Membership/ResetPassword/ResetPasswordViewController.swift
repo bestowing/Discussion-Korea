@@ -64,9 +64,6 @@ final class ResetPasswordViewController: BaseViewController {
     }
 
     private func setSubViews() {
-        self.view.addSubview(self.activityIndicator)
-        self.activityIndicator.center = self.view.center
-
         let descriptionLabel: UILabel = {
             let label = ResizableLabel()
             label.text = "메일로 비밀번호를 재설정할 수 있는 링크를 보내드려요"
@@ -95,6 +92,9 @@ final class ResetPasswordViewController: BaseViewController {
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)
+
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
     }
 
     private func bindViewModel() {

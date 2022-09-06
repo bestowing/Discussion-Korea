@@ -15,6 +15,8 @@ final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
     private let services: UsecaseProvider
     private let navigationController: UINavigationController
 
+    private weak var presentingViewController: UIViewController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
@@ -32,6 +34,7 @@ final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
         settingViewController.selected = [toOpenSource, toSignOut, toResign]
         settingViewController.title = "설정"
         self.navigationController.pushViewController(settingViewController, animated: true)
+        self.presentingViewController = settingViewController
     }
 
     private func makeOpaqueNavigationBar() {
@@ -46,11 +49,37 @@ final class DefaultSettingNavigator: BaseNavigator, SettingNavigator {
     }
 
     func toSignOut() {
-        try? Auth.auth().signOut()
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            self.failureAlert(job: "로그아웃")
+        }
     }
 
     func toResign() {
-        print("탈퇴")
+        guard let user = Auth.auth().currentUser
+        else {
+            self.failureAlert(job: "회원탈퇴")
+            return
+        }
+        user.delete { error in
+            if let _ = error {
+                self.failureAlert(job: "회원탈퇴")
+            }
+        }
+    }
+
+    private func failureAlert(job: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let alert = UIAlertController(
+            title: "오류!",
+            message: "\(job)중에 오류가 발생했습니다. 잠시후에 재시도해주세요..",
+            preferredStyle: .alert
+        )
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        presentingViewController.present(alert, animated: true)
     }
 
 }

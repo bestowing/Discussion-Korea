@@ -139,6 +139,9 @@ final class SignUpViewController: BaseViewController {
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)
+
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
     }
 
     private func bindViewModel() {

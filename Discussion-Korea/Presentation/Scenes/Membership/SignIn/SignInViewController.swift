@@ -81,9 +81,6 @@ final class SignInViewController: BaseViewController {
     }
 
     private func setSubViews() {
-        self.view.addSubview(self.activityIndicator)
-        self.activityIndicator.center = self.view.center
-
         let logoImageView: UIImageView = {
             let imageView = UIImageView(image: UIImage(named: "round_logo.png"))
             return imageView
@@ -153,6 +150,9 @@ final class SignInViewController: BaseViewController {
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)
+
+        self.view.addSubview(self.activityIndicator)
+        self.activityIndicator.center = self.view.center
     }
 
     private func bindViewModel() {
