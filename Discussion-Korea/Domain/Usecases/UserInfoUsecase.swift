@@ -20,7 +20,7 @@ protocol UserInfoUsecase {
 
     func add(roomID: String, userID: String) -> Observable<Void>
     func add(roomID: String, userID: String, side: Side) -> Observable<Void>
-    func add(userInfo: (String, String, URL?)) -> Observable<Void>
+    func add(userInfo: (String, String, Date?, URL?)) -> Observable<Void>
     func clearSide(roomID: String, userID: String) -> Observable<Void>
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void>
     func userInfo(roomID: String, with userID: String) -> Observable<Side?>

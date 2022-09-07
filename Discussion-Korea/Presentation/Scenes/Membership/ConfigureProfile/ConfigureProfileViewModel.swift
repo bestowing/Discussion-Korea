@@ -17,6 +17,7 @@ final class ConfigureProfileViewModel: ViewModelType {
     private let userID: String
     private let nickname: String?
     private let profileURL: URL?
+    private let registerAt: Date?
 
     private let navigator: ConfigureProfileNavigator
     private let userInfoUsecase: UserInfoUsecase
@@ -26,11 +27,13 @@ final class ConfigureProfileViewModel: ViewModelType {
     init(userID: String,
          nickname: String?,
          profileURL: URL?,
+         registerAt: Date? = nil,
          navigator: ConfigureProfileNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.userID = userID
         self.nickname = nickname
         self.profileURL = profileURL
+        self.registerAt = registerAt
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
     }
@@ -84,18 +87,27 @@ final class ConfigureProfileViewModel: ViewModelType {
 
         let nicknameAndProfile = Driver.combineLatest(input.nickname, profileURL)
 
-        let canSubmit = nicknameAndProfile.map { (title, _) in
-            return !title.isEmpty
-        }
-
-        let submitEvent = input.submitTrigger
-            .withLatestFrom(nicknameAndProfile)
-            .flatMapLatest { [unowned self] (nickname, profileURL) in
-                self.userInfoUsecase.add(userInfo: (self.userID, nickname, profileURL))
-                    .trackActivity(activityTracker)
-                    .trackError(errorTracker)
+        let nicknameResult = input.nickname
+            .flatMapLatest { [unowned self] nickname in
+                self.userInfoUsecase.isValid(nickname: nickname)
                     .asDriverOnErrorJustComplete()
             }
+
+        let canSubmit = nicknameResult.map { $0 == .success }
+
+        let submitEvent = input.submitTrigger
+            .withLatestFrom(nicknameAndProfile) {
+                ($1.0, $1.1 == self.profileURL ? nil : $1.1)
+            }
+            .flatMapLatest { [unowned self] (nickname, profileURL) in
+                self.userInfoUsecase.add(
+                    userInfo: (self.userID, nickname, self.registerAt, profileURL)
+                )
+                .trackActivity(activityTracker)
+                .trackError(errorTracker)
+                .asDriverOnErrorJustComplete()
+            }
+            .debug()
 
         let dismissEvent = Driver.of(submitEvent, input.exitTrigger)
             .merge()
@@ -113,6 +125,7 @@ final class ConfigureProfileViewModel: ViewModelType {
             loading: loading,
             oldNickname: oldNickname,
             profileURL: profileURL.compactMap { $0 },
+            nicknameResult: nicknameResult,
             submitEnable: canSubmit,
             events: events
         )
@@ -133,6 +146,7 @@ extension ConfigureProfileViewModel {
         let loading: Driver<Bool>
         let oldNickname: Driver<String?>
         let profileURL: Driver<URL>
+        let nicknameResult: Driver<FormResult>
         let submitEnable: Driver<Bool>
         let events: Driver<Void>
     }

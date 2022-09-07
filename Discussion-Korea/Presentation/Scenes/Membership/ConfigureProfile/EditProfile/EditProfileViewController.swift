@@ -81,6 +81,9 @@ final class EditProfileViewController: BaseViewController {
         )
         let output = self.viewModel.transform(input: input)
 
+        output.nicknameResult.drive(self.profileView.rx.result)
+            .disposed(by: self.disposeBag)
+
         output.loading.drive(self.activityIndicator.rx.isAnimating)
             .disposed(by: self.disposeBag)
 

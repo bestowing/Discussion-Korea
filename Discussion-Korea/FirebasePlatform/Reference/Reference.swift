@@ -17,5 +17,6 @@ enum RefereceError: Error {
     case guideError
     case userInfoError
     case signUpError
+    case nicknameError
 
 }

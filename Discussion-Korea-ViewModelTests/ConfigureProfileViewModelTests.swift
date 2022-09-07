@@ -49,7 +49,12 @@ final class ConfigureProfileViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_닉네임을_입력하지_않으면_제출할_수_없다() {
+    func test_유효한_닉네임을_입력하지_않으면_제출할_수_없다() {
+        self.userInfoUsecase.nicknameValidStream = self.scheduler.createHotObservable([
+            .next(220, FormResult.failure("")),
+            .completed(221)
+        ]).asObservable()
+
         let nicknameTestableDriver: Driver<String> = self.scheduler.createHotObservable([
             .next(210, ""),
         ]).asDriverOnErrorJustComplete()
@@ -70,11 +75,16 @@ final class ConfigureProfileViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(210, false)
+            .next(220, false)
         ])
     }
 
-    func test_닉네임을_입력하면_제출할_수_있다() {
+    func test_유효한_닉네임을_입력하면_제출할_수_있다() {
+        self.userInfoUsecase.nicknameValidStream = self.scheduler.createHotObservable([
+            .next(220, FormResult.success),
+            .completed(221)
+        ]).asObservable()
+
         let nicknameTestableDriver: Driver<String> = self.scheduler.createHotObservable([
             .next(210, "닉네임"),
         ]).asDriverOnErrorJustComplete()
@@ -95,7 +105,7 @@ final class ConfigureProfileViewModelTests: XCTestCase {
         self.scheduler.start()
 
         XCTAssertEqual(testableObserver.events, [
-            .next(210, true)
+            .next(220, true)
         ])
     }
 
