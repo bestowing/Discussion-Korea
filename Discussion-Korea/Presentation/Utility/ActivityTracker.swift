@@ -14,7 +14,7 @@ class ActivityTracker: SharedSequenceConvertibleType {
     typealias Element = Bool
     typealias SharingStrategy = DriverSharingStrategy
 
-    // MARK: properties
+    // MARK: - properties
 
     private let _lock = NSRecursiveLock()
     private let _behavior = BehaviorRelay<Bool>(value: false)

@@ -13,7 +13,7 @@ final class ErrorTracker: SharedSequenceConvertibleType {
 
     typealias SharingStrategy = DriverSharingStrategy
 
-    // MARK: properties
+    // MARK: - properties
 
     private let _subject = PublishSubject<Error>()
 

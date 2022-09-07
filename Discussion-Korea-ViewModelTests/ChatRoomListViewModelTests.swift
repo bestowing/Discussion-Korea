@@ -12,7 +12,9 @@ import XCTest
 
 final class ChatRoomListViewModelTests: XCTestCase {
 
-    // MARK: properties
+    // MARK: - properties
+
+    private let userID = "testUID"
 
     private var mockNavigator: MockChatRoomListNavigator!
     private var chatRoomUsecase: MockChatRoomUsecase!
@@ -29,6 +31,7 @@ final class ChatRoomListViewModelTests: XCTestCase {
         self.chatRoomUsecase = MockChatRoomUsecase()
         self.userInfoUsecase = MockUserInfoUsecase()
         self.viewModel = ChatRoomListViewModel(
+            userID: self.userID,
             navigator: self.mockNavigator,
             chatRoomsUsecase: self.chatRoomUsecase,
             userInfoUsecase: self.userInfoUsecase
@@ -52,13 +55,9 @@ final class ChatRoomListViewModelTests: XCTestCase {
 extension ChatRoomListViewModelTests {
 
     final class MockChatRoomListNavigator: ChatRoomListNavigator {
-
-        func toChatRoomList() {}
-
+        func toChatRoomList(_ userID: String) {}
         func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {}
-
         func toAddChatRoom(_ userID: String) {}
-
     }
 
 }
