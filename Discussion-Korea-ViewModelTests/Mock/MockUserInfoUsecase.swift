@@ -92,7 +92,7 @@ final class MockUserInfoUsecase: UserInfoUsecase {
         return self.addSideEventStream
     }
 
-    func add(userInfo: (String, String, URL?)) -> Observable<Void> {
+    func add(userInfo: (String, String, Date?, URL?)) -> Observable<Void> {
         return self.addUserInfoStream
     }
 
