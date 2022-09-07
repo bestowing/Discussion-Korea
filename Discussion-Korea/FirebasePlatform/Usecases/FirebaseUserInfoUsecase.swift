@@ -47,10 +47,10 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
 
     func isValid(nickname: String) -> Observable<FormResult> {
         return Observable.create { subscribe in
-            if (8...20) ~= nickname.count {
+            if (2...12) ~= nickname.count {
                 subscribe.onNext(.success)
             } else {
-                subscribe.onNext(.failure("닉네임이 형식에 맞지 않습니다"))
+                subscribe.onNext(.failure("닉네임의 길이는 2자 이상, 12자 이하로 해주세요"))
             }
             subscribe.onCompleted()
             return Disposables.create()
@@ -122,7 +122,7 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         }
     }
 
-    func add(userInfo: (String, String, URL?)) -> Observable<Void> {
+    func add(userInfo: (String, String, Date?, URL?)) -> Observable<Void> {
         self.reference.add(userInfo: userInfo)
     }
 
@@ -140,14 +140,6 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
 
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
         self.reference.vote(side: side, in: roomID, with: userID)
-    }
-
-    func uid() -> Observable<String> {
-        return Observable<String>.create { [unowned self] in
-            $0.onNext(self.getUID())
-            $0.onCompleted()
-            return Disposables.create()
-        }
     }
 
     func userInfo(roomID: String, with userID: String) -> Observable<Side?> {
@@ -170,16 +162,6 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         return self.reference.supporters(in: roomID)
             .filter { $0.0 == userID }
             .map { $0.1 }
-    }
-
-    private func getUID() -> String {
-        let key = "userID"
-        if let id = UserDefaults.standard.string(forKey: key) {
-            return id
-        }
-        let newID = UUID().uuidString
-        UserDefaults.standard.set(newID, forKey: key)
-        return newID
     }
 
 }

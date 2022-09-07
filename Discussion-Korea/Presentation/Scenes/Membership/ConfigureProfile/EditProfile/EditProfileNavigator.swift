@@ -80,9 +80,16 @@ final class EditProfileNavigator: BaseNavigator, ConfigureProfileNavigator {
     }
 
     func toErrorAlert(_ error: Error) {
+        let message: String
+        switch error {
+        case RefereceError.nicknameError:
+            message = "중복된 닉네임이에요. 다른 닉네임을 입력해주세요"
+        default:
+            message = "오류가 발생했어요. 재시도해주세요"
+        }
         let alert = UIAlertController(
             title: "오류!",
-            message: "오류가 발생했습니다. 재시도해주세요..",
+            message: message,
             preferredStyle: .alert
         )
         let confirm = UIAlertAction(title: "확인", style: .default)

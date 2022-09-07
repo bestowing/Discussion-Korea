@@ -136,46 +136,83 @@ final class UserInfoReference {
     }
 
     /// uid 사용자의 닉네임과 프로필 사진을 등록함
-    func add(userInfo: (uid: String, nickname: String, profileURL: URL?)) -> Observable<Void> {
+    func add(userInfo: (uid: String, nickname: String, registerAt: Date?, profileURL: URL?)) -> Observable<Void> {
         return Observable.create { [unowned self] subscribe in
-            var values: [String: Any] = [
-                "nickname": userInfo.nickname,
-                "registerAt": self.dateFormatter.string(from: Date()),
-                "win": 0,
-                "draw": 0,
-                "lose": 0
-            ]
-            if let profileURL = userInfo.profileURL {
-                let ref = self.storageReference
-                    .child("\(userInfo.uid)/profile/\(profileURL.lastPathComponent)")
-                ref.putFile(from: profileURL, metadata: nil) { metadata, error in
-                    guard let _ = metadata,
-                          error == nil
+            self.reference.child("nicknames").runTransactionBlock({ currentData in
+                if let nicknames = currentData.value as? [String: String] {
+                    var newNicknames = nicknames
+                    guard nicknames[userInfo.nickname] == nil
                     else {
-                        subscribe.onError(RefereceError.profileError)
-                        return
+                        return TransactionResult.abort()
                     }
-                    ref.downloadURL() { url, error in
-                        guard let url = url,
+                    if let prevNickname = nicknames[userInfo.uid] {
+                        newNicknames[prevNickname] = nil
+                    }
+                    newNicknames[userInfo.nickname] = userInfo.uid
+                    newNicknames[userInfo.uid] = userInfo.nickname
+                    currentData.value = newNicknames
+                } else {
+                    let nicknames: [String: String] = [
+                        userInfo.nickname: userInfo.uid,
+                        userInfo.uid: userInfo.nickname
+                    ]
+                    currentData.value = nicknames
+                }
+                return .success(withValue: currentData)
+            }) { error, committed, snapshot in
+                guard error == nil,
+                      committed
+                else {
+                    subscribe.onNext(.failure(""))
+                    return
+                }
+                subscribe.onNext(FormResult.success)
+            }
+            return Disposables.create()
+        }.flatMapLatest { (result: FormResult) -> Observable<Void> in
+            guard result == FormResult.success
+            else {
+                print("실패2")
+                return Observable.error(RefereceError.nicknameError)
+            }
+            print("성공2")
+            return Observable.create { [unowned self] subscribe in
+                var values: [String: Any] = ["nickname": userInfo.nickname]
+                if let registerAt = userInfo.registerAt {
+                    values["registerAt"] = self.dateFormatter.string(from: registerAt)
+                }
+                if let profileURL = userInfo.profileURL {
+                    let ref = self.storageReference
+                        .child("\(userInfo.uid)/profile/\(profileURL.lastPathComponent)")
+                    ref.putFile(from: profileURL, metadata: nil) { metadata, error in
+                        guard let _ = metadata,
                               error == nil
                         else {
                             subscribe.onError(RefereceError.profileError)
                             return
                         }
-                        values["profile"] = url.absoluteString
-                        self.reference.child("users/\(userInfo.uid)")
-                            .setValue(values)
-                        subscribe.onNext(())
-                        subscribe.onCompleted()
+                        ref.downloadURL() { url, error in
+                            guard let url = url,
+                                  error == nil
+                            else {
+                                subscribe.onError(RefereceError.profileError)
+                                return
+                            }
+                            values["profile"] = url.absoluteString
+                            self.reference.child("users/\(userInfo.uid)")
+                                .updateChildValues(values)
+                            subscribe.onNext(())
+                            subscribe.onCompleted()
+                        }
                     }
+                } else {
+                    self.reference.child("users/\(userInfo.uid)")
+                        .updateChildValues(values)
+                    subscribe.onNext(())
+                    subscribe.onCompleted()
                 }
-            } else {
-                self.reference.child("users/\(userInfo.uid)")
-                    .setValue(values)
-                subscribe.onNext(())
-                subscribe.onCompleted()
+                return Disposables.create()
             }
-            return Disposables.create()
         }
     }
 

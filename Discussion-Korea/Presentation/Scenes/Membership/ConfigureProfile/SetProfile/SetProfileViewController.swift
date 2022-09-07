@@ -106,6 +106,9 @@ final class SetProfileViewController: BaseViewController {
         output.profileURL.drive(self.profileView.rx.url)
             .disposed(by: self.disposeBag)
 
+        output.nicknameResult.drive(self.profileView.rx.result)
+            .disposed(by: self.disposeBag)
+
         output.submitEnable.drive(self.submitButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 

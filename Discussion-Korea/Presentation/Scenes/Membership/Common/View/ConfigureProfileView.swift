@@ -99,4 +99,8 @@ extension Reactive where Base: ConfigureProfileView {
             .mapToVoid()
     }
 
+    var result: Binder<FormResult?> {
+        return base.nicknameField.rx.wrongMessage
+    }
+
 }
