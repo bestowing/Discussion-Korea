@@ -65,6 +65,7 @@ final class SetDiscussionDetailViewModel: ViewModelType {
                 .asDriverOnErrorJustComplete()
             }
             .mapToVoid()
+            .do(onNext: self.builderUsecase.clear)
             .do(onNext: self.navigator.toChatRoom)
 
         let events = Driver.of(submitEvent, updateBuilderEvent).merge()

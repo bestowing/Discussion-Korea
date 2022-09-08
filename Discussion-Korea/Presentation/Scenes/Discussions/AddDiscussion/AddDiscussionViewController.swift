@@ -40,8 +40,8 @@ final class AddDiscussionViewController: BaseViewController {
         return button
     }()
 
-    private let topicTextfield: UITextField = {
-        let textField = UITextField()
+    private let topicTextfield: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
         textField.placeholder = "무엇에 대한 토론인가요?"
         textField.font = UIFont.preferredFont(forTextStyle: .body)
@@ -136,16 +136,14 @@ final class AddDiscussionViewController: BaseViewController {
 
         let input = AddDiscussionViewModel.Input(
             exitTrigger: self.exitButton.rx.tap.asDriver(),
-            title: self.topicTextfield.rx.text.orEmpty.asDriver(),
+            topic: self.topicTextfield.rx.text.orEmpty.asDriver().skip(1),
             date: self.datePicker.rx.value.asDriver(),
             nextTrigger: self.nextButton.rx.tap.asDriver()
-//            introTime: Observable.empty().asDriverOnErrorJustComplete(),
-//            mainTime: Observable.empty().asDriverOnErrorJustComplete(),
-//            conclusionTime: Observable.empty().asDriverOnErrorJustComplete(),
-//            isFullTime: Observable.just(true).asDriverOnErrorJustComplete(),
-//            submitTrigger: Observable.empty().asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.topicResult.drive(self.topicTextfield.rx.wrongMessage)
+            .disposed(by: self.disposeBag)
 
         output.nextEnabled.drive(self.nextButton.rx.isEnabled)
             .disposed(by: self.disposeBag)

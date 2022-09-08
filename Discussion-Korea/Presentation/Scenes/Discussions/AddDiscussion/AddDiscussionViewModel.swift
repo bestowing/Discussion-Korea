@@ -37,7 +37,13 @@ final class AddDiscussionViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
-        let discussionBasic = Driver.combineLatest(input.title, input.date)
+        let discussionBasic = Driver.combineLatest(input.topic, input.date)
+
+        let topicResult = input.topic
+            .flatMapLatest { [unowned self] topic in
+                self.discussionUsecase.isValid(topic: topic)
+                    .asDriverOnErrorJustComplete()
+            }
 
         let updateBuilderEvent = discussionBasic
             .debounce(.milliseconds(500))
@@ -53,6 +59,7 @@ final class AddDiscussionViewModel: ViewModelType {
             }
 
         let dismissEvent = input.exitTrigger
+            .do(onNext: self.builderUsecase.clear)
             .do(onNext: self.navigator.toChatRoom)
 
         let nextEvent = input.nextTrigger
@@ -63,6 +70,7 @@ final class AddDiscussionViewModel: ViewModelType {
         let events = Driver.of(updateBuilderEvent, dismissEvent, nextEvent).merge()
 
         return Output(
+            topicResult: topicResult,
             nextEnabled: canNext,
             events: events
         )
@@ -74,12 +82,13 @@ extension AddDiscussionViewModel {
 
     struct Input {
         let exitTrigger: Driver<Void>
-        let title: Driver<String>
+        let topic: Driver<String>
         let date: Driver<Date>
         let nextTrigger: Driver<Void>
     }
 
     struct Output {
+        let topicResult: Driver<FormResult>
         let nextEnabled: Driver<Bool>
         let events: Driver<Void>
     }

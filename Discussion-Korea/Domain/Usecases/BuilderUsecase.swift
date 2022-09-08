@@ -12,4 +12,5 @@ protocol BuilderUsecase {
     func setBasic(_ basic: (String, Date)) -> Observable<Void>
     func setDetail(_ detail: (Int, Int, Int, Bool)) -> Observable<Void>
     func getResult() -> Observable<Discussion?>
+    func clear()
 }

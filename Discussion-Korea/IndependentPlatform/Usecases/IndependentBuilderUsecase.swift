@@ -28,4 +28,8 @@ final class IndependentBuilderUsecase: BuilderUsecase {
         return self.discussionBuilder.getResult()
     }
 
+    func clear() {
+        self.discussionBuilder.clear()
+    }
+
 }

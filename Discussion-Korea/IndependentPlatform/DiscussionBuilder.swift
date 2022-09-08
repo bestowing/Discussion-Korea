@@ -35,6 +35,9 @@ final class DiscussionBuilder {
 
     func getResult() -> Observable<Discussion?> {
         return Observable.create { [unowned self] subscribe in
+            defer {
+                self.clear()
+            }
             guard let basicInfo = basicInfo,
                   let detailInfo = detailInfo
             else {
@@ -52,6 +55,11 @@ final class DiscussionBuilder {
             subscribe.onCompleted()
             return Disposables.create()
         }
+    }
+
+    func clear() {
+        self.basicInfo = nil
+        self.detailInfo = nil
     }
 
 }
