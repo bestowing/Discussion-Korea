@@ -72,9 +72,9 @@ final class SetDiscussionDetailViewModel: ViewModelType {
 
         return Output(
             submitEnabled: canSubmit,
-            intro: input.introTime.map { String($0) }.asDriver(),
-            main: input.mainTime.map { String($0) }.asDriver(),
-            conclusion: input.conclusionTime.map {String($0)}.asDriver(),
+            intro: input.introTime.map { "\($0)분" }.asDriver(),
+            main: input.mainTime.map { "\($0)분" }.asDriver(),
+            conclusion: input.conclusionTime.map { "\($0)분" }.asDriver(),
             events: events
         )
     }
