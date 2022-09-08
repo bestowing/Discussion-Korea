@@ -34,6 +34,7 @@ final class ChatRoomScheduleViewController: BaseViewController {
     private let scheduleTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
+//        tableView.allowsSelection = false
         return tableView
     }()
 
@@ -79,6 +80,11 @@ final class ChatRoomScheduleViewController: BaseViewController {
             cell.bind(model)
             return cell
         }.disposed(by: self.disposeBag)
+
+        self.scheduleTableView.rx.itemSelected.asDriver()
+            .do(onNext: { print($0) })
+            .drive()
+            .disposed(by: self.disposeBag)
 
         output.exitEvent.drive().disposed(by: self.disposeBag)
 
