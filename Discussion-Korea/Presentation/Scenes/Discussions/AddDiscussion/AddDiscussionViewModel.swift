@@ -15,16 +15,19 @@ final class AddDiscussionViewModel: ViewModelType {
     private let chatRoom: ChatRoom
 
     private let navigator: AddDiscussionNavigator
-    private let usecase: DiscussionUsecase
+    private let builderUsecase: BuilderUsecase
+    private let discussionUsecase: DiscussionUsecase
 
     // MARK: - init/deinit
 
     init(chatRoom: ChatRoom,
          navigator: AddDiscussionNavigator,
-         usecase: DiscussionUsecase) {
+         builderUsecase: BuilderUsecase,
+         discussionUsecase: DiscussionUsecase) {
         self.chatRoom = chatRoom
         self.navigator = navigator
-        self.usecase = usecase
+        self.builderUsecase = builderUsecase
+        self.discussionUsecase = discussionUsecase
     }
 
     deinit {
@@ -34,37 +37,34 @@ final class AddDiscussionViewModel: ViewModelType {
     // MARK: - methods
 
     func transform(input: Input) -> Output {
+        let discussionBasic = Driver.combineLatest(input.title, input.date)
 
-        let times = Driver.combineLatest(input.introTime,
-                                         input.mainTime,
-                                         input.conclusionTime)
-
-        let discussion = Driver.combineLatest(input.title, times, input.date)
-
-        let canSubmit = discussion.map { title, _, _ in
-            return !title.isEmpty
-        }
-
-        let submit = input.submitTrigger
-            .withLatestFrom(discussion)
-            .map { return Discussion(
-                date: $2, durations: [$1.0, $1.1, $1.2], topic: $0
-            ) }
-            .flatMapLatest { [unowned self] discussion in
-                self.usecase.add(roomUID: self.chatRoom.uid, discussion: discussion)
+        let updateBuilderEvent = discussionBasic
+            .debounce(.milliseconds(500))
+            .flatMapLatest { [unowned self] basic in
+                self.builderUsecase.setBasic(basic)
                     .asDriverOnErrorJustComplete()
             }
+            .mapToVoid()
 
-        let dismiss = Driver.of(submit, input.exitTrigger)
-            .merge()
+        let canNext = discussionBasic
+            .map { title, date -> Bool in
+                return !title.isEmpty && date.timeIntervalSinceNow >= 300
+            }
+
+        let dismissEvent = input.exitTrigger
             .do(onNext: self.navigator.toChatRoom)
 
+        let nextEvent = input.nextTrigger
+            .map { [unowned self] _ in self.chatRoom }
+            .do(onNext: self.navigator.toSetDiscussionTime)
+            .mapToVoid()
+
+        let events = Driver.of(updateBuilderEvent, dismissEvent, nextEvent).merge()
+
         return Output(
-            submitEnabled: canSubmit,
-            intro: input.introTime.map { String($0) }.asDriver(),
-            main: input.mainTime.map { String($0) }.asDriver(),
-            conclusion: input.conclusionTime.map {String($0)}.asDriver(),
-            dismiss: dismiss
+            nextEnabled: canNext,
+            events: events
         )
     }
 
@@ -75,19 +75,13 @@ extension AddDiscussionViewModel {
     struct Input {
         let exitTrigger: Driver<Void>
         let title: Driver<String>
-        let introTime: Driver<Int>
-        let mainTime: Driver<Int>
-        let conclusionTime: Driver<Int>
         let date: Driver<Date>
-        let submitTrigger: Driver<Void>
+        let nextTrigger: Driver<Void>
     }
 
     struct Output {
-        let submitEnabled: Driver<Bool>
-        let intro: Driver<String>
-        let main: Driver<String>
-        let conclusion: Driver<String>
-        let dismiss: Driver<Void>
+        let nextEnabled: Driver<Bool>
+        let events: Driver<Void>
     }
 
 }
