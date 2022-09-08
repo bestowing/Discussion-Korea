@@ -151,7 +151,8 @@ final class ChatRoomViewController: BaseViewController {
                 .map { $0 == .bottom }
                 .distinctUntilChanged()
                 .asDriverOnErrorJustComplete(),
-            previewTouched: self.chatPreview.rx.tapGesture().when(.recognized).map { _ in }
+            previewTouched: self.chatPreview.rx.tapGesture()
+                .when(.recognized).mapToVoid()
                 .asDriverOnErrorJustComplete(),
             send: self.chatInputView.rx.send.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),

@@ -24,10 +24,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="round_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ftg-k3-apu">
-                                <rect key="frame" x="132" y="373" width="150" height="150"/>
+                                <rect key="frame" x="167" y="413" width="80" height="80"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="X80-zQ-fb9"/>
-                                    <constraint firstAttribute="height" constant="150" id="ZGW-R3-lUZ"/>
+                                    <constraint firstAttribute="width" constant="80" id="X80-zQ-fb9"/>
+                                    <constraint firstAttribute="height" constant="80" id="ZGW-R3-lUZ"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -35,7 +35,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="2f6-Oe-PlK" secondAttribute="bottom" constant="5" id="Jpg-na-zcR"/>
-                            <constraint firstItem="Ftg-k3-apu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="KVq-Ts-1Gn"/>
+                            <constraint firstItem="Ftg-k3-apu" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="KVq-Ts-1Gn"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2f6-Oe-PlK" secondAttribute="trailing" constant="5" id="QqI-N4-pbj"/>
                             <constraint firstItem="2f6-Oe-PlK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="a07-in-Dqa"/>
                             <constraint firstItem="Ftg-k3-apu" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="kiM-s6-Ew4"/>

@@ -23,77 +23,38 @@ final class AddDiscussionViewController: BaseViewController {
         return button
     }()
 
-    private let submitButton: UIBarButtonItem = {
+    private let nextButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.title = "완료"
+        button.title = "다음"
         button.tintColor = .label
-        button.accessibilityLabel = "토론 추가"
+        button.isEnabled = false
+        button.accessibilityLabel = "다음으로"
         return button
     }()
 
-    private let topicTextfield: UITextField = {
-        let textField = UITextField()
+    private let backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = ""
+        button.tintColor = .label
+        button.style = .plain
+        return button
+    }()
+
+    private let topicTextfield: FormField = {
+        let textField = FormField()
         textField.borderStyle = .roundedRect
+        textField.placeholder = "무엇에 대한 토론인가요?"
         textField.font = UIFont.preferredFont(forTextStyle: .body)
         return textField
-    }()
-
-    private let introTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1"
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textAlignment = .right
-        return label
-    }()
-
-    private let introStepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.value = 1.0
-        stepper.stepValue = 1.0
-        stepper.minimumValue = 1.0
-        stepper.maximumValue = 15.0
-        return stepper
-    }()
-
-    private let mainTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1"
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textAlignment = .right
-        return label
-    }()
-
-    private let mainStepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.value = 1.0
-        stepper.stepValue = 1.0
-        stepper.minimumValue = 1.0
-        stepper.maximumValue = 15.0
-        return stepper
-    }()
-
-    private let conclusionTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1"
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textAlignment = .right
-        return label
-    }()
-
-    private let conclusionStepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.value = 1.0
-        stepper.stepValue = 1.0
-        stepper.minimumValue = 1.0
-        stepper.maximumValue = 15.0
-        return stepper
     }()
 
     private let datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .dateAndTime
+        if #available(iOS 14.0, *) {
+            picker.preferredDatePickerStyle = .inline
+        }
         picker.minuteInterval = 1
-        picker.contentHorizontalAlignment = .trailing
         return picker
     }()
 
@@ -103,107 +64,57 @@ final class AddDiscussionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "토론 추가"
         self.setSubViews()
         self.bindViewModel()
     }
 
     private func setSubViews() {
+        self.navigationItem.backBarButtonItem = self.backButton
         self.navigationItem.leftBarButtonItem = self.exitButton
-        self.navigationItem.rightBarButtonItem = self.submitButton
+        self.navigationItem.rightBarButtonItem = self.nextButton
+
         let stackView = UIStackView()
         self.view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(25)
+            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).inset(25)
         }
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 0
+        stackView.spacing = 40
+
+        let titleLabel = ResizableLabel()
+        titleLabel.text = "어떤 토론을 해볼까요?"
+        titleLabel.font = .preferredBoldFont(forTextStyle: .title2)
+        stackView.addArrangedSubview(titleLabel)
 
         let topicStackView = UIStackView()
         stackView.addArrangedSubview(topicStackView)
-        topicStackView.axis = .horizontal
-        topicStackView.alignment = .center
+        topicStackView.axis = .vertical
+        topicStackView.alignment = .fill
         topicStackView.distribution = .fill
-        topicStackView.spacing = 50.0
+        topicStackView.spacing = 10.0
 
-        let topicLabel = UILabel()
-        topicLabel.text = "주제"
-        topicLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        let topicLabel = ResizableLabel()
+        topicLabel.text = "토론 주제"
+        topicLabel.textColor = .secondaryLabel
+        topicLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         topicStackView.addArrangedSubview(topicLabel)
         topicStackView.addArrangedSubview(self.topicTextfield)
 
-        let introStackView = UIStackView()
-        stackView.addArrangedSubview(introStackView)
-        introStackView.axis = .horizontal
-        introStackView.alignment = .center
-        introStackView.distribution = .fillProportionally
-        introStackView.spacing = 0
-
-        let introLabel = UILabel()
-        introLabel.text = "입론"
-        introLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        let minuteLabel = UILabel()
-        minuteLabel.text = "분"
-        minuteLabel.font = UIFont.preferredFont(forTextStyle: .body)
-
-        introStackView.addArrangedSubview(introLabel)
-        introStackView.addArrangedSubview(self.introTimeLabel)
-        introStackView.addArrangedSubview(minuteLabel)
-        introStackView.addArrangedSubview(self.introStepper)
-
-        let mainStackView = UIStackView()
-        stackView.addArrangedSubview(mainStackView)
-        mainStackView.axis = .horizontal
-        mainStackView.alignment = .center
-        mainStackView.distribution = .fillProportionally
-        mainStackView.spacing = 0
-
-        let mainLabel = UILabel()
-        mainLabel.text = "본론"
-        mainLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        let minuteLabel2 = UILabel()
-        minuteLabel2.text = "분"
-        minuteLabel2.font = UIFont.preferredFont(forTextStyle: .body)
-
-        mainStackView.addArrangedSubview(mainLabel)
-        mainStackView.addArrangedSubview(self.mainTimeLabel)
-        mainStackView.addArrangedSubview(minuteLabel2)
-        mainStackView.addArrangedSubview(self.mainStepper)
-
-        let conclusionLabel = UILabel()
-        conclusionLabel.text = "결론"
-        conclusionLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        let minuteLabel3 = UILabel()
-        minuteLabel3.text = "분"
-        minuteLabel3.font = UIFont.preferredFont(forTextStyle: .body)
-
-        let conclusionStackView = UIStackView(
-            arrangedSubviews: [conclusionLabel,
-                               self.conclusionTimeLabel,
-                               minuteLabel3,
-                               self.conclusionStepper]
-        )
-        stackView.addArrangedSubview(conclusionStackView)
-        conclusionStackView.axis = .horizontal
-        conclusionStackView.alignment = .center
-        conclusionStackView.distribution = .fillProportionally
-        conclusionStackView.spacing = 0
+        // TODO: 부가설명 추가하기
 
         let dateStackView = UIStackView()
         stackView.addArrangedSubview(dateStackView)
         dateStackView.axis = .vertical
         dateStackView.alignment = .fill
         dateStackView.distribution = .fillProportionally
-        dateStackView.spacing = 5
+        dateStackView.spacing = 10.0
 
-        let dateLabel = UILabel()
-        dateLabel.text = "시작 날짜"
-        dateLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        let dateLabel = ResizableLabel()
+        dateLabel.text = "토론 시작 일자"
+        dateLabel.textColor = .secondaryLabel
+        dateLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         dateStackView.addArrangedSubview(dateLabel)
         dateStackView.addArrangedSubview(self.datePicker)
 
@@ -216,6 +127,7 @@ final class AddDiscussionViewController: BaseViewController {
         self.datePicker.snp.contentHuggingVerticalPriority = 249
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
     }
 
@@ -224,34 +136,19 @@ final class AddDiscussionViewController: BaseViewController {
 
         let input = AddDiscussionViewModel.Input(
             exitTrigger: self.exitButton.rx.tap.asDriver(),
-            title: self.topicTextfield.rx.text.orEmpty.asDriver(),
-            introTime: self.introStepper.rx.value
-                .map { Int($0) }
-                .asDriverOnErrorJustComplete(),
-            mainTime: self.mainStepper.rx.value
-                .map { Int($0) }
-                .asDriverOnErrorJustComplete(),
-            conclusionTime: self.conclusionStepper.rx.value
-                .map { Int($0) }
-                .asDriverOnErrorJustComplete(),
+            topic: self.topicTextfield.rx.text.orEmpty.asDriver().skip(1),
             date: self.datePicker.rx.value.asDriver(),
-            submitTrigger: self.submitButton.rx.tap.asDriver()
+            nextTrigger: self.nextButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
 
-        output.submitEnabled.drive(self.submitButton.rx.isEnabled)
+        output.topicResult.drive(self.topicTextfield.rx.wrongMessage)
             .disposed(by: self.disposeBag)
 
-        output.intro.drive(self.introTimeLabel.rx.text)
+        output.nextEnabled.drive(self.nextButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
 
-        output.main.drive(self.mainTimeLabel.rx.text)
-            .disposed(by: self.disposeBag)
-
-        output.conclusion.drive(self.conclusionTimeLabel.rx.text)
-            .disposed(by: self.disposeBag)
-
-        output.dismiss.drive()
+        output.events.drive()
             .disposed(by: self.disposeBag)
     }
 

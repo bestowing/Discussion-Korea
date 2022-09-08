@@ -27,12 +27,16 @@ final class DiscussionReference {
                           let dateString = dic["date"] as? String,
                           let date = self.dateFormatter.date(from: dateString),
                           let durations = dic["durations"] as? [Int],
-                          let topic = dic["topic"] as? String
+                          let topic = dic["topic"] as? String,
+                          let isFulltime = dic["isFulltime"] as? Bool
                     else { return }
-                    let discussion = Discussion(uid: snapshot.key,
-                                                date: date,
-                                                durations: durations,
-                                                topic: topic)
+                    let discussion = Discussion(
+                        uid: snapshot.key,
+                        date: date,
+                        durations: durations,
+                        topic: topic,
+                        isFulltime: isFulltime
+                    )
                     subscribe.onNext(discussion)
                 }
             return Disposables.create()
@@ -40,15 +44,19 @@ final class DiscussionReference {
     }
 
     func add(_ discussion: Discussion, to roomID: String) -> Observable<Void> {
-        let value: [String: Any] = ["date": self.dateFormatter.string(from: discussion.date),
-                                    "durations": discussion.durations,
-                                    "topic": discussion.topic]
+        let value: [String: Any] = [
+            "date": self.dateFormatter.string(from: discussion.date),
+            "durations": discussion.durations,
+            "topic": discussion.topic,
+            "isFulltime": discussion.isFulltime
+        ]
         return Observable.create { [unowned self] subscribe in
             self.reference
                 .child("chatRoom/\(roomID)/discussions")
                 .childByAutoId()
                 .setValue(value)
-            subscribe.onNext(Void())
+            subscribe.onNext(())
+            subscribe.onCompleted()
             return Disposables.create()
         }
     }

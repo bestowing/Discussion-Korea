@@ -14,6 +14,8 @@ final class DefaultAddDiscussionNavigator: BaseNavigator, AddDiscussionNavigator
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
+    private weak var navigationController: UINavigationController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider, presentedViewController: UIViewController) {
@@ -28,11 +30,25 @@ final class DefaultAddDiscussionNavigator: BaseNavigator, AddDiscussionNavigator
         viewController.viewModel = AddDiscussionViewModel(
             chatRoom: chatRoom,
             navigator: self,
-            usecase: self.services.makeDiscussionUsecase()
+            builderUsecase: self.services.makeBuilderUsecase(),
+            discussionUsecase: self.services.makeDiscussionUsecase()
         )
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = UINavigationController(
+            rootViewController: viewController
+        )
         navigationController.modalPresentationStyle = .fullScreen
         self.presentedViewController.present(navigationController, animated: true)
+        self.navigationController = navigationController
+    }
+
+    func toSetDiscussionTime(_ chatRoom: ChatRoom) {
+        guard let navigationController = self.navigationController
+        else { return }
+        let navigator = DefaultSetDiscussionDetailNavigator(
+            services: self.services,
+            navigationController: navigationController
+        )
+        navigator.toSetDiscussionDetail(chatRoom)
     }
 
     func toChatRoom() {

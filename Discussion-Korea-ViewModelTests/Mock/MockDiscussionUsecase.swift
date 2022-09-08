@@ -12,6 +12,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
 
     // MARK: - properties
 
+    var isValidStream: Observable<FormResult>
     var discussionStream: Observable<Discussion>
     var addRoomEventStream: Observable<Void>
     var statusStream: Observable<Int>
@@ -23,6 +24,7 @@ final class MockDiscussionUsecase: DiscussionUsecase {
     // MARK: - init/deinit
 
     init() {
+        self.isValidStream = PublishSubject<FormResult>.init()
         self.discussionStream = PublishSubject<Discussion>.init()
         self.addRoomEventStream = PublishSubject<Void>.init()
         self.statusStream = PublishSubject<Int>.init()
@@ -33,6 +35,10 @@ final class MockDiscussionUsecase: DiscussionUsecase {
     }
 
     // MARK: - methods
+
+    func isValid(topic: String) -> Observable<FormResult> {
+        return self.isValidStream
+    }
 
     func discussions(roomUID: String) -> Observable<Discussion> {
         return self.discussionStream

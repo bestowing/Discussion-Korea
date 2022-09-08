@@ -33,7 +33,9 @@ final class ChatRoomScheduleViewController: BaseViewController {
 
     private let scheduleTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
+        tableView.register(
+            ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier
+        )
         return tableView
     }()
 
