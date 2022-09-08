@@ -37,4 +37,7 @@ final class MockBuilderUsecase: BuilderUsecase {
     func getResult() -> Observable<Discussion?> {
         return self.getResultStream
     }
+
+    func clear() {}
+
 }

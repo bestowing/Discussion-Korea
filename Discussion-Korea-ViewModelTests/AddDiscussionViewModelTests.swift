@@ -72,7 +72,7 @@ final class AddDiscussionViewModelTests: XCTestCase {
 
         let input = AddDiscussionViewModel.Input(
             exitTrigger: exitTriggerTestableDriver,
-            title: titleTestableDriver,
+            topic: titleTestableDriver,
             date: dateTestableDriver,
             nextTrigger: nextTriggerTestableDriver
         )
