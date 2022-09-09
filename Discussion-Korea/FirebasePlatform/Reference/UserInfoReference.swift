@@ -172,10 +172,8 @@ final class UserInfoReference {
         }.flatMapLatest { (result: FormResult) -> Observable<Void> in
             guard result == FormResult.success
             else {
-                print("실패2")
                 return Observable.error(RefereceError.nicknameError)
             }
-            print("성공2")
             return Observable.create { [unowned self] subscribe in
                 var values: [String: Any] = ["nickname": userInfo.nickname]
                 if let registerAt = userInfo.registerAt {

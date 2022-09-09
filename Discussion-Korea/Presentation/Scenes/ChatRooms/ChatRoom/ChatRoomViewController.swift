@@ -20,6 +20,8 @@ final class ChatRoomViewController: BaseViewController {
 
     var viewModel: ChatRoomViewModel!
 
+    private var isExpanded: Bool = false
+
     private var dataSource = ChatRoomDataSource(
         configureCell: { _, collectionView, indexPath, model in
             guard let cell = collectionView.dequeueReusableCell(
@@ -48,7 +50,7 @@ final class ChatRoomViewController: BaseViewController {
     private lazy var messageCollectionView: UICollectionView = {
         let flowLayout = ChatCollectionViewFlowLayout()
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
 
@@ -146,9 +148,15 @@ final class ChatRoomViewController: BaseViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             bottomScrolled: self.messageCollectionView.position()
-                .startWith(.bottom)
-                .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-                .map { $0 == .bottom }
+                .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+                .map { [unowned self] position -> Bool in
+                    if position == .bottom {
+                        return true
+                    }
+                    let prev = self.isExpanded
+                    self.isExpanded = self.messageCollectionView.expand()
+                    return (!self.isExpanded) || prev != self.isExpanded
+                }
                 .distinctUntilChanged()
                 .asDriverOnErrorJustComplete(),
             previewTouched: self.chatPreview.rx.tapGesture()
@@ -232,6 +240,10 @@ extension UICollectionView {
                 }
                 return .none
             }
+    }
+
+    func expand() -> Bool {
+        return self.contentSize.height >= self.frame.height + self.contentOffset.y
     }
 
 }

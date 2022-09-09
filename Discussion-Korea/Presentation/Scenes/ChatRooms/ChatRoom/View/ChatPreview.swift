@@ -93,7 +93,7 @@ final class ChatPreview: UIView {
     // MARK: - methods
 
     func bind(_ viewModel: ChatItemViewModel) {
-        self.isHidden = false
+        self.isHidden = true
         if let image = viewModel.image {
             self.profileImageView.image = image
         } else if let url = viewModel.url {
