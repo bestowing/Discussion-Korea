@@ -20,6 +20,10 @@ final class ChatRoomsReference {
         self.storageReference = storageReference
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     func chatRooms() -> Observable<ChatRoom> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRooms")

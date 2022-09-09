@@ -25,6 +25,48 @@ final class ReferenceProvider {
         return dateFormatter
     }()
 
+    private lazy var chatRoomsReference: ChatRoomsReference = {
+        return ChatRoomsReference(
+            reference: self.databaseReference,
+            storageReference: self.storageReference
+        )
+    }()
+
+    private lazy var chatsRefence: ChatsReference = {
+        return ChatsReference(
+            reference: self.databaseReference,
+            dateFormatter: self.fullDateFormatter
+        )
+    }()
+
+    private lazy var discussionReference: DiscussionReference = {
+        return DiscussionReference(
+            reference: self.databaseReference,
+            dateFormatter: self.fullDateFormatter
+        )
+    }()
+
+    private lazy var guideReference: GuideReference = {
+        return GuideReference(
+            reference: self.databaseReference
+        )
+    }()
+
+    private lazy var userInfoReference: UserInfoReference = {
+        return UserInfoReference(
+            reference: self.databaseReference,
+            storageReference: self.storageReference,
+            dateFormatter: self.fullDateFormatter
+        )
+    }()
+
+    private lazy var lawReference: LawReference = {
+        return LawReference(
+            reference: self.databaseReference,
+            dateFormatter: self.shortDateFormatter
+        )
+    }()
+
     init() {
         let storage = Storage.storage()
 
@@ -40,45 +82,27 @@ final class ReferenceProvider {
     }
 
     func makeChatRoomsReference() -> ChatRoomsReference {
-        return ChatRoomsReference(
-            reference: self.databaseReference,
-            storageReference: self.storageReference
-        )
+        return self.chatRoomsReference
     }
 
     func makeChatsRefence() -> ChatsReference {
-        return ChatsReference(
-            reference: self.databaseReference,
-            dateFormatter: self.fullDateFormatter
-        )
+        return self.chatsRefence
     }
 
     func makeDiscussionReference() -> DiscussionReference {
-        return DiscussionReference(
-            reference: self.databaseReference,
-            dateFormatter: self.fullDateFormatter
-        )
+        return self.discussionReference
     }
 
     func makeGuideReference() -> GuideReference {
-        return GuideReference(
-            reference: self.databaseReference
-        )
+        return self.guideReference
     }
 
     func makeUserInfoReference() -> UserInfoReference {
-        return UserInfoReference(
-            reference: self.databaseReference,
-            storageReference: self.storageReference,
-            dateFormatter: self.fullDateFormatter
-        )
+        return self.userInfoReference
     }
 
     func makeLawReference() -> LawReference {
-        return LawReference(
-            reference: self.databaseReference,
-            dateFormatter: self.shortDateFormatter
-        )
+        return self.lawReference
     }
 
 }

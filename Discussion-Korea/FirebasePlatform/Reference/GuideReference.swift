@@ -16,6 +16,10 @@ final class GuideReference {
         self.reference = reference
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     func guides() -> Observable<[Guide]> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("guides")

@@ -23,6 +23,10 @@ final class UserInfoReference {
         self.dateFormatter = dateFormatter
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     /// userID로 UserInfo 요청
     func userInfo(with userID: String) -> Observable<UserInfo?> {
         return Observable.create { [unowned self] subscribe in
