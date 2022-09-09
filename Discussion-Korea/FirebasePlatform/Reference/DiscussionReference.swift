@@ -18,6 +18,10 @@ final class DiscussionReference {
         self.dateFormatter = dateFormatter
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     func getDiscussions(from roomID: String) -> Observable<Discussion> {
         return Observable<Discussion>.create { [unowned self] subscribe in
             self.reference

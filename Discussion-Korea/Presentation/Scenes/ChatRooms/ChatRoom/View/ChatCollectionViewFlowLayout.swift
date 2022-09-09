@@ -9,6 +9,8 @@ import UIKit
 
 final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
+    private var isExpand: Bool = false
+
     private var topMostVisibleItem = Int.max
     private var bottomMostVisibleItem = -Int.max
     private var visibleAttributes: [UICollectionViewLayoutAttributes]?
@@ -81,7 +83,12 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     override func finalizeCollectionViewUpdates() {
         super.finalizeCollectionViewUpdates()
-        guard let collectionView = self.collectionView else { return }
+        guard let collectionView = self.collectionView as? ChatCollectionView
+        else { return }
+        if !self.isExpand {
+            self.isExpand = collectionView.expand()
+        }
+        guard self.isExpand else { return }
         if self.isInsertingItemsToBottom {
             self.isInsertingItemsToBottom = false
             defer {

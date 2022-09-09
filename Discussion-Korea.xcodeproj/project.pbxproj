@@ -63,6 +63,7 @@
 		3F646F3428CA5A7600434BC6 /* DiscussionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F646F3328CA5A7600434BC6 /* DiscussionBuilder.swift */; };
 		3F646F3528CA6E6B00434BC6 /* BuilderUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F646F2D28CA585000434BC6 /* BuilderUsecase.swift */; };
 		3F646F3728CA6F2300434BC6 /* MockBuilderUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F646F3628CA6F2300434BC6 /* MockBuilderUsecase.swift */; };
+		3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F646F3828CB341900434BC6 /* ChatCollectionView.swift */; };
 		3F66968C283103280077E5B3 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F66968B283103280077E5B3 /* UIColor+.swift */; };
 		3F6696A02835BFB20077E5B3 /* ChatRoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F66969F2835BFB10077E5B3 /* ChatRoomListViewController.swift */; };
 		3F6696A22835BFD20077E5B3 /* ChatRoomListNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696A12835BFD20077E5B3 /* ChatRoomListNavigator.swift */; };
@@ -294,6 +295,7 @@
 		3F646F3128CA5A2F00434BC6 /* IndependentBuilderUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndependentBuilderUsecase.swift; sourceTree = "<group>"; };
 		3F646F3328CA5A7600434BC6 /* DiscussionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionBuilder.swift; sourceTree = "<group>"; };
 		3F646F3628CA6F2300434BC6 /* MockBuilderUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBuilderUsecase.swift; sourceTree = "<group>"; };
+		3F646F3828CB341900434BC6 /* ChatCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionView.swift; sourceTree = "<group>"; };
 		3F66968B283103280077E5B3 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		3F66969F2835BFB10077E5B3 /* ChatRoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListViewController.swift; sourceTree = "<group>"; };
 		3F6696A12835BFD20077E5B3 /* ChatRoomListNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListNavigator.swift; sourceTree = "<group>"; };
@@ -611,6 +613,7 @@
 			children = (
 				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
+				3F646F3828CB341900434BC6 /* ChatCollectionView.swift */,
 				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
 				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
@@ -1377,6 +1380,7 @@
 				3FAAB69928BEB44F00AA32ED /* GuideViewModel.swift in Sources */,
 				3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
+				3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */,
 				3FAAB6B928C0815500AA32ED /* MyPageViewController.swift in Sources */,
 				3FAAB6FB28C68C6B00AA32ED /* ResetPasswordViewModel.swift in Sources */,
 				3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */,

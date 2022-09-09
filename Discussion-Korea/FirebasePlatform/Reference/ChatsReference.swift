@@ -18,6 +18,10 @@ final class ChatsReference {
         self.dateFormatter = dateFormatter
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     func chats(roomID: String) -> Observable<[Chat]> {
         return Observable.create { [unowned self] subscribe in
             self.reference
