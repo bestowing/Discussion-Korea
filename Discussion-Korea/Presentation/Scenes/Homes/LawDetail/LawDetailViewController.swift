@@ -47,20 +47,20 @@ final class LawDetailViewController: BaseViewController {
     }
 
     private func setSubViews() {
-        self.view.addSubview(self.articleLabel)
-        self.view.addSubview(self.titleLabel)
-        self.view.addSubview(self.contentsLabel)
-        self.articleLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+        let stackView = UIStackView(arrangedSubviews: [
+            self.articleLabel, self.titleLabel, self.contentsLabel
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 20.0
+        let scrollView = UIScrollView()
+        self.view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(self.view.safeAreaLayoutGuide).inset(20)
         }
-        self.titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.articleLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalTo(self.articleLabel)
-        }
-        self.contentsLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
-            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-20)
+        scrollView.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView)
+            make.edges.equalTo(scrollView)
         }
     }
 
