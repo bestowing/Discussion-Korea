@@ -83,7 +83,7 @@ final class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     override func finalizeCollectionViewUpdates() {
         super.finalizeCollectionViewUpdates()
-        guard let collectionView = self.collectionView
+        guard let collectionView = self.collectionView as? ChatCollectionView
         else { return }
         if !self.isExpand {
             self.isExpand = collectionView.expand()

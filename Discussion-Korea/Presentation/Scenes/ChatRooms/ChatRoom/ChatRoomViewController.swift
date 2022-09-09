@@ -20,7 +20,8 @@ final class ChatRoomViewController: BaseViewController {
 
     var viewModel: ChatRoomViewModel!
 
-    private var isExpanded: Bool = false
+    private var didSetupViewConstraints = false
+    private var isExpanded = false
 
     private var dataSource = ChatRoomDataSource(
         configureCell: { _, collectionView, indexPath, model in
@@ -47,14 +48,14 @@ final class ChatRoomViewController: BaseViewController {
     private let liveChatView = LiveChatView()
     private let chatPreview = ChatPreview()
 
-    private lazy var messageCollectionView: UICollectionView = {
+    private lazy var messageCollectionView: ChatCollectionView = {
         let flowLayout = ChatCollectionViewFlowLayout()
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 7
 
-        let messageCollectionView = UICollectionView(
+        let messageCollectionView = ChatCollectionView(
             frame: .zero, collectionViewLayout: flowLayout
         )
         messageCollectionView.backgroundColor = UIColor.systemGray6
@@ -93,35 +94,12 @@ final class ChatRoomViewController: BaseViewController {
 
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
-        self.view.addSubview(self.liveChatView)
-        self.view.addSubview(self.chatPreview)
-        self.view.addSubview(self.noticeView)
         self.view.addSubview(self.chatInputView)
         self.navigationItem.rightBarButtonItem = self.menuButton
-        self.noticeView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-        }
-        self.liveChatView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
-            make.top.equalTo(self.noticeView.snp.bottom).offset(5)
-        }
+        self.messageCollectionView.snp.contentHuggingVerticalPriority = 1
         self.messageCollectionView.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.top.equalToSuperview()
-        }
-        self.chatPreview.snp.makeConstraints { make in
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
-            make.bottom.equalTo(self.messageCollectionView.snp.bottom).offset(-10)
-        }
-        self.chatInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(self.messageCollectionView.snp.bottom)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
@@ -129,10 +107,19 @@ final class ChatRoomViewController: BaseViewController {
 
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [unowned self] keyboardVisibleHeight in
-                self.view.frame.origin.y = -keyboardVisibleHeight
+                guard self.didSetupViewConstraints else { return }
+                self.chatInputView.snp.updateConstraints { make in
+                    make.bottom.equalToSuperview().inset(
+                        keyboardVisibleHeight == 0 ? self.view.safeAreaInsets.bottom : 0
+                    )
+                }
+                self.view.setNeedsLayout()
+                UIView.animate(withDuration: 0) {
+                    self.view.bounds.origin.y = keyboardVisibleHeight
+                    self.view.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
-
     }
 
     private func bindViewModel() {
@@ -213,37 +200,18 @@ final class ChatRoomViewController: BaseViewController {
         output.events.drive().disposed(by: self.disposeBag)
     }
 
-}
-
-extension UICollectionView {
-
-    enum Position {
-        case top
-        case bottom
-        case none
-    }
-
-    func bottom(margin: CGFloat = 20.0) -> Bool {
-        let result = self.contentOffset.y + self.frame.height + margin + 10.0 > self.contentSize.height
-        return result
-    }
-
-    func position() -> Observable<Position> {
-        return self.rx.contentOffset
-            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-            .map { [unowned self] contentOffset in
-                if contentOffset.y <= 20.0 {
-                    return .top
-                }
-                if self.bottom() {
-                    return .bottom
-                }
-                return .none
-            }
-    }
-
-    func expand() -> Bool {
-        return self.contentSize.height >= self.frame.height + self.contentOffset.y
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        guard !self.didSetupViewConstraints else { return }
+        self.didSetupViewConstraints = true
+        
+        self.chatInputView.snp.contentHuggingVerticalPriority = 999
+        self.chatInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(self.messageCollectionView.snp.bottom)
+            make.height.lessThanOrEqualToSuperview().dividedBy(4)
+            make.bottom.equalToSuperview().offset(-self.view.safeAreaInsets.bottom)
+        }
     }
 
 }
