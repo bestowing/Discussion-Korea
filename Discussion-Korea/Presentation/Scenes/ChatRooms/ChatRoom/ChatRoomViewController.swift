@@ -209,7 +209,6 @@ final class ChatRoomViewController: BaseViewController {
         self.chatInputView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.top.equalTo(self.messageCollectionView.snp.bottom)
-            make.height.lessThanOrEqualToSuperview().dividedBy(4)
             make.bottom.equalToSuperview().offset(-self.view.safeAreaInsets.bottom)
         }
     }
