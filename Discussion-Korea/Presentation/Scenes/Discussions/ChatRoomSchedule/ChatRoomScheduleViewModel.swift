@@ -12,6 +12,7 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let userID: String
     private let chatRoom: ChatRoom
 
     private let usecase: DiscussionUsecase
@@ -19,9 +20,11 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
     // MARK: - init/deinit
 
-    init(chatRoom: ChatRoom,
+    init(userID: String,
+         chatRoom: ChatRoom,
          usecase: DiscussionUsecase,
          navigator: ChatRoomScheduleNavigator) {
+        self.userID = userID
         self.chatRoom = chatRoom
         self.usecase = usecase
         self.navigator = navigator
@@ -52,7 +55,12 @@ final class ChatRoomScheduleViewModel: ViewModelType {
                     self.navigator.toAddDiscussion(self.chatRoom)
                 })
 
-        return Output(schedules: schedules, exitEvent: exitEvent, addDiscussionEvent: addDiscussionEvent)
+        return Output(
+            addEnabled: Driver.just(self.chatRoom.adminUID == self.userID),
+            schedules: schedules,
+            exitEvent: exitEvent,
+            addDiscussionEvent: addDiscussionEvent
+        )
     }
 
 }
@@ -66,6 +74,7 @@ extension ChatRoomScheduleViewModel {
     }
 
     struct Output {
+        let addEnabled: Driver<Bool>
         let schedules: Driver<[ScheduleItemViewModel]>
         let exitEvent: Driver<Void>
         let addDiscussionEvent: Driver<Void>

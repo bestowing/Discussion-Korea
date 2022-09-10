@@ -78,11 +78,11 @@ final class SideManager {
         let chatRoomID = self.chatRoomID
         self.agrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = side == .agree ? "win" : "lose"
-            updates["users/\($0)/\(side == .agree ? "win" : "lose")"] = 1
+            updates["users/\($0)/\(side == .agree ? "win" : "lose")"] = ServerValue.increment(1)
         }
         self.disagrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = side == .agree ? "lose" : "win"
-            updates["users/\($0)/\(side == .disagree ? "win" : "lose")"] = 1
+            updates["users/\($0)/\(side == .disagree ? "win" : "lose")"] = ServerValue.increment(1)
         }
         reference.updateChildValues(updates)
     }
@@ -92,11 +92,11 @@ final class SideManager {
         var updates = [String: Any]()
         self.agrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = "draw"
-            updates["users/\($0)/draw"] = 1
+            updates["users/\($0)/draw"] = ServerValue.increment(1)
         }
         self.disagrees.forEach {
             updates["/chatRoom/\(chatRoomID)/users/\($0)/result"] = "draw"
-            updates["users/\($0)/draw"] = 1
+            updates["users/\($0)/draw"] = ServerValue.increment(1)
         }
         reference.updateChildValues(updates)
     }

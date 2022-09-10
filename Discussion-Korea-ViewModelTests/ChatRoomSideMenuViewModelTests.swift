@@ -56,11 +56,8 @@ final class ChatRoomSideMenuViewModelTests: XCTestCase {
 extension ChatRoomSideMenuViewModelTests {
 
     final class MockChatRoomSideMenuNavigator: ChatRoomSideMenuNavigator {
-
         func toChatRoomSideMenu(_ uid: String, _ chatRoom: ChatRoom) {}
-
-        func toChatRoomSchedule(_ chatRoom: ChatRoom) {}
-
+        func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {}
     }
 
 }

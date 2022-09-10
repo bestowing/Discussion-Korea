@@ -14,6 +14,7 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
 
     // MARK: - properties
 
+    private let userID = "testUID"
     private let chatRoom = ChatRoom(uid: "uid", title: "test", adminUID: "testUID")
 
     private var mockNavigator: MockChatRoomScheduleNavigator!
@@ -29,6 +30,7 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
         self.mockNavigator = MockChatRoomScheduleNavigator()
         self.discussionUsecase = MockDiscussionUsecase()
         self.viewModel = ChatRoomScheduleViewModel(
+            userID: self.userID,
             chatRoom: self.chatRoom,
             usecase: self.discussionUsecase,
             navigator: self.mockNavigator
@@ -51,13 +53,9 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
 extension ChatRoomScheduleViewModelTests {
 
     final class MockChatRoomScheduleNavigator: ChatRoomScheduleNavigator {
-
-        func toChatRoomSchedule(_ chatRoom: ChatRoom) {}
-
+        func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {}
         func toAddDiscussion(_ chatRoom: ChatRoom) {}
-
         func toChatRoom() {}
-
     }
 
 }

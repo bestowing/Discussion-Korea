@@ -24,12 +24,6 @@ final class SerialBotChatCell: ChatCell {
         return contentLabel
     }()
 
-    private let timeLabel: UILabel = {
-        let timeLabel = UILabel()
-        timeLabel.font = UIFont.systemFont(ofSize: 14.0)
-        return timeLabel
-    }()
-
     // MARK: - init/deinit
 
     required init?(coder: NSCoder) {
@@ -46,16 +40,11 @@ final class SerialBotChatCell: ChatCell {
 
     private func layoutViews() {
         self.contentView.addSubview(self.contentLabel)
-        self.contentView.addSubview(self.timeLabel)
         self.contentLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.leading.greaterThanOrEqualToSuperview().offset(60)
-            make.trailing.lessThanOrEqualToSuperview().offset(-80)
+            make.leading.greaterThanOrEqualToSuperview().offset(40)
+            make.trailing.lessThanOrEqualToSuperview().offset(-40)
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-        self.timeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.contentLabel.snp.trailing).offset(8)
             make.bottom.equalToSuperview()
         }
     }
@@ -65,7 +54,6 @@ final class SerialBotChatCell: ChatCell {
         self.contentLabel.textColor = super.textColor(viewModel)
         self.contentLabel.backgroundColor = viewModel.backgroundColor ?? .systemBackground
         self.contentLabel.font = viewModel.contentFont
-        self.timeLabel.text = viewModel.timeString
     }
 
 }

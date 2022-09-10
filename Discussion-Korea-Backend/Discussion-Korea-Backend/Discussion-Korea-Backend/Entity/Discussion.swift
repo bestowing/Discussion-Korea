@@ -13,19 +13,22 @@ struct Discussion {
     let date: Date
     let durations: [Double]
     let topic: String
+    let isFulltime: Bool
 
-    init(uid: String, date: Date, durations: [Double], topic: String) {
+    init(uid: String, date: Date, durations: [Double], topic: String, isFulltime: Bool) {
         self.uid = uid
         self.date = date
         self.durations = durations
         self.topic = topic
+        self.isFulltime = isFulltime
     }
 
-    init(date: Date, durations: [Double], topic: String) {
+    init(date: Date, durations: [Double], topic: String, isFulltime: Bool) {
         self.uid = nil
         self.date = date
         self.durations = durations
         self.topic = topic
+        self.isFulltime = isFulltime
     }
 
 }

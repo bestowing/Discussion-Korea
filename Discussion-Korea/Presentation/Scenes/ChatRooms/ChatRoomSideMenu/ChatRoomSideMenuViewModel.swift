@@ -55,7 +55,7 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         let calendarEvent = input.calendar
             .do(onNext: { [unowned self] in
-                self.navigator.toChatRoomSchedule(self.chatRoom)
+                self.navigator.toChatRoomSchedule(self.uid, self.chatRoom)
             })
 
         let chatRoomTitle = Driver.from([self.chatRoom.title])
