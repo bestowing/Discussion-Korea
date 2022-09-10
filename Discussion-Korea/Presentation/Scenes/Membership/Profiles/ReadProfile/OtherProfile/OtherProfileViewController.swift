@@ -52,12 +52,14 @@ final class OtherProfileViewController: BaseViewController {
             configuration.contentInsets = NSDirectionalEdgeInsets(
                 top: 12, leading: 0, bottom: 12, trailing: 0
             )
+            configuration.baseBackgroundColor = .systemRed
+            configuration.cornerStyle = .medium
             button.configuration = configuration
         } else {
             button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            button.backgroundColor = .systemRed
+            button.layer.cornerRadius = 7
         }
-        button.layer.cornerRadius = 7
-        button.backgroundColor = .systemRed
         return button
     }()
 
@@ -65,19 +67,20 @@ final class OtherProfileViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("닫기", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = .accentColor
         if #available(iOS 15.0, *) {
             var configuration = UIButton.Configuration.filled()
             configuration.titleAlignment = .center
             configuration.contentInsets = NSDirectionalEdgeInsets(
                 top: 12, leading: 0, bottom: 12, trailing: 0
             )
+            configuration.baseBackgroundColor = .accentColor
+            configuration.cornerStyle = .medium
             button.configuration = configuration
         } else {
             button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            button.backgroundColor = .accentColor
+            button.layer.cornerRadius = 7
         }
-        button.layer.cornerRadius = 7
-        button.layer.masksToBounds = true
         return button
     }()
 

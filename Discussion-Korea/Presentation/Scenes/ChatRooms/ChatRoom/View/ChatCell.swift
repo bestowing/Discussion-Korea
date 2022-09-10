@@ -9,6 +9,8 @@ import UIKit
 
 class ChatCell: UICollectionViewCell {
 
+    var action: Action?
+
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
         layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(
@@ -43,6 +45,11 @@ class ChatCell: UICollectionViewCell {
             label += "\(dateString)에 "
         }
         return label + " 채팅을 보냈어요."
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.action = nil
     }
 
 }
