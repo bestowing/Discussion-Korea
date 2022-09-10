@@ -1,5 +1,5 @@
 //
-//  DefaultMyPageNavigator.swift
+//  MyProfileNavigator.swift
 //  Discussion-Korea
 //
 //  Created by 이청수 on 2022/09/01.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultMyPageNavigator: BaseNavigator, MyPageNavigator {
+final class MyProfileNavigator: BaseNavigator, ReadProfileNavigator {
 
     // MARK: - properties
 
@@ -26,16 +26,15 @@ final class DefaultMyPageNavigator: BaseNavigator, MyPageNavigator {
 
     // MARK: - methods
 
-    func toMyPage(_ userID: String) {
-        let myPageViewController = MyPageViewController()
-        let myPageViewModel = MyPageViewModel(
+    func toReadProfile(_ userID: String) {
+        let viewController = MyProfileViewController()
+        viewController.viewModel = ReadProfileViewModel(
             userID: userID,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
-        myPageViewController.viewModel = myPageViewModel
-        self.navigationController.pushViewController(myPageViewController, animated: true)
-        self.presentingViewController = myPageViewController
+        self.navigationController.pushViewController(viewController, animated: true)
+        self.presentingViewController = viewController
     }
 
     func toSetting() {

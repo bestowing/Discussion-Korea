@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol MyPageNavigator {
+protocol ReadProfileNavigator {
 
-    func toMyPage(_ userID: String)
+    func toReadProfile(_ userID: String)
     func toSetting()
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?)
 

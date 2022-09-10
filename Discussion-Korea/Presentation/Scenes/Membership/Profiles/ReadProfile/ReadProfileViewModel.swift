@@ -8,18 +8,18 @@
 import Foundation
 import RxCocoa
 
-final class MyPageViewModel: ViewModelType {
+final class ReadProfileViewModel: ViewModelType {
 
     // MARK: - properties
 
     private let userID: String
-    private let navigator: MyPageNavigator
+    private let navigator: ReadProfileNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
     init(userID: String,
-         navigator: MyPageNavigator,
+         navigator: ReadProfileNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.userID = userID
         self.navigator = navigator
@@ -73,11 +73,13 @@ final class MyPageViewModel: ViewModelType {
 
 }
 
-extension MyPageViewModel {
+extension ReadProfileViewModel {
 
     struct Input {
+        let reportTrigger: Driver<Void>
         let settingTrigger: Driver<Void>
         let profileEditTrigger: Driver<Void>
+        let exitTrigger: Driver<Void>
     }
 
     struct Output {

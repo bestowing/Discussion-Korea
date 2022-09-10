@@ -76,7 +76,7 @@ final class Application {
             selectedImage: UIImage(systemName: "person.fill")
         )
         myPageNavigationController.tabBarItem = myPageButton
-        let myPageNavigator = DefaultMyPageNavigator(
+        let myPageNavigator = MyProfileNavigator(
             services: self.firebaseUseCaseProvider,
             navigationController: myPageNavigationController
         )
@@ -90,7 +90,7 @@ final class Application {
         tapBarController.tabBar.tintColor = .accentColor
         homeNavigator.toHome(currentUser.uid)
         chatRoomListNavigator.toChatRoomList(currentUser.uid)
-        myPageNavigator.toMyPage(currentUser.uid)
+        myPageNavigator.toReadProfile(currentUser.uid)
         window.rootViewController = tapBarController
     }
 
