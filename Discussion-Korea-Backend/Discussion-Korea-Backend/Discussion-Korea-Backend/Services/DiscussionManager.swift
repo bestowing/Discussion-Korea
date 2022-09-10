@@ -72,14 +72,13 @@ final class DiscussionManager {
             .dropFirst()
             .handleEvents(receiveOutput: { [unowned self] ready in
                 if ready {
-                    let now = Date()
                     self.send(chat: Chat(
                         userID: "bot",
                         content: "찬성측, 반대측, 판정단이 최소 1명씩 배정되었습니다. 1분후 토론을 시작합니다. 토론에 참여하려면 빠르게 선택해주세요!",
-                        date: now,
+                        date: Date.now,
                         nickName: nil)
                     )
-                    let end = Date(timeInterval: 60, since: now)
+                    let end = Date(timeInterval: 60, since: Date.now)
                     let timer = Timer(fireAt: end, interval: 0, target: self, selector: #selector(phaseOneEnd), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
                     self.send(phase: 1, until: end)
@@ -244,33 +243,35 @@ final class DiscussionManager {
     }
     
     private func goPhaseTwo(content: String) {
-        let now = Date()
         // 누가 배정되었는지 소개하고 시작하기
         self.send(chat: Chat(userID: "bot",
                              content: content,
-                             date: now,
+                             date: Date.now,
                              nickName: nil))
         let agrees: [(String, String)] = self.sideManager.agreeNicknames()
         let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
         let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? agrees.count : disagrees.count))
-        let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.wait()
             self.send(chat: Chat(
-                userID: "bot", content: "찬성측에는 \(agrees.map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: now, nickName: nil)
+                userID: "bot", content: "찬성측에는 \(agrees.map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다", date: Date.now, nickName: nil)
             )
             self.wait()
             self.send(chat: Chat(
-                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: now, nickName: nil)
+                userID: "bot", content: "반대측에는 \(self.sideManager.disagreeNicknames().map { $0.1 + "님" }.joined(separator: ", "))이 토론에 참여해주셨습니다.", date: Date.now, nickName: nil)
             )
             self.wait()
-            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: now, nickName: nil))
+            self.send(chat: Chat(userID: "bot", content: "그럼 먼저 찬성측 입론부터 듣겠습니다", date: Date.now, nickName: nil))
             self.wait()
+            let now = Date.now
+            let end = Date(timeInterval: totaltimeInterval, since: now)
             self.send(phase: 2, until: end)
             self.giveRightSpeaking(start: now, end: end, userIDs: agrees, after: { [unowned self] in
                 self.phaseTwoEnd()
             })
         } else {
+            let now = Date.now
+            let end = Date(timeInterval: totaltimeInterval, since: now)
             self.send(phase: 8, until: end)
             self.giveRightSpeaking(start: now, end: end, userIDs: disagrees) { [unowned self] in
                 self.phaseTwoEnd()
@@ -279,15 +280,15 @@ final class DiscussionManager {
     }
 
     private func goPhaseThree(content: String) {
-        let now = Date()
         self.send(chat: Chat(userID: "bot",
                              content: content,
-                             date: now,
+                             date: Date.now,
                              nickName: nil))
         self.wait()
         let agrees: [(String, String)] = self.sideManager.agreeNicknames()
         let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
         let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? disagrees.count : agrees.count))
+        let now = Date()
         let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 3, until: end)
@@ -321,23 +322,25 @@ final class DiscussionManager {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: end)
         self.sideManager.agrees.forEach { [unowned self] in
+            self.roomReference.child("speaker/\($0)").setValue(nil)
             self.roomReference.child("speaker/\($0)").setValue(["value": dateString])
         }
         self.sideManager.disagrees.forEach { [unowned self] in
+            self.roomReference.child("speaker/\($0)").setValue(nil)
             self.roomReference.child("speaker/\($0)").setValue(["value": dateString])
         }
     }
 
     private func goPhaseFive(content: String) {
-        let now = Date()
         self.send(chat: Chat(userID: "bot",
                              content: content,
-                             date: now,
+                             date: Date.now,
                              nickName: nil))
         self.wait()
         let agrees: [(String, String)] = self.sideManager.agreeNicknames()
         let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
         let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? agrees.count : disagrees.count))
+        let now = Date.now
         let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 5, until: end)
@@ -353,15 +356,15 @@ final class DiscussionManager {
     }
 
     private func goPhaseSix(content: String) {
-        let now = Date()
         self.send(chat: Chat(userID: "bot",
                              content: content,
-                             date: now,
+                             date: Date.now,
                              nickName: nil))
         self.wait()
         let agrees: [(String, String)] = self.sideManager.agreeNicknames()
         let disagrees: [(String, String)] = self.sideManager.disagreeNicknames()
         let totaltimeInterval = self.durations[0] * Double(60 * (self.isFirstHalf ? disagrees.count : agrees.count))
+        let now = Date.now
         let end = Date(timeInterval: totaltimeInterval, since: now)
         if self.isFirstHalf {
             self.send(phase: 6, until: end)
@@ -395,13 +398,13 @@ final class DiscussionManager {
     }
 
     private func goPhaseEight() {
-        let now = Date()
         self.wait()
         self.send(chat: Chat(userID: "bot",
                              content: "토론이 종료되었습니다. 판정단 여러분께서는 투표를 진행해주시기 바랍니다. 1분 안에 투표해주시길 바랍니다.",
-                             date: now,
+                             date: Date.now,
                              nickName: nil))
         self.wait()
+        let now = Date.now
         let date = Date(timeInterval: 60 * 1, since: now) // 투표는 기본 1분간
         let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(votePhaseEnd), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)
@@ -419,6 +422,7 @@ final class DiscussionManager {
                 self.send(phase: 0)
                 self.sideManager.endDiscussion()
                 self.isFirstHalf = true
+                self.isFulltime = false
                 self.roomReference.child("supporters").setValue(nil)
                 self.clean()
             }
@@ -552,12 +556,12 @@ final class DiscussionManager {
             self.isFirstHalf = false
             let group = DispatchGroup()
             group.enter()
-            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
+            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date.now, nickName: nil))
             self.summaryManager.summaries(completion: { [unowned self] results in
                 results.forEach { side, uid, contents in
                     let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
                     self.wait()
-                    self.send(chat: Chat(userID: "bot", content: "\(side == .agree ? "찬성측" : "반대측") \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: "\(side == .agree ? "찬성측" : "반대측") \"\(nickname)\"님의 발언 요약입니다:", date: Date.now, nickName: nil))
                     self.wait()
                     self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
                 }
@@ -574,12 +578,12 @@ final class DiscussionManager {
         } else {
             let group = DispatchGroup()
             group.enter()
-            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date(), nickName: nil))
+            self.send(chat: Chat(userID: "bot", content: "양측의 발언을 요약하고 있습니다...", date: Date.now, nickName: nil))
             self.summaryManager.summaries(completion: { [unowned self] results in
                 results.forEach { side, uid, contents in
                     let nickname = UserInfoManager.shared.userInfos[uid]!.nickname
                     self.wait()
-                    self.send(chat: Chat(userID: "bot", content: "\(side == .agree ? "찬성측" : "반대측") \"\(nickname)\"님의 발언 요약입니다:", date: Date(), nickName: nil))
+                    self.send(chat: Chat(userID: "bot", content: "\(side == .agree ? "찬성측" : "반대측") \"\(nickname)\"님의 발언 요약입니다:", date: Date.now, nickName: nil))
                     self.wait()
                     self.send(chat: Chat(userID: "bot", content: contents, date: Date(), nickName: nil))
                 }
