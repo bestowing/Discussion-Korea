@@ -23,23 +23,30 @@ final class ChatRoomViewController: BaseViewController {
     private var didSetupViewConstraints = false
     private var isExpanded = false
 
-    private var dataSource = ChatRoomDataSource(
+    private lazy var dataSource = ChatRoomDataSource(
         configureCell: { _, collectionView, indexPath, model in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: model.cellIdentifier, for: indexPath
             ) as? ChatCell
             else { return UICollectionViewCell() }
             cell.bind(model)
+            cell.action = Action(
+                action: { [unowned self] in
+                    self.tapProfileSubject.onNext(indexPath)
+                }
+            )
             cell.isAccessibilityElement = true
             cell.accessibilityLabel = cell.getAccessibilityLabel(model)
             return cell
         }
     )
 
+    private let tapProfileSubject = PublishSubject<IndexPath>()
+
     private let menuButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.tintColor = .label
-        button.image = UIImage(systemName: "line.3.horizontal")
+        button.image = UIImage(systemName: "line.horizontal.3")
         button.accessibilityLabel = "메뉴"
         return button
     }()
@@ -126,6 +133,7 @@ final class ChatRoomViewController: BaseViewController {
         }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
 
         RxKeyboard.instance.visibleHeight
@@ -172,6 +180,8 @@ final class ChatRoomViewController: BaseViewController {
             previewTouched: self.chatPreview.rx.tapGesture()
                 .when(.recognized).mapToVoid()
                 .asDriverOnErrorJustComplete(),
+            profileSelection: self.tapProfileSubject.asDriverOnErrorJustComplete()
+                .debug(),
             send: self.chatInputView.rx.send.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
             content: self.chatInputView.rx.chatContent.asDriver(),
@@ -244,6 +254,24 @@ fileprivate class RxCollectionViewSectionedNonAnimatedDataSource<Section: Animat
         UIView.performWithoutAnimation {
             super.collectionView(collectionView, observedEvent: observedEvent)
         }
+    }
+
+}
+
+final class Action: NSObject {
+
+    // MARK: - properties
+    private let _action: () -> ()
+
+    // MARK: - init/deinit
+    init(action: @escaping () -> ()) {
+        _action = action
+        super.init()
+    }
+
+    // MARK: - methods
+    @objc func performAction() {
+        _action()
     }
 
 }

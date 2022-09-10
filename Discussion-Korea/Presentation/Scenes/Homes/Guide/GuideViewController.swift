@@ -35,6 +35,7 @@ final class GuideViewController: BaseViewController {
         collectionView.register(
             GuideCell.self, forCellWithReuseIdentifier: GuideCell.identifier
         )
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
 

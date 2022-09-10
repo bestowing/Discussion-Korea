@@ -14,8 +14,8 @@ final class ConfigureProfileView: UIView {
 
     // MARK: - properties
 
-    fileprivate let profileImageView: UIImageView = {
-        let imageView = UIImageView()
+    fileprivate let profileImageView: ProfileImageView = {
+        let imageView = ProfileImageView()
         imageView.setDefaultProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
@@ -76,10 +76,6 @@ final class ConfigureProfileView: UIView {
         }
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height / 2
-    }
 }
 
 extension Reactive where Base: ConfigureProfileView {
@@ -88,7 +84,7 @@ extension Reactive where Base: ConfigureProfileView {
         return base.nicknameField.rx.text
     }
 
-    var url: Binder<URL> {
+    var url: Binder<URL?> {
         return base.profileImageView.rx.url
     }
 

@@ -9,11 +9,11 @@ import RxSwift
 import SnapKit
 import UIKit
 
-final class MyPageViewController: BaseViewController {
+final class MyProfileViewController: BaseViewController {
 
     // MARK: - properties
 
-    var viewModel: MyPageViewModel!
+    var viewModel: ReadProfileViewModel!
 
     private let titleItem: UIBarButtonItem = {
         let label = UIBarButtonItem()
@@ -29,7 +29,7 @@ final class MyPageViewController: BaseViewController {
 
     private let settingButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "gearshape")
+        button.image = UIImage(named: "setting")
         button.tintColor = .label
         button.accessibilityLabel = "설정"
         return button
@@ -43,9 +43,8 @@ final class MyPageViewController: BaseViewController {
         return button
     }()
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.setDefaultProfileImage()
+    private let profileImageView: ProfileImageView = {
+        let imageView = ProfileImageView()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .accentColor
@@ -65,9 +64,20 @@ final class MyPageViewController: BaseViewController {
         let button = UIButton()
         button.setTitle("프로필 수정", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor.accentColor
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
+        if #available(iOS 15.0, *) {
+            var configuration = UIButton.Configuration.filled()
+            configuration.titleAlignment = .center
+            configuration.contentInsets = NSDirectionalEdgeInsets(
+                top: 12, leading: 0, bottom: 12, trailing: 0
+            )
+            configuration.baseBackgroundColor = .accentColor
+            configuration.cornerStyle = .medium
+            button.configuration = configuration
+        } else {
+            button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            button.backgroundColor = .accentColor
+            button.layer.cornerRadius = 7
+        }
         return button
     }()
 
@@ -120,9 +130,11 @@ final class MyPageViewController: BaseViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
-        let input = MyPageViewModel.Input(
+        let input = ReadProfileViewModel.Input(
+            reportTrigger: Observable.empty().asDriverOnErrorJustComplete(),
             settingTrigger: self.settingButton.rx.tap.asDriver(),
-            profileEditTrigger: self.editButton.rx.tap.asDriver()
+            profileEditTrigger: self.editButton.rx.tap.asDriver(),
+            exitTrigger: Observable.empty().asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
 

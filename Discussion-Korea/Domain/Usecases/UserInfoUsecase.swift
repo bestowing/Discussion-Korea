@@ -29,4 +29,6 @@ protocol UserInfoUsecase {
     func support(side: Side, roomID: String, userID: String) -> Observable<Void>
     func supporter(roomID: String, userID: String) -> Observable<Side>
 
+    func report(from userID: String, to victimID: String, reason: String) -> Observable<Void>
+
 }

@@ -455,6 +455,14 @@ final class ChatRoomViewModel: ViewModelType {
         let disappear = input.disappear
             .do(onNext: self.navigator.disappear)
 
+        let selectedParticipantEvent = input.profileSelection
+            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { (indexPath, items) in
+                return items[indexPath.item]
+            }
+            .map { [unowned self] item in (self.uid, item.chat.userID) }
+            .do(onNext: self.navigator.toOtherProfile)
+            .mapToVoid()
+
         let events = Driver.of(
             initializationEvent,
             newChatsEvent,
@@ -470,7 +478,8 @@ final class ChatRoomViewModel: ViewModelType {
             previewCheckEvent,
             appear,
             disappear,
-            writingEvent
+            writingEvent,
+            selectedParticipantEvent
         )
             .merge()
 
@@ -502,6 +511,7 @@ extension ChatRoomViewModel {
         let loadMoreTrigger: Driver<Void>
         let bottomScrolled: Driver<Bool>
         let previewTouched: Driver<Void>
+        let profileSelection: Driver<IndexPath>
         let send: Driver<Void>
         let menu: Driver<Void>
         let content: Driver<String>

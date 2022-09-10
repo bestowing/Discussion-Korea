@@ -142,6 +142,7 @@ final class ChatRoomSideMenuViewController: BaseViewController {
             viewWillAppear: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
+            selection: self.participantsTableView.rx.itemSelected.asDriver(),
             calendar: self.calendarButton.rx.tap.asDriver(),
             side: self.opinionView.rx.value.distinctUntilChanged().filter { (0...2) ~= $0 }.map {
                 switch $0 {

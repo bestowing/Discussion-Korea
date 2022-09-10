@@ -38,6 +38,8 @@ final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNav
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
+    private weak var presentingViewController: UIViewController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
@@ -61,6 +63,7 @@ final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNav
         let menu = DefaultSideMenuNavigation(rootViewController: viewController)
         menu.isNavigationBarHidden = true
         self.presentedViewController.present(menu, animated: true)
+        self.presentingViewController = viewController
     }
 
     func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {
@@ -70,6 +73,16 @@ final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNav
             presentedViewController: self.presentedViewController
         )
         navigator.toChatRoomSchedule(userID, chatRoom)
+    }
+
+    func toOtherProfile(_ selfID: String, _ userID: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = OtherProfileNavigator(
+            services: self.services,
+            presentedViewController: presentingViewController
+        )
+        navigator.toReadProfile(selfID, userID)
     }
 
 }

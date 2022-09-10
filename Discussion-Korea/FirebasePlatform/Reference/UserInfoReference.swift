@@ -337,3 +337,31 @@ extension UserInfoReference {
     }
 
 }
+
+// MARK: - 신고
+
+extension UserInfoReference {
+
+    func report(from userID: String, to victimID: String, reason: String) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            guard let key = self.reference
+                .child("reports")
+                .childByAutoId().key
+            else {
+                subscribe.onError(RefereceError.keyError)
+                return Disposables.create()
+            }
+            let values: [String: Any] = [
+                "from": userID,
+                "to": victimID,
+                "reason": reason
+            ]
+            let childUpdates = ["reports/\(key)": values]
+            self.reference.updateChildValues(childUpdates)
+            subscribe.onNext(())
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+}
