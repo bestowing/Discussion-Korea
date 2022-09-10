@@ -63,14 +63,12 @@ final class ChatInputView: UIView {
         self.addSubview(self.messageTextView)
         self.addSubview(self.timeLabel)
         self.addSubview(self.sendButton)
-        backgroundView.snp.contentCompressionResistanceVerticalPriority = 999
         backgroundView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview().inset(10)
         }
-        self.messageTextView.snp.contentCompressionResistanceVerticalPriority = 999
         self.messageTextView.snp.contentHuggingHorizontalPriority = 1
         self.messageTextView.snp.makeConstraints { make in
-            make.edges.equalTo(backgroundView).inset(5)
+            make.top.bottom.leading.equalTo(backgroundView).inset(5)
         }
         self.timeLabel.snp.contentHuggingHorizontalPriority = 999
         self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 999
