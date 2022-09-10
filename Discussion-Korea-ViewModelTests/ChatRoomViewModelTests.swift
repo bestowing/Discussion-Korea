@@ -89,6 +89,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -133,6 +134,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -182,6 +184,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -232,6 +235,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -286,6 +290,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -339,6 +344,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: contentTestableDriver,
@@ -390,6 +396,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: Driver.just(""),
@@ -441,6 +448,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: Driver.just(""),
@@ -496,6 +504,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: Driver.just(""),
@@ -551,6 +560,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             loadMoreTrigger: Driver.just(()),
             bottomScrolled: Driver.just(false),
             previewTouched: Driver.just(()),
+            profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
             content: Driver.just(""),
@@ -586,7 +596,6 @@ extension ChatRoomViewModelTests {
         }
 
         func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {}
-
         func toSideMenu(_ uid: String, _ chatRoom: ChatRoom) {}
 
         func toEnterAlert() -> Observable<Bool> {
@@ -602,9 +611,8 @@ extension ChatRoomViewModelTests {
         }
 
         func toDiscussionResultAlert(result: DiscussionResult) {}
-
+        func toOtherProfile(_ selfID: String, _ userID: String) {}
         func appear() {}
-
         func disappear() {}
 
     }

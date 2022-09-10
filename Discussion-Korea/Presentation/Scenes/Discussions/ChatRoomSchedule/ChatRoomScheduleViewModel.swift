@@ -5,8 +5,8 @@
 //  Created by 이청수 on 2022/05/06.
 //
 
-import RxCocoa
 import Foundation
+import RxCocoa
 
 final class ChatRoomScheduleViewModel: ViewModelType {
 

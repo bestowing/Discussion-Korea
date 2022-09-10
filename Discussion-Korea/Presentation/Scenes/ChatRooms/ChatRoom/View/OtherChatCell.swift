@@ -18,6 +18,7 @@ class OtherChatCell: ChatCell {
         imageView.backgroundColor = .accentColor
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
@@ -86,6 +87,9 @@ class OtherChatCell: ChatCell {
             make.bottom.equalTo(self.contentLabel.snp.bottom)
         }
         self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapProfile))
+        self.profileImageView.addGestureRecognizer(tapGesture)
     }
 
     override func bind(_ viewModel: ChatItemViewModel) {
@@ -105,6 +109,10 @@ class OtherChatCell: ChatCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.profileImageView.image = nil
+    }
+
+    @objc private func tapProfile() {
+        super.action?.performAction()
     }
 
 }

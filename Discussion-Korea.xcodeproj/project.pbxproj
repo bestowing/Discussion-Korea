@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F0006BD28CCD7BA006811C8 /* OtherProfileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */; };
+		3F0006BF28CCD8E7006811C8 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */; };
+		3F0006C128CD04E9006811C8 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C028CD04E9006811C8 /* ProfileImageView.swift */; };
+		3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C328CD0C54006811C8 /* ReportViewModel.swift */; };
+		3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */; };
+		3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */; };
+		3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C928CD0D98006811C8 /* ReportViewController.swift */; };
 		3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */; };
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
@@ -125,10 +132,10 @@
 		3FAAB6AE28BF1FFD00AA32ED /* GuideReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6AD28BF1FFD00AA32ED /* GuideReference.swift */; };
 		3FAAB6B028BF200700AA32ED /* UserInfoReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6AF28BF200700AA32ED /* UserInfoReference.swift */; };
 		3FAAB6B228BF200E00AA32ED /* LawReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B128BF200E00AA32ED /* LawReference.swift */; };
-		3FAAB6B528C07FA000AA32ED /* MyPageNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B428C07FA000AA32ED /* MyPageNavigator.swift */; };
-		3FAAB6B728C07FE200AA32ED /* DefaultMyPageNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B628C07FE200AA32ED /* DefaultMyPageNavigator.swift */; };
-		3FAAB6B928C0815500AA32ED /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B828C0815500AA32ED /* MyPageViewController.swift */; };
-		3FAAB6BB28C0868700AA32ED /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BA28C0868700AA32ED /* MyPageViewModel.swift */; };
+		3FAAB6B528C07FA000AA32ED /* ReadProfileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B428C07FA000AA32ED /* ReadProfileNavigator.swift */; };
+		3FAAB6B728C07FE200AA32ED /* MyProfileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B628C07FE200AA32ED /* MyProfileNavigator.swift */; };
+		3FAAB6B928C0815500AA32ED /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6B828C0815500AA32ED /* MyProfileViewController.swift */; };
+		3FAAB6BB28C0868700AA32ED /* ReadProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BA28C0868700AA32ED /* ReadProfileViewModel.swift */; };
 		3FAAB6BE28C0A2E700AA32ED /* DebateScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BD28C0A2E700AA32ED /* DebateScoreView.swift */; };
 		3FAAB6C028C0AF7E00AA32ED /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6BF28C0AF7E00AA32ED /* Int+.swift */; };
 		3FAAB6C228C0B7B700AA32ED /* Law.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6C128C0B7B700AA32ED /* Law.swift */; };
@@ -253,6 +260,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileNavigator.swift; sourceTree = "<group>"; };
+		3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
+		3F0006C028CD04E9006811C8 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		3F0006C328CD0C54006811C8 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
+		3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNavigator.swift; sourceTree = "<group>"; };
+		3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultReportNavigator.swift; sourceTree = "<group>"; };
+		3F0006C928CD0D98006811C8 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLabel.swift; sourceTree = "<group>"; };
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -354,10 +368,10 @@
 		3FAAB6AD28BF1FFD00AA32ED /* GuideReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideReference.swift; sourceTree = "<group>"; };
 		3FAAB6AF28BF200700AA32ED /* UserInfoReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReference.swift; sourceTree = "<group>"; };
 		3FAAB6B128BF200E00AA32ED /* LawReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawReference.swift; sourceTree = "<group>"; };
-		3FAAB6B428C07FA000AA32ED /* MyPageNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNavigator.swift; sourceTree = "<group>"; };
-		3FAAB6B628C07FE200AA32ED /* DefaultMyPageNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPageNavigator.swift; sourceTree = "<group>"; };
-		3FAAB6B828C0815500AA32ED /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		3FAAB6BA28C0868700AA32ED /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		3FAAB6B428C07FA000AA32ED /* ReadProfileNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadProfileNavigator.swift; sourceTree = "<group>"; };
+		3FAAB6B628C07FE200AA32ED /* MyProfileNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileNavigator.swift; sourceTree = "<group>"; };
+		3FAAB6B828C0815500AA32ED /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		3FAAB6BA28C0868700AA32ED /* ReadProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadProfileViewModel.swift; sourceTree = "<group>"; };
 		3FAAB6BD28C0A2E700AA32ED /* DebateScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebateScoreView.swift; sourceTree = "<group>"; };
 		3FAAB6BF28C0AF7E00AA32ED /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		3FAAB6C128C0B7B700AA32ED /* Law.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Law.swift; sourceTree = "<group>"; };
@@ -463,6 +477,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F0006B828CCD437006811C8 /* OtherProfile */ = {
+			isa = PBXGroup;
+			children = (
+				3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */,
+				3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */,
+			);
+			path = OtherProfile;
+			sourceTree = "<group>";
+		};
+		3F0006BA28CCD564006811C8 /* Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				3F910433283FB27400446239 /* ConfigureProfile */,
+				3F0006BB28CCD586006811C8 /* ReadProfile */,
+			);
+			path = Profiles;
+			sourceTree = "<group>";
+		};
+		3F0006BB28CCD586006811C8 /* ReadProfile */ = {
+			isa = PBXGroup;
+			children = (
+				3FAAB6BC28C0A2DA00AA32ED /* View */,
+				3F0006B828CCD437006811C8 /* OtherProfile */,
+				3FAAB6B328C07F6B00AA32ED /* MyProfile */,
+				3FAAB6BA28C0868700AA32ED /* ReadProfileViewModel.swift */,
+				3FAAB6B428C07FA000AA32ED /* ReadProfileNavigator.swift */,
+			);
+			path = ReadProfile;
+			sourceTree = "<group>";
+		};
+		3F0006C228CD0C47006811C8 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */,
+				3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */,
+				3F0006C928CD0D98006811C8 /* ReportViewController.swift */,
+				3F0006C328CD0C54006811C8 /* ReportViewModel.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
 		3F37B3602820747500DB18B7 = {
 			isa = PBXGroup;
 			children = (
@@ -848,16 +903,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		3FAAB6B328C07F6B00AA32ED /* MyPage */ = {
+		3FAAB6B328C07F6B00AA32ED /* MyProfile */ = {
 			isa = PBXGroup;
 			children = (
-				3FAAB6BC28C0A2DA00AA32ED /* View */,
-				3FAAB6B628C07FE200AA32ED /* DefaultMyPageNavigator.swift */,
-				3FAAB6B428C07FA000AA32ED /* MyPageNavigator.swift */,
-				3FAAB6B828C0815500AA32ED /* MyPageViewController.swift */,
-				3FAAB6BA28C0868700AA32ED /* MyPageViewModel.swift */,
+				3FAAB6B628C07FE200AA32ED /* MyProfileNavigator.swift */,
+				3FAAB6B828C0815500AA32ED /* MyProfileViewController.swift */,
 			);
-			path = MyPage;
+			path = MyProfile;
 			sourceTree = "<group>";
 		};
 		3FAAB6BC28C0A2DA00AA32ED /* View */ = {
@@ -935,8 +987,8 @@
 			isa = PBXGroup;
 			children = (
 				3FAAB70328C72AF600AA32ED /* Common */,
-				3F910433283FB27400446239 /* ConfigureProfile */,
-				3FAAB6B328C07F6B00AA32ED /* MyPage */,
+				3F0006BA28CCD564006811C8 /* Profiles */,
+				3F0006C228CD0C47006811C8 /* Report */,
 				3FAAB6F328C68B9E00AA32ED /* ResetPassword */,
 				3F66969D2835BF0E0077E5B3 /* Setting */,
 				3FAAB6DF28C6538A00AA32ED /* SignIn */,
@@ -990,6 +1042,7 @@
 			isa = PBXGroup;
 			children = (
 				3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */,
+				3F0006C028CD04E9006811C8 /* ProfileImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1248,22 +1301,25 @@
 				3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */,
 				3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */,
 				3F689EA028B778FF00C1D072 /* DefaultGuideNavigator.swift in Sources */,
+				3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */,
 				3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3F646F2C28CA466C00434BC6 /* DefaultSetDiscussionDetailNavigator.swift in Sources */,
 				3FB357A328261A7400F27C77 /* DiscussionUsecase.swift in Sources */,
-				3FAAB6B728C07FE200AA32ED /* DefaultMyPageNavigator.swift in Sources */,
+				3FAAB6B728C07FE200AA32ED /* MyProfileNavigator.swift in Sources */,
 				3F689EA228B7792B00C1D072 /* DefaultLawNavigator.swift in Sources */,
 				3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */,
 				3F689E8A28B7381800C1D072 /* ChartNavigator.swift in Sources */,
+				3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */,
 				3F37B3AE2820765900DB18B7 /* SelfChatCell.swift in Sources */,
-				3FAAB6B528C07FA000AA32ED /* MyPageNavigator.swift in Sources */,
+				3FAAB6B528C07FA000AA32ED /* ReadProfileNavigator.swift in Sources */,
 				3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */,
 				3FAAB6CB28C1F79000AA32ED /* LawDetailNavigator.swift in Sources */,
 				3F646F3428CA5A7600434BC6 /* DiscussionBuilder.swift in Sources */,
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FAAB6E328C653D900AA32ED /* SignInViewModel.swift in Sources */,
+				3F0006C128CD04E9006811C8 /* ProfileImageView.swift in Sources */,
 				3FAAB6E128C653B600AA32ED /* SignInViewController.swift in Sources */,
 				3F646F2A28CA465600434BC6 /* SetDiscussionDetailNavigator.swift in Sources */,
 				3FAAB6BE28C0A2E700AA32ED /* DebateScoreView.swift in Sources */,
@@ -1278,6 +1334,7 @@
 				3F689E9B28B7789A00C1D072 /* LawNavigator.swift in Sources */,
 				3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */,
 				3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */,
+				3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */,
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
 				3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */,
@@ -1350,6 +1407,7 @@
 				3F99EA3F287BD651000ACDA6 /* ChatPreview.swift in Sources */,
 				3FAAB6F728C68BEF00AA32ED /* DefaultResetPasswordNavigator.swift in Sources */,
 				3F6696AC283623810077E5B3 /* ChatRoomsUsecase.swift in Sources */,
+				3F0006BD28CCD7BA006811C8 /* OtherProfileNavigator.swift in Sources */,
 				3F37B3DF28207A9100DB18B7 /* FirebaseUserInfoUsecase.swift in Sources */,
 				3F910430283F6BAC00446239 /* AddChatRoomViewModel.swift in Sources */,
 				3FAAB69B28BEB4E300AA32ED /* GuideUsecase.swift in Sources */,
@@ -1364,9 +1422,10 @@
 				3F646F2E28CA585000434BC6 /* BuilderUsecase.swift in Sources */,
 				3FB357A12826192A00F27C77 /* Discussion.swift in Sources */,
 				3FB357A82826279200F27C77 /* AddDiscussionNavigator.swift in Sources */,
+				3F0006BF28CCD8E7006811C8 /* OtherProfileViewController.swift in Sources */,
 				3F37B3CC2820773C00DB18B7 /* ChatsUsecase.swift in Sources */,
 				3F37B3B42820766400DB18B7 /* HomeViewController.swift in Sources */,
-				3FAAB6BB28C0868700AA32ED /* MyPageViewModel.swift in Sources */,
+				3FAAB6BB28C0868700AA32ED /* ReadProfileViewModel.swift in Sources */,
 				3FAAB6A128BEB72700AA32ED /* Guide.swift in Sources */,
 				3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */,
 				3F37B3AF2820765900DB18B7 /* SerialOtherChatCell.swift in Sources */,
@@ -1381,7 +1440,8 @@
 				3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
 				3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */,
-				3FAAB6B928C0815500AA32ED /* MyPageViewController.swift in Sources */,
+				3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */,
+				3FAAB6B928C0815500AA32ED /* MyProfileViewController.swift in Sources */,
 				3FAAB6FB28C68C6B00AA32ED /* ResetPasswordViewModel.swift in Sources */,
 				3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */,
 				3FBDBC162886E3DF00A09BF4 /* DefaultSettingNavigator.swift in Sources */,
@@ -1607,6 +1667,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 혹은 채팅방 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1616,7 +1677,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.1;
+				MARKETING_VERSION = 0.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = distribution_discussion_Korea;
@@ -1640,6 +1701,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 혹은 채팅방 사진을 설정하려면 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1649,7 +1711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.1;
+				MARKETING_VERSION = 0.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = distribution_discussion_Korea;

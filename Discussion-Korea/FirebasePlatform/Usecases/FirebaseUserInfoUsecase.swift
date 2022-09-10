@@ -123,23 +123,23 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func add(userInfo: (String, String, Date?, URL?)) -> Observable<Void> {
-        self.reference.add(userInfo: userInfo)
+        return self.reference.add(userInfo: userInfo)
     }
 
     func add(roomID: String, userID: String) -> Observable<Void> {
-        self.reference.add(userID: userID, in: roomID)
+        return self.reference.add(userID: userID, in: roomID)
     }
 
     func add(roomID: String, userID: String, side: Side) -> Observable<Void> {
-        self.reference.add(side: side, in: roomID, with: userID)
+        return self.reference.add(side: side, in: roomID, with: userID)
     }
 
     func clearSide(roomID: String, userID: String) -> Observable<Void> {
-        self.reference.update(side: nil, in: roomID, with: userID)
+        return self.reference.update(side: nil, in: roomID, with: userID)
     }
 
     func vote(roomID: String, userID: String, side: Side) -> Observable<Void> {
-        self.reference.vote(side: side, in: roomID, with: userID)
+        return self.reference.vote(side: side, in: roomID, with: userID)
     }
 
     func userInfo(roomID: String, with userID: String) -> Observable<Side?> {
@@ -147,11 +147,11 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
     }
 
     func userInfos(roomID: String) -> Observable<[String: UserInfo]> {
-        self.reference.userInfos(in: roomID)
+        return self.reference.userInfos(in: roomID)
     }
 
     func userInfo(userID: String) -> Observable<UserInfo?> {
-        self.reference.userInfo(with: userID)
+        return self.reference.userInfo(with: userID)
     }
 
     func support(side: Side, roomID: String, userID: String) -> Observable<Void> {
@@ -162,6 +162,10 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         return self.reference.supporters(in: roomID)
             .filter { $0.0 == userID }
             .map { $0.1 }
+    }
+
+    func report(from userID: String, to victimID: String, reason: String) -> Observable<Void> {
+        return self.reference.report(from: userID, to: victimID, reason: reason)
     }
 
 }

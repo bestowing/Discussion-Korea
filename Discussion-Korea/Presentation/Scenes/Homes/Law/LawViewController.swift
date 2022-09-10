@@ -33,6 +33,7 @@ final class LawViewController: BaseViewController {
             frame: .zero, collectionViewLayout: flowLayout
         )
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .clear
         collectionView.register(
             LawCell.self, forCellWithReuseIdentifier: LawCell.identifier
         )

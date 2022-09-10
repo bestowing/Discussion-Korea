@@ -12,12 +12,10 @@ final class ParticipantCell: UITableViewCell {
 
     // MARK: - properties
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let profileImageView: ProfileImageView = {
+        let imageView = ProfileImageView()
         imageView.backgroundColor = UIColor.accentColor
         imageView.tintColor = .white
-        imageView.layer.cornerRadius = 8
-        imageView.layer.masksToBounds = true
         return imageView
     }()
 
@@ -42,6 +40,7 @@ final class ParticipantCell: UITableViewCell {
     // MARK: - methods
 
     private func layoutViews() {
+        self.selectionStyle = .none
         self.backgroundColor = .clear
         self.contentView.addSubview(self.profileImageView)
         self.contentView.addSubview(self.nicknameLabel)

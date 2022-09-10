@@ -31,6 +31,8 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     var supportStream: Observable<Void>
     var supporterStream: Observable<Side>
 
+    var reportStream: Observable<Void>
+
     // MARK: - init/deinit
 
     init() {
@@ -52,6 +54,8 @@ final class MockUserInfoUsecase: UserInfoUsecase {
         self.userInfoStream = PublishSubject<UserInfo?>.init()
         self.supportStream = PublishSubject<Void>.init()
         self.supporterStream = PublishSubject<Side>.init()
+
+        self.reportStream = PublishSubject<Void>.init()
     }
 
     // MARK: - methods
@@ -122,6 +126,10 @@ final class MockUserInfoUsecase: UserInfoUsecase {
     
     func supporter(roomID: String, userID: String) -> Observable<Side> {
         return self.supporterStream
+    }
+
+    func report(from userID: String, to victimID: String, reason: String) -> Observable<Void> {
+        return self.reportStream
     }
 
 }

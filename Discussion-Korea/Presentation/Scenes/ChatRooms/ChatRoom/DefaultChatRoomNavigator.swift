@@ -142,6 +142,16 @@ final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
         self.navigationController.popViewController(animated: true)
     }
 
+    func toOtherProfile(_ selfID: String, _ userID: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = OtherProfileNavigator(
+            services: self.services,
+            presentedViewController: presentingViewController
+        )
+        navigator.toReadProfile(selfID, userID)
+    }
+
     func toDiscussionResultAlert(result: DiscussionResult) {
         let message: String
         switch result {

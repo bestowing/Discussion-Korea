@@ -29,7 +29,7 @@ final class ChatRoomListViewController: BaseViewController {
 
     private let addButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "plus.message")
+        button.image = UIImage(named: "addChat")
         button.tintColor = .label
         button.accessibilityLabel = "채팅방 추가"
         return button
@@ -44,6 +44,7 @@ final class ChatRoomListViewController: BaseViewController {
         let collectionView = UICollectionView(
             frame: .zero, collectionViewLayout: flowLayout
         )
+        collectionView.backgroundColor = .clear
         collectionView.register(
             ChatRoomCell.self, forCellWithReuseIdentifier: ChatRoomCell.identifier
         )

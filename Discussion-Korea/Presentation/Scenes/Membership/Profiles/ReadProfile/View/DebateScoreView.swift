@@ -51,7 +51,7 @@ final class DebateScoreView: UIView {
 
     private func setSubviews() {
         let titleLabel = UILabel()
-        titleLabel.text = "토론 결과"
+        titleLabel.text = "토론 전적"
         titleLabel.font = UIFont.preferredBoldFont(forTextStyle: .body)
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
