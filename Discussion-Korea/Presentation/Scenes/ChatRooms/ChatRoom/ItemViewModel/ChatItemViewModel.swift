@@ -28,10 +28,6 @@ struct ChatItemViewModel {
         return self.dateFormatter.string(from: date)
     }
 
-    var identifier: String {
-        fatalError("not implemented")
-    }
-
     var backgroundColor: UIColor? {
         if let side = self.chat.side {
             switch side {

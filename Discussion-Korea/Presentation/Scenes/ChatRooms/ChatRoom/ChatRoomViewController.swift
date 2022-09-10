@@ -94,12 +94,35 @@ final class ChatRoomViewController: BaseViewController {
 
     private func setSubViews() {
         self.view.addSubview(self.messageCollectionView)
+        self.view.addSubview(self.liveChatView)
+        self.view.addSubview(self.chatPreview)
+        self.view.addSubview(self.noticeView)
         self.view.addSubview(self.chatInputView)
         self.navigationItem.rightBarButtonItem = self.menuButton
+        self.noticeView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        self.liveChatView.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
+            make.top.equalTo(self.noticeView.snp.bottom).offset(5)
+        }
         self.messageCollectionView.snp.contentHuggingVerticalPriority = 1
         self.messageCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.top.equalToSuperview()
+        }
+        self.chatPreview.snp.makeConstraints { make in
+            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(10)
+            make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
+            make.bottom.equalTo(self.messageCollectionView.snp.bottom).offset(-10)
+        }
+        self.chatInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(self.messageCollectionView.snp.bottom)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
