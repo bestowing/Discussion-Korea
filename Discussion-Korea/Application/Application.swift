@@ -7,7 +7,6 @@
 
 import Firebase
 import FirebaseAuth
-import FirebaseCore
 import UIKit
 
 final class Application {
