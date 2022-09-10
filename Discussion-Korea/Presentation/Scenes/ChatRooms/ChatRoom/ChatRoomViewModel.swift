@@ -136,6 +136,7 @@ final class ChatRoomViewModel: ViewModelType {
             }
 
         let initialization = userInfos
+            .asObservable().take(1).asDriverOnErrorJustComplete()
             .flatMapFirst { [unowned self] _ in
                 self.chatsUsecase.chats(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
