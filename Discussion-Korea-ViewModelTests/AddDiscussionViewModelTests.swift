@@ -17,6 +17,7 @@ final class AddDiscussionViewModelTests: XCTestCase {
     private let chatRoom = ChatRoom(uid: "uid", title: "test", adminUID: "testUID")
 
     private var mockNavigator: MockAddDiscussionNavigator!
+    private var builderUsecase: MockBuilderUsecase!
     private var discussionUsecase: MockDiscussionUsecase!
     private var viewModel: AddDiscussionViewModel!
     private var disposeBag: DisposeBag!
@@ -27,11 +28,13 @@ final class AddDiscussionViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         self.mockNavigator = MockAddDiscussionNavigator()
+        self.builderUsecase = MockBuilderUsecase()
         self.discussionUsecase = MockDiscussionUsecase()
         self.viewModel = AddDiscussionViewModel(
             chatRoom: self.chatRoom,
             navigator: self.mockNavigator,
-            usecase: self.discussionUsecase
+            builderUsecase: self.builderUsecase,
+            discussionUsecase: self.discussionUsecase
         )
         self.disposeBag = DisposeBag()
         self.scheduler = TestScheduler(initialClock: 0)
@@ -39,6 +42,7 @@ final class AddDiscussionViewModelTests: XCTestCase {
 
     override func tearDown() {
         self.mockNavigator = nil
+        self.builderUsecase = nil
         self.discussionUsecase = nil
         self.viewModel = nil
         self.disposeBag = nil
@@ -46,7 +50,7 @@ final class AddDiscussionViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_토론_제목을_입력하지_않으면_제출할_수_없다() {
+    func test_유효한_날짜를_입력해도_토론_제목을_입력하지_않으면_넘어갈_수_없다() {
         let titleTestableDriver: Driver<String> = self.scheduler.createHotObservable([
             .next(10, "a"),
             .next(20, ""),
@@ -57,39 +61,24 @@ final class AddDiscussionViewModelTests: XCTestCase {
         let exitTriggerTestableDriver: Driver<Void> = self.scheduler.createHotObservable([])
             .asDriverOnErrorJustComplete()
 
-        let introTimeTestableDriver: Driver<Int> = self.scheduler.createHotObservable([
-            .next(10, 1)
-        ]).asDriverOnErrorJustComplete()
-
-        let mainTimeTestableDriver: Driver<Int> = self.scheduler.createHotObservable([
-            .next(10, 1)
-        ]).asDriverOnErrorJustComplete()
-
-        let conclusionTimeTestableDriver: Driver<Int> = self.scheduler.createHotObservable([
-            .next(10, 1)
-        ]).asDriverOnErrorJustComplete()
-
         let dateTestableDriver: Driver<Date> = self.scheduler.createHotObservable([
-            .next(10, Date())
+            .next(10, Date().addingTimeInterval(5000))
         ]).asDriverOnErrorJustComplete()
 
-        let submitTriggerTestableDriver: Driver<Void> = self.scheduler.createHotObservable([])
+        let nextTriggerTestableDriver: Driver<Void> = self.scheduler.createHotObservable([])
             .asDriverOnErrorJustComplete()
 
         let testableObserver = self.scheduler.createObserver(Bool.self)
 
         let input = AddDiscussionViewModel.Input(
             exitTrigger: exitTriggerTestableDriver,
-            title: titleTestableDriver,
-            introTime: introTimeTestableDriver,
-            mainTime: mainTimeTestableDriver,
-            conclusionTime: conclusionTimeTestableDriver,
+            topic: titleTestableDriver,
             date: dateTestableDriver,
-            submitTrigger: submitTriggerTestableDriver
+            nextTrigger: nextTriggerTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
-        output.submitEnabled
+        output.nextEnabled
             .drive(testableObserver)
             .disposed(by: self.disposeBag)
 
@@ -110,11 +99,9 @@ final class AddDiscussionViewModelTests: XCTestCase {
 extension AddDiscussionViewModelTests {
 
     final class MockAddDiscussionNavigator: AddDiscussionNavigator {
-
         func toAddDiscussion(_ chatRoom: ChatRoom) {}
-
+        func toSetDiscussionTime(_ chatRoom: ChatRoom) {}
         func toChatRoom() {}
-
     }
 
 }

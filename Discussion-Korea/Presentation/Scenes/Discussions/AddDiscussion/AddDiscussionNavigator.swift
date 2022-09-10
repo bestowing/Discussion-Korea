@@ -8,6 +8,7 @@
 protocol AddDiscussionNavigator {
 
     func toAddDiscussion(_ chatRoom: ChatRoom)
+    func toSetDiscussionTime(_ chatRoom: ChatRoom)
     func toChatRoom()
 
 }

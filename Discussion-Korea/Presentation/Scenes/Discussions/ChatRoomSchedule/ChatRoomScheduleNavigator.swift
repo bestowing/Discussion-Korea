@@ -7,7 +7,7 @@
 
 protocol ChatRoomScheduleNavigator {
 
-    func toChatRoomSchedule(_ chatRoom: ChatRoom)
+    func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom)
     func toAddDiscussion(_ chatRoom: ChatRoom)
     func toChatRoom()
 

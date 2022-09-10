@@ -25,9 +25,10 @@ final class DefaultChatRoomScheduleNavigator: BaseNavigator, ChatRoomScheduleNav
 
     // MARK: - methods
 
-    func toChatRoomSchedule(_ chatRoom: ChatRoom) {
+    func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {
         let viewController = ChatRoomScheduleViewController()
         let viewModel = ChatRoomScheduleViewModel(
+            userID: userID,
             chatRoom: chatRoom,
             usecase: self.services.makeDiscussionUsecase(),
             navigator: self

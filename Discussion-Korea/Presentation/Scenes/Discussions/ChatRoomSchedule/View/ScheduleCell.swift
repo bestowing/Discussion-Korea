@@ -14,18 +14,11 @@ final class ScheduleCell: UITableViewCell {
     private let topicLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.font = UIFont.preferredBoldFont(forTextStyle: .title3)
         return label
     }()
 
     private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        return label
-    }()
-
-    private let durationLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
@@ -44,19 +37,11 @@ final class ScheduleCell: UITableViewCell {
         self.layoutViews()
     }
 
-    // MARK: - methods
-
-    func bind(_ viewModel: ScheduleItemViewModel) {
-        self.topicLabel.text = viewModel.topicString
-        self.dateLabel.text = viewModel.dateString
-        self.durationLabel.text = viewModel.durationString
-    }
-
     private func layoutViews() {
+        self.selectionStyle = .none
         let stackView = UIStackView(
             arrangedSubviews: [self.topicLabel,
-                               self.dateLabel,
-                               self.durationLabel]
+                               self.dateLabel]
         )
         self.contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -69,6 +54,13 @@ final class ScheduleCell: UITableViewCell {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 5
+    }
+
+    // MARK: - methods
+
+    func bind(_ viewModel: ScheduleItemViewModel) {
+        self.topicLabel.text = viewModel.topicString
+        self.dateLabel.text = viewModel.dateString
     }
 
 }

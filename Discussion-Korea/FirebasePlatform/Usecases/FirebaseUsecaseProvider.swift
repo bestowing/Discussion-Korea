@@ -7,10 +7,18 @@
 
 final class FirebaseUsecaseProvider: UsecaseProvider {
 
+    private lazy var discussionBuilder = DiscussionBuilder()
+
     private let referenceProvider: ReferenceProvider
 
     init() {
         self.referenceProvider = ReferenceProvider()
+    }
+
+    func makeBuilderUsecase() -> BuilderUsecase {
+        return IndependentBuilderUsecase(
+            discussionBuilder: self.discussionBuilder
+        )
     }
 
     func makeChatRoomsUsecase() -> ChatRoomsUsecase {

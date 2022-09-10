@@ -33,7 +33,9 @@ final class ChatRoomScheduleViewController: BaseViewController {
 
     private let scheduleTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
+        tableView.register(
+            ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier
+        )
         return tableView
     }()
 
@@ -71,6 +73,9 @@ final class ChatRoomScheduleViewController: BaseViewController {
             addDiscussionTrigger: self.addButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.addEnabled.drive(self.addButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
 
         output.schedules.drive(self.scheduleTableView.rx.items) { tableView, index, model in
             let indexPath = IndexPath(item: index, section: 0)

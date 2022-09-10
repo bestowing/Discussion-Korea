@@ -174,70 +174,25 @@ final class SummaryManager {
         }
     }
 
-    func summariesForAgree(completion: @escaping ([(String, String)]) -> Void) {
-        let agreeResults: [(String, String)] = self.agreeIndexes.map { [unowned self] (uid, index) in
-            return (uid, self.agreeContents[index].joined(separator: " "))
-        }
+    func summaries(completion: @escaping ([(Side, String, String)]) -> Void) {
+        let results: [(Side, String, String)] = (self.agreeIndexes.map { [unowned self] (uid, index) in
+            return (Side.agree, uid, self.agreeContents[index].joined(separator: " "))
+        }) + (self.disagreeIndexes.map { [unowned self] (uid, index) in
+            return (Side.disagree, uid, self.disagreeContents[index].joined(separator: " "))
+        })
         self.resetAgree()
-        DispatchQueue.global(qos: .userInteractive).async {
-            let group = DispatchGroup()
-            var agreeSummaries = Array(repeating: "", count: agreeResults.count)
-            agreeResults.enumerated().forEach { (index, result) in
-                group.enter()
-                print("찬성측의 ", result.1, "를 요약하려고 함")
-                let urlString = "http://115.145.172.80:8080/predictions/summarization"
-                var request = URLRequest(url: URL(string: urlString)!)
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                let params = ["text": result.1] as Dictionary
-                do {
-                    try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
-                    AF.request(request).response { response in
-                        switch response.result {
-                        case .success(let data):
-                            if let data = data,
-                               let successMessage = String(bytes: data, encoding: .utf8) {
-                                agreeSummaries[index] = successMessage
-                            } else {
-                                agreeSummaries[index] = "요약에 실패했습니다."
-                            }
-                        case .failure(let error):
-                            agreeSummaries[index] = "요약에 실패했습니다."
-                            print(error)
-                        }
-                        group.leave()
-                    }
-                } catch {
-                    print(error)
-                    agreeSummaries[index] = "요약에 실패했습니다."
-                    group.leave()
-                }
-            }
-            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
-                let result = zip(agreeResults, agreeSummaries).map { (args, summary) -> (String, String) in
-                    return (args.0, summary)
-                }
-                completion(result)
-            }
-        }
-    }
-
-    func summariesForDisAgree(completion: @escaping ([(String, String)]) -> Void) {
-        let disagreeResults: [(String, String)] = self.disagreeIndexes.map { [unowned self] (uid, index) in
-            return (uid, self.disagreeContents[index].joined(separator: " "))
-        }
         self.resetDisagree()
         DispatchQueue.global(qos: .userInteractive).async {
             let group = DispatchGroup()
-            var disagreeSummaries = Array(repeating: "", count: disagreeResults.count)
-            disagreeResults.enumerated().forEach { (index, result) in
+            var summaries = Array(repeating: "", count: results.count)
+            results.enumerated().forEach { (index, result) in
                 group.enter()
-                print("반대측의 ", result.1, "를 요약하려고 함")
+                print("\(result.0.rawValue)측의 ", result.1, "를 요약하려고 함")
                 let urlString = "http://115.145.172.80:8080/predictions/summarization"
                 var request = URLRequest(url: URL(string: urlString)!)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                let params = ["text": result.1] as Dictionary
+                let params = ["text": result.2] as Dictionary
                 do {
                     try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
                     AF.request(request).response { response in
@@ -245,25 +200,25 @@ final class SummaryManager {
                         case .success(let data):
                             if let data = data,
                                let successMessage = String(bytes: data, encoding: .utf8) {
-                                disagreeSummaries[index] = successMessage
+                                summaries[index] = successMessage
                             } else {
-                                disagreeSummaries[index] = "요약에 실패했습니다."
+                                summaries[index] = "요약에 실패했습니다."
                             }
                         case .failure(let error):
-                            disagreeSummaries[index] = "요약에 실패했습니다."
+                            summaries[index] = "요약에 실패했습니다."
                             print(error)
                         }
                         group.leave()
                     }
                 } catch {
                     print(error)
-                    disagreeSummaries[index] = "요약에 실패했습니다."
+                    summaries[index] = "요약에 실패했습니다."
                     group.leave()
                 }
             }
             group.notify(queue: DispatchQueue.global(qos: .userInteractive)) {
-                let result = zip(disagreeResults, disagreeSummaries).map { (args, summary) -> (String, String) in
-                    return (args.0, summary)
+                let result = zip(results, summaries).map { (args, summary) -> (Side, String, String) in
+                    return (args.0, args.1, summary)
                 }
                 completion(result)
             }

@@ -10,6 +10,8 @@ import RxSwift
 
 protocol DiscussionUsecase {
 
+    func isValid(topic: String) -> Observable<FormResult>
+
     func discussions(roomUID: String) -> Observable<Discussion>
     func add(roomUID: String, discussion: Discussion) -> Observable<Void>
     func status(roomUID: String) -> Observable<Int>

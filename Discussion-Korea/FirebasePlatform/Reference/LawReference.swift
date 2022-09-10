@@ -18,6 +18,10 @@ final class LawReference {
         self.dateFormatter = dateFormatter
     }
 
+    deinit {
+        print("🗑", self)
+    }
+
     func laws() -> Observable<Laws> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("laws")
@@ -49,33 +53,10 @@ final class LawReference {
                             laws: lawArray
                         )
                     )
-                    
                     subscribe.onCompleted()
                 }
             return Disposables.create()
         }
     }
-
-//    private func parseContents(_ array: NSArray?) -> [LawItem]? {
-//        guard let array = array
-//        else {
-//            return nil
-//        }
-//        var items = [LawItem]()
-//        for item in array {
-//            guard let dictionary = item as? NSDictionary,
-//                  let content = dictionary["content"] as? String
-//            else {
-//                return nil
-//            }
-//            items.append(
-//                LawItem.body(
-//                    content: content,
-//                    contents: self.parseContents(dictionary["contents"] as? NSArray) ?? nil
-//                )
-//            )
-//        }
-//        return items
-//    }
 
 }

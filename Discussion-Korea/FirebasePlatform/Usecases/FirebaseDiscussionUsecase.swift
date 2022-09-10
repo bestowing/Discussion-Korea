@@ -16,6 +16,18 @@ final class FirebaseDiscussionUsecase: DiscussionUsecase {
         self.reference = reference
     }
 
+    func isValid(topic: String) -> Observable<FormResult> {
+        return Observable.create { subscribe in
+            if (1...60) ~= topic.count {
+                subscribe.onNext(.success)
+            } else {
+                subscribe.onNext(.failure("1자 이상, 60자 이하로 입력해주세요"))
+            }
+            subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
     func discussions(roomUID: String) -> Observable<Discussion> {
         self.reference.getDiscussions(from: roomUID)
     }
