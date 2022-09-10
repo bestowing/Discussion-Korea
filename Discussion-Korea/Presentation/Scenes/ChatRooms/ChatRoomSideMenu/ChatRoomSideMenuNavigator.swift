@@ -9,5 +9,6 @@ protocol ChatRoomSideMenuNavigator {
 
     func toChatRoomSideMenu(_ uid: String, _ chatRoom: ChatRoom)
     func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom)
+    func toOtherProfile(_ userID: String)
 
 }

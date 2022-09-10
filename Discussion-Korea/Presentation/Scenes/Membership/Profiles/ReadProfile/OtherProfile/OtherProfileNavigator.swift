@@ -25,7 +25,7 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
     // MARK: - methods
 
     func toReadProfile(_ userID: String) {
-        let viewController = MyProfileViewController()
+        let viewController = OtherProfileViewController()
         viewController.viewModel = ReadProfileViewModel(
             userID: userID,
             navigator: self,

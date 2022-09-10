@@ -53,6 +53,13 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
                     }
             }
 
+        let selectedParticipantEvent = input.selection
+            .withLatestFrom(participants) { (indexPath, participants) in
+                return participants[indexPath.item].userInfo.uid
+            }
+            .do(onNext: self.navigator.toOtherProfile)
+            .mapToVoid()
+
         let calendarEvent = input.calendar
             .do(onNext: { [unowned self] in
                 self.navigator.toChatRoomSchedule(self.uid, self.chatRoom)
@@ -106,7 +113,8 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
         let events = Driver.of(
             calendarEvent,
-            sideEvent
+            sideEvent,
+            selectedParticipantEvent
         )
             .merge()
 
@@ -127,6 +135,7 @@ extension ChatRoomSideMenuViewModel {
 
     struct Input {
         let viewWillAppear: Driver<Void>
+        let selection: Driver<IndexPath>
         let calendar: Driver<Void>
         let side: Driver<Side>
     }

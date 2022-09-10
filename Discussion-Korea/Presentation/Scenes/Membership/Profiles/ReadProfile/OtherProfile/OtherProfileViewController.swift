@@ -15,14 +15,10 @@ final class OtherProfileViewController: BaseViewController {
 
     var viewModel: ReadProfileViewModel!
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.setDefaultProfileImage()
+    private let profileImageView: ProfileImageView = {
+        let imageView = ProfileImageView()
         imageView.tintColor = UIColor.white
-        imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .accentColor
-        imageView.layer.cornerRadius = 30
-        imageView.layer.masksToBounds = true
         return imageView
     }()
 
@@ -40,17 +36,39 @@ final class OtherProfileViewController: BaseViewController {
 
     private let reportButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "exclamationmark.shield.fill"), for: .normal)
-        button.tintColor = UIColor.systemYellow
+        button.setTitle("신고", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        if #available(iOS 15.0, *) {
+            var configuration = UIButton.Configuration.filled()
+            configuration.titleAlignment = .center
+            configuration.contentInsets = NSDirectionalEdgeInsets(
+                top: 12, leading: 0, bottom: 12, trailing: 0
+            )
+            button.configuration = configuration
+        } else {
+            button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        }
+        button.layer.cornerRadius = 7
+        button.backgroundColor = .systemRed
         return button
     }()
 
     private let exitButton: UIButton = {
         let button = UIButton()
-        button.setTitle("확인", for: .normal)
+        button.setTitle("닫기", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = .accentColor
-        button.layer.cornerRadius = 10
+        if #available(iOS 15.0, *) {
+            var configuration = UIButton.Configuration.filled()
+            configuration.titleAlignment = .center
+            configuration.contentInsets = NSDirectionalEdgeInsets(
+                top: 12, leading: 0, bottom: 12, trailing: 0
+            )
+            button.configuration = configuration
+        } else {
+            button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        }
+        button.layer.cornerRadius = 7
         button.layer.masksToBounds = true
         return button
     }()
@@ -71,33 +89,29 @@ final class OtherProfileViewController: BaseViewController {
         self.view.addSubview(self.debateScoreView)
         self.view.addSubview(self.reportButton)
         self.view.addSubview(self.exitButton)
-        self.profileImageView.snp.contentHuggingHorizontalPriority = 999
         self.profileImageView.snp.makeConstraints { make in
             make.centerX.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
-            make.size.equalTo(60)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.width.height.equalTo(100)
         }
-        self.nicknameLabel.snp.contentHuggingHorizontalPriority = 1
         self.nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.profileImageView.snp.bottom).offset(20)
-            make.leading.greaterThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-20)
+            make.top.equalTo(self.profileImageView.snp.bottom).offset(15)
+            make.leading.greaterThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-30)
             make.centerX.equalTo(self.profileImageView)
         }
         self.debateScoreView.snp.makeConstraints { make in
-            make.top.equalTo(self.nicknameLabel.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.top.equalTo(self.nicknameLabel.snp.bottom).offset(40)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
         self.reportButton.snp.makeConstraints { make in
-            make.top.equalTo(self.debateScoreView.snp.bottom).offset(20)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-20)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+//            make.top.equalTo(self.debateScoreView.snp.bottom).offset(40)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
+            make.bottom.equalTo(self.exitButton.snp.top).offset(-10)
         }
         self.exitButton.snp.makeConstraints { make in
-            make.top.equalTo(self.reportButton.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(10)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
+            make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide)
         }
     }
 

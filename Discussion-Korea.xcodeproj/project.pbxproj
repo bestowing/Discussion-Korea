@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3F0006BD28CCD7BA006811C8 /* OtherProfileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */; };
 		3F0006BF28CCD8E7006811C8 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */; };
+		3F0006C128CD04E9006811C8 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C028CD04E9006811C8 /* ProfileImageView.swift */; };
 		3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */; };
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
@@ -257,6 +258,7 @@
 /* Begin PBXFileReference section */
 		3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileNavigator.swift; sourceTree = "<group>"; };
 		3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
+		3F0006C028CD04E9006811C8 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLabel.swift; sourceTree = "<group>"; };
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -1020,6 +1022,7 @@
 			isa = PBXGroup;
 			children = (
 				3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */,
+				3F0006C028CD04E9006811C8 /* ProfileImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1294,6 +1297,7 @@
 				3F646F3428CA5A7600434BC6 /* DiscussionBuilder.swift in Sources */,
 				3F37B3A22820765100DB18B7 /* ChatRoomNavigator.swift in Sources */,
 				3FAAB6E328C653D900AA32ED /* SignInViewModel.swift in Sources */,
+				3F0006C128CD04E9006811C8 /* ProfileImageView.swift in Sources */,
 				3FAAB6E128C653B600AA32ED /* SignInViewController.swift in Sources */,
 				3F646F2A28CA465600434BC6 /* SetDiscussionDetailNavigator.swift in Sources */,
 				3FAAB6BE28C0A2E700AA32ED /* DebateScoreView.swift in Sources */,

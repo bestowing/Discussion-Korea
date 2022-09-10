@@ -38,7 +38,7 @@ final class ReadProfileViewModel: ViewModelType {
             .userInfo(userID: self.userID)
             .asDriverOnErrorJustComplete()
 
-        let profileURL = myInfo.compactMap { $0?.profileURL }
+        let profileURL = myInfo.map { $0?.profileURL }
 
         let score = myInfo.compactMap { myInfo -> (win: Int, draw: Int, lose: Int)? in
             guard let myInfo = myInfo
@@ -83,7 +83,7 @@ extension ReadProfileViewModel {
     }
 
     struct Output {
-        let profileURL: Driver<URL>
+        let profileURL: Driver<URL?>
         let score: Driver<(win: Int, draw: Int, lose: Int)>
         let nickname: Driver<String>
         let events: Driver<Void>

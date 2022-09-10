@@ -43,9 +43,8 @@ final class MyProfileViewController: BaseViewController {
         return button
     }()
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.setDefaultProfileImage()
+    private let profileImageView: ProfileImageView = {
+        let imageView = ProfileImageView()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .accentColor
