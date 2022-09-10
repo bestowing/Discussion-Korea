@@ -26,9 +26,10 @@ final class MyProfileNavigator: BaseNavigator, ReadProfileNavigator {
 
     // MARK: - methods
 
-    func toReadProfile(_ userID: String) {
+    func toReadProfile(_ selfID: String, _ userID: String) {
         let viewController = MyProfileViewController()
         viewController.viewModel = ReadProfileViewModel(
+            selfID: selfID,
             userID: userID,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
@@ -61,6 +62,6 @@ final class MyProfileNavigator: BaseNavigator, ReadProfileNavigator {
 extension MyProfileNavigator {
 
     func dismiss() {}
-    func toReport() {}
+    func toReport(_ userID: String, _ reportedUserInfo: UserInfo) {}
 
 }

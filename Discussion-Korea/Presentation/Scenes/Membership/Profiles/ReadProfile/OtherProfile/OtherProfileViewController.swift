@@ -15,6 +15,14 @@ final class OtherProfileViewController: BaseViewController {
 
     var viewModel: ReadProfileViewModel!
 
+    private let backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.title = ""
+        button.tintColor = .label
+        button.style = .plain
+        return button
+    }()
+
     private let profileImageView: ProfileImageView = {
         let imageView = ProfileImageView()
         imageView.tintColor = UIColor.white
@@ -79,11 +87,13 @@ final class OtherProfileViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "프로필 보기"
         self.setSubViews()
         self.bindViewModel()
     }
 
     private func setSubViews() {
+        self.navigationItem.backBarButtonItem = self.backButton
         self.view.addSubview(self.profileImageView)
         self.view.addSubview(self.nicknameLabel)
         self.view.addSubview(self.debateScoreView)

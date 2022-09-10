@@ -12,15 +12,18 @@ final class ReadProfileViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let selfID: String
     private let userID: String
     private let navigator: ReadProfileNavigator
     private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
 
-    init(userID: String,
+    init(selfID: String,
+         userID: String,
          navigator: ReadProfileNavigator,
          userInfoUsecase: UserInfoUsecase) {
+        self.selfID = selfID
         self.userID = userID
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
@@ -34,30 +37,36 @@ final class ReadProfileViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let myInfo = self.userInfoUsecase
+        let userInfo = self.userInfoUsecase
             .userInfo(userID: self.userID)
             .asDriverOnErrorJustComplete()
 
-        let profileURL = myInfo.map { $0?.profileURL }
+        let profileURL = userInfo.map { $0?.profileURL }
 
-        let score = myInfo.compactMap { myInfo -> (win: Int, draw: Int, lose: Int)? in
+        let score = userInfo.compactMap { myInfo -> (win: Int, draw: Int, lose: Int)? in
             guard let myInfo = myInfo
             else { return nil }
             return (myInfo.win, myInfo.draw, myInfo.lose)
         }
 
-        let nickname = myInfo.compactMap { $0?.nickname }
+        let nickname = userInfo.compactMap { $0?.nickname }
 
         let settingEvent = input.settingTrigger
             .do(onNext: self.navigator.toSetting)
 
-        let uidAndNicknameAndProfileURL: Driver<(String, String, URL?)> = myInfo.compactMap { userInfo in
+        let uidAndNicknameAndProfileURL: Driver<(String, String, URL?)> = userInfo.compactMap { userInfo in
             guard let userInfo = userInfo else { return nil }
             return (userInfo.uid, userInfo.nickname, userInfo.profileURL)
         }
 
         let reportEvent = input.reportTrigger
+            .withLatestFrom(userInfo)
+            .compactMap { [unowned self] userInfo in
+                guard let userInfo = userInfo else { return nil }
+                return (self.selfID, userInfo)
+            }
             .do(onNext: self.navigator.toReport)
+            .mapToVoid()
 
         let exitEvent = input.exitTrigger
             .do(onNext: self.navigator.dismiss)

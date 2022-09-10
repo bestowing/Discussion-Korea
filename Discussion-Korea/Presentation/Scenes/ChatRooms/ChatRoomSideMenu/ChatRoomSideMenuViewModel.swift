@@ -54,8 +54,8 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             }
 
         let selectedParticipantEvent = input.selection
-            .withLatestFrom(participants) { (indexPath, participants) in
-                return participants[indexPath.item].userInfo.uid
+            .withLatestFrom(participants) { [unowned self] (indexPath, participants) in
+                return (self.uid, participants[indexPath.item].userInfo.uid)
             }
             .do(onNext: self.navigator.toOtherProfile)
             .mapToVoid()

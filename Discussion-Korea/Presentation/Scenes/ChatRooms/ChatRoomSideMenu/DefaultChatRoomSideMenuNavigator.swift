@@ -75,14 +75,14 @@ final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNav
         navigator.toChatRoomSchedule(userID, chatRoom)
     }
 
-    func toOtherProfile(_ userID: String) {
+    func toOtherProfile(_ selfID: String, _ userID: String) {
         guard let presentingViewController = presentingViewController
         else { return }
         let navigator = OtherProfileNavigator(
             services: self.services,
             presentedViewController: presentingViewController
         )
-        navigator.toReadProfile(userID)
+        navigator.toReadProfile(selfID, userID)
     }
 
 }

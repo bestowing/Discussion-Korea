@@ -10,6 +10,10 @@
 		3F0006BD28CCD7BA006811C8 /* OtherProfileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */; };
 		3F0006BF28CCD8E7006811C8 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */; };
 		3F0006C128CD04E9006811C8 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C028CD04E9006811C8 /* ProfileImageView.swift */; };
+		3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C328CD0C54006811C8 /* ReportViewModel.swift */; };
+		3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */; };
+		3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */; };
+		3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C928CD0D98006811C8 /* ReportViewController.swift */; };
 		3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */; };
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
@@ -259,6 +263,10 @@
 		3F0006BC28CCD7BA006811C8 /* OtherProfileNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileNavigator.swift; sourceTree = "<group>"; };
 		3F0006BE28CCD8E7006811C8 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
 		3F0006C028CD04E9006811C8 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		3F0006C328CD0C54006811C8 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
+		3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNavigator.swift; sourceTree = "<group>"; };
+		3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultReportNavigator.swift; sourceTree = "<group>"; };
+		3F0006C928CD0D98006811C8 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLabel.swift; sourceTree = "<group>"; };
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -497,6 +505,17 @@
 				3FAAB6B428C07FA000AA32ED /* ReadProfileNavigator.swift */,
 			);
 			path = ReadProfile;
+			sourceTree = "<group>";
+		};
+		3F0006C228CD0C47006811C8 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */,
+				3F0006C528CD0CF7006811C8 /* ReportNavigator.swift */,
+				3F0006C928CD0D98006811C8 /* ReportViewController.swift */,
+				3F0006C328CD0C54006811C8 /* ReportViewModel.swift */,
+			);
+			path = Report;
 			sourceTree = "<group>";
 		};
 		3F37B3602820747500DB18B7 = {
@@ -967,8 +986,9 @@
 		3FAAB6FF28C7298E00AA32ED /* Membership */ = {
 			isa = PBXGroup;
 			children = (
-				3F0006BA28CCD564006811C8 /* Profiles */,
 				3FAAB70328C72AF600AA32ED /* Common */,
+				3F0006BA28CCD564006811C8 /* Profiles */,
+				3F0006C228CD0C47006811C8 /* Report */,
 				3FAAB6F328C68B9E00AA32ED /* ResetPassword */,
 				3F66969D2835BF0E0077E5B3 /* Setting */,
 				3FAAB6DF28C6538A00AA32ED /* SignIn */,
@@ -1281,6 +1301,7 @@
 				3FBDBC472887E00B00A09BF4 /* LiveChatView.swift in Sources */,
 				3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */,
 				3F689EA028B778FF00C1D072 /* DefaultGuideNavigator.swift in Sources */,
+				3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */,
 				3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
@@ -1290,6 +1311,7 @@
 				3F689EA228B7792B00C1D072 /* DefaultLawNavigator.swift in Sources */,
 				3F6696B228362D300077E5B3 /* ChatRoomItemViewModel.swift in Sources */,
 				3F689E8A28B7381800C1D072 /* ChartNavigator.swift in Sources */,
+				3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */,
 				3F37B3AE2820765900DB18B7 /* SelfChatCell.swift in Sources */,
 				3FAAB6B528C07FA000AA32ED /* ReadProfileNavigator.swift in Sources */,
 				3F91042E283F6B2900446239 /* AddChatRoomNavigator.swift in Sources */,
@@ -1312,6 +1334,7 @@
 				3F689E9B28B7789A00C1D072 /* LawNavigator.swift in Sources */,
 				3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */,
 				3F6696B52836301C0077E5B3 /* ChatRoomCell.swift in Sources */,
+				3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */,
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
 				3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */,
@@ -1417,6 +1440,7 @@
 				3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
 				3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */,
+				3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */,
 				3FAAB6B928C0815500AA32ED /* MyProfileViewController.swift in Sources */,
 				3FAAB6FB28C68C6B00AA32ED /* ResetPasswordViewModel.swift in Sources */,
 				3F689E8628B735AB00C1D072 /* ChartViewController.swift in Sources */,

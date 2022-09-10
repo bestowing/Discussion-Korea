@@ -14,6 +14,8 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
     private let services: UsecaseProvider
     private let presentedViewController: UIViewController
 
+    private weak var navigationController: UINavigationController?
+
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
@@ -24,23 +26,33 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
 
     // MARK: - methods
 
-    func toReadProfile(_ userID: String) {
+    func toReadProfile(_ selfID: String, _ userID: String) {
         let viewController = OtherProfileViewController()
         viewController.viewModel = ReadProfileViewModel(
+            selfID: selfID,
             userID: userID,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
-        viewController.modalPresentationStyle = .pageSheet
-        self.presentedViewController.present(viewController, animated: true)
+        let navigationController = UINavigationController(
+            rootViewController: viewController
+        )
+        navigationController.modalPresentationStyle = .fullScreen
+        self.presentedViewController.present(navigationController, animated: true)
+        self.navigationController = navigationController
     }
 
     func dismiss() {
         self.presentedViewController.dismiss(animated: true)
     }
 
-    func toReport() {
-        // TODO: 구현 필요
+    func toReport(_ userID: String, _ reportedUserInfo: UserInfo) {
+        guard let navigationController = self.navigationController
+        else { return }
+        let navigator = DefaultReportNavigator(
+            services: self.services, navigationController: navigationController
+        )
+        navigator.toReport(userID, reportedUserInfo)
     }
 
 }
