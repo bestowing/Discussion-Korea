@@ -74,6 +74,9 @@ final class ChatRoomScheduleViewController: BaseViewController {
         )
         let output = self.viewModel.transform(input: input)
 
+        output.addEnabled.drive(self.addButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+
         output.schedules.drive(self.scheduleTableView.rx.items) { tableView, index, model in
             let indexPath = IndexPath(item: index, section: 0)
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.identifier, for: indexPath) as? ScheduleCell

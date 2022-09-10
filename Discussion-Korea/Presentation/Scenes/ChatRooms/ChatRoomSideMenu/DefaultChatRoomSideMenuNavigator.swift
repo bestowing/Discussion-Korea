@@ -63,13 +63,13 @@ final class DefaultChatRoomSideMenuNavigator: BaseNavigator, ChatRoomSideMenuNav
         self.presentedViewController.present(menu, animated: true)
     }
 
-    func toChatRoomSchedule(_ chatRoom: ChatRoom) {
+    func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {
         self.presentedViewController.dismiss(animated: true)
         let navigator = DefaultChatRoomScheduleNavigator(
             services: self.services,
             presentedViewController: self.presentedViewController
         )
-        navigator.toChatRoomSchedule(chatRoom)
+        navigator.toChatRoomSchedule(userID, chatRoom)
     }
 
 }
