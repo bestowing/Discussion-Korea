@@ -11,6 +11,8 @@ protocol ReadProfileNavigator {
 
     func toReadProfile(_ userID: String)
     func toSetting()
+    func dismiss()
+    func toReport()
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?)
 
 }

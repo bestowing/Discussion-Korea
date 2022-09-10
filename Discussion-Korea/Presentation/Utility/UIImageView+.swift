@@ -15,10 +15,6 @@ extension UIImageView {
         self.kf.setImage(with: url)
     }
 
-    func setDefaultProfileImage() {
-        self.image = UIImage(systemName: "person.fill")
-    }
-
     func setDefaultChatRoomProfileImage() {
         self.image = UIImage(systemName: "bubble.left.and.bubble.right.fill")
     }
@@ -27,8 +23,9 @@ extension UIImageView {
 
 extension Reactive where Base: UIImageView {
 
-    var url: Binder<URL> {
+    var url: Binder<URL?> {
         return Binder(self.base) { imageView, url in
+            guard let url = url else { return }
             imageView.setImage(url)
         }
     }

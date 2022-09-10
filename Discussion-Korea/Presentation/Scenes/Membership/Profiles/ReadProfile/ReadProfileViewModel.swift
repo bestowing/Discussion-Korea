@@ -56,12 +56,18 @@ final class ReadProfileViewModel: ViewModelType {
             return (userInfo.uid, userInfo.nickname, userInfo.profileURL)
         }
 
+        let reportEvent = input.reportTrigger
+            .do(onNext: self.navigator.toReport)
+
+        let exitEvent = input.exitTrigger
+            .do(onNext: self.navigator.dismiss)
+
         let editEvent = input.profileEditTrigger
             .withLatestFrom(uidAndNicknameAndProfileURL)
             .do(onNext: self.navigator.toProfileEdit)
             .mapToVoid()
 
-        let events = Driver.of(settingEvent, editEvent).merge()
+        let events = Driver.of(settingEvent, reportEvent, exitEvent, editEvent).merge()
 
         return Output(
             profileURL: profileURL,

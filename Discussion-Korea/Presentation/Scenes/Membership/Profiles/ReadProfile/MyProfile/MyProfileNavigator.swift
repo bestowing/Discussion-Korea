@@ -54,4 +54,13 @@ final class MyProfileNavigator: BaseNavigator, ReadProfileNavigator {
         navigator.toConfigureProfile(userID, nickname, profileURL)
     }
 
+    
+
+}
+
+extension MyProfileNavigator {
+
+    func dismiss() {}
+    func toReport() {}
+
 }

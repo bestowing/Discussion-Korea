@@ -35,6 +35,18 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
         self.presentedViewController.present(viewController, animated: true)
     }
 
+    func dismiss() {
+        self.presentedViewController.dismiss(animated: true)
+    }
+
+    func toReport() {
+        // TODO: 구현 필요
+    }
+
+}
+
+extension OtherProfileNavigator {
+
     func toSetting() {}
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?) {}
 

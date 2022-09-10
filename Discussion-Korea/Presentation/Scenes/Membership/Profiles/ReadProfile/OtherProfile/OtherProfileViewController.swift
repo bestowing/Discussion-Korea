@@ -105,7 +105,6 @@ final class OtherProfileViewController: BaseViewController {
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
         self.reportButton.snp.makeConstraints { make in
-//            make.top.equalTo(self.debateScoreView.snp.bottom).offset(40)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
             make.bottom.equalTo(self.exitButton.snp.top).offset(-10)
         }
