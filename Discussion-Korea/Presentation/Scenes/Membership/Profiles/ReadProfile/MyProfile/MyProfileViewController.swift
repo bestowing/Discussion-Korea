@@ -29,7 +29,7 @@ final class MyProfileViewController: BaseViewController {
 
     private let settingButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "gearshape")
+        button.image = UIImage(named: "setting")
         button.tintColor = .label
         button.accessibilityLabel = "설정"
         return button
