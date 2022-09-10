@@ -34,19 +34,21 @@ final class HomeViewController: BaseViewController {
         let button = HomeMenuButton()
         button.isEnabled = false
         button.titleLabel.text = "방구석 조직도"
-        button.imageView.image = UIImage(systemName: "rectangle.fill.badge.person.crop")
+        button.imageView.image = UIImage(systemName: "rectangle.stack.fill.badge.person.crop")
         return button
     }()
 
     private let lawButton: HomeMenuButton = {
         let button = HomeMenuButton()
+        button.isEnabled = true
         button.titleLabel.text = "방구석 헌법"
-        button.imageView.image = UIImage(systemName: "book.closed.fill")
+        button.imageView.image = UIImage(systemName: "book.fill")
         return button
     }()
 
     private let guideButton: HomeMenuButton = {
         let button = HomeMenuButton()
+        button.isEnabled = true
         button.titleLabel.text = "방구석 가이드"
         button.imageView.image = UIImage(systemName: "questionmark.circle")
         return button
