@@ -43,6 +43,7 @@ final class ChatCollectionView: UICollectionView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard self.expand() else { return }
         if let prevFrameHeight = self.prevFrameHeight,
            prevFrameHeight > self.frame.height {
             self.contentOffset.y += prevFrameHeight - self.frame.height
