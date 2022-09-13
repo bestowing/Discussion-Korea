@@ -134,7 +134,7 @@ final class ChatRoomViewController: BaseViewController {
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tap)
+        self.messageCollectionView.addGestureRecognizer(tap)
 
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [unowned self] keyboardVisibleHeight in
@@ -180,8 +180,7 @@ final class ChatRoomViewController: BaseViewController {
             previewTouched: self.chatPreview.rx.tapGesture()
                 .when(.recognized).mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            profileSelection: self.tapProfileSubject.asDriverOnErrorJustComplete()
-                .debug(),
+            profileSelection: self.tapProfileSubject.asDriverOnErrorJustComplete(),
             send: self.chatInputView.rx.send.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
             content: self.chatInputView.rx.chatContent.asDriver(),

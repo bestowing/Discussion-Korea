@@ -107,7 +107,6 @@ final class ConfigureProfileViewModel: ViewModelType {
                 .trackError(errorTracker)
                 .asDriverOnErrorJustComplete()
             }
-            .debug()
 
         let dismissEvent = Driver.of(submitEvent, input.exitTrigger)
             .merge()
