@@ -169,10 +169,7 @@ final class ChatRoomViewController: BaseViewController {
             profileSelection: self.tapProfileSubject.asDriverOnErrorJustComplete(),
             send: self.chatInputView.rx.send.asDriver(),
             menu: self.menuButton.rx.tap.asDriver(),
-            content: self.chatInputView.rx.chatContent.asDriver(),
-            disappear: self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
-                .mapToVoid()
-                .asDriverOnErrorJustComplete()
+            content: self.chatInputView.rx.chatContent.asDriver()
         )
         let output = self.viewModel.transform(input: input)
 

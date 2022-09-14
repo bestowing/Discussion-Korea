@@ -481,7 +481,6 @@ extension ChatRoomViewModel {
         let send: Driver<Void>
         let menu: Driver<Void>
         let content: Driver<String>
-        let disappear: Driver<Void>
     }
 
     struct Output {
