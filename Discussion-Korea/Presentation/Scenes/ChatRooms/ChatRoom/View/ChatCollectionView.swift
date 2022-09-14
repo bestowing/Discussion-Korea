@@ -18,8 +18,6 @@ final class ChatCollectionView: UICollectionView {
 
     // MARK: - properties
 
-    var anchored = true
-
     private var prevFrameHeight: CGFloat?
 
     // MARK: - methods
@@ -33,14 +31,11 @@ final class ChatCollectionView: UICollectionView {
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .map { [unowned self] contentOffset in
                 if contentOffset.y <= 20.0 {
-                    self.anchored = false
                     return .top
                 }
                 if self.bottom() {
-                    self.anchored = true
                     return .bottom
                 }
-                self.anchored = false
                 return .none
             }
     }

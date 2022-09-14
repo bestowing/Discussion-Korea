@@ -140,6 +140,19 @@ final class ChatRoomViewController: BaseViewController {
     private func bindViewModel() {
         assert(self.viewModel != nil)
 
+        let bottomScrolled = self.messageCollectionView.position()
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map { [unowned self] position -> Bool in
+                if position == .bottom {
+                    return true
+                }
+                let prev = self.isExpanded
+                self.isExpanded = self.messageCollectionView.expand()
+                return (!self.isExpanded) || prev != self.isExpanded
+            }
+            .distinctUntilChanged()
+            .asDriverOnErrorJustComplete()
+
         let input = ChatRoomViewModel.Input(
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
@@ -149,18 +162,7 @@ final class ChatRoomViewController: BaseViewController {
                 .filter { $0 == .top }
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            bottomScrolled: self.messageCollectionView.position()
-                .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-                .map { [unowned self] position -> Bool in
-                    if position == .bottom {
-                        return true
-                    }
-                    let prev = self.isExpanded
-                    self.isExpanded = self.messageCollectionView.expand()
-                    return (!self.isExpanded) || prev != self.isExpanded
-                }
-                .distinctUntilChanged()
-                .asDriverOnErrorJustComplete(),
+            bottomScrolled: bottomScrolled,
             previewTouched: self.chatPreview.rx.tapGesture()
                 .when(.recognized).mapToVoid()
                 .asDriverOnErrorJustComplete(),
@@ -209,7 +211,8 @@ final class ChatRoomViewController: BaseViewController {
         }
         .disposed(by: self.disposeBag)
 
-        output.newChatItem.drive { [unowned self] viewModel in
+        output.newChatItem.withLatestFrom(bottomScrolled) { ($0, $1) }
+            .drive { [unowned self] viewModel, bottomScrolled in
             let indexPath = IndexPath(item: self.itemViewModels.count, section: 0)
             var differences = [indexPath]
             if var last = self.itemViewModels.last,
@@ -226,16 +229,17 @@ final class ChatRoomViewController: BaseViewController {
             self.itemViewModels.append(viewModel)
             UIView.performWithoutAnimation {
                 self.messageCollectionView.insertItems(at: differences)
-                // 여기서 expand가 되었다는걸 잡지는 못하나?
-                if self.messageCollectionView.anchored,
-                   self.messageCollectionView.expand() {
-                    self.messageCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+                if bottomScrolled {
+                    self.messageCollectionView.scrollToItem(
+                        at: indexPath, at: .bottom, animated: false
+                    )
                 }
             }
         }
         .disposed(by: self.disposeBag)
 
         output.maskedChatUID.drive { [unowned self] uid in
+            self.cachedHeights[uid] = nil
             if let item = self.itemViewModels.firstIndex(where: { $0.chat.uid! == uid }) {
                 self.itemViewModels[item].chat.toxic = true
                 self.messageCollectionView.reloadItems(
