@@ -229,7 +229,7 @@ final class ChatRoomViewController: BaseViewController {
             self.itemViewModels.append(viewModel)
             UIView.performWithoutAnimation {
                 self.messageCollectionView.insertItems(at: differences)
-                if bottomScrolled {
+                if bottomScrolled || self.messageCollectionView.bottom() {
                     self.messageCollectionView.scrollToItem(
                         at: indexPath, at: .bottom, animated: false
                     )
