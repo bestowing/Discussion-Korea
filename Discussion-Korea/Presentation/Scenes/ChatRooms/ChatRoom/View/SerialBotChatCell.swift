@@ -45,7 +45,7 @@ final class SerialBotChatCell: ChatCell {
             make.leading.greaterThanOrEqualToSuperview().offset(40)
             make.trailing.lessThanOrEqualToSuperview().offset(-40)
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(7)
         }
     }
 

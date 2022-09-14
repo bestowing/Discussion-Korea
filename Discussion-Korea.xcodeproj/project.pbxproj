@@ -149,7 +149,6 @@
 		3FAAB6CF28C1F8F600AA32ED /* LawDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */; };
 		3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */; };
 		3FAAB6D428C2DBF500AA32ED /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3FAAB6D328C2DBF500AA32ED /* RxDataSources */; };
-		3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */; };
 		3FAAB6DA28C6033400AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
 		3FAAB6DC28C6034500AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
 		3FAAB6DE28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */; };
@@ -389,7 +388,6 @@
 		3FAAB6CC28C1F7E300AA32ED /* DefaultLawDetailNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLawDetailNavigator.swift; sourceTree = "<group>"; };
 		3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewController.swift; sourceTree = "<group>"; };
 		3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewModel.swift; sourceTree = "<group>"; };
-		3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemViewModelFactory.swift; sourceTree = "<group>"; };
 		3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatItemViewModelFactory.swift; sourceTree = "<group>"; };
 		3FAAB6E028C653B600AA32ED /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -692,7 +690,6 @@
 				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
 				3F646F3828CB341900434BC6 /* ChatCollectionView.swift */,
-				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
 				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
 				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
@@ -1361,7 +1358,6 @@
 				3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */,
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
-				3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */,
 				3F689E8F28B7466300C1D072 /* HomeMenuButton.swift in Sources */,
 				3FBDBC0E2886E37800A09BF4 /* DefaultChatRoomScheduleNavigator.swift in Sources */,
 				3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */,

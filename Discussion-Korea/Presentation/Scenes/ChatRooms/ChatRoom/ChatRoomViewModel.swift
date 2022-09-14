@@ -59,7 +59,7 @@ final class ChatRoomViewModel: ViewModelType {
     func transform(input: Input) -> Output {
 
         let isFetchingLimited = PublishSubject<Bool>()
-        let chatItems = PublishSubject<[ChatItemViewModel]>()
+        let firstItem = PublishSubject<ChatItemViewModel>()
         let previewItem = PublishSubject<ChatItemViewModel?>()
 
         let myRemainTime = input.trigger
@@ -169,14 +169,7 @@ final class ChatRoomViewModel: ViewModelType {
                 return viewModels
             }
 
-        let initializationEvent = initialization
-            .do(onNext: {
-                isFetchingLimited.onNext($0.isEmpty)
-                chatItems.onNext($0)
-            })
-            .mapToVoid()
-
-        let newChatsEvent = initialization
+        let newChatItem = initialization
             .flatMap { [unowned self] viewModels in
                 self.chatsUsecase.receiveNewChats(roomUID: self.chatRoom.uid, after: viewModels.last?.chat.uid)
                     .asDriverOnErrorJustComplete()
@@ -188,31 +181,22 @@ final class ChatRoomViewModel: ViewModelType {
                 chat.profileURL = userInfos[chat.userID]?.profileURL
                 return chat
             }
-            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
-            .do(onNext: { [unowned self] chat, viewModels in
-                var viewModels = viewModels
-                if var last = viewModels.last,
-                   last.chat.userID == chat.userID,
-                   let lastDate = last.chat.date,
-                   let currentDate = chat.date,
-                   Int(currentDate.timeIntervalSince(lastDate)) < 60 {
-                    last.chat.date = nil
-                    viewModels[viewModels.endIndex - 1] = last
-                }
-                let newViewModel = self.factory.create(
-                    prevChat: viewModels.last?.chat, chat: chat, isEditing: false
+            .withLatestFrom(Driver.of(
+                initialization.map { $0.last },
+                previewItem
+                    .compactMap { $0 }
+                    .asDriverOnErrorJustComplete()
+            ).merge()) { ($0, $1) }
+            .map { [unowned self] chat, viewModel in
+                return self.factory.create(
+                    prevChat: viewModel?.chat, chat: chat, isEditing: false
                 )
-                viewModels.append(newViewModel)
-                chatItems.onNext(viewModels)
-                previewItem.onNext(newViewModel)
-            })
-            .mapToVoid()
+            }
 
-        let loadMoreEvent = input.loadMoreTrigger
+        let moreLoadedItems = input.loadMoreTrigger
             .withLatestFrom(isFetchingLimited.asDriverOnErrorJustComplete())
             .filter { !$0 }
-            .withLatestFrom(chatItems.asDriverOnErrorJustComplete())
-            .compactMap { $0.first?.chat.uid }
+            .withLatestFrom(firstItem.asDriverOnErrorJustComplete()) { $1.chat.uid! }
             .flatMapLatest { [unowned self] uid in
                 self.chatsUsecase.loadMoreChats(roomUID: self.chatRoom.uid, before: uid)
                     .asDriverOnErrorJustComplete()
@@ -226,51 +210,30 @@ final class ChatRoomViewModel: ViewModelType {
                     return chat
                 }
             }
-            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
-            .do(onNext: { [unowned self] chats, viewModels in
-                var viewModels = viewModels
-                var newViewModels = [ChatItemViewModel]()
+            .map { [unowned self] chats in
+                var viewModels = [ChatItemViewModel]()
                 for (index, chat) in chats.enumerated() {
                     if let prevChat = chats[safe: index - 1],
                        prevChat.userID == chat.userID,
                        let lastDate = prevChat.date,
                        let currentDate = chat.date,
                        Int(currentDate.timeIntervalSince(lastDate)) < 60 {
-                        newViewModels[index - 1].chat.date = nil
+                        viewModels[index - 1].chat.date = nil
                     }
-                    newViewModels.append(
+                    viewModels.append(
                         self.factory.create(
                             prevChat: chats[safe: index - 1], chat: chat, isEditing: false
                         )
                     )
                 }
-                if let firstChat = viewModels.first?.chat,
-                   let lastChat = chats.last,
-                   firstChat.userID == lastChat.userID,
-                   let firstDate = firstChat.date,
-                   let lastDate = lastChat.date,
-                   Int(lastDate.timeIntervalSince(firstDate)) < 60 {
-                    viewModels[viewModels.endIndex - 1].chat.date = nil
-                }
-                isFetchingLimited.onNext(newViewModels.isEmpty)
-                chatItems.onNext(newViewModels + viewModels)
-            })
-            .mapToVoid()
+                return viewModels
+            }
 
-        let maskingEvent = input.trigger
+        let maskedChatUID = input.trigger
             .flatMapFirst { [unowned self] in
                 self.chatsUsecase.masking(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { ($0, $1) }
-            .do(onNext: { uid, viewModels in
-                if let item = viewModels.firstIndex(where: { $0.chat.uid! == uid }) {
-                    var viewModels = viewModels
-                    viewModels[item].chat.toxic = true
-                    chatItems.onNext(viewModels)
-                }
-            })
-            .mapToVoid()
 
         let status = input.trigger
             .flatMapFirst { [unowned self] in
@@ -455,19 +418,30 @@ final class ChatRoomViewModel: ViewModelType {
         let disappear = input.disappear
             .do(onNext: self.navigator.disappear)
 
+        let fetchEvent = Driver.of(initialization, moreLoadedItems)
+            .merge()
+            .do(onNext: { viewModels in
+                if let first = viewModels.first {
+                    firstItem.onNext(first)
+                }
+                isFetchingLimited.onNext(viewModels.isEmpty)
+            })
+            .mapToVoid()
+
+        let newChatItemEvent = newChatItem
+            .do(onNext: { newViewModel in
+                previewItem.onNext(newViewModel)
+            })
+            .mapToVoid()
+
         let selectedParticipantEvent = input.profileSelection
-            .withLatestFrom(chatItems.asDriverOnErrorJustComplete()) { (indexPath, items) in
-                return items[indexPath.item]
-            }
             .map { [unowned self] item in (self.uid, item.chat.userID) }
             .do(onNext: self.navigator.toOtherProfile)
             .mapToVoid()
 
         let events = Driver.of(
-            initializationEvent,
-            newChatsEvent,
-            maskingEvent,
-            loadMoreEvent,
+            fetchEvent,
+            newChatItemEvent,
             voteEvent,
             selectSideEvent,
             sideMenuEvent,
@@ -484,13 +458,13 @@ final class ChatRoomViewModel: ViewModelType {
             .merge()
 
         return Output(
+            chatItems: initialization,
+            moreLoaded: moreLoadedItems,
+            newChatItem: newChatItem,
+            maskedChatUID: maskedChatUID,
             myRemainTime: myRemainTimeString,
             remainTime: remainTime,
             noticeContent: noticeContent,
-            chatItems: chatItems
-                .map { [ChatSectionModel(model: "", items: $0)] }
-                .asDriverOnErrorJustComplete()
-                .startWith([]),
             toBottom: input.previewTouched,
             sendEnable: canSend,
             preview: preview
@@ -511,7 +485,7 @@ extension ChatRoomViewModel {
         let loadMoreTrigger: Driver<Void>
         let bottomScrolled: Driver<Bool>
         let previewTouched: Driver<Void>
-        let profileSelection: Driver<IndexPath>
+        let profileSelection: Driver<ChatItemViewModel>
         let send: Driver<Void>
         let menu: Driver<Void>
         let content: Driver<String>
@@ -519,10 +493,13 @@ extension ChatRoomViewModel {
     }
 
     struct Output {
+        let chatItems: Driver<[ChatItemViewModel]>
+        let moreLoaded: Driver<[ChatItemViewModel]>
+        let newChatItem: Driver<ChatItemViewModel>
+        let maskedChatUID: Driver<String>
         let myRemainTime: Driver<String>
         let remainTime: Driver<String>
         let noticeContent: Driver<String>
-        let chatItems: Driver<[ChatSectionModel]>
         let toBottom: Driver<Void>
         let sendEnable: Driver<Bool>
         let preview: Driver<ChatItemViewModel?>

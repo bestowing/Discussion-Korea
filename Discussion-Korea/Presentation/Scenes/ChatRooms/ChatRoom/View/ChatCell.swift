@@ -12,13 +12,25 @@ class ChatCell: UICollectionViewCell {
     var action: Action?
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
-        layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(
+        super.preferredLayoutAttributesFitting(layoutAttributes)
+        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        var frame = layoutAttributes.frame
+        frame.size.height = ceil(size.height)
+        layoutAttributes.frame = frame
+        return layoutAttributes
+    }
+
+    class func sizeFittingWith(cellWidth: CGFloat, viewModel: ChatItemViewModel) -> CGSize {
+        let cell = Self()
+        cell.bind(viewModel)
+        let targetSize = CGSize(
+            width: cellWidth, height: UIView.layoutFittingCompressedSize.height
+        )
+        return cell.contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
-        return layoutAttributes
     }
 
     func bind(_ viewModel: ChatItemViewModel) {}
