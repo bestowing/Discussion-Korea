@@ -412,12 +412,6 @@ final class ChatRoomViewModel: ViewModelType {
             }
             .asDriverOnErrorJustComplete()
 
-        let appear = input.trigger
-            .do(onNext: self.navigator.appear)
-
-        let disappear = input.disappear
-            .do(onNext: self.navigator.disappear)
-
         let fetchEvent = Driver.of(initialization, moreLoadedItems)
             .merge()
             .do(onNext: { viewModels in
@@ -450,8 +444,6 @@ final class ChatRoomViewModel: ViewModelType {
             clearSideEvent,
             resultEvent,
             previewCheckEvent,
-            appear,
-            disappear,
             writingEvent,
             selectedParticipantEvent
         )

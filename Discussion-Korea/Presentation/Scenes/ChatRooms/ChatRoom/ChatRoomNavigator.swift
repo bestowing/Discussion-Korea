@@ -22,7 +22,5 @@ protocol ChatRoomNavigator {
     func toVoteAlert() -> Observable<Side>
     func toDiscussionResultAlert(result: DiscussionResult)
     func toOtherProfile(_ selfID: String, _ userID: String)
-    func appear()
-    func disappear()
 
 }
