@@ -15,6 +15,10 @@
 		3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */; };
 		3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C928CD0D98006811C8 /* ReportViewController.swift */; };
 		3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */; };
+		3F29695628D04F5E00C73EDE /* ChatRoomCoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */; };
+		3F29695828D04F7300C73EDE /* ChatRoomCoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */; };
+		3F29695A28D04FA200C73EDE /* ChatRoomCoverNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */; };
+		3F29695C28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */; };
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
 		3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B394282075E400DB18B7 /* ViewModelType.swift */; };
@@ -268,6 +272,10 @@
 		3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultReportNavigator.swift; sourceTree = "<group>"; };
 		3F0006C928CD0D98006811C8 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLabel.swift; sourceTree = "<group>"; };
+		3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverViewController.swift; sourceTree = "<group>"; };
+		3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverViewModel.swift; sourceTree = "<group>"; };
+		3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverNavigator.swift; sourceTree = "<group>"; };
+		3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatRoomCoverNavigator.swift; sourceTree = "<group>"; };
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F37B38B2820759D00DB18B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -518,6 +526,17 @@
 			path = Report;
 			sourceTree = "<group>";
 		};
+		3F29695428D04F0E00C73EDE /* ChatRoomCover */ = {
+			isa = PBXGroup;
+			children = (
+				3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */,
+				3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */,
+				3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */,
+				3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */,
+			);
+			path = ChatRoomCover;
+			sourceTree = "<group>";
+		};
 		3F37B3602820747500DB18B7 = {
 			isa = PBXGroup;
 			children = (
@@ -621,6 +640,7 @@
 			children = (
 				3FAAB70228C72A8600AA32ED /* Homes */,
 				3FAAB70128C72A3E00AA32ED /* Discussions */,
+				3F689E8028B7355700C1D072 /* Chart */,
 				3FAAB70028C729A600AA32ED /* ChatRooms */,
 				3FAAB6FF28C7298E00AA32ED /* Membership */,
 			);
@@ -1004,7 +1024,7 @@
 				3F37B39C2820763B00DB18B7 /* ChatRoom */,
 				3F66969E2835BF5B0077E5B3 /* ChatRoomList */,
 				3FB35784282406AB00F27C77 /* ChatRoomSideMenu */,
-				3F689E8028B7355700C1D072 /* Chart */,
+				3F29695428D04F0E00C73EDE /* ChatRoomCover */,
 			);
 			path = ChatRooms;
 			sourceTree = "<group>";
@@ -1303,6 +1323,7 @@
 				3F689EA028B778FF00C1D072 /* DefaultGuideNavigator.swift in Sources */,
 				3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */,
 				3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */,
+				3F29695C28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3F646F2C28CA466C00434BC6 /* DefaultSetDiscussionDetailNavigator.swift in Sources */,
@@ -1398,6 +1419,7 @@
 				3FAAB71328C7A88E00AA32ED /* SetProfileNavigator.swift in Sources */,
 				3F6696AE283623A80077E5B3 /* ChatRoom.swift in Sources */,
 				3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */,
+				3F29695628D04F5E00C73EDE /* ChatRoomCoverViewController.swift in Sources */,
 				3FAAB70B28C7A4F800AA32ED /* SetProfileViewController.swift in Sources */,
 				3F6696A62835C12B0077E5B3 /* SettingViewController.swift in Sources */,
 				3FAAB69128BEA9ED00AA32ED /* LawItemViewModel.swift in Sources */,
@@ -1438,6 +1460,7 @@
 				3F646F0E28C7B9D000434BC6 /* FormResult.swift in Sources */,
 				3FAAB69928BEB44F00AA32ED /* GuideViewModel.swift in Sources */,
 				3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */,
+				3F29695828D04F7300C73EDE /* ChatRoomCoverViewModel.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
 				3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */,
 				3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */,
@@ -1448,6 +1471,7 @@
 				3F689EA428B779FA00C1D072 /* LawViewController.swift in Sources */,
 				3FAAB6E528C6541500AA32ED /* SignInNavigator.swift in Sources */,
 				3F37B3AC2820765900DB18B7 /* PaddingLabel.swift in Sources */,
+				3F29695A28D04FA200C73EDE /* ChatRoomCoverNavigator.swift in Sources */,
 				3FAAB6E728C6542C00AA32ED /* DefaultSignInNavigator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1660,8 +1684,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1680,7 +1704,7 @@
 				MARKETING_VERSION = 0.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = distribution_discussion_Korea;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1694,8 +1718,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1714,7 +1738,7 @@
 				MARKETING_VERSION = 0.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = distribution_discussion_Korea;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
