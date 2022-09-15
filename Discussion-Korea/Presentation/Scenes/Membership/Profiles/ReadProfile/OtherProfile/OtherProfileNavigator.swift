@@ -46,13 +46,13 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
         self.presentedViewController.dismiss(animated: true)
     }
 
-    func toReport(_ userID: String, _ reportedUserInfo: UserInfo) {
+    func toReport(_ userID: String, _ reportedUID: String) {
         guard let navigationController = self.navigationController
         else { return }
         let navigator = DefaultReportNavigator(
             services: self.services, navigationController: navigationController
         )
-        navigator.toReport(userID, reportedUserInfo)
+        navigator.toReport(userID, reportedUID)
     }
 
 }

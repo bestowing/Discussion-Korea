@@ -17,20 +17,17 @@ final class ChatRoomCoverViewModel: ViewModelType {
     private let navigator: ChatRoomCoverNavigator
 
     private let chatRoomsUsecase: ChatRoomsUsecase
-    private let userInfoUsecase: UserInfoUsecase
 
     // MARK: - init/deinit
     
     init(uid: String,
          chatRoom: ChatRoom,
          navigator: ChatRoomCoverNavigator,
-         chatRoomsUsecase: ChatRoomsUsecase,
-         userInfoUsecase: UserInfoUsecase) {
+         chatRoomsUsecase: ChatRoomsUsecase) {
         self.uid = uid
         self.chatRoom = chatRoom
         self.navigator = navigator
         self.chatRoomsUsecase = chatRoomsUsecase
-        self.userInfoUsecase = userInfoUsecase
     }
 
      deinit {
@@ -39,8 +36,26 @@ final class ChatRoomCoverViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let events = input.exitTrigger
+        let reportEvent = input.reportTrigger
+            .map { [unowned self] _ in (self.uid, self.chatRoom.uid) }
+            .do(onNext: self.navigator.toReport)
+            .mapToVoid()
+
+        let participateEvent = input.participateTrigger
+            .flatMapFirst { [unowned self] _ in
+                self.chatRoomsUsecase.participate(
+                    userID: self.uid, chatRoomID: self.chatRoom.uid
+                )
+                .asDriverOnErrorJustComplete()
+                .map { (self.uid, self.chatRoom) }
+            }
+            .do(onNext: self.navigator.toChatRoom)
+            .mapToVoid()
+
+        let exitEvent = input.exitTrigger
             .do(onNext: self.navigator.toChatRoomFind)
+
+        let events = Driver.of(reportEvent, exitEvent, participateEvent).merge()
 
         return Output(
             title: Driver.just(self.chatRoom.title).asDriver(),

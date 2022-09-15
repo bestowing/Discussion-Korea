@@ -32,8 +32,8 @@ extension ChatRoom {
         if adminUID == userID {
             return true
         }
-        if let participants = dic["participants"] as? [String] {
-            return participants.contains(userID)
+        if let participants = dic["participants"] as? [String: Any] {
+            return participants[userID] != nil
         }
         return false
     }

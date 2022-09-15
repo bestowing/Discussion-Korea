@@ -64,6 +64,9 @@ final class ChatRoomListViewModel: ViewModelType {
         let chatRoomItems = chatRooms
             .scan([ChatRoomItemViewModel]()) { (viewModels, chatRoom) in
                 let viewModel = ChatRoomItemViewModel(chatRoom: chatRoom)
+                if viewModels.contains(where: { $0.chatRoom == chatRoom }) {
+                    return viewModels
+                }
                 return viewModels + [viewModel]
             }
 
@@ -89,22 +92,23 @@ final class ChatRoomListViewModel: ViewModelType {
             .map { [unowned self] _ in self.userID }
             .do(onNext: self.navigator.toAddChatRoom)
             .mapToVoid()
-                
+
         let findChatRoomEvent = input.findChatRoomTrigger
             .map { [unowned self] _ in self.userID  }
             .do(onNext: self.navigator.toChatRoomFind)
             .mapToVoid()
 
         let coverEvent = input.selection
+            .filter { [unowned self] _ in self.participant == false }
             .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) in
                 return chatRooms[indexPath.item].chatRoom
             }
-            .filter { [unowned self] _ in self.participant == false }
             .map { [unowned self] chatRoom in (self.userID, chatRoom) }
             .do(onNext: self.navigator.toChatRoomCover)
             .mapToVoid()
 
         let enterEvent = input.selection
+            .filter { [unowned self] _ in self.participant }
             .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) in
                 return chatRooms[indexPath.item].chatRoom
             }

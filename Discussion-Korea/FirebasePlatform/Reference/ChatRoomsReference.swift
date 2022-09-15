@@ -34,6 +34,27 @@ final class ChatRoomsReference {
                         subscribe.onNext(chatRoom)
                     }
             }
+            self.reference.child("chatRooms")
+                .observe(.childChanged) { snapshot in
+                    guard let chatRoom = ChatRoom.toChatRoom(from: snapshot)
+                    else { return }
+                    if participant == ChatRoom.isParticipant(from: snapshot, userID: userID) {
+                        subscribe.onNext(chatRoom)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+
+    func participate(userID: String, chatRoomID: String) -> Observable<Void> {
+        return Observable.create { [unowned self] subscribe in
+            let childUpdates: [String: Any] = [
+                "/chatRoom/\(chatRoomID)/users/\(userID)": ["position": "participant"],
+                "/chatRooms/\(chatRoomID)/participants/\(userID)": true
+            ]
+            self.reference.updateChildValues(childUpdates)
+            subscribe.onNext(())
+            subscribe.onCompleted()
             return Disposables.create()
         }
     }

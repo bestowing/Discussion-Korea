@@ -38,6 +38,30 @@ final class ChatRoomFindViewController: BaseViewController {
         return collectionView
     }()
 
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        let label = UILabel()
+        label.text = "참여할 채팅방이 없어요"
+        label.font = .preferredBoldFont(forTextStyle: .body)
+        label.textColor = .systemGray
+        label.textAlignment = .center
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+        let subLabel = UILabel()
+        subLabel.text = "채팅방을 새로 만들어보세요"
+        subLabel.font = .preferredFont(forTextStyle: .caption1)
+        subLabel.textColor = .systemGray2
+        subLabel.textAlignment = .center
+        view.addSubview(subLabel)
+        subLabel.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        return view
+    }()
+
     private let disposeBag = DisposeBag()
 
     // MARK: - methods
@@ -52,6 +76,10 @@ final class ChatRoomFindViewController: BaseViewController {
     private func setSubViews() {
         self.navigationItem.leftBarButtonItem = self.exitButton
         self.view.addSubview(self.chatRoomsCollectionView)
+        self.chatRoomsCollectionView.addSubview(self.emptyView)
+        self.emptyView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         self.chatRoomsCollectionView.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -70,6 +98,10 @@ final class ChatRoomFindViewController: BaseViewController {
             findChatRoomTrigger: Observable.empty().asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.chatRoomItems.map { !$0.isEmpty }
+            .drive(self.emptyView.rx.isHidden)
+            .disposed(by: self.disposeBag)
 
         output.chatRoomItems.drive(self.chatRoomsCollectionView.rx.items) { collectionView, index, viewModel in
             let indexPath = IndexPath(item: index, section: 0)

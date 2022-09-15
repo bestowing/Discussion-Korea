@@ -43,9 +43,10 @@ final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
     func toChatRoomFind(_ userID: String) {
         guard let presentingViewController = presentingViewController
         else { return }
-        let navigator = DefaultChatRoomFindNavigator(
+        let navigator = ChatRoomFindNavigator(
             services: self.services,
-            presentedViewController: presentingViewController
+            presentedViewController: presentingViewController,
+            chatRoomListNavigator: self
         )
         navigator.toChatRoomFind(userID)
     }
