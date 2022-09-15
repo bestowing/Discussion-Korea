@@ -41,8 +41,8 @@ final class AddChatRoomViewController: BaseViewController {
         return button
     }()
 
-    private let chatRoomProfileImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let chatRoomProfileImageView: ChatRoomProfileImageView = {
+        let imageView = ChatRoomProfileImageView()
         imageView.setDefaultChatRoomProfileImage()
         imageView.tintColor = UIColor.white
         imageView.contentMode = .center
@@ -152,12 +152,8 @@ final class AddChatRoomViewController: BaseViewController {
         )
         let output = self.viewModel.transform(input: input)
 
-        output.profileImage.drive { [unowned self] url in
-            guard let url = url
-            else { return }
-            self.chatRoomProfileImageView.setImage(url)
-            self.chatRoomProfileImageView.contentMode = .scaleAspectFill
-        }.disposed(by: self.disposeBag)
+        output.profileImage.drive(self.chatRoomProfileImageView.rx.url)
+            .disposed(by: self.disposeBag)
 
         output.submitEnabled.drive(self.submitButton.rx.isEnabled)
             .disposed(by: self.disposeBag)

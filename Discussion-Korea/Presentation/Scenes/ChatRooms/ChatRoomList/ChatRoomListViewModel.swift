@@ -12,6 +12,7 @@ final class ChatRoomListViewModel: ViewModelType {
 
     // MARK: - properties
 
+    private let participant: Bool
     private let userID: String
     private let navigator: ChatRoomListNavigator
     private let chatRoomsUsecase: ChatRoomsUsecase
@@ -19,10 +20,12 @@ final class ChatRoomListViewModel: ViewModelType {
 
     // MARK: - init/deinit
 
-    init(userID: String,
+    init(participant: Bool,
+         userID: String,
          navigator: ChatRoomListNavigator,
          chatRoomsUsecase: ChatRoomsUsecase,
          userInfoUsecase: UserInfoUsecase) {
+        self.participant = participant
         self.userID = userID
         self.navigator = navigator
         self.chatRoomsUsecase = chatRoomsUsecase
@@ -37,17 +40,14 @@ final class ChatRoomListViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let addChatRoomEvent = input.createChatRoomTrigger
-            .map { [unowned self] _ in self.userID }
-            .do(onNext: self.navigator.toAddChatRoom)
-
         let chatRooms = input.trigger
             .flatMapFirst { [unowned self] in
-                self.chatRoomsUsecase.chatRooms()
+                self.chatRoomsUsecase.chatRooms(userID: self.userID, participant: self.participant)
                     .asDriverOnErrorJustComplete()
             }
 
         let chatRoomLatestChatContent = chatRooms
+            .filter { [unowned self] _ in self.participant }
             .flatMap { [unowned self] chatRoom in
                 self.chatRoomsUsecase.latestChat(chatRoomID: chatRoom.uid)
                     .asDriverOnErrorJustComplete()
@@ -85,6 +85,25 @@ final class ChatRoomListViewModel: ViewModelType {
                 return models
             }
 
+        let addChatRoomEvent = input.createChatRoomTrigger
+            .map { [unowned self] _ in self.userID }
+            .do(onNext: self.navigator.toAddChatRoom)
+            .mapToVoid()
+                
+        let findChatRoomEvent = input.findChatRoomTrigger
+            .map { [unowned self] _ in self.userID  }
+            .do(onNext: self.navigator.toChatRoomFind)
+            .mapToVoid()
+
+        let coverEvent = input.selection
+            .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) in
+                return chatRooms[indexPath.item].chatRoom
+            }
+            .filter { [unowned self] _ in self.participant == false }
+            .map { [unowned self] chatRoom in (self.userID, chatRoom) }
+            .do(onNext: self.navigator.toChatRoomCover)
+            .mapToVoid()
+
         let enterEvent = input.selection
             .withLatestFrom(chatRoomItems) { (indexPath, chatRooms) in
                 return chatRooms[indexPath.item].chatRoom
@@ -93,7 +112,18 @@ final class ChatRoomListViewModel: ViewModelType {
             .do(onNext: self.navigator.toChatRoom)
             .mapToVoid()
 
-        let events = Driver.of(enterEvent, addChatRoomEvent.mapToVoid())
+        let exitEvent = input.exitTrigger
+            .map { [unowned self] _ in self.userID }
+            .do(onNext: self.navigator.toChatRoomList)
+            .mapToVoid()
+
+        let events = Driver.of(
+            enterEvent,
+            coverEvent,
+            addChatRoomEvent,
+            findChatRoomEvent,
+            exitEvent
+        )
             .merge()
 
         return Output(chatRoomItems: chatRoomItemsWithUserInfos, events: events)
@@ -105,8 +135,10 @@ extension ChatRoomListViewModel {
 
     struct Input {
         let trigger: Driver<Void>
+        let exitTrigger: Driver<Void>
         let selection: Driver<IndexPath>
         let createChatRoomTrigger: Driver<Void>
+        let findChatRoomTrigger: Driver<Void>
     }
 
     struct Output {

@@ -7,8 +7,8 @@
 
 protocol ChatRoomCoverNavigator {
 
-    func toChatRoomCover()
+    func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom)
     func toChatRoom()
-    func toChatRoomList()
+    func toChatRoomFind()
 
 }

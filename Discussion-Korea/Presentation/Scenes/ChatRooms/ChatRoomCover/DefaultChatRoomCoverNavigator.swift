@@ -24,16 +24,28 @@ final class DefaultChatRoomCoverNavigator: BaseNavigator, ChatRoomCoverNavigator
 
     // MARK: - methods
 
-    func toChatRoomCover() {
-        
+    func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom) {
+        let viewController = ChatRoomCoverViewController()
+        viewController.viewModel = ChatRoomCoverViewModel(
+            uid: userID,
+            chatRoom: chatRoom,
+            navigator: self,
+            chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
+            userInfoUsecase: self.services.makeUserInfoUsecase()
+        )
+        let navigationController = UINavigationController(
+            rootViewController: viewController
+        )
+        navigationController.modalPresentationStyle = .fullScreen
+        self.presentedViewController.present(navigationController, animated: true)
     }
 
     func toChatRoom() {
         
     }
 
-    func toChatRoomList() {
-        
+    func toChatRoomFind() {
+        self.presentedViewController.dismiss(animated: true)
     }
 
 }

@@ -9,6 +9,8 @@ protocol ChatRoomListNavigator {
 
     func toChatRoomList(_ userID: String)
     func toChatRoom(_ userID: String, _ chatRoom: ChatRoom)
+    func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom)
     func toAddChatRoom(_ userID: String)
+    func toChatRoomFind(_ userID: String)
 
 }

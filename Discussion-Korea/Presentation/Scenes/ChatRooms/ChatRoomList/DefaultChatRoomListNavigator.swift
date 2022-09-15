@@ -29,6 +29,7 @@ final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
     func toChatRoomList(_ userID: String) {
         let chatRoomListViewController = ChatRoomListViewController()
         let chatRoomListViewModel = ChatRoomListViewModel(
+            participant: true,
             userID: userID,
             navigator: self,
             chatRoomsUsecase: self.services.makeChatRoomsUsecase(),
@@ -37,6 +38,16 @@ final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
         chatRoomListViewController.viewModel = chatRoomListViewModel
         self.navigationController.pushViewController(chatRoomListViewController, animated: true)
         self.presentingViewController = chatRoomListViewController
+    }
+
+    func toChatRoomFind(_ userID: String) {
+        guard let presentingViewController = presentingViewController
+        else { return }
+        let navigator = DefaultChatRoomFindNavigator(
+            services: self.services,
+            presentedViewController: presentingViewController
+        )
+        navigator.toChatRoomFind(userID)
     }
 
     func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {
@@ -56,5 +67,11 @@ final class DefaultChatRoomListNavigator: BaseNavigator, ChatRoomListNavigator {
         )
         addChatRoomNavigator.toAddChatRoom(userID)
     }
+
+}
+
+extension DefaultChatRoomListNavigator {
+
+    func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom) {}
 
 }

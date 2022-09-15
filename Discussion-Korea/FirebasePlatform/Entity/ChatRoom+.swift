@@ -25,4 +25,17 @@ extension ChatRoom {
         return chatRoom
     }
 
+    static func isParticipant(from snapshot: DataSnapshot, userID: String) -> Bool {
+        guard let dic = snapshot.value as? NSDictionary,
+              let adminUID = dic["adminUID"] as? String
+        else { return false }
+        if adminUID == userID {
+            return true
+        }
+        if let participants = dic["participants"] as? [String] {
+            return participants.contains(userID)
+        }
+        return false
+    }
+
 }

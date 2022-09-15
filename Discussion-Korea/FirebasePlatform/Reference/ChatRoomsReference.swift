@@ -24,13 +24,15 @@ final class ChatRoomsReference {
         print("🗑", self)
     }
 
-    func chatRooms() -> Observable<ChatRoom> {
+    func chatRooms(userID: String, participant: Bool) -> Observable<ChatRoom> {
         return Observable.create { [unowned self] subscribe in
             self.reference.child("chatRooms")
                 .observe(.childAdded) { snapshot in
                     guard let chatRoom = ChatRoom.toChatRoom(from: snapshot)
                     else { return }
-                    subscribe.onNext(chatRoom)
+                    if participant == ChatRoom.isParticipant(from: snapshot, userID: userID) {
+                        subscribe.onNext(chatRoom)
+                    }
             }
             return Disposables.create()
         }

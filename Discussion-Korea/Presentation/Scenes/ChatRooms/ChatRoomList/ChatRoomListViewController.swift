@@ -27,12 +27,44 @@ final class ChatRoomListViewController: BaseViewController {
         return label
     }()
 
+    private let findButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.image = UIImage(named: "findChat")
+        button.tintColor = .label
+        button.accessibilityLabel = "채팅방 탐색"
+        return button
+    }()
+
     private let addButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage(named: "addChat")
         button.tintColor = .label
         button.accessibilityLabel = "채팅방 추가"
         return button
+    }()
+
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        let label = UILabel()
+        label.text = "참여한 채팅방이 없어요"
+        label.font = .preferredBoldFont(forTextStyle: .body)
+        label.textColor = .systemGray
+        label.textAlignment = .center
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+        let subLabel = UILabel()
+        subLabel.text = "채팅방을 새로 만들거나 다른 채팅방에 참여해보세요"
+        subLabel.font = .preferredFont(forTextStyle: .caption1)
+        subLabel.textColor = .systemGray2
+        subLabel.textAlignment = .center
+        view.addSubview(subLabel)
+        subLabel.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        return view
     }()
 
     private lazy var chatRoomsCollectionView: UICollectionView = {
@@ -73,8 +105,12 @@ final class ChatRoomListViewController: BaseViewController {
         self.navigationItem.backBarButtonItem = self.backButton
         self.navigationItem.leftBarButtonItem = self.titleItem
         self.navigationItem.leftItemsSupplementBackButton = true
-        self.navigationItem.rightBarButtonItem = self.addButton
+        self.navigationItem.rightBarButtonItems = [self.addButton, self.findButton]
         self.view.addSubview(self.chatRoomsCollectionView)
+        self.chatRoomsCollectionView.addSubview(self.emptyView)
+        self.emptyView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         self.chatRoomsCollectionView.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -87,10 +123,16 @@ final class ChatRoomListViewController: BaseViewController {
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
+            exitTrigger: Observable.empty().asDriverOnErrorJustComplete(),
             selection: self.chatRoomsCollectionView.rx.itemSelected.asDriver(),
-            createChatRoomTrigger: self.addButton.rx.tap.asDriver()
+            createChatRoomTrigger: self.addButton.rx.tap.asDriver(),
+            findChatRoomTrigger: self.findButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
+
+        output.chatRoomItems.map { !$0.isEmpty }
+            .drive(self.emptyView.rx.isHidden)
+            .disposed(by: self.disposeBag)
 
         output.chatRoomItems.drive(self.chatRoomsCollectionView.rx.items) { collectionView, index, viewModel in
             let indexPath = IndexPath(item: index, section: 0)
