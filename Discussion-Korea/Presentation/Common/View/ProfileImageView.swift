@@ -9,15 +9,28 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-final class ProfileImageView: UIImageView {
+class CircleImageView: UIImageView {
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.layer.frame.height * 0.5
+    }
+
+}
+
+final class ProfileImageView: CircleImageView {
 
     func setDefaultProfileImage() {
         self.image = UIImage(systemName: "person.fill")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.cornerRadius = self.layer.frame.height * 0.5
+}
+
+final class ChatRoomProfileImageView: CircleImageView {
+
+    func setDefaultChatRoomProfileImage() {
+        self.contentMode = .center
+        self.image = UIImage(systemName: "bubble.left.and.bubble.right.fill")
     }
 
 }
@@ -30,6 +43,21 @@ extension Reactive where Base: ProfileImageView {
                 imageView.setDefaultProfileImage()
                 return
             }
+            imageView.setImage(url)
+        }
+    }
+
+}
+
+extension Reactive where Base: ChatRoomProfileImageView {
+
+    var url: Binder<URL?> {
+        return Binder(self.base) { imageView, url in
+            guard let url = url else {
+                imageView.setDefaultChatRoomProfileImage()
+                return
+            }
+            imageView.contentMode = .scaleAspectFill
             imageView.setImage(url)
         }
     }

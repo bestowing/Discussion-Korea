@@ -12,7 +12,7 @@ final class ReportViewModel: ViewModelType {
     // MARK: - properties
 
     private let userID: String
-    private let reportedUserInfo: UserInfo
+    private let reportedUID: String
 
     private let navigator: ReportNavigator
 
@@ -21,11 +21,11 @@ final class ReportViewModel: ViewModelType {
     // MARK: - init/deinit
 
     init(userID: String,
-         reportedUserInfo: UserInfo,
+         reportedUID: String,
          navigator: ReportNavigator,
          userInfoUsecase: UserInfoUsecase) {
         self.userID = userID
-        self.reportedUserInfo = reportedUserInfo
+        self.reportedUID = reportedUID
         self.navigator = navigator
         self.userInfoUsecase = userInfoUsecase
     }
@@ -41,7 +41,7 @@ final class ReportViewModel: ViewModelType {
             .withLatestFrom(input.reportReason)
             .flatMapLatest { [unowned self] reason in
                 self.userInfoUsecase.report(
-                    from: self.userID, to: self.reportedUserInfo.uid, reason: reason
+                    from: self.userID, to: self.reportedUID, reason: reason
                 )
                 .asDriverOnErrorJustComplete()
             }

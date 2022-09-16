@@ -16,11 +16,14 @@ final class ChatCollectionView: UICollectionView {
         case none
     }
 
+    // MARK: - properties
+
     private var prevFrameHeight: CGFloat?
 
+    // MARK: - methods
+
     func bottom(margin: CGFloat = 20.0) -> Bool {
-        let result = self.contentOffset.y + self.frame.height + margin + 10.0 > self.contentSize.height
-        return result
+        return self.contentOffset.y + self.frame.height + margin + 10.0 > self.contentSize.height
     }
 
     func position() -> Observable<Position> {
@@ -41,6 +44,11 @@ final class ChatCollectionView: UICollectionView {
         return self.contentSize.height >= self.frame.height + self.contentOffset.y
     }
 
+    func scrollToItem(at indexPath: IndexPath) {
+        self.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        self.contentOffset.y += (self.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.bottom ?? 0.0
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         guard self.expand() else { return }
@@ -49,6 +57,20 @@ final class ChatCollectionView: UICollectionView {
             self.contentOffset.y += prevFrameHeight - self.frame.height
         }
         self.prevFrameHeight = self.frame.height
+    }
+
+}
+
+extension Reactive where Base: ChatCollectionView {
+
+    var toBottom: Binder<Void> {
+        return Binder(self.base) { chatCollectionView, _ in
+            let section = 0
+            let items = chatCollectionView.numberOfItems(inSection: section)
+            let indexPath = IndexPath(item: items - 1, section: section)
+            chatCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+            chatCollectionView.contentOffset.y += (chatCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.bottom ?? 0
+        }
     }
 
 }

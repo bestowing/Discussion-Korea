@@ -75,7 +75,7 @@ final class BotChatCell: ChatCell {
             make.leading.greaterThanOrEqualToSuperview().offset(40)
             make.trailing.lessThanOrEqualToSuperview().offset(-40)
             make.top.equalTo(stackView.snp.bottom).offset(10)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(7)
         }
     }
 

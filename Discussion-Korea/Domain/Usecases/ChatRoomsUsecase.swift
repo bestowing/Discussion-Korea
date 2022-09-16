@@ -9,7 +9,8 @@ import RxSwift
 
 protocol ChatRoomsUsecase {
 
-    func chatRooms() -> Observable<ChatRoom>
+    func chatRooms(userID: String, participant: Bool) -> Observable<ChatRoom>
+    func participate(userID: String, chatRoomID: String) -> Observable<Void>
     func create(chatRoom: ChatRoom) -> Observable<Void>
     func latestChat(chatRoomID: String) -> Observable<Chat>
     func numberOfUsers(chatRoomID: String) -> Observable<UInt>

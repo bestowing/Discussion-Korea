@@ -49,7 +49,7 @@ final class SerialOtherChatCell: ChatCell {
             make.leading.equalToSuperview().offset(55)
             make.trailing.lessThanOrEqualToSuperview().offset(-80)
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(7)
         }
         self.contentLabel.snp.contentHuggingHorizontalPriority = 252
         self.timeLabel.snp.contentCompressionResistanceHorizontalPriority = 751

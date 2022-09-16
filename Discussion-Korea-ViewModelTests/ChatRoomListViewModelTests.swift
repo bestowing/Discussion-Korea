@@ -31,6 +31,7 @@ final class ChatRoomListViewModelTests: XCTestCase {
         self.chatRoomUsecase = MockChatRoomUsecase()
         self.userInfoUsecase = MockUserInfoUsecase()
         self.viewModel = ChatRoomListViewModel(
+            participant: true,
             userID: self.userID,
             navigator: self.mockNavigator,
             chatRoomsUsecase: self.chatRoomUsecase,
@@ -55,6 +56,8 @@ final class ChatRoomListViewModelTests: XCTestCase {
 extension ChatRoomListViewModelTests {
 
     final class MockChatRoomListNavigator: ChatRoomListNavigator {
+        func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom) {}
+        func toChatRoomFind(_ userID: String) {}
         func toChatRoomList(_ userID: String) {}
         func toChatRoom(_ uid: String, _ chatRoom: ChatRoom) {}
         func toAddChatRoom(_ userID: String) {}

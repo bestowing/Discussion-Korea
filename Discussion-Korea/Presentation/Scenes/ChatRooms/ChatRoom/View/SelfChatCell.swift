@@ -49,7 +49,7 @@ final class SelfChatCell: ChatCell {
             make.leading.greaterThanOrEqualToSuperview().offset(80)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(7)
         }
         self.timeLabel.snp.makeConstraints { make in
             make.trailing.equalTo(self.contentLabel.snp.leading).offset(-8)

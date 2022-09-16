@@ -1,70 +1,25 @@
 //
-//  ChatRoomListViewController.swift
+//  ChatRoomFindViewController.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/05/19.
+//  Created by 이청수 on 2022/09/15.
 //
 
-import SnapKit
-import UIKit
 import RxSwift
+import UIKit
 
-final class ChatRoomListViewController: BaseViewController {
+final class ChatRoomFindViewController: BaseViewController {
 
     // MARK: - properties
 
     var viewModel: ChatRoomListViewModel!
 
-    private let titleItem: UIBarButtonItem = {
-        let label = UIBarButtonItem()
-        label.title = "채팅"
-        label.isEnabled = false
-        label.setTitleTextAttributes(
-            [.font: UIFont.boldSystemFont(ofSize: 25.0),
-             NSAttributedString.Key.foregroundColor: UIColor.label],
-            for: .disabled
-        )
-        return label
-    }()
-
-    private let findButton: UIBarButtonItem = {
+    private let exitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(named: "findChat")
+        button.image = UIImage(systemName: "xmark")
         button.tintColor = .label
-        button.accessibilityLabel = "채팅방 탐색"
+        button.accessibilityLabel = "닫기"
         return button
-    }()
-
-    private let addButton: UIBarButtonItem = {
-        let button = UIBarButtonItem()
-        button.image = UIImage(named: "addChat")
-        button.tintColor = .label
-        button.accessibilityLabel = "채팅방 추가"
-        return button
-    }()
-
-    private lazy var emptyView: UIView = {
-        let view = UIView()
-        let label = UILabel()
-        label.text = "참여한 채팅방이 없어요"
-        label.font = .preferredBoldFont(forTextStyle: .body)
-        label.textColor = .systemGray
-        label.textAlignment = .center
-        view.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-        }
-        let subLabel = UILabel()
-        subLabel.text = "채팅방을 새로 만들거나 다른 채팅방에 참여해보세요"
-        subLabel.font = .preferredFont(forTextStyle: .caption1)
-        subLabel.textColor = .systemGray2
-        subLabel.textAlignment = .center
-        view.addSubview(subLabel)
-        subLabel.snp.makeConstraints { make in
-            make.top.equalTo(label.snp.bottom).offset(5)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        return view
     }()
 
     private lazy var chatRoomsCollectionView: UICollectionView = {
@@ -83,12 +38,28 @@ final class ChatRoomListViewController: BaseViewController {
         return collectionView
     }()
 
-    private let backButton: UIBarButtonItem = {
-        let button = UIBarButtonItem()
-        button.title = ""
-        button.tintColor = .label
-        button.style = .plain
-        return button
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        let label = UILabel()
+        label.text = "참여할 채팅방이 없어요"
+        label.font = .preferredBoldFont(forTextStyle: .body)
+        label.textColor = .systemGray
+        label.textAlignment = .center
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+        let subLabel = UILabel()
+        subLabel.text = "채팅방을 새로 만들어보세요"
+        subLabel.font = .preferredFont(forTextStyle: .caption1)
+        subLabel.textColor = .systemGray2
+        subLabel.textAlignment = .center
+        view.addSubview(subLabel)
+        subLabel.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        return view
     }()
 
     private let disposeBag = DisposeBag()
@@ -97,15 +68,13 @@ final class ChatRoomListViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "채팅방 찾기"
         self.setSubViews()
         self.bindViewModel()
     }
 
     private func setSubViews() {
-        self.navigationItem.backBarButtonItem = self.backButton
-        self.navigationItem.leftBarButtonItem = self.titleItem
-        self.navigationItem.leftItemsSupplementBackButton = true
-        self.navigationItem.rightBarButtonItems = [self.addButton, self.findButton]
+        self.navigationItem.leftBarButtonItem = self.exitButton
         self.view.addSubview(self.chatRoomsCollectionView)
         self.chatRoomsCollectionView.addSubview(self.emptyView)
         self.emptyView.snp.makeConstraints { make in
@@ -123,10 +92,10 @@ final class ChatRoomListViewController: BaseViewController {
             trigger: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
-            exitTrigger: Observable.empty().asDriverOnErrorJustComplete(),
+            exitTrigger: self.exitButton.rx.tap.asDriver(),
             selection: self.chatRoomsCollectionView.rx.itemSelected.asDriver(),
-            createChatRoomTrigger: self.addButton.rx.tap.asDriver(),
-            findChatRoomTrigger: self.findButton.rx.tap.asDriver()
+            createChatRoomTrigger: Observable.empty().asDriverOnErrorJustComplete(),
+            findChatRoomTrigger: Observable.empty().asDriverOnErrorJustComplete()
         )
         let output = self.viewModel.transform(input: input)
 
@@ -142,8 +111,8 @@ final class ChatRoomListViewController: BaseViewController {
             return cell
         }.disposed(by: self.disposeBag)
 
-        output.events
-            .drive().disposed(by: self.disposeBag)
+        output.events.drive()
+            .disposed(by: self.disposeBag)
     }
 
 }

@@ -60,11 +60,7 @@ final class ReadProfileViewModel: ViewModelType {
         }
 
         let reportEvent = input.reportTrigger
-            .withLatestFrom(userInfo)
-            .compactMap { [unowned self] userInfo in
-                guard let userInfo = userInfo else { return nil }
-                return (self.selfID, userInfo)
-            }
+            .map { [unowned self] _ in (self.selfID, self.userID) }
             .do(onNext: self.navigator.toReport)
             .mapToVoid()
 

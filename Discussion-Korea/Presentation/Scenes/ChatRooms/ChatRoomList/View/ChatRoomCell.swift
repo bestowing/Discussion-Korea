@@ -12,12 +12,11 @@ final class ChatRoomCell: UICollectionViewCell {
 
     // MARK: - properties
 
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+    private let profileImageView: ChatRoomProfileImageView = {
+        let imageView = ChatRoomProfileImageView()
         imageView.tintColor = .accentColor
-        imageView.layer.cornerRadius = 25
         imageView.layer.masksToBounds = true
+        imageView.backgroundColor = .systemGray6
         return imageView
     }()
 
@@ -107,8 +106,10 @@ final class ChatRoomCell: UICollectionViewCell {
 
     func bind(_ viewModel: ChatRoomItemViewModel) {
         if let url = viewModel.chatRoom.profileURL {
+            self.profileImageView.contentMode = .scaleAspectFill
             self.profileImageView.setImage(url)
         } else {
+            self.profileImageView.contentMode = .center
             self.profileImageView.setDefaultChatRoomProfileImage()
         }
         self.titleLabel.text = viewModel.title

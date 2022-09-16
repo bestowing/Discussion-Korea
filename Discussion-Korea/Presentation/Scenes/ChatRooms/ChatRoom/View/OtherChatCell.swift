@@ -68,7 +68,7 @@ class OtherChatCell: ChatCell {
         self.profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(35)
             make.leading.equalToSuperview().offset(10)
-            make.top.equalToSuperview().offset(8)
+            make.top.equalToSuperview().offset(10)
         }
         self.nicknameLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.profileImageView.snp.trailing).offset(8)
@@ -79,7 +79,7 @@ class OtherChatCell: ChatCell {
             make.leading.equalTo(self.nicknameLabel.snp.leading)
             make.trailing.lessThanOrEqualToSuperview().offset(-80)
             make.top.equalTo(self.nicknameLabel.snp.bottom).offset(10)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(7)
         }
         self.contentLabel.snp.contentHuggingHorizontalPriority = 252
         self.timeLabel.snp.makeConstraints { make in

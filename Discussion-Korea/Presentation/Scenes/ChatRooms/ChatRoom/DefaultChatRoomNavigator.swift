@@ -43,8 +43,8 @@ final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
             discussionUsecase: self.services.makeDiscussionUsecase()
         )
         chatRoomViewController.viewModel = chatRoomViewModel
+        chatRoomViewController.hidesBottomBarWhenPushed = true
         self.navigationController.pushViewController(chatRoomViewController, animated: true)
-        self.navigationController.tabBarController?.tabBar.isHidden = true
         self.presentingViewController = chatRoomViewController
     }
 
@@ -168,14 +168,6 @@ final class DefaultChatRoomNavigator: BaseNavigator, ChatRoomNavigator {
         let confirm = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirm)
         self.presentingViewController?.present(alert, animated: true)
-    }
-
-    func appear() {
-        self.navigationController.tabBarController?.tabBar.isHidden = true
-    }
-
-    func disappear() {
-        self.navigationController.tabBarController?.tabBar.isHidden = false
     }
 
 }

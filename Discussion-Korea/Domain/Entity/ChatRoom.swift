@@ -15,3 +15,11 @@ struct ChatRoom {
     var profileURL: URL?
 
 }
+
+extension ChatRoom: Equatable {
+
+    static func == (lhs: ChatRoom, rhs: ChatRoom) -> Bool {
+        lhs.uid == rhs.uid
+    }
+
+}

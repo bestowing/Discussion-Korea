@@ -34,9 +34,9 @@ final class DefaultOpenSourceNavigator: OpenSourceNavigator {
     func toOpenSource() {
         let openSourceViewController = SettingViewController()
         openSourceViewController.contents = [
-            "Firebase", "Kingfisher", "RxKeyboard", "RxSwift", "SideMenu", "SnapKit"
+            "Firebase", "Kingfisher", "RxDataSources", "RxKeyboard", "RxSwift", "SideMenu", "SnapKit"
         ]
-        openSourceViewController.selected = [toFirebase, toKingfisher, toRxKeyboard, toRxSwift, toSideMenu, toSnapKit]
+        openSourceViewController.selected = [toFirebase, toKingfisher, toRxDataSources, toRxKeyboard, toRxSwift, toSideMenu, toSnapKit]
         openSourceViewController.title = "오픈소스 라이선스"
         self.navigationController.pushViewController(openSourceViewController, animated: true)
     }
@@ -47,6 +47,10 @@ final class DefaultOpenSourceNavigator: OpenSourceNavigator {
 
     private func toKingfisher() {
         self.openURL(with: "https://github.com/onevcat/Kingfisher/blob/master/LICENSE")
+    }
+
+    private func toRxDataSources() {
+        self.openURL(with: "https://github.com/RxSwiftCommunity/RxDataSources/blob/main/LICENSE.md")
     }
 
     private func toRxKeyboard() {

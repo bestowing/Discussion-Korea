@@ -1,13 +1,13 @@
 //
-//  OtherProfileNavigator.swift
+//  DefaultChatRoomCoverNavigator.swift
 //  Discussion-Korea
 //
-//  Created by 이청수 on 2022/09/10.
+//  Created by 이청수 on 2022/09/13.
 //
 
 import UIKit
 
-final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
+final class DefaultChatRoomCoverNavigator: BaseNavigator, ChatRoomCoverNavigator {
 
     // MARK: - properties
 
@@ -15,24 +15,27 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
     private let presentedViewController: UIViewController
 
     private weak var navigationController: UINavigationController?
+    private weak var chatRoomFindNavigator: ChatRoomFindNavigator?
 
     // MARK: - init/deinit
 
     init(services: UsecaseProvider,
-         presentedViewController: UIViewController) {
+         presentedViewController: UIViewController,
+         chatRoomFindNavigator: ChatRoomFindNavigator) {
         self.services = services
         self.presentedViewController = presentedViewController
+        self.chatRoomFindNavigator = chatRoomFindNavigator
     }
 
     // MARK: - methods
 
-    func toReadProfile(_ selfID: String, _ userID: String) {
-        let viewController = OtherProfileViewController()
-        viewController.viewModel = ReadProfileViewModel(
-            selfID: selfID,
-            userID: userID,
+    func toChatRoomCover(_ userID: String, _ chatRoom: ChatRoom) {
+        let viewController = ChatRoomCoverViewController()
+        viewController.viewModel = ChatRoomCoverViewModel(
+            uid: userID,
+            chatRoom: chatRoom,
             navigator: self,
-            userInfoUsecase: self.services.makeUserInfoUsecase()
+            chatRoomsUsecase: self.services.makeChatRoomsUsecase()
         )
         let navigationController = UINavigationController(
             rootViewController: viewController
@@ -42,7 +45,13 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
         self.navigationController = navigationController
     }
 
-    func dismiss() {
+    func toChatRoom(_ userID: String, _ chatRoom: ChatRoom) {
+        self.presentedViewController.dismiss(animated: true) {
+            self.chatRoomFindNavigator?.toChatRoom(userID, chatRoom)
+        }
+    }
+
+    func toChatRoomFind() {
         self.presentedViewController.dismiss(animated: true)
     }
 
@@ -54,12 +63,5 @@ final class OtherProfileNavigator: BaseNavigator, ReadProfileNavigator {
         )
         navigator.toReport(userID, reportedUID)
     }
-
-}
-
-extension OtherProfileNavigator {
-
-    func toSetting() {}
-    func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?) {}
 
 }

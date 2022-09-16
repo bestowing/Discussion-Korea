@@ -7,7 +7,8 @@
 
 protocol ReportNavigator {
 
-    func toReport(_ userID: String, _ reportedUserInfo: UserInfo)
+    func toReport(_ userID: String, _ reportedUID: String)
+    func toChatRoomCover()
     func toChatRoomSideMenu()
 
 }

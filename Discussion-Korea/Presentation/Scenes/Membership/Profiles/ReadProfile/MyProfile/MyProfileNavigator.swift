@@ -62,6 +62,6 @@ final class MyProfileNavigator: BaseNavigator, ReadProfileNavigator {
 extension MyProfileNavigator {
 
     func dismiss() {}
-    func toReport(_ userID: String, _ reportedUserInfo: UserInfo) {}
+    func toReport(_ userID: String, _ reportedUID: String) {}
 
 }
