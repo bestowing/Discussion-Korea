@@ -92,8 +92,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -137,8 +136,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -187,8 +185,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -238,8 +235,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -293,8 +289,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -347,8 +342,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: contentTestableDriver,
-            disappear: Driver.just(())
+            content: contentTestableDriver
         )
         let output = self.viewModel.transform(input: input)
 
@@ -399,8 +393,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
-            disappear: Driver.just(())
+            content: Driver.just("")
         )
         let output = self.viewModel.transform(input: input)
 
@@ -451,8 +444,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
-            disappear: Driver.just(())
+            content: Driver.just("")
         )
         let output = self.viewModel.transform(input: input)
 
@@ -507,8 +499,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
-            disappear: Driver.just(())
+            content: Driver.just("")
         )
         let output = self.viewModel.transform(input: input)
 
@@ -563,8 +554,7 @@ final class ChatRoomViewModelTests: XCTestCase {
             profileSelection: Driver.empty(),
             send: Driver.just(()),
             menu: Driver.just(()),
-            content: Driver.just(""),
-            disappear: Driver.just(())
+            content: Driver.just("")
         )
         let output = self.viewModel.transform(input: input)
 

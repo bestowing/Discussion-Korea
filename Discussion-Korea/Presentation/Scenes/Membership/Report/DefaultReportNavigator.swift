@@ -23,11 +23,11 @@ final class DefaultReportNavigator: BaseNavigator, ReportNavigator {
 
     // MARK: - methods
 
-    func toReport(_ userID: String, _ reportedUserInfo: UserInfo) {
+    func toReport(_ userID: String, _ reportedUID: String) {
         let viewController = ReportViewController()
         viewController.viewModel = ReportViewModel(
             userID: userID,
-            reportedUserInfo: reportedUserInfo,
+            reportedUID: reportedUID,
             navigator: self,
             userInfoUsecase: self.services.makeUserInfoUsecase()
         )
@@ -35,6 +35,16 @@ final class DefaultReportNavigator: BaseNavigator, ReportNavigator {
     }
 
     func toChatRoomSideMenu() {
+        let alert = UIAlertController(title: "결과",
+                                      message: "신고가 접수되었습니다.",
+                                      preferredStyle: UIAlertController.Style.alert)
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        self.navigationController.popToRootViewController(animated: true)
+        self.navigationController.topViewController?.present(alert, animated: true)
+    }
+
+    func toChatRoomCover() {
         let alert = UIAlertController(title: "결과",
                                       message: "신고가 접수되었습니다.",
                                       preferredStyle: UIAlertController.Style.alert)

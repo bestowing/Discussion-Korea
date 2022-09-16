@@ -56,6 +56,7 @@ final class ChatPreview: UIView {
     }
 
     private func setSubviews() {
+        self.isHidden = true
         self.backgroundColor = UIColor.systemBackground
         self.layer.cornerRadius = 8
         self.layer.shadowOpacity = 0.15
@@ -66,9 +67,7 @@ final class ChatPreview: UIView {
         self.addSubview(self.contentLabel)
         self.addSubview(self.downButton)
         self.profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(5)
-            make.top.equalToSuperview().offset(5)
-            make.bottom.equalToSuperview().offset(-5)
+            make.top.bottom.leading.equalToSuperview().inset(10)
             make.size.equalTo(25)
         }
         self.nicknameLabel.snp.contentHuggingHorizontalPriority = 755
@@ -84,7 +83,7 @@ final class ChatPreview: UIView {
         self.downButton.snp.contentHuggingHorizontalPriority = 755
         self.downButton.snp.makeConstraints { make in
             make.leading.equalTo(self.contentLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-5)
+            make.trailing.equalToSuperview().offset(-10)
             make.centerY.equalTo(self.profileImageView.snp.centerY)
             make.size.equalTo(15)
         }

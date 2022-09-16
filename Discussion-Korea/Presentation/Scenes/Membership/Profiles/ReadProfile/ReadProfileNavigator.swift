@@ -12,7 +12,7 @@ protocol ReadProfileNavigator {
     func toReadProfile(_ selfID: String, _ userID: String)
     func toSetting()
     func dismiss()
-    func toReport(_ userID: String, _ reportedUserInfo: UserInfo)
+    func toReport(_ userID: String, _ reportedUID: String)
     func toProfileEdit(_ userID: String, _ nickname: String?, profileURL: URL?)
 
 }

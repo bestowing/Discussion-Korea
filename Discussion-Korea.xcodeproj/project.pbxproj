@@ -15,6 +15,13 @@
 		3F0006C828CD0D39006811C8 /* DefaultReportNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */; };
 		3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0006C928CD0D98006811C8 /* ReportViewController.swift */; };
 		3F053DA828A9DD25004EFBEF /* ResizableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */; };
+		3F29695628D04F5E00C73EDE /* ChatRoomCoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */; };
+		3F29695828D04F7300C73EDE /* ChatRoomCoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */; };
+		3F29695A28D04FA200C73EDE /* ChatRoomCoverNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */; };
+		3F29695C28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */; };
+		3F29695E28D1A22500C73EDE /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29695D28D1A22500C73EDE /* Action.swift */; };
+		3F29696728D2E4F800C73EDE /* ChatRoomFindNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29696628D2E4F800C73EDE /* ChatRoomFindNavigator.swift */; };
+		3F29696B28D2E55B00C73EDE /* ChatRoomFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29696A28D2E55B00C73EDE /* ChatRoomFindViewController.swift */; };
 		3F37B3792820747600DB18B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B3772820747600DB18B7 /* LaunchScreen.storyboard */; };
 		3F37B390282075AF00DB18B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F37B38F282075AF00DB18B7 /* Assets.xcassets */; };
 		3F37B396282075E400DB18B7 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B394282075E400DB18B7 /* ViewModelType.swift */; };
@@ -144,7 +151,6 @@
 		3FAAB6CF28C1F8F600AA32ED /* LawDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */; };
 		3FAAB6D128C1F94A00AA32ED /* LawDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */; };
 		3FAAB6D428C2DBF500AA32ED /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3FAAB6D328C2DBF500AA32ED /* RxDataSources */; };
-		3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */; };
 		3FAAB6DA28C6033400AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
 		3FAAB6DC28C6034500AA32ED /* ChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */; };
 		3FAAB6DE28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */; };
@@ -268,6 +274,13 @@
 		3F0006C728CD0D39006811C8 /* DefaultReportNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultReportNavigator.swift; sourceTree = "<group>"; };
 		3F0006C928CD0D98006811C8 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		3F053DA728A9DD25004EFBEF /* ResizableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableLabel.swift; sourceTree = "<group>"; };
+		3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverViewController.swift; sourceTree = "<group>"; };
+		3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverViewModel.swift; sourceTree = "<group>"; };
+		3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCoverNavigator.swift; sourceTree = "<group>"; };
+		3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatRoomCoverNavigator.swift; sourceTree = "<group>"; };
+		3F29695D28D1A22500C73EDE /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		3F29696628D2E4F800C73EDE /* ChatRoomFindNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomFindNavigator.swift; sourceTree = "<group>"; };
+		3F29696A28D2E55B00C73EDE /* ChatRoomFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomFindViewController.swift; sourceTree = "<group>"; };
 		3F37B3692820747500DB18B7 /* Discussion-Korea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Discussion-Korea.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F37B3782820747600DB18B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F37B38B2820759D00DB18B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -379,7 +392,6 @@
 		3FAAB6CC28C1F7E300AA32ED /* DefaultLawDetailNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLawDetailNavigator.swift; sourceTree = "<group>"; };
 		3FAAB6CE28C1F8F600AA32ED /* LawDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewController.swift; sourceTree = "<group>"; };
 		3FAAB6D028C1F94A00AA32ED /* LawDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawDetailViewModel.swift; sourceTree = "<group>"; };
-		3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		3FAAB6D928C6033400AA32ED /* ChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemViewModelFactory.swift; sourceTree = "<group>"; };
 		3FAAB6DD28C6036500AA32ED /* DefaultChatItemViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChatItemViewModelFactory.swift; sourceTree = "<group>"; };
 		3FAAB6E028C653B600AA32ED /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -518,6 +530,26 @@
 			path = Report;
 			sourceTree = "<group>";
 		};
+		3F29695428D04F0E00C73EDE /* ChatRoomCover */ = {
+			isa = PBXGroup;
+			children = (
+				3F29695928D04FA200C73EDE /* ChatRoomCoverNavigator.swift */,
+				3F29695528D04F5E00C73EDE /* ChatRoomCoverViewController.swift */,
+				3F29695728D04F7300C73EDE /* ChatRoomCoverViewModel.swift */,
+				3F29695B28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift */,
+			);
+			path = ChatRoomCover;
+			sourceTree = "<group>";
+		};
+		3F29696328D2E4AD00C73EDE /* ChatRoomFind */ = {
+			isa = PBXGroup;
+			children = (
+				3F29696A28D2E55B00C73EDE /* ChatRoomFindViewController.swift */,
+				3F29696628D2E4F800C73EDE /* ChatRoomFindNavigator.swift */,
+			);
+			path = ChatRoomFind;
+			sourceTree = "<group>";
+		};
 		3F37B3602820747500DB18B7 = {
 			isa = PBXGroup;
 			children = (
@@ -621,6 +653,7 @@
 			children = (
 				3FAAB70228C72A8600AA32ED /* Homes */,
 				3FAAB70128C72A3E00AA32ED /* Discussions */,
+				3F689E8028B7355700C1D072 /* Chart */,
 				3FAAB70028C729A600AA32ED /* ChatRooms */,
 				3FAAB6FF28C7298E00AA32ED /* Membership */,
 			);
@@ -643,6 +676,7 @@
 			children = (
 				3FAAB6DB28C6033800AA32ED /* ItemViewModel */,
 				3F37B3A62820765300DB18B7 /* View */,
+				3F29695D28D1A22500C73EDE /* Action.swift */,
 				3F37B39E2820765100DB18B7 /* ChatRoomNavigator.swift */,
 				3F37B3A12820765100DB18B7 /* ChatRoomViewController.swift */,
 				3F37B39F2820765100DB18B7 /* ChatRoomViewModel.swift */,
@@ -669,7 +703,6 @@
 				3F95BC94284361CF008DF2D2 /* BotChatCell.swift */,
 				3F37B3A82820765900DB18B7 /* ChatCell.swift */,
 				3F646F3828CB341900434BC6 /* ChatCollectionView.swift */,
-				3FAAB6D528C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift */,
 				3FBDBC67288C7B2800A09BF4 /* ChatInputView.swift */,
 				3F99EA3E287BD651000ACDA6 /* ChatPreview.swift */,
 				3FBDBC462887E00B00A09BF4 /* LiveChatView.swift */,
@@ -1002,9 +1035,10 @@
 			children = (
 				3F91042C283F6B1500446239 /* AddChatRoom */,
 				3F37B39C2820763B00DB18B7 /* ChatRoom */,
+				3F29695428D04F0E00C73EDE /* ChatRoomCover */,
+				3F29696328D2E4AD00C73EDE /* ChatRoomFind */,
 				3F66969E2835BF5B0077E5B3 /* ChatRoomList */,
 				3FB35784282406AB00F27C77 /* ChatRoomSideMenu */,
-				3F689E8028B7355700C1D072 /* Chart */,
 			);
 			path = ChatRooms;
 			sourceTree = "<group>";
@@ -1303,6 +1337,7 @@
 				3F689EA028B778FF00C1D072 /* DefaultGuideNavigator.swift in Sources */,
 				3F0006CA28CD0D98006811C8 /* ReportViewController.swift in Sources */,
 				3FBDBC68288C7B2800A09BF4 /* ChatInputView.swift in Sources */,
+				3F29695C28D04FF900C73EDE /* DefaultChatRoomCoverNavigator.swift in Sources */,
 				3F910432283F6F5600446239 /* AddChatRoomViewController.swift in Sources */,
 				3F37B3B52820766400DB18B7 /* HomeViewModel.swift in Sources */,
 				3F646F2C28CA466C00434BC6 /* DefaultSetDiscussionDetailNavigator.swift in Sources */,
@@ -1337,7 +1372,6 @@
 				3F0006C628CD0CF7006811C8 /* ReportNavigator.swift in Sources */,
 				3F37B3C62820773600DB18B7 /* UserInfo.swift in Sources */,
 				3F37B3C12820772A00DB18B7 /* FirebaseChatsUsecase.swift in Sources */,
-				3FAAB6D628C33D1800AA32ED /* ChatCollectionViewFlowLayout.swift in Sources */,
 				3F689E8F28B7466300C1D072 /* HomeMenuButton.swift in Sources */,
 				3FBDBC0E2886E37800A09BF4 /* DefaultChatRoomScheduleNavigator.swift in Sources */,
 				3F37B3EA28207D0200DB18B7 /* ReferenceProvider.swift in Sources */,
@@ -1389,6 +1423,7 @@
 				3F37B3A52820765100DB18B7 /* ChatRoomViewController.swift in Sources */,
 				3F37B39A2820762D00DB18B7 /* Observable+.swift in Sources */,
 				3F689EA628B77A3F00C1D072 /* LawViewModel.swift in Sources */,
+				3F29695E28D1A22500C73EDE /* Action.swift in Sources */,
 				3FAAB6A428BEC0FF00AA32ED /* GuideCell.swift in Sources */,
 				3F646F3228CA5A2F00434BC6 /* IndependentBuilderUsecase.swift in Sources */,
 				3FAAB6AC28BF1E6F00AA32ED /* DiscussionReference.swift in Sources */,
@@ -1398,6 +1433,7 @@
 				3FAAB71328C7A88E00AA32ED /* SetProfileNavigator.swift in Sources */,
 				3F6696AE283623A80077E5B3 /* ChatRoom.swift in Sources */,
 				3F6696B02836260C0077E5B3 /* FirebaseChatRoomsUsecase.swift in Sources */,
+				3F29695628D04F5E00C73EDE /* ChatRoomCoverViewController.swift in Sources */,
 				3FAAB70B28C7A4F800AA32ED /* SetProfileViewController.swift in Sources */,
 				3F6696A62835C12B0077E5B3 /* SettingViewController.swift in Sources */,
 				3FAAB69128BEA9ED00AA32ED /* LawItemViewModel.swift in Sources */,
@@ -1425,6 +1461,7 @@
 				3F0006BF28CCD8E7006811C8 /* OtherProfileViewController.swift in Sources */,
 				3F37B3CC2820773C00DB18B7 /* ChatsUsecase.swift in Sources */,
 				3F37B3B42820766400DB18B7 /* HomeViewController.swift in Sources */,
+				3F29696728D2E4F800C73EDE /* ChatRoomFindNavigator.swift in Sources */,
 				3FAAB6BB28C0868700AA32ED /* ReadProfileViewModel.swift in Sources */,
 				3FAAB6A128BEB72700AA32ED /* Guide.swift in Sources */,
 				3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */,
@@ -1437,7 +1474,9 @@
 				3F910439283FB34300446239 /* EditProfileViewController.swift in Sources */,
 				3F646F0E28C7B9D000434BC6 /* FormResult.swift in Sources */,
 				3FAAB69928BEB44F00AA32ED /* GuideViewModel.swift in Sources */,
+				3F29696B28D2E55B00C73EDE /* ChatRoomFindViewController.swift in Sources */,
 				3FAAB68C28BE9BC400AA32ED /* ImagePickerDelegate.swift in Sources */,
+				3F29695828D04F7300C73EDE /* ChatRoomCoverViewModel.swift in Sources */,
 				3F9104442840DC5700446239 /* ActivityTracker.swift in Sources */,
 				3F646F3928CB341900434BC6 /* ChatCollectionView.swift in Sources */,
 				3F0006C428CD0C54006811C8 /* ReportViewModel.swift in Sources */,
@@ -1448,6 +1487,7 @@
 				3F689EA428B779FA00C1D072 /* LawViewController.swift in Sources */,
 				3FAAB6E528C6541500AA32ED /* SignInNavigator.swift in Sources */,
 				3F37B3AC2820765900DB18B7 /* PaddingLabel.swift in Sources */,
+				3F29695A28D04FA200C73EDE /* ChatRoomCoverNavigator.swift in Sources */,
 				3FAAB6E728C6542C00AA32ED /* DefaultSignInNavigator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1663,7 +1703,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4PL3T83JJM;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
@@ -1681,6 +1722,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "bestowing.Discussion-Korea";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = distribution_discussion_Korea;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = distribution_discussion_Korea;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1697,7 +1739,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4PL3T83JJM;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4PL3T83JJM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Discussion-Korea/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "방구석대한민국";
