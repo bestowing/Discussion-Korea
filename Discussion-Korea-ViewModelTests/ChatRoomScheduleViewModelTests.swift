@@ -19,7 +19,7 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
 
     private var mockNavigator: MockChatRoomScheduleNavigator!
     private var discussionUsecase: MockDiscussionUsecase!
-    private var viewModel: ChatRoomScheduleViewModel!
+    private var reactor: ChatRoomScheduleReactor!
     private var disposeBag: DisposeBag!
     private var scheduler: TestScheduler!
 
@@ -29,7 +29,7 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
         super.setUp()
         self.mockNavigator = MockChatRoomScheduleNavigator()
         self.discussionUsecase = MockDiscussionUsecase()
-        self.viewModel = ChatRoomScheduleViewModel(
+        self.reactor = ChatRoomScheduleReactor(
             userID: self.userID,
             chatRoom: self.chatRoom,
             usecase: self.discussionUsecase,
@@ -42,7 +42,7 @@ final class ChatRoomScheduleViewModelTests: XCTestCase {
     override func tearDown() {
         self.mockNavigator = nil
         self.discussionUsecase = nil
-        self.viewModel = nil
+        self.reactor = nil
         self.disposeBag = nil
         self.scheduler = nil
         super.tearDown()
