@@ -6,14 +6,12 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import SnapKit
 
-final class ChatRoomScheduleViewController: BaseViewController {
-
+final class ChatRoomScheduleViewController: BaseViewController, View {
     // MARK: - properties
-
-    var viewModel: ChatRoomScheduleViewModel!
 
     private let exitButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -39,7 +37,7 @@ final class ChatRoomScheduleViewController: BaseViewController {
         return tableView
     }()
 
-    private let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     // MARK: - methods
 
@@ -47,7 +45,6 @@ final class ChatRoomScheduleViewController: BaseViewController {
         super.viewDidLoad()
         self.title = "토론 일정"
         self.setSubViews()
-        self.bindViewModel()
     }
 
     private func setSubViews() {
@@ -62,32 +59,34 @@ final class ChatRoomScheduleViewController: BaseViewController {
         }
     }
 
-    private func bindViewModel() {
-        assert(self.viewModel != nil)
-
-        let input = ChatRoomScheduleViewModel.Input(
-            viewWillAppear: self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
-                .mapToVoid()
-                .asDriverOnErrorJustComplete(),
-            exitTrigger: self.exitButton.rx.tap.asDriver(),
-            addDiscussionTrigger: self.addButton.rx.tap.asDriver()
-        )
-        let output = self.viewModel.transform(input: input)
-
-        output.addEnabled.drive(self.addButton.rx.isEnabled)
+    func bind(reactor: ChatRoomScheduleReactor) {
+        self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
-
-        output.schedules.drive(self.scheduleTableView.rx.items) { tableView, index, model in
-            let indexPath = IndexPath(item: index, section: 0)
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.identifier, for: indexPath) as? ScheduleCell
-            else { return UITableViewCell() }
-            cell.bind(model)
-            return cell
-        }.disposed(by: self.disposeBag)
-
-        output.exitEvent.drive().disposed(by: self.disposeBag)
-
-        output.addDiscussionEvent.drive().disposed(by: self.disposeBag)
+        
+        self.exitButton.rx.tap
+            .map { Reactor.Action.exitTrigger }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.addButton.rx.tap
+            .map { Reactor.Action.addDiscussionTrigger }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state.asObservable().map { $0.schedules }
+            .bind(to: self.scheduleTableView.rx.items) { tableView, index, model in
+                let indexPath = IndexPath(item: index, section: 0)
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.identifier, for: indexPath) as? ScheduleCell
+                else { return UITableViewCell() }
+                cell.bind(model)
+                return cell
+            }
+            .disposed(by: self.disposeBag)
+        
+        reactor.state.asObservable().map { $0.addEnabled }
+            .bind(to: self.addButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
     }
-
 }

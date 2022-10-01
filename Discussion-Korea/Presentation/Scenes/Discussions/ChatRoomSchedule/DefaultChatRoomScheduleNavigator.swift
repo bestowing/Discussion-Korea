@@ -27,13 +27,12 @@ final class DefaultChatRoomScheduleNavigator: BaseNavigator, ChatRoomScheduleNav
 
     func toChatRoomSchedule(_ userID: String, _ chatRoom: ChatRoom) {
         let viewController = ChatRoomScheduleViewController()
-        let viewModel = ChatRoomScheduleViewModel(
+        viewController.reactor = ChatRoomScheduleReactor(
             userID: userID,
             chatRoom: chatRoom,
             usecase: self.services.makeDiscussionUsecase(),
             navigator: self
         )
-        viewController.viewModel = viewModel
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.presentedViewController.present(navigationController, animated: true)

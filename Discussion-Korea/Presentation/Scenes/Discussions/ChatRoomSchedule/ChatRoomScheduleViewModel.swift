@@ -5,10 +5,27 @@
 //  Created by 이청수 on 2022/05/06.
 //
 
-import Foundation
-import RxCocoa
+import ReactorKit
 
-final class ChatRoomScheduleViewModel: ViewModelType {
+final class ChatRoomScheduleReactor: Reactor {
+
+    enum Action {
+        case viewWillAppear
+        case exitTrigger
+        case addDiscussionTrigger
+    }
+
+    enum Mutation {
+        case setEnable(Bool)
+        case initalizeSchedules
+        case addSchedules(ScheduleItemViewModel)
+        case events
+    }
+
+    struct State {
+        var addEnabled: Bool = false
+        var schedules: [ScheduleItemViewModel] = []
+    }
 
     // MARK: - properties
 
@@ -17,6 +34,8 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
     private let usecase: DiscussionUsecase
     private let navigator: ChatRoomScheduleNavigator
+
+    let initialState: State
 
     // MARK: - init/deinit
 
@@ -28,6 +47,7 @@ final class ChatRoomScheduleViewModel: ViewModelType {
         self.chatRoom = chatRoom
         self.usecase = usecase
         self.navigator = navigator
+        self.initialState = State()
     }
 
     deinit {
@@ -36,48 +56,39 @@ final class ChatRoomScheduleViewModel: ViewModelType {
 
     // MARK: - methods
 
-    func transform(input: Input) -> Output {
-
-        let schedules = input.viewWillAppear
-            .flatMap { [unowned self] in
+    func mutate(action: Action) -> Observable<Mutation> {
+        switch action {
+        case .viewWillAppear:
+            return Observable.concat(
+                Observable.just(Mutation.initalizeSchedules),
+                Observable.just(Mutation.setEnable(self.userID == self.chatRoom.adminUID)),
                 self.usecase.discussions(roomUID: self.chatRoom.uid)
-                    .asDriverOnErrorJustComplete()
-                    .scan([ScheduleItemViewModel]()) { viewModels, discussion in
-                        return viewModels + [ScheduleItemViewModel(with: discussion)]
-                    }
-            }
-
-        let exitEvent = input.exitTrigger
-            .do(onNext: self.navigator.toChatRoom)
-
-        let addDiscussionEvent = input.addDiscussionTrigger
-                .do(onNext: { [unowned self] in
-                    self.navigator.toAddDiscussion(self.chatRoom)
-                })
-
-        return Output(
-            addEnabled: Driver.just(self.chatRoom.adminUID == self.userID),
-            schedules: schedules,
-            exitEvent: exitEvent,
-            addDiscussionEvent: addDiscussionEvent
-        )
+                    .map { Mutation.addSchedules(ScheduleItemViewModel(with: $0)) }
+            )
+        case .exitTrigger:
+            return Observable.just(())
+                .do(onNext: self.navigator.toChatRoom)
+                .map { Mutation.events }
+        case .addDiscussionTrigger:
+            return Observable.just(self.chatRoom)
+                .do(onNext: self.navigator.toAddDiscussion)
+                .map { _ in Mutation.events }
+        }
     }
 
-}
-
-extension ChatRoomScheduleViewModel {
-
-    struct Input {
-        let viewWillAppear: Driver<Void>
-        let exitTrigger: Driver<Void>
-        let addDiscussionTrigger: Driver<Void>
-    }
-
-    struct Output {
-        let addEnabled: Driver<Bool>
-        let schedules: Driver<[ScheduleItemViewModel]>
-        let exitEvent: Driver<Void>
-        let addDiscussionEvent: Driver<Void>
+    func reduce(state: State, mutation: Mutation) -> State {
+        var state = state
+        switch mutation {
+        case let .setEnable(isEnabled):
+            state.addEnabled = isEnabled
+        case .initalizeSchedules:
+            state.schedules = []
+        case let .addSchedules(schedule):
+            state.schedules.append(schedule)
+        case .events:
+            break
+        }
+        return state
     }
 
 }

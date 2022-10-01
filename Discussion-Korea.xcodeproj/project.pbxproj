@@ -190,6 +190,7 @@
 		3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */; };
 		3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357AB2826297700F27C77 /* AddDiscussionViewController.swift */; };
 		3FB357AD282992CE00F27C77 /* RefereceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* RefereceError.swift */; };
+		3FBAB2DA28DF7ADA007EAC6C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBAB2D928DF7ADA007EAC6C /* ReactorKit */; };
 		3FBDBBF62886E08600A09BF4 /* MockChatRoomUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEA2886E08500A09BF4 /* MockChatRoomUsecase.swift */; };
 		3FBDBBF72886E08600A09BF4 /* MockUserInfoUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEB2886E08500A09BF4 /* MockUserInfoUsecase.swift */; };
 		3FBDBBF82886E08600A09BF4 /* MockDiscussionUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEC2886E08500A09BF4 /* MockDiscussionUsecase.swift */; };
@@ -472,6 +473,7 @@
 				3FAAB6E928C66BDB00AA32ED /* FirebaseAuth in Frameworks */,
 				3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */,
 				3F37B3DD2820784E00DB18B7 /* SideMenu in Frameworks */,
+				3FBAB2DA28DF7ADA007EAC6C /* ReactorKit in Frameworks */,
 				3F37B3CF282077B700DB18B7 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1216,6 +1218,7 @@
 				3F9B69D2287AA34A00DA72B6 /* RxGesture */,
 				3FAAB6D328C2DBF500AA32ED /* RxDataSources */,
 				3FAAB6E828C66BDB00AA32ED /* FirebaseAuth */,
+				3FBAB2D928DF7ADA007EAC6C /* ReactorKit */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F37B3692820747500DB18B7 /* Discussion-Korea.app */;
@@ -1283,6 +1286,7 @@
 				3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				3F9B69D1287AA34A00DA72B6 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = 3F37B36A2820747500DB18B7 /* Products */;
 			projectDirPath = "";
@@ -1920,6 +1924,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1977,6 +1989,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F37B3D82820782600DB18B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		3FBAB2D928DF7ADA007EAC6C /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 		3FBDBC402886EAFF00A09BF4 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
