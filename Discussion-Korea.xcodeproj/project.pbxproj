@@ -178,7 +178,7 @@
 		3FB3578A28240D6600F27C77 /* ChatRoomSideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3578928240D6600F27C77 /* ChatRoomSideMenuViewModel.swift */; };
 		3FB3578F28250A1800F27C77 /* ChatRoomScheduleNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3578E28250A1800F27C77 /* ChatRoomScheduleNavigator.swift */; };
 		3FB3579128250B4700F27C77 /* ChatRoomScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579028250B4700F27C77 /* ChatRoomScheduleViewController.swift */; };
-		3FB3579328250B5000F27C77 /* ChatRoomScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579228250B5000F27C77 /* ChatRoomScheduleViewModel.swift */; };
+		3FB3579328250B5000F27C77 /* ChatRoomScheduleReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579228250B5000F27C77 /* ChatRoomScheduleReactor.swift */; };
 		3FB357982826053E00F27C77 /* ParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357972826053E00F27C77 /* ParticipantCell.swift */; };
 		3FB3579A2826063C00F27C77 /* ParticipantItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357992826063C00F27C77 /* ParticipantItemViewModel.swift */; };
 		3FB3579D282618A900F27C77 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579C282618A900F27C77 /* ScheduleCell.swift */; };
@@ -190,6 +190,7 @@
 		3FB357AA2826295200F27C77 /* AddDiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */; };
 		3FB357AC2826297700F27C77 /* AddDiscussionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357AB2826297700F27C77 /* AddDiscussionViewController.swift */; };
 		3FB357AD282992CE00F27C77 /* RefereceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3E728207CFB00DB18B7 /* RefereceError.swift */; };
+		3FBAB2DA28DF7ADA007EAC6C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBAB2D928DF7ADA007EAC6C /* ReactorKit */; };
 		3FBDBBF62886E08600A09BF4 /* MockChatRoomUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEA2886E08500A09BF4 /* MockChatRoomUsecase.swift */; };
 		3FBDBBF72886E08600A09BF4 /* MockUserInfoUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEB2886E08500A09BF4 /* MockUserInfoUsecase.swift */; };
 		3FBDBBF82886E08600A09BF4 /* MockDiscussionUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBDBBEC2886E08500A09BF4 /* MockDiscussionUsecase.swift */; };
@@ -224,7 +225,7 @@
 		3FBDBC272886E51300A09BF4 /* AddDiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB357A92826295200F27C77 /* AddDiscussionViewModel.swift */; };
 		3FBDBC282886E51D00A09BF4 /* ChatRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B39F2820765100DB18B7 /* ChatRoomViewModel.swift */; };
 		3FBDBC292886E52A00A09BF4 /* ChatRoomListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6696A32835BFDB0077E5B3 /* ChatRoomListViewModel.swift */; };
-		3FBDBC2A2886E53200A09BF4 /* ChatRoomScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579228250B5000F27C77 /* ChatRoomScheduleViewModel.swift */; };
+		3FBDBC2A2886E53200A09BF4 /* ChatRoomScheduleReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3579228250B5000F27C77 /* ChatRoomScheduleReactor.swift */; };
 		3FBDBC2B2886E53900A09BF4 /* ChatRoomSideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3578928240D6600F27C77 /* ChatRoomSideMenuViewModel.swift */; };
 		3FBDBC2C2886E54100A09BF4 /* ConfigureProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F910436283FB33C00446239 /* ConfigureProfileViewModel.swift */; };
 		3FBDBC2D2886E54800A09BF4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F37B3B22820766400DB18B7 /* HomeViewModel.swift */; };
@@ -417,7 +418,7 @@
 		3FB3578928240D6600F27C77 /* ChatRoomSideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomSideMenuViewModel.swift; sourceTree = "<group>"; };
 		3FB3578E28250A1800F27C77 /* ChatRoomScheduleNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomScheduleNavigator.swift; sourceTree = "<group>"; };
 		3FB3579028250B4700F27C77 /* ChatRoomScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomScheduleViewController.swift; sourceTree = "<group>"; };
-		3FB3579228250B5000F27C77 /* ChatRoomScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomScheduleViewModel.swift; sourceTree = "<group>"; };
+		3FB3579228250B5000F27C77 /* ChatRoomScheduleReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomScheduleReactor.swift; sourceTree = "<group>"; };
 		3FB357972826053E00F27C77 /* ParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCell.swift; sourceTree = "<group>"; };
 		3FB357992826063C00F27C77 /* ParticipantItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantItemViewModel.swift; sourceTree = "<group>"; };
 		3FB3579C282618A900F27C77 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
@@ -472,6 +473,7 @@
 				3FAAB6E928C66BDB00AA32ED /* FirebaseAuth in Frameworks */,
 				3F910440283FE5C500446239 /* FirebaseStorage in Frameworks */,
 				3F37B3DD2820784E00DB18B7 /* SideMenu in Frameworks */,
+				3FBAB2DA28DF7ADA007EAC6C /* ReactorKit in Frameworks */,
 				3F37B3CF282077B700DB18B7 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1125,7 +1127,7 @@
 				3FB3579B2826188B00F27C77 /* View */,
 				3FB3579028250B4700F27C77 /* ChatRoomScheduleViewController.swift */,
 				3FB3578E28250A1800F27C77 /* ChatRoomScheduleNavigator.swift */,
-				3FB3579228250B5000F27C77 /* ChatRoomScheduleViewModel.swift */,
+				3FB3579228250B5000F27C77 /* ChatRoomScheduleReactor.swift */,
 				3FBDBC0D2886E37800A09BF4 /* DefaultChatRoomScheduleNavigator.swift */,
 				3FB3579E282618D500F27C77 /* ScheduleItemViewModel.swift */,
 			);
@@ -1216,6 +1218,7 @@
 				3F9B69D2287AA34A00DA72B6 /* RxGesture */,
 				3FAAB6D328C2DBF500AA32ED /* RxDataSources */,
 				3FAAB6E828C66BDB00AA32ED /* FirebaseAuth */,
+				3FBAB2D928DF7ADA007EAC6C /* ReactorKit */,
 			);
 			productName = "Discussion-Korea";
 			productReference = 3F37B3692820747500DB18B7 /* Discussion-Korea.app */;
@@ -1283,6 +1286,7 @@
 				3F91043C283FBA7900446239 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				3F9B69D1287AA34A00DA72B6 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				3FAAB6D228C2DBF500AA32ED /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = 3F37B36A2820747500DB18B7 /* Products */;
 			projectDirPath = "";
@@ -1467,7 +1471,7 @@
 				3F689E7D28B6795D00C1D072 /* BaseViewController.swift in Sources */,
 				3F37B3AF2820765900DB18B7 /* SerialOtherChatCell.swift in Sources */,
 				3F37B3B02820765900DB18B7 /* OtherChatCell.swift in Sources */,
-				3FB3579328250B5000F27C77 /* ChatRoomScheduleViewModel.swift in Sources */,
+				3FB3579328250B5000F27C77 /* ChatRoomScheduleReactor.swift in Sources */,
 				3F646F2828CA45A100434BC6 /* SetDiscussionDetailViewModel.swift in Sources */,
 				3F37B3E428207CCA00DB18B7 /* Application.swift in Sources */,
 				3FB3578A28240D6600F27C77 /* ChatRoomSideMenuViewModel.swift in Sources */,
@@ -1528,7 +1532,7 @@
 				3FBDBC2D2886E54800A09BF4 /* HomeViewModel.swift in Sources */,
 				3FBDBC2C2886E54100A09BF4 /* ConfigureProfileViewModel.swift in Sources */,
 				3FBDBC2B2886E53900A09BF4 /* ChatRoomSideMenuViewModel.swift in Sources */,
-				3FBDBC2A2886E53200A09BF4 /* ChatRoomScheduleViewModel.swift in Sources */,
+				3FBDBC2A2886E53200A09BF4 /* ChatRoomScheduleReactor.swift in Sources */,
 				3FBDBC292886E52A00A09BF4 /* ChatRoomListViewModel.swift in Sources */,
 				3FBDBC282886E51D00A09BF4 /* ChatRoomViewModel.swift in Sources */,
 				3FBDBC272886E51300A09BF4 /* AddDiscussionViewModel.swift in Sources */,
@@ -1920,6 +1924,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1977,6 +1989,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F37B3D82820782600DB18B7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		3FBAB2D928DF7ADA007EAC6C /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FBAB2D828DF7ADA007EAC6C /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 		3FBDBC402886EAFF00A09BF4 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
