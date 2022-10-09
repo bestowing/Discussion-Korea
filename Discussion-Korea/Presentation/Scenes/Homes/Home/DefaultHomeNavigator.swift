@@ -68,6 +68,15 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
         navigator.toGuide()
     }
 
+    func toFeedback() {
+        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLScRWypBXvJQOR30o7-E8wnXJmj5zghQMkYG04109iPLDvbcfQ/viewform?usp=sf_link")
+        else { return }
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+
     func toOnboarding(_ userID: String) {
         guard let presentingViewController = presentingViewController
         else { return }

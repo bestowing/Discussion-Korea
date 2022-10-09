@@ -59,7 +59,12 @@ final class HomeViewModel: ViewModelType {
         let guideEvent = input.guideTrigger
             .do(onNext: self.navigator.toGuide)
 
-        let events = Driver.of(chartEvent, lawEvent, guideEvent, onboardingEvent).merge()
+        let feedbackEvent = input.feedbackTrigger
+            .do(onNext: self.navigator.toFeedback)
+
+        let events = Driver.of(
+            chartEvent, lawEvent, guideEvent, feedbackEvent, onboardingEvent
+        ).merge()
 
         return Output(
             nickname: nickname,
@@ -76,6 +81,7 @@ extension HomeViewModel {
         let chartTrigger: Driver<Void>
         let lawTrigger: Driver<Void>
         let guideTrigger: Driver<Void>
+        let feedbackTrigger: Driver<Void>
     }
     
     struct Output {

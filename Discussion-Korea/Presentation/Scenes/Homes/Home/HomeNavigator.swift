@@ -11,6 +11,7 @@ protocol HomeNavigator {
     func toChart()
     func toLaw()
     func toGuide()
+    func toFeedback()
     func toOnboarding(_ userID: String)
 
 }

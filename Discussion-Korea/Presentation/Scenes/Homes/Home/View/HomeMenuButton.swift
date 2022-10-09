@@ -56,13 +56,9 @@ final class HomeMenuButton: UIView {
         self.imageView.snp.contentHuggingVerticalPriority = 1
         self.imageView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
-            make.width.equalToSuperview().dividedBy(3)
-            make.height.equalTo(self.imageView.snp.width)
+            make.width.height.equalTo(30)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-8)
-        }
-        self.snp.makeConstraints { make in
-            make.height.equalTo(self.snp.width)
         }
     }
 

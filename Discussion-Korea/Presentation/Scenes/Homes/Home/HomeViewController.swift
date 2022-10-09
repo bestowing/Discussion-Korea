@@ -38,6 +38,30 @@ final class HomeViewController: BaseViewController {
         return button
     }()
 
+    private let feedbackButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("의견 보내기", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        button.setImage(UIImage(systemName: "exclamationmark.bubble.fill"), for: .normal)
+        button.tintColor = .accentColor
+        button.layer.borderWidth = 0.7
+        button.layer.borderColor = UIColor.systemGray3.cgColor
+        button.layer.cornerRadius = 5.0
+        if #available(iOS 15.0, *) {
+            var configuration = UIButton.Configuration.plain()
+            configuration.titleAlignment = .center
+            configuration.imagePadding = 5.0
+            configuration.contentInsets = NSDirectionalEdgeInsets(
+                top: 15, leading: 0, bottom: 15, trailing: 0
+            )
+            button.configuration = configuration
+        } else {
+            button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+            button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+        }
+        return button
+    }()
+
     private let lawButton: HomeMenuButton = {
         let button = HomeMenuButton()
         button.isEnabled = true
@@ -65,6 +89,9 @@ final class HomeViewController: BaseViewController {
     }
 
     private func setSubViews() {
+        self.chartButton.snp.makeConstraints { make in
+            make.height.equalTo(self.chartButton.snp.width)
+        }
         let buttonStackView = UIStackView(arrangedSubviews: [
             self.chartButton, self.lawButton, self.guideButton
         ])
@@ -72,8 +99,15 @@ final class HomeViewController: BaseViewController {
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = 10.0
         buttonStackView.distribution = .fillEqually
+        let feedbackStackView = UIStackView(arrangedSubviews: [
+            self.feedbackButton
+        ])
+        feedbackStackView.alignment = .fill
+        feedbackStackView.axis = .horizontal
+        feedbackStackView.spacing = 10.0
+        feedbackStackView.distribution = .fillEqually
         let stackView = UIStackView(arrangedSubviews: [
-            self.nicknameLabel, self.userInfoPanel, buttonStackView
+            self.nicknameLabel, self.userInfoPanel, buttonStackView, feedbackStackView
         ])
         stackView.axis = .vertical
         stackView.spacing = 20.0
@@ -95,6 +129,9 @@ final class HomeViewController: BaseViewController {
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             guideTrigger: self.guideButton.rx.tapGesture().when(.recognized)
+                .mapToVoid()
+                .asDriverOnErrorJustComplete(),
+            feedbackTrigger: self.feedbackButton.rx.tapGesture().when(.recognized)
                 .mapToVoid()
                 .asDriverOnErrorJustComplete()
         )
