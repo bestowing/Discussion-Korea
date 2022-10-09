@@ -30,11 +30,11 @@ final class HomeViewController: BaseViewController {
         return panel
     }()
 
-    private let chartButton: HomeMenuButton = {
+    private let feedbackButton: HomeMenuButton = {
         let button = HomeMenuButton()
-        button.isEnabled = false
-        button.titleLabel.text = "방구석 조직도"
-        button.imageView.image = UIImage(systemName: "rectangle.stack.fill.badge.person.crop")
+        button.isEnabled = true
+        button.titleLabel.text = "의견 보내기"
+        button.imageView.image = UIImage(systemName: "exclamationmark.bubble.fill")
         return button
     }()
 
@@ -66,7 +66,7 @@ final class HomeViewController: BaseViewController {
 
     private func setSubViews() {
         let buttonStackView = UIStackView(arrangedSubviews: [
-            self.chartButton, self.lawButton, self.guideButton
+            self.feedbackButton, self.lawButton, self.guideButton
         ])
         buttonStackView.alignment = .fill
         buttonStackView.axis = .horizontal
@@ -88,7 +88,7 @@ final class HomeViewController: BaseViewController {
         assert(self.viewModel != nil)
 
         let input = HomeViewModel.Input(
-            chartTrigger: self.chartButton.rx.tapGesture().when(.recognized)
+            feedbackTrigger: self.feedbackButton.rx.tapGesture().when(.recognized)
                 .mapToVoid()
                 .asDriverOnErrorJustComplete(),
             lawTrigger: self.lawButton.rx.tapGesture().when(.recognized)

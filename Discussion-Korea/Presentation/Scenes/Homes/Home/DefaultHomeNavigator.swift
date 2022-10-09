@@ -39,15 +39,13 @@ final class DefaultHomeNavigator: BaseNavigator, HomeNavigator {
         self.presentingViewController = homeViewController
     }
 
-    func toChart() {
-        guard let presentingViewController = presentingViewController
+    func toFeedback() {
+        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLScRWypBXvJQOR30o7-E8wnXJmj5zghQMkYG04109iPLDvbcfQ/viewform?usp=sf_link")
         else { return }
-        let alert = UIAlertController(title: "준비중",
-                                      message: "준비중인 기능이에요🥲",
-                                      preferredStyle: UIAlertController.Style.alert)
-        let exitAction = UIAlertAction(title: "나가기", style: .cancel)
-        alert.addAction(exitAction)
-        presentingViewController.present(alert, animated: true)
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
     }
 
     func toLaw() {
