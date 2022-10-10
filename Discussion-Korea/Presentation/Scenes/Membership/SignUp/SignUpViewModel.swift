@@ -67,6 +67,9 @@ final class SignUpViewModel: ViewModelType {
         let exitEvent = input.exitTrigger
             .do(onNext: self.navigator.toSignIn)
 
+        let privacyEvent = input.privacyTrigger
+            .do(onNext: self.navigator.toPrivacy)
+
         let registerEvent = input.register
             .withLatestFrom(userInfo) { $1 }
             .flatMapLatest { [unowned self] userInfo in
@@ -76,7 +79,7 @@ final class SignUpViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
-        let events = Driver.of(exitEvent, registerEvent, errorEvent).merge()
+        let events = Driver.of(exitEvent, privacyEvent, registerEvent, errorEvent).merge()
 
         return Output(
             loading: loading,
@@ -94,6 +97,7 @@ extension SignUpViewModel {
 
     struct Input {
         let exitTrigger: Driver<Void>
+        let privacyTrigger: Driver<Void>
         let email: Driver<String>
         let password: Driver<String>
         let passwordCheck: Driver<String>

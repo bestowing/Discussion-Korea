@@ -70,6 +70,15 @@ final class SignUpViewController: BaseViewController {
         return button
     }()
 
+    private let privacyLabel: UILabel = {
+        let label = ResizableLabel()
+        label.text = "개인정보 처리방침"
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.textAlignment = .center
+        return label
+    }()
+
     private let disposeBag = DisposeBag()
 
     // MARK: - methods
@@ -127,6 +136,11 @@ final class SignUpViewController: BaseViewController {
             make.top.equalTo(nameLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(30)
         }
+        self.view.addSubview(self.privacyLabel)
+        self.privacyLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+        }
 
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)
@@ -140,6 +154,8 @@ final class SignUpViewController: BaseViewController {
 
         let input = SignUpViewModel.Input(
             exitTrigger: self.exitButton.rx.tap.asDriverOnErrorJustComplete(),
+            privacyTrigger: self.privacyLabel.rx.tapGesture()
+                .when(.recognized).mapToVoid().asDriverOnErrorJustComplete(),
             email: self.idField.rx.text.orEmpty.asDriver().skip(1),
             password: self.passwordField.rx.text.orEmpty.asDriver().skip(1),
             passwordCheck: self.passwordCheckField.rx.text.orEmpty.asDriver().skip(1),

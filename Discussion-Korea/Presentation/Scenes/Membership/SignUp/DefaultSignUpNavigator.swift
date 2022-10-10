@@ -53,4 +53,13 @@ final class DefaultSignUpNavigator: BaseNavigator, SignUpNavigator {
         presentingViewController.present(alert, animated: true)
     }
 
+    func toPrivacy() {
+        guard let url = URL(string: "https://github.com/SKKU-Debaters/privacy-policy/blob/main/READMD.md")
+        else { return }
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+
 }

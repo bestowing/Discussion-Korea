@@ -12,12 +12,12 @@ import FirebaseDatabase
 
 enum ReferenceManager {
 
-    static let reference = Database
-        .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
-        .reference()
 //    static let reference = Database
-//        .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+//        .database(url: "http://localhost:9000?ns=test-3dbd4-default-rtdb")
 //        .reference()
+    static let reference = Database
+        .database(url: "https://test-3dbd4-default-rtdb.asia-southeast1.firebasedatabase.app")
+        .reference()
 
 }
 
