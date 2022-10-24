@@ -152,6 +152,7 @@ extension ChatRoomSideMenuViewModel {
         let selection: Driver<IndexPath>
         let calendar: Driver<Void>
         let side: Driver<Side>
+        let exitTrigger: Driver<Void>
     }
     
     struct Output {

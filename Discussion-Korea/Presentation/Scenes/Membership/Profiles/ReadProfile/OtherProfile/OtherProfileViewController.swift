@@ -44,7 +44,7 @@ final class OtherProfileViewController: BaseViewController {
 
     private let reportButton: UIButton = {
         let button = UIButton()
-        button.setTitle("신고", for: .normal)
+        button.setTitle("신고 및 차단", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         if #available(iOS 15.0, *) {
             var configuration = UIButton.Configuration.filled()

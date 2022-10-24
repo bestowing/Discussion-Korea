@@ -67,6 +67,27 @@ final class ChatRoomSideMenuViewController: BaseViewController {
                            forCellReuseIdentifier: ParticipantCell.identifier)
         return tableView
     }()
+    
+    private let exitButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("방 나가기", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        if #available(iOS 15.0, *) {
+            var configuration = UIButton.Configuration.filled()
+            configuration.titleAlignment = .center
+            configuration.contentInsets = NSDirectionalEdgeInsets(
+                top: 12, leading: 12, bottom: 12, trailing: 12
+            )
+            configuration.baseBackgroundColor = .systemRed
+            configuration.cornerStyle = .medium
+            button.configuration = configuration
+        } else {
+            button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            button.backgroundColor = .systemRed
+            button.layer.cornerRadius = 7
+        }
+        return button
+    }()
 
     private let disposeBag = DisposeBag()
 
@@ -92,6 +113,7 @@ final class ChatRoomSideMenuViewController: BaseViewController {
         self.view.addSubview(self.opinionView)
         self.view.addSubview(self.participantLabel)
         self.view.addSubview(self.participantsTableView)
+        self.view.addSubview(self.exitButton)
         self.titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(-15)
@@ -131,7 +153,11 @@ final class ChatRoomSideMenuViewController: BaseViewController {
             make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide).offset(15)
             make.top.equalTo(self.participantLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            make.bottom.equalTo(self.exitButton.snp.top).offset(-20)
+        }
+        self.exitButton.snp.makeConstraints { make in
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide.snp.centerX)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(20)
         }
     }
 
@@ -153,7 +179,8 @@ final class ChatRoomSideMenuViewController: BaseViewController {
                 default:
                     return .judge
                 }
-            }.asDriverOnErrorJustComplete()
+            }.asDriverOnErrorJustComplete(),
+            exitTrigger: exitButton.rx.tap.asDriver()
         )
         let output = self.viewModel.transform(input: input)
 
