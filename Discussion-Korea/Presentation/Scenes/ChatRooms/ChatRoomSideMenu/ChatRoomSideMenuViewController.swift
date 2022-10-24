@@ -176,7 +176,7 @@ final class ChatRoomSideMenuViewController: BaseViewController {
 
         output.chatRoomTitle.drive(self.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
-
+        
         output.discussionOngoing.do(onNext: { [unowned self] isOngoing in
             self.participantLabel.snp.remakeConstraints { make in
                 make.leading.equalTo(self.view.safeAreaLayoutGuide).offset(15)

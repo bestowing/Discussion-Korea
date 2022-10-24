@@ -17,6 +17,7 @@ struct Chat {
     var nickName: String?
     var side: Side?
     var toxic: Bool?
+    var isBlocked: Bool?
 
     public init(userID: String, content: String, date: Date) {
         self.userID = userID

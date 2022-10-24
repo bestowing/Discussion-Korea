@@ -41,6 +41,14 @@ final class ReadProfileViewModel: ViewModelType {
             .userInfo(userID: self.userID)
             .asDriverOnErrorJustComplete()
 
+        let blockers = self.userInfoUsecase.blockers(from: self.selfID)
+            .asDriverOnErrorJustComplete()
+            .startWith([])
+        
+        let isBlocked = blockers.map { [unowned self] blockers in
+            return blockers.contains(self.userID)
+        }
+        
         let profileURL = userInfo.map { $0?.profileURL }
 
         let score = userInfo.compactMap { myInfo -> (win: Int, draw: Int, lose: Int)? in
@@ -75,9 +83,13 @@ final class ReadProfileViewModel: ViewModelType {
         let events = Driver.of(settingEvent, reportEvent, exitEvent, editEvent).merge()
 
         return Output(
-            profileURL: profileURL,
+            profileURL: Driver.combineLatest(profileURL, isBlocked).map {
+                $0.1 ? nil : $0.0
+            },
             score: score,
-            nickname: nickname,
+            nickname: Driver.combineLatest(nickname, isBlocked).map {
+                $0.1 ? "차단한 사용자" : $0.0
+            },
             events: events
         )
     }

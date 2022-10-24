@@ -259,6 +259,17 @@ final class ChatRoomViewController: BaseViewController {
         output.sendEnable.drive(self.chatInputView.rx.sendEnable)
             .disposed(by: self.disposeBag)
 
+        output.blockers.drive { [unowned self] blockers in
+            self.itemViewModels = self.itemViewModels.map { viewModel in
+                var viewModel = viewModel
+                if blockers.contains(viewModel.chat.userID) {
+                    viewModel.chat.isBlocked = true
+                }
+                return viewModel
+            }
+            self.messageCollectionView.reloadData()
+        }.disposed(by: self.disposeBag)
+        
         output.editableEnable.drive(self.chatInputView.rx.isEditable)
             .disposed(by: self.disposeBag)
 

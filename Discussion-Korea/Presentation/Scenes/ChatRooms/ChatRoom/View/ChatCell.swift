@@ -36,7 +36,7 @@ class ChatCell: UICollectionViewCell {
     func bind(_ viewModel: ChatItemViewModel) {}
 
     func textColor(_ viewModel: ChatItemViewModel) -> UIColor? {
-        return viewModel.chat.toxic ?? false ? .lightGray : nil
+        return (viewModel.chat.toxic ?? false || viewModel.chat.isBlocked ?? false) ? .lightGray : nil
     }
 
     func getAccessibilityLabel(_ viewModel: ChatItemViewModel) -> String {

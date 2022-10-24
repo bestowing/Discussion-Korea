@@ -174,7 +174,7 @@ final class SignUpViewController: BaseViewController {
 
         output.passwordCheckResult.drive(self.passwordCheckField.rx.wrongMessage)
             .disposed(by: self.disposeBag)
-
+        
         output.registerEnabled
             .do(onNext: { [unowned self] isEnabled in
                 self.registerButton.backgroundColor = isEnabled ? .accentColor : .systemGray5

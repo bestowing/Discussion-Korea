@@ -42,6 +42,13 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
+        let blockers: Driver<[String]> = input.viewWillAppear
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.blockers(from: self.uid)
+                    .asDriverOnErrorJustComplete()
+                    .startWith([])
+            }
+        
         let participants = input.viewWillAppear
             .flatMapFirst { [unowned self] in
                 self.userInfoUsecase.userInfos(roomID: self.chatRoom.uid)
@@ -123,7 +130,14 @@ final class ChatRoomSideMenuViewModel: ViewModelType {
             canParticipate: canParticipate,
             selectedSide: selectedSide,
             opinions: opinions,
-            participants: participants,
+            participants: Driver.combineLatest(participants, blockers).map { participants, blockers in
+                participants.map { participant in
+                    if blockers.contains(participant.userInfo.uid) {
+                        return ParticipantItemViewModel(userInfo: participant.userInfo)
+                    }
+                    return participant
+                }
+            },
             discussionOngoing: discussionOngoing,
             events: events
         )

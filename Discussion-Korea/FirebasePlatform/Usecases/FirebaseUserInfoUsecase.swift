@@ -168,4 +168,8 @@ final class FirebaseUserInfoUsecase: UserInfoUsecase {
         return self.reference.report(from: userID, to: victimID, reason: reason)
     }
 
+    func blockers(from userID: String) -> Observable<[String]> {
+        return self.reference.blockers(from: userID)
+    }
+
 }

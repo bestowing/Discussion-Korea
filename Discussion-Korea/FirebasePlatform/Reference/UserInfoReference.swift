@@ -354,12 +354,38 @@ extension UserInfoReference {
             let values: [String: Any] = [
                 "from": userID,
                 "to": victimID,
-                "reason": reason
+                "reason": reason,
+                "when": self.dateFormatter.string(from: Date())
             ]
             let childUpdates = ["reports/\(key)": values]
             self.reference.updateChildValues(childUpdates)
+            
+            self.reference.child("users/\(userID)/reports").runTransactionBlock { currentData in
+                if var blockers = currentData.value as? [String] {
+                    blockers.append(victimID)
+                    currentData.value = blockers
+                } else {
+                    currentData.value = [victimID]
+                }
+                return TransactionResult.success(withValue: currentData)
+            }
             subscribe.onNext(())
             subscribe.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    func blockers(from userID: String) -> Observable<[String]> {
+        return Observable.create { [unowned self] subscribe in
+            self.reference.child("users/\(userID)/reports")
+                .observe(.value) { snapshot in
+                    guard let victims = snapshot.value as? [String]
+                    else {
+                        subscribe.onError(RefereceError.userInfoError)
+                        return
+                    }
+                    subscribe.onNext(victims)
+                }
             return Disposables.create()
         }
     }

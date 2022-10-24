@@ -135,16 +135,30 @@ final class ChatRoomViewModel: ViewModelType {
                     .asDriverOnErrorJustComplete()
             }
 
+        let blockers: Driver<[String]> = input.trigger
+            .flatMapFirst { [unowned self] in
+                self.userInfoUsecase.blockers(from: self.uid)
+                    .asDriverOnErrorJustComplete()
+                    .startWith([])
+            }
+
         let initialization = userInfos
             .asObservable().take(1).asDriverOnErrorJustComplete()
             .flatMapFirst { [unowned self] _ in
                 self.chatsUsecase.chats(roomUID: self.chatRoom.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(userInfos) { ($0, $1) }
-            .map { (chats, userInfos) -> [Chat] in
+            .withLatestFrom(Driver.combineLatest(userInfos.asDriver(), blockers)) { ($0, $1) }
+            .map { (chats, args) -> [Chat] in
+                let userInfos = args.0
+                let blockers = args.1
                 return chats.map { chat in
                     var chat = chat
+                    chat.isBlocked = blockers.contains(chat.userID)
+                    guard !(chat.isBlocked ?? false) else {
+                        chat.nickName = "차단한 사용자"
+                        return chat
+                    }
                     chat.nickName = userInfos[chat.userID]?.nickname
                     chat.profileURL = userInfos[chat.userID]?.profileURL
                     return chat
@@ -174,9 +188,16 @@ final class ChatRoomViewModel: ViewModelType {
                 self.chatsUsecase.receiveNewChats(roomUID: self.chatRoom.uid, after: viewModels.last?.chat.uid)
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(userInfos) { ($0, $1) }
-            .map { (chat, userInfos) -> Chat in
+            .withLatestFrom(Driver.combineLatest(userInfos.asDriver(), blockers)) { ($0, $1) }
+            .map { (chat, args) -> Chat in
+                let userInfos = args.0
+                let blockers = args.1
                 var chat = chat
+                chat.isBlocked = blockers.contains(chat.userID)
+                guard !(chat.isBlocked ?? false) else {
+                    chat.nickName = "차단한 사용자"
+                    return chat
+                }
                 chat.nickName = userInfos[chat.userID]?.nickname
                 chat.profileURL = userInfos[chat.userID]?.profileURL
                 return chat
@@ -201,10 +222,17 @@ final class ChatRoomViewModel: ViewModelType {
                 self.chatsUsecase.loadMoreChats(roomUID: self.chatRoom.uid, before: uid)
                     .asDriverOnErrorJustComplete()
             }
-            .withLatestFrom(userInfos) { ($0, $1) }
-            .map { (chats, userInfos) -> [Chat] in
+            .withLatestFrom(Driver.combineLatest(userInfos.asDriver(), blockers)) { ($0, $1) }
+            .map { (chats, args) -> [Chat] in
+                let userInfos = args.0
+                let blockers = args.1
                 return chats.map { chat in
                     var chat = chat
+                    chat.isBlocked = blockers.contains(chat.userID)
+                    guard !(chat.isBlocked ?? false) else {
+                        chat.nickName = "차단한 사용자"
+                        return chat
+                    }
                     chat.nickName = userInfos[chat.userID]?.nickname
                     chat.profileURL = userInfos[chat.userID]?.profileURL
                     return chat
@@ -462,6 +490,7 @@ final class ChatRoomViewModel: ViewModelType {
             preview: preview
                 .startWith(nil),
             realTimeChat: writingChat,
+            blockers: blockers,
             editableEnable: canEditable,
             sendEvent: sendEvent,
             events: events
@@ -495,6 +524,7 @@ extension ChatRoomViewModel {
         let sendEnable: Driver<Bool>
         let preview: Driver<ChatItemViewModel?>
         let realTimeChat: Driver<ChatItemViewModel?>
+        let blockers: Driver<[String]>
         let editableEnable: Driver<Bool>
         let sendEvent: Driver<Void>
         let events: Driver<Void>

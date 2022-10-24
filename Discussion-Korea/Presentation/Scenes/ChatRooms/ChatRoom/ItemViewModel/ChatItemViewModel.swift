@@ -45,6 +45,8 @@ struct ChatItemViewModel {
     var content: String {
         if self.toxic {
             return "⚠︎ 부적절한 내용이 감지되었습니다."
+        } else if self.isBlocked {
+            return "⚠︎ 차단한 사용자의 채팅이에요."
         }
         return self.chat.content
     }
@@ -52,8 +54,7 @@ struct ChatItemViewModel {
     var image: UIImage? {
         if self.chat.userID == "bot" {
             return UIImage(named: "bot")
-        }
-        if self.chat.profileURL == nil {
+        } else if self.isBlocked || self.chat.profileURL == nil {
             return UIImage(systemName: "person.fill")
         }
         return nil
@@ -64,7 +65,7 @@ struct ChatItemViewModel {
     }
 
     var contentFont: UIFont {
-        if self.toxic {
+        if self.toxic || self.isBlocked {
             return UIFont.preferredFont(forTextStyle: .footnote)
         }
         return UIFont.preferredFont(forTextStyle: .subheadline)
@@ -73,6 +74,8 @@ struct ChatItemViewModel {
     var nickname: String {
         if self.chat.userID == "bot" {
             return "방장봇"
+        } else if self.isBlocked {
+            return "차단한 사용자"
         }
         return self.chat.nickName ?? self.chat.userID
     }
@@ -90,6 +93,10 @@ struct ChatItemViewModel {
 
     private var toxic: Bool {
         return self.chat.toxic ?? false
+    }
+
+    private var isBlocked: Bool {
+        return self.chat.isBlocked ?? false
     }
 
     // MARK: - init/deinit

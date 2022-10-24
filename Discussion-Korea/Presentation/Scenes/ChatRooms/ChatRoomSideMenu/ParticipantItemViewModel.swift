@@ -36,5 +36,10 @@ final class ParticipantItemViewModel {
         self.userInfo = userInfo
         self.isSelf = isSelf
     }
+    
+    init(userInfo: UserInfo) {
+        self.userInfo = UserInfo(uid: userInfo.uid, nickname: "차단한 사용자", registerAt: userInfo.registerAt)
+        self.isSelf = false
+    }
 
 }
